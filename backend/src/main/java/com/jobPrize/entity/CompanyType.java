@@ -8,7 +8,7 @@ public enum CompanyType {
 	CompanyType(String description) {
 		this.description = description;
 	}
-
+안녕하세요
 	public String getDescription() {
 		return description;
 	}
