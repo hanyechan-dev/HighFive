@@ -13,12 +13,10 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "member")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
@@ -42,6 +40,18 @@ public class Member {
 	
 	@OneToMany(mappedBy = "member")
 	private List<CareerDescription> careerDescriptions;
+	
+	@OneToMany(mappedBy = "member")
+	private List<Application> applications;
+	
+	@OneToMany(mappedBy = "member")
+	private List<Interest> interests;
+	
+	@OneToMany(mappedBy = "member")
+	private List<Similarity> similarities;
+	
+	@OneToMany(mappedBy = "member")
+	private List<Proposal> proposals;
 	
 
     public void updateNickname(String nickname) {

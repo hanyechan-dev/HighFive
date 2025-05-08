@@ -1,6 +1,6 @@
 package com.jobPrize.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -16,12 +16,10 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "cover_letter")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CoverLetter {
@@ -39,10 +37,14 @@ public class CoverLetter {
 	private String title;
 	
 	@Column(name="WRITE_DATE", nullable = false)
-	private LocalDateTime writeDate;
+	private LocalDate writeDate;
 	
 	@OneToMany(mappedBy = "coverLetter")
 	private List<CoverLetterContent> coverLetterContents;
+	
+	public void updateTitle(String title) {
+		this.title = title;
+	}
 		
 
 }

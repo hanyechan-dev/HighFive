@@ -1,6 +1,6 @@
 package com.jobPrize.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -16,12 +16,10 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "career_description")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CareerDescription {
@@ -39,9 +37,13 @@ public class CareerDescription {
 	private String title;
 	
 	@Column(name="WRITE_DATE", nullable = false)
-	private LocalDateTime writeDate;
+	private LocalDate writeDate;
 	
 	@OneToMany(mappedBy = "careerDescription")
 	private List<CareerDescriptionContent> careerDescriptionContents;
+	
+	public void updateTitle(String title) {
+		this.title = title;
+	}
 
 }

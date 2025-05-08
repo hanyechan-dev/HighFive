@@ -12,16 +12,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "career")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Career {
 	
 	@Id
@@ -35,7 +35,7 @@ public class Career {
 	
 	@Column(name="COMPANY_NAME", nullable = false)
 	private String companyName;
-	
+
 	@Column(name="JOB", nullable = false)
 	private String job;
 	
@@ -50,5 +50,16 @@ public class Career {
 	
 	@Column(name="END_DATE")
 	private LocalDate endDate;
+	
+	public void updateCareer(String companyName, String job, String department, String position, LocalDate startDate, LocalDate endDate) {
+		this.companyName = companyName;
+		this.job = job;
+		this.department = department;
+		this.position = position;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+	
+	
 
 }

@@ -12,16 +12,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "language_test")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class LanguageTest {
 	
 	@Id
@@ -53,5 +53,18 @@ public class LanguageTest {
 	
 	@Column(name="ACQUISITION_DATE", nullable = false)
 	private LocalDate acquisitionDate;
+
+	public void updateLanguageTest(String languageType, String testName, String issuingOrg, String grade, String score,
+			String certificationNo, LocalDate acquisitionDate) {
+		this.languageType = languageType;
+		this.testName = testName;
+		this.issuingOrg = issuingOrg;
+		this.grade = grade;
+		this.score = score;
+		this.certificationNo = certificationNo;
+		this.acquisitionDate = acquisitionDate;
+	}
+	
+	
 
 }

@@ -15,16 +15,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "education")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Education {
 	
 	@Id
@@ -57,5 +57,18 @@ public class Education {
 	
 	@Column(name="GRADUATE_DATE")
 	private LocalDate graduateDate;
+
+	public void updateEducation(String schoolName, EducationLevel educationLevel, String major, BigDecimal gpa, String location,
+			LocalDate enterDate, LocalDate graduateDate) {
+		this.schoolName = schoolName;
+		this.educationLevel = educationLevel;
+		this.major = major;
+		this.gpa = gpa;
+		this.location = location;
+		this.enterDate = enterDate;
+		this.graduateDate = graduateDate;
+	}
+	
+	
 
 }

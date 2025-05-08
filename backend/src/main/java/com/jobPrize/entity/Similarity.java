@@ -1,5 +1,7 @@
 package com.jobPrize.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,34 +14,33 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "career_description_content")
+@Table(name = "similarity")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CareerDescriptionContent {
+public class Similarity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="CAREER_DESCRIPTION_CONTENT_ID")
-    private Long careerDescriptionContentId;
+	@Column(name="SIMILARITY_ID")
+    private Long similarityId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CAREER_DESCRIPTION_ID")
-	private CareerDescription careerDescription;
+	@JoinColumn(name = "USER_ID")
+	private Member member;
 	
-	@Column(name="ITEM", nullable = false)
-	private String item;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "JOB_POSTING_ID")
+	private JobPosting jobPosting;
 	
-	@Column(name="CONTENT", nullable = false)
-	private String content;
-
-	public void updateContent(String item, String content) {
-		this.item = item;
-		this.content = content;
-	}
+	@Column(name = "SCORE", nullable = false)
+	private int score;
 	
+    @Column(nullable = false,name="CREATED_DATE")
+    private LocalDate createdDate;
 	
 
 }

@@ -17,7 +17,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "cover_letter_content")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CoverLetterContent {
@@ -36,5 +35,10 @@ public class CoverLetterContent {
 	
 	@Column(name="CONTENT", nullable = false)
 	private String content;
+	
+	public void updateContent(String item, String content) {
+		this.item = item;
+		this.content = content;
+	}
 
 }

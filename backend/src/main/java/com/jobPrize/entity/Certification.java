@@ -12,43 +12,53 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "certification")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Certification {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="CERTIFICATION_ID")
-    private Long certificationId;
-	
+	@Column(name = "CERTIFICATION_ID")
+	private Long certificationId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RESUME_ID")
 	private Resume resume;
-	
-	@Column(name="CERTIFICATION_NAME", nullable = false)
+
+	@Column(name = "CERTIFICATION_NAME", nullable = false)
 	private String certificationName;
-	
-	@Column(name="ISSUING_ORG", nullable = false)
+
+	@Column(name = "ISSUING_ORG", nullable = false)
 	private String issuingOrg;
-	
-	@Column(name="GRADE")
+
+	@Column(name = "GRADE")
 	private String grade;
-	
-	@Column(name="SCORE")
+
+	@Column(name = "SCORE")
 	private String score;
-	
-	@Column(name="CERTIFICATION_NO", nullable = false)
+
+	@Column(name = "CERTIFICATION_NO", nullable = false)
 	private String certificationNo;
-	
-	@Column(name="ACQUISITION_DATE", nullable = false)
+
+	@Column(name = "ACQUISITION_DATE", nullable = false)
 	private LocalDate acquisitionDate;
+
+	public void updateCertification(String certificationName, String issuingOrg, String grade, String score,
+			String certificationNo, LocalDate acquisitionDate) {
+		this.certificationName = certificationName;
+		this.issuingOrg = issuingOrg;
+		this.grade = grade;
+		this.score = score;
+		this.certificationNo = certificationNo;
+		this.acquisitionDate = acquisitionDate;
+	}
 
 }
