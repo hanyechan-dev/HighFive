@@ -19,21 +19,20 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
-	
+
 	@Id
-	@Column(name="USER_ID")
-    private Long userId;
-	
-    @Column(nullable = false)
+	@Column(name = "USER_ID")
+	private Long userId;
+
+	@Column(nullable = false)
 	private String nickname;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
 	private User user;
 
-
-    public void updateNickname(String nickname) {
-    	this.nickname=nickname;
-    }
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 }
