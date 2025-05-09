@@ -17,11 +17,8 @@ public class SecurityUser implements UserDetails {
 	@Override
 	public String getUsername() {
 		return user.getEmail();
-		
 	}
 
-	
-	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("ROLE_" + user.getType().name()));

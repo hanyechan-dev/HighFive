@@ -56,17 +56,7 @@ public class User {
     @Column(nullable = false)
     private String address;
     
-<<<<<<< HEAD
-    
-    @Column(nullable = false,name="CREATED_DATE")
-    private LocalDateTime createdDate;
-    
-    @Column(name="DELETED_DATE")
-    private LocalDateTime deletedDate;
-    
-=======
     @Builder.Default
->>>>>>> MEMBER
     @Column(nullable = false, name="IS_SUBSCRIBED")
     private boolean isSubscribed = false;
     
@@ -118,7 +108,5 @@ public class User {
 		this.isSubscribed = false;
 	}
 
-
-	
 
 }
