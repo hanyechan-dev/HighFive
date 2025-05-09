@@ -25,12 +25,12 @@ public class Member {
 	@Column(name="USER_ID")
     private Long userId;
 	
-    @Column(nullable = false)
-	private String nickname;
-	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
 	private User user;
+	
+    @Column(nullable = false)
+	private String nickname;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	private Resume resume;
@@ -43,15 +43,15 @@ public class Member {
 	
 	@OneToMany(mappedBy = "member")
 	private List<Application> applications;
-	
-	@OneToMany(mappedBy = "member")
-	private List<Interest> interests;
-	
-	@OneToMany(mappedBy = "member")
-	private List<Similarity> similarities;
-	
-	@OneToMany(mappedBy = "member")
-	private List<Proposal> proposals;
+//	
+//	@OneToMany(mappedBy = "member")
+//	private List<Interest> interests;
+//	
+//	@OneToMany(mappedBy = "member")
+//	private List<Similarity> similarities;
+//	
+//	@OneToMany(mappedBy = "member")
+//	private List<Proposal> proposals;
 	
 
     public void updateNickname(String nickname) {

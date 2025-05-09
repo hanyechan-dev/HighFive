@@ -46,7 +46,7 @@ public class Education {
 	@Column(name="MAJOR")
 	private String major;
 	
-	@Column(name="GPA")
+	@Column(name="GPA", precision = 3, scale = 2)
 	private BigDecimal gpa;
 	
 	@Column(name="LOCATION", nullable = false)

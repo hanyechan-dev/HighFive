@@ -1,7 +1,6 @@
 package com.jobPrize.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,44 +14,43 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "cover_letter")
+@Table(name = "request_document")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class CoverLetter {
+public class RequestDocument {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="COVER_LETTER_ID")
-    private Long coverLetterId;
+	@Column(name="REQUEST_DOCUMENT_ID")
+    private Long requestDocumentId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
 	private Member member;
 	
-	@Column(name="TITLE", nullable = false)
-	private String title;
+	@OneToOne(mappedBy = "requestDocument", fetch = FetchType.LAZY)
+	private AiConsulting aiConsulting;
+	
+	@Column(name = "resume_json", columnDefinition = "TEXT", nullable = false)
+	private String resumeJson;
+
+	@Column(name = "career_description_json", columnDefinition = "TEXT")
+	private String careerDescriptionJson;
+	
+	@Column(name = "cover_letter_json", columnDefinition = "TEXT", nullable = false)
+	private String coverLetterJson;
 	
 	@CreatedDate
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
-	
-	@OneToMany(mappedBy = "coverLetter")
-	@OrderBy("coverLetterContentId ASC")
-	private List<CoverLetterContent> coverLetterContents;
-	
-	public void updateTitle(String title) {
-		this.title = title;
-	}
-		
 
 }

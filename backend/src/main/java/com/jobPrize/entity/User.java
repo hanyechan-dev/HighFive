@@ -1,15 +1,19 @@
 package com.jobPrize.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +25,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +32,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails{
 
     @Id
@@ -50,21 +54,32 @@ public class User implements UserDetails{
     @Column(nullable = false)
     private String address;
     
-    @Column(nullable = false,name="CREATED_DATE")
-    private LocalDateTime createdDate;
+	@CreatedDate
+	@Column(nullable = false, name="CREATED_DATE")
+	private LocalDate createdDate;
     
     @Column(name="DELETED_DATE")
-    private LocalDateTime deletedDate;
+    private LocalDate deletedDate;
     
+    @Builder.Default
     @Column(nullable = false, name="IS_SUBSCRIBED")
-    private boolean isSubscribed;
+    private boolean isSubscribed = false;
     
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserType type;
     
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Member member;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Member member;
+//    
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Company company;
+//    
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Consultant consultant;
+//    
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Admin admin;
 
 	public void updatePassword(String password) {
 		this.password = password;

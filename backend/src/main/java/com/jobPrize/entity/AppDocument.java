@@ -16,19 +16,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppDocument {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="APP_DOCUMENT_ID")
     private Long appDocumentId;
 	
-	@Column(name = "resume_json", columnDefinition = "TEXT")
+	@Column(name = "resume_json", columnDefinition = "TEXT", nullable = false)
 	private String resumeJson;
-
-	@Column(name = "cover_letter_json", columnDefinition = "TEXT", nullable = false)
-	private String coverLetterJson;
 
 	@Column(name = "career_description_json", columnDefinition = "TEXT")
 	private String careerDescriptionJson;
-
+	
+	@Column(name = "cover_letter_json", columnDefinition = "TEXT", nullable = false)
+	private String coverLetterJson;
 	
 }
