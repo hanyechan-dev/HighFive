@@ -22,17 +22,15 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "company") // 테이블명: company
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Company {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "company_id") // 컬럼명: company_id
-	private Long id;
+	@Column(name = "USER_ID")
+	private Long userId;
 
 	@Enumerated(EnumType.STRING) // Enum 값을 String 형태로 저장
 	@Column(name = "company_type", length = 20)
