@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -48,6 +49,7 @@ public class User implements UserDetails{
     
     @Column(nullable = false)
     private String address;
+    
     
     @Column(nullable = false,name="CREATED_DATE")
     private LocalDateTime createdDate;
