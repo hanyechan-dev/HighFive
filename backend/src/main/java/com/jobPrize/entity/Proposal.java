@@ -43,9 +43,9 @@ public class Proposal  {
     
     @ManyToOne // 제안을 보낸 기업과의 관계
     @JoinColumn(name = "user_id") // 명확한 컬럼명 사용
-    private Company company;
+    private User company;
 
     @ManyToOne // 제안을 받은 일반 회원과의 관계
     @JoinColumn(name = "user_id")
-    private User user;
+    private User member;
 }

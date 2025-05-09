@@ -20,7 +20,7 @@ public class JobPostingImage {
 	@JoinColumn(name = "job_posting_id", nullable = false)
 	private JobPosting jobPosting;
 
-	@Column(name = "image_url", nullable = false, length = 200)
+	@Column(name = "image_url", nullable = false)
 	private String imageUrl;
 
 }
