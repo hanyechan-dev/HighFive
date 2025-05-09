@@ -2,11 +2,8 @@ package com.jobPrize.entity;
 
 import java.time.LocalDate;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +30,7 @@ public class Career {
     private Long careerId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESUME_ID")
+	@JoinColumn(name = "RESUME_ID", nullable = false)
 	private Resume resume;
 	
 	@Column(name="COMPANY_NAME", nullable = false)
@@ -50,7 +47,6 @@ public class Career {
 	
 	@Column(name="START_DATE", nullable = false)
 	private LocalDate startDate;
-	
 	
 	@Column(name="END_DATE")
 	private LocalDate endDate;

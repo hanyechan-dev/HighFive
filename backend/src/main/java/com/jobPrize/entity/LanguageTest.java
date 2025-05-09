@@ -26,11 +26,11 @@ public class LanguageTest {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="LANGUAGE_TEST_ID")
-    private Long languageTestId;
+	@Column(name="LANGUAGE_TEST_ID", nullable = false)
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESUME_ID")
+	@JoinColumn(name = "RESUME_ID", nullable = false)
 	private Resume resume;
 	
 	@Column(name="LANGUAGE_TYPE", nullable = false)

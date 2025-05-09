@@ -1,7 +1,6 @@
 package com.jobPrize.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,12 +32,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails{
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="USER_ID")
-    private Long userId;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -54,13 +53,6 @@ public class User implements UserDetails{
     @Column(nullable = false)
     private String address;
     
-	@CreatedDate
-	@Column(nullable = false, name="CREATED_DATE")
-	private LocalDate createdDate;
-    
-    @Column(name="DELETED_DATE")
-    private LocalDate deletedDate;
-    
     @Builder.Default
     @Column(nullable = false, name="IS_SUBSCRIBED")
     private boolean isSubscribed = false;
@@ -69,17 +61,25 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private UserType type;
     
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-//    private Member member;
-//    
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-//    private Company company;
-//    
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-//    private Consultant consultant;
-//    
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-//    private Admin admin;
+	@CreatedDate
+	@Column(nullable = false, name="CREATED_DATE")
+	private LocalDate createdDate;
+    
+    @Column(name="DELETED_DATE")
+    private LocalDate deletedDate;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Member member;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Company company;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Consultant consultant;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Admin admin;
+    
 
 	public void updatePassword(String password) {
 		this.password = password;
@@ -92,37 +92,20 @@ public class User implements UserDetails{
 	public void updateAddress(String address) {
 		this.address = address;
 	}
-
-	@Override
-	public String getUsername() {
-		return email;
-	}
-
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(()->"ROLE_" + type.name());
+	
+	public void deleteUser() {
+		this.deletedDate=LocalDate.now();
 	}
 	
-	@Override
-	public boolean isAccountNonExpired() {
-	    return true;
+	public void subscribe() {
+		this.isSubscribed = true;
 	}
 
-	@Override
-	public boolean isAccountNonLocked() {
-	    return true;
+	public void unsubscribe() {
+		this.isSubscribed = false;
 	}
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-	    return true;
-	}
 
-	@Override
-	public boolean isEnabled() {
-	    return deletedDate == null; // 삭제된 유저는 비활성 처리
-	}
 	
 
 }

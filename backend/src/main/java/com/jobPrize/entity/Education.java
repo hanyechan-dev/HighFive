@@ -29,11 +29,11 @@ public class Education {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="EDUCATION_ID")
-    private Long educationId;
+	@Column(name="EDUCATION_ID", nullable = false)
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESUME_ID")
+	@JoinColumn(name = "RESUME_ID", nullable = false)
 	private Resume resume;
 	
 	@Column(name="SCHOOL_NAME", nullable = false)

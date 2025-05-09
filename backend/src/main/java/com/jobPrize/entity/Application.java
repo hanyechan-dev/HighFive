@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,24 +26,25 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Application {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="APPLICATION_ID")
-    private Long applicationId;
+    private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", nullable = false)
     private Member member;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "JOB_POSTING_ID")
+    @JoinColumn(name = "JOB_POSTING_ID", nullable = false)
     private JobPosting jobPosting;
     
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "APP_DOCUMENT_ID")
+    @JoinColumn(name = "APP_DOCUMENT_ID", nullable = false)
     private AppDocument appDocument;
     
 	

@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,19 +27,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class RequestDocument {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="REQUEST_DOCUMENT_ID")
-    private Long requestDocumentId;
+	@Column(name="REQUEST_DOCUMENT_ID", nullable = false)
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USER_ID")
+	@JoinColumn(name = "USER_ID", nullable = false)
 	private Member member;
-	
-	@OneToOne(mappedBy = "requestDocument", fetch = FetchType.LAZY)
-	private AiConsulting aiConsulting;
 	
 	@Column(name = "resume_json", columnDefinition = "TEXT", nullable = false)
 	private String resumeJson;
@@ -52,5 +51,8 @@ public class RequestDocument {
 	@CreatedDate
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
+	
+	@OneToOne(mappedBy = "requestDocument", fetch = FetchType.LAZY)
+	private AiConsulting aiConsulting;
 
 }

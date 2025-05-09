@@ -11,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,11 +20,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Member {
 	
 	@Id
-	@Column(name="USER_ID")
-    private Long userId;
+	@Column(name="USER_ID", nullable = false)
+	private Long id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId

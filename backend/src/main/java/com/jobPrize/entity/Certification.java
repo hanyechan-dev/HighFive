@@ -26,11 +26,11 @@ public class Certification {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CERTIFICATION_ID")
-	private Long certificationId;
+	@Column(name = "CERTIFICATION_ID", nullable = false)
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESUME_ID")
+	@JoinColumn(name = "RESUME_ID", nullable = false)
 	private Resume resume;
 
 	@Column(name = "CERTIFICATION_NAME", nullable = false)

@@ -10,24 +10,25 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "cover_letter_content")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CoverLetterContent {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="COVER_LETTER_CONTENT_ID")
-    private Long coverLetterContentId;
+	@Column(name="COVER_LETTER_CONTENT_ID", nullable = false)
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "COVER_LETTER_ID")
+	@JoinColumn(name = "COVER_LETTER_ID", nullable = false)
 	private CoverLetter coverLetter;
 	
 	@Column(name="ITEM", nullable = false)

@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,15 +19,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CareerDescriptionContent {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="CAREER_DESCRIPTION_CONTENT_ID")
-    private Long careerDescriptionContentId;
+	@Column(name="CAREER_DESCRIPTION_CONTENT_ID", nullable = false)
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CAREER_DESCRIPTION_ID")
+	@JoinColumn(name = "CAREER_DESCRIPTION_ID", nullable = false)
 	private CareerDescription careerDescription;
 	
 	@Column(name="ITEM", nullable = false)
