@@ -44,4 +44,5 @@ public class Comment {
     @CreatedDate
     @Column(name = "created_time", nullable = false)
     private LocalDateTime createdTime;		//작성 시간
+    
 }

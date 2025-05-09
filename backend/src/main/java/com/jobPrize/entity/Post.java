@@ -53,6 +53,16 @@ public class Post {
     
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+
+	public void updatePost(String title, String content) {
+		this.title = title;
+		this.content = content;				//게시글 제목, 게시글 내용을 업데이트 처리하는 메서드
+	}
+    
+
+    
+    
+    
     
     
     
