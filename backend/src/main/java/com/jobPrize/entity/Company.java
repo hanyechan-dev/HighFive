@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "company") // 테이블명: company
+@Table(name = "company") 
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,42 +32,41 @@ public class Company {
 	@Column(name = "USER_ID")
 	private Long userId;
 
-	@Enumerated(EnumType.STRING) // Enum 값을 String 형태로 저장
-	@Column(name = "company_type", length = 20)
+	@Enumerated(EnumType.STRING) 
+	@Column(name = "company_type")
 	private CompanyType companyType;
 
-	@Column(name = "company_name", nullable = false, length = 100) // 컬럼명: company_name
+	@Column(name = "company_name", nullable = false)
 	private String companyName;
 
-	@Column(name = "registration_number", nullable = false, unique = true, length = 15) // 컬럼명: registration_number
+	@Column(name = "registration_number", nullable = false, unique = true)
 	private String registrationNumber;
 
-	@Column(name = "ceo_name", nullable = false, length = 50) // 컬럼명: ceo_name
+	@Column(name = "ceo_name", nullable = false)
 	private String ceoName;
 
-	@Column(name = "company_address", length = 200) // 컬럼명: company_address
+	@Column(name = "company_address")
 	private String companyAddress;
 
-	@Column(name = "company_phone_number", length = 20) // 컬럼명: company_phone_number
+	@Column(name = "company_phone_number")
 	private String companyPhoneNumber;
 
 	@ManyToOne
-	@JoinColumn(name = "industry_code") // 컬럼명: industry_code (FK)
-	private Industry industry;
+	@JoinColumn(name = "industry_code")
 
-	@Column(name = "employee_count") // 컬럼명: employee_count
+	@Column(name = "employee_count")
 	private Integer employeeCount;
 
-	@Column(name = "founding_date") // 컬럼명: founding_date
+	@Column(name = "founding_date")
 	private LocalDate foundingDate;
 
-	@Column(name = "company_introduction", length = 1000) // 컬럼명: company_introduction
+	@Column(name = "company_introduction")
 	private String companyIntroduction;
 
-	@Column(name = "ceo_email", length = 100) // 컬럼명: ceo_email
+	@Column(name = "ceo_email")
 	private String ceoEmail;
 
-	@Column(name = "company_tel_number", length = 20) // 컬럼명: company_tel_number
+	@Column(name = "company_tel_number")
 	private String companyTelNumber;
 
 	@OneToMany(mappedBy = "company")
