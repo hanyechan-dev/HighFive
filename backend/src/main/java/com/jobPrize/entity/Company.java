@@ -1,74 +1,59 @@
 package com.jobPrize.entity;
 
+
 import java.time.LocalDate;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Table(name = "company") 
-
+@Table(name = "company")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Company {
 
 	@Id
-	@Column(name = "USER_ID")
+	@Column(name = "user_id") 
 	private Long userId;
 
-	@Enumerated(EnumType.STRING) 
-	@Column(name = "company_type")
-	private CompanyType companyType;
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId 
+	@JoinColumn(name = "user_id")
+	private User user;
 
-	@Column(name = "company_name", nullable = false)
-	private String companyName;
+	@Column(name = "company_name")
+	private String conpanyName;
 
-	@Column(name = "registration_number", nullable = false, unique = true)
-	private String registrationNumber;
+	@Column(name = "representative_name")
+	private String representativeName;
 
-	@Column(name = "ceo_name", nullable = false)
-	private String ceoName;
+	@Column(name = "established_date")
+	private LocalDate establishedDate;
 
-	@Column(name = "company_address")
+	@Column(name = "business_number")
+	private String businessNumber;
+
+	@Column(name = "company_adress")
 	private String companyAddress;
 
-	@Column(name = "company_phone_number")
-	private String companyPhoneNumber;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type")
+	private CompanyType type;;
 
 	@ManyToOne
-	@JoinColumn(name = "industry_code")
+	@JoinColumn(name = "industry")
+	private Industry industry;
 
-	@Column(name = "employee_count")
-	private Integer employeeCount;
-
-	@Column(name = "founding_date")
-	private LocalDate foundingDate;
-
-	@Column(name = "company_introduction")
-	private String companyIntroduction;
-
-	@Column(name = "ceo_email")
-	private String ceoEmail;
-
-	@Column(name = "company_tel_number")
-	private String companyTelNumber;
-
-	@OneToMany(mappedBy = "company")
-	private List<JobPosting> recruitmentPosts;
+	
 }
