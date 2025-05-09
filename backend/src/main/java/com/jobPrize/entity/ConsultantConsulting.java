@@ -4,9 +4,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -30,6 +34,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class ConsultantConsulting {
 
     @Id
@@ -47,15 +52,15 @@ public class ConsultantConsulting {
     @JoinColumn(name = "user_id", nullable = false)
     private Consultant consultant;
 
-
-    @Column(name = "requested_date", nullable = false)
-    private LocalDate requestedDate;
-
-    @Column(name = "approval_date")
-    private LocalDate approvalDate;
-
-    @Column(name = "created_date")
+    @CreatedDate
+    @Column(name = "created_date", nullable = false)
     private LocalDate createdDate;
+
+    @Column(name = "approved_date")
+    private LocalDate approvedDate;
+
+    @Column(name = "completed_date")
+    private LocalDate completedDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
