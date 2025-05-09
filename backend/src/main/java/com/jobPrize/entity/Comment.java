@@ -31,18 +31,18 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id", nullable = false)
-    private Long commentId;		//댓글 아이디
+    @Column(name = "COMMENT_ID", nullable = false)
+    private Long id;		//댓글 아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "POST_ID", nullable = false)
     private Post post;		//게시글 아이디
 
     @Column(nullable = false)
     private String content;		//댓글 내용
 
     @CreatedDate
-    @Column(name = "created_time", nullable = false)
+    @Column(name = "CREATED_TIME", nullable = false)
     private LocalDateTime createdTime;		//작성 시간
     
 }

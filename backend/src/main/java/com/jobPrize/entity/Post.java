@@ -34,11 +34,11 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id", nullable = false)
-    private Long postId;		// 게시글 아이디
+    @Column(name = "POST_ID", nullable = false)
+    private Long id;		// 게시글 아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)		//작성자
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)		//작성자
     private User author;
 
     @Column(nullable = false)
@@ -48,7 +48,7 @@ public class Post {
     private String content;	//게시글 내용
     
     @CreatedDate
-    @Column(name = "created_time", nullable = false)
+    @Column(name = "CREATED_TIME", nullable = false)
     private LocalDateTime createdTime;		//작성 시간
     
     @OneToMany(mappedBy = "post")

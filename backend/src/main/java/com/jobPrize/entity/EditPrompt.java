@@ -2,6 +2,8 @@ package com.jobPrize.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,8 +20,9 @@ import lombok.NoArgsConstructor;
 public class EditPrompt {
 
 	@Id
-	@Column(name = "edit_prompt_id", nullable = false)
-	private String editPromptId;		//첨삭 프롬프트 아이디
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "EDIT_PROMPT_ID", nullable = false)
+	private String id;		//첨삭 프롬프트 아이디
 	
 	@Column(nullable = false)
 	private String title;		//첨삭 프롬프트 제목
@@ -27,8 +30,8 @@ public class EditPrompt {
 	@Column(nullable = false)
 	private String content;			//첨삭 프롬프트 내용
 	
-	@Column(name = "is_applied", nullable = false)
-	private Boolean isApplied;			//적용중 여부
+	@Column(name = "IS_APPLIED", nullable = false)
+	private boolean isApplied;			//적용중 여부
 
 	public void updateEditPrompt(String title, String content) {
 		this.title = title;

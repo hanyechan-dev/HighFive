@@ -17,12 +17,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Builder
 public class Admin {
 	
 	@Id
 	@Column(name="USER_ID")
-    private Long userId;		//관리자
+    private Long id;		//관리자
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
