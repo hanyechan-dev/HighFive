@@ -30,14 +30,22 @@ import lombok.NoArgsConstructor;
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
+<<<<<<< HEAD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="USER_ID")
     private Long id;
+=======
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "USER_ID")
+	private Long id;
+>>>>>>> origin/COMPANY
 
-    @Column(nullable = false, unique = true)
-    private String email;
+	@Column(nullable = false, unique = true)
+	private String email;
 
+<<<<<<< HEAD
     private String password;
     
     @Column(nullable = false)
@@ -76,23 +84,64 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Admin admin;
     
+=======
+	private String password;
+
+	@Column(nullable = false)
+	private String name;
+
+	@Column(nullable = false)
+	private String phone;
+
+	@Column(nullable = false)
+	private String address;
+
+	@Builder.Default
+	@Column(nullable = false, name = "IS_SUBSCRIBED")
+	private boolean isSubscribed = false;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private UserType type;
+
+	@CreatedDate
+	@Column(nullable = false, name = "CREATED_DATE")
+	private LocalDate createdDate;
+
+	@Column(name = "DELETED_DATE")
+	private LocalDate deletedDate;
+
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Member member;
+
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Company company;
+>>>>>>> origin/COMPANY
 
 	public void updatePassword(String password) {
 		this.password = password;
 	}
-	
+
 	public void updatePhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public void updateAddress(String address) {
 		this.address = address;
 	}
+<<<<<<< HEAD
 	
 	public void deleteUser() {
 		this.deletedDate=LocalDate.now();
 	}
 	
+=======
+
+	public void deleteUser() {
+		this.deletedDate = LocalDate.now();
+	}
+
+>>>>>>> origin/COMPANY
 	public void subscribe() {
 		this.isSubscribed = true;
 	}
@@ -101,5 +150,9 @@ public class User {
 		this.isSubscribed = false;
 	}
 
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> origin/COMPANY

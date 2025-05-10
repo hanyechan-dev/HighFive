@@ -22,8 +22,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Member {
-	
+
 	@Id
+<<<<<<< HEAD
 	@Column(name="USER_ID", nullable = false)
 	private Long id;
 	
@@ -32,9 +33,16 @@ public class Member {
 	private User user;
 	
     @Column(nullable = false)
+=======
+	@Column(name = "USER_ID")
+	private Long id;
+
+	@Column(nullable = false)
+>>>>>>> origin/COMPANY
 	private String nickname;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
+<<<<<<< HEAD
 	private Resume resume;
 	
 	@OneToMany(mappedBy = "member")
@@ -59,5 +67,13 @@ public class Member {
     public void updateNickname(String nickname) {
     	this.nickname=nickname;
     }
+=======
+	@MapsId
+	private User user;
+
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
+>>>>>>> origin/COMPANY
 
 }
