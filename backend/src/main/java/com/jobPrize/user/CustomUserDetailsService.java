@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.jobPrize.entity.SecurityUser;
-import com.jobPrize.entity.User;
+import com.jobPrize.entity.common.SecurityUser;
+import com.jobPrize.entity.common.User;
 import com.jobPrize.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
