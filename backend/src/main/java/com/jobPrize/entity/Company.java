@@ -25,7 +25,7 @@ public class Company {
 
 	@Id
 	@Column(name = "user_id") 
-	private Long userId;
+	private Long Id;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId 
@@ -52,8 +52,15 @@ public class Company {
 	private CompanyType type;;
 
 	@ManyToOne
-	@JoinColumn(name = "industry")
+	@JoinColumn(name = "industry") //DB와 반대구조 업종클래스에서도 관계설정
 	private Industry industry;
 
+	@Column(name = "company_phone")
+	private String companyPhone;
 	
+	@Column(name = "introduction")
+	private String introduction;
+	
+	@Column(name = "employee_count")
+	private String employeeCount;
 }

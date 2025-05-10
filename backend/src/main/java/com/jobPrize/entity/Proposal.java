@@ -19,7 +19,7 @@ public class Proposal  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "proposal_id")
-    private Long proposalId;
+    private Long id;
 
    
     @Column(name = "proposal_title", nullable = false)
@@ -41,11 +41,11 @@ public class Proposal  {
     @Column(name = "proposal_status", nullable = false)
     private String proposalStatus; 
     
-    @ManyToOne // 제안을 보낸 기업과의 관계
-    @JoinColumn(name = "user_id") // 명확한 컬럼명 사용
-    private User company;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id") 
+    private Member member;
 
-    @ManyToOne // 제안을 받은 일반 회원과의 관계
-    @JoinColumn(name = "user_id")
-    private User member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

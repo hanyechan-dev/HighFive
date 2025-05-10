@@ -14,7 +14,7 @@ public class JobPostingImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "job_posting_image_id")
-	private Long jobPostingImageId;
+	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "job_posting_id", nullable = false)

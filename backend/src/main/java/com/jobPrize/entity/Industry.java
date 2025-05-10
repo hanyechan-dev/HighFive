@@ -15,10 +15,10 @@ public class Industry {
 
 	@Id
 	@Column(name = "industry_id")
-	private String code;
+	private String id;
 
 	@Column(name = "industry_name", nullable = false)
-	private String name;
+	private String industryName;
 
 	@Column(name = "description")
 	private String description;

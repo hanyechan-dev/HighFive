@@ -50,6 +50,9 @@ public class JobPosting {
 
 	@Column(name = "requirement")
 	private String requirement;
+	
+	@Column(name = "created_date", nullable = false)
+	private LocalDate createdDate;
 
 	@Column(name = "expired_date", nullable = false)
 	private LocalDate expiredDate;
