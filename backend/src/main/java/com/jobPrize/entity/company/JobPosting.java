@@ -3,7 +3,6 @@ package com.jobPrize.entity.company;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -82,11 +81,9 @@ public class JobPosting {
 	@OneToMany(mappedBy = "jobPosting")
 	private List<JobPostingImage> jobPostingImages;
 
-	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "jobPosting")
 	private List<Application> applications;
 	
-	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "jobPosting")
 	private List<Similarity> similarities;
 

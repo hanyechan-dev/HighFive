@@ -57,7 +57,7 @@ public class Application {
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
 	
-	@OneToMany(mappedBy = "application")
-	private List<Pass> passes = new ArrayList<>();
+	@OneToOne(mappedBy = "application", fetch = FetchType.LAZY)
+	private Pass pass;
 
 }

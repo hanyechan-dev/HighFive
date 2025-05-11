@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.entity.consultant.ConsultantConsulting;
+import com.jobPrize.entity.memToCom.Proposal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -14,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,28 +25,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "comment")		//댓글 테이블
+@Table(name = "NOTIFICATION")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Comment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COMMENT_ID", nullable = false)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_ID", nullable = false)
-    private Post post;
-
-    @Column(nullable = false)
-    private String content;
-
-    @CreatedDate
+public class Notification {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "NOTIFICATION_ID", nullable = false)	
+	private Long id;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROPOSAL_ID")
+    private Proposal proposal;
+	
+	@CreatedDate
     @Column(name = "CREATED_TIME", nullable = false)
     private LocalDateTime createdTime;
-    
+	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CONSULTANT_CONSULTING_ID")
+    private ConsultantConsulting consultantConsulting;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COMMENT")
+    private Comment comment;
 }

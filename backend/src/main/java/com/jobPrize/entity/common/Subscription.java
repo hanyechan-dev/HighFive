@@ -1,11 +1,11 @@
-package com.jobPrize.entity.member;
+package com.jobPrize.entity.common;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.jobPrize.entity.common.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,35 +23,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "career_description")
-@Getter
+@Table(name = "subscription")			// 구독 테이블
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@Getter
 @Builder
-public class CareerDescription {
-	
+@EntityListeners(AuditingEntityListener.class)
+public class Subscription {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="CAREER_DESCRIPTION_ID", nullable = false)
+	@Column(name = "SUBSCRIBE_ID", nullable = false)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USER_ID", nullable = false)
-	private Member member;
-	
-	@Column(name="TITLE", nullable = false)
-	private String title;
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 	
 	@CreatedDate
-	@Column(nullable = false, name="CREATED_DATE")
-	private LocalDate createdDate;
+    @Column(name = "SUBSCRIPTION_START_DATE", nullable = false)	// 해당 컬럼명 START_DATE로 변경 건의
+    private LocalDateTime subsStartDate;	// 구독 시작일
 	
-	@OneToMany(mappedBy = "careerDescription")
-	private List<CareerDescriptionContent> careerDescriptionContents = new ArrayList<>();
-	
-	public void updateTitle(String title) {
-		this.title = title;
-	}
-
+	@CreatedDate
+    @Column(name = "SUBSCRIPTION_END_DATE", nullable = false)	// 해당 컬럼명 END_DATE로 변경 건의
+    private LocalDateTime subsEndDate;	//	구독 종료일
 }

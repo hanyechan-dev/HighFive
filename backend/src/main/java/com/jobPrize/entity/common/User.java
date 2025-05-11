@@ -4,16 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.jobPrize.entity.admin.Admin;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.consultant.Consultant;
-import com.jobPrize.entity.dummy.Chat;
-import com.jobPrize.entity.dummy.Payment;
-import com.jobPrize.entity.dummy.Subscription;
 import com.jobPrize.entity.member.Member;
 
 import jakarta.persistence.CascadeType;
@@ -88,7 +84,6 @@ public class User {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Admin admin;
 	
-	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "user")
 	private List<Payment> payments = new ArrayList<>();
 	

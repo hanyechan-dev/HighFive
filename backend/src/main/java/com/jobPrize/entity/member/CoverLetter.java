@@ -17,7 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,7 +49,6 @@ public class CoverLetter {
 	private LocalDate createdDate;
 	
 	@OneToMany(mappedBy = "coverLetter")
-	@OrderBy("coverLetterContentId ASC")
 	private List<CoverLetterContent> coverLetterContents = new ArrayList<>();
 	
 	public void updateTitle(String title) {

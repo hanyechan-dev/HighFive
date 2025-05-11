@@ -3,12 +3,11 @@ package com.jobPrize.entity.member;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.BatchSize;
-
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.Similarity;
+import com.jobPrize.entity.memToCon.RequestDocument;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,17 +50,20 @@ public class Member {
 	@OneToMany(mappedBy = "member")
 	private List<CareerDescription> careerDescriptions = new ArrayList<>();
 	
-	@BatchSize(size = 10)
+
 	@OneToMany(mappedBy = "member")
 	private List<Application> applications = new ArrayList<>();
     
-	@BatchSize(size = 10)
+
 	@OneToMany(mappedBy = "member")
 	private List<Similarity> similarities = new ArrayList<>();
     
-	@BatchSize(size = 10)
+
 	@OneToMany(mappedBy = "member")
 	private List<Proposal> proposals = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "member")
+	private List<RequestDocument> requestDocuments = new ArrayList<>();
 	
 
     public void updateNickname(String nickname) {

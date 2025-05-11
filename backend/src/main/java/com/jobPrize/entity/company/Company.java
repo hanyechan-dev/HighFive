@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.BatchSize;
-
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.memToCom.Interest;
 import com.jobPrize.entity.memToCom.Proposal;
@@ -79,19 +77,15 @@ public class Company {
 	@OneToMany(mappedBy = "company")
 	private List<Schedule> schedules = new ArrayList<>();
 	
-	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "company")
 	private List<Advertisement> advertisements = new ArrayList<>();
 	
-	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "company")
 	private List<JobPosting> jobPostings = new ArrayList<>();
-	
-	@BatchSize(size = 10)
+
 	@OneToMany(mappedBy = "company")
 	private List<Proposal> proposals = new ArrayList<>();
 	
-	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "company")
 	private List<Interest> interests = new ArrayList<>();
 	

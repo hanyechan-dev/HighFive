@@ -1,8 +1,6 @@
-package com.jobPrize.entity.member;
+package com.jobPrize.entity.common;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,35 +21,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "career_description")
-@Getter
+@Table(name = "CHAT_CONTENT")
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@Getter
 @Builder
-public class CareerDescription {
-	
+@EntityListeners(AuditingEntityListener.class)
+public class ChatContent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="CAREER_DESCRIPTION_ID", nullable = false)
+	@Column(name = "CHAT_CONTENT_ID", nullable = false)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USER_ID", nullable = false)
-	private Member member;
+    @JoinColumn(name = "CHAT_ID", nullable = false)
+    private Chat chat;
 	
-	@Column(name="TITLE", nullable = false)
-	private String title;
+	@Column(name = "content", nullable = false)
+	private String content;
 	
 	@CreatedDate
-	@Column(nullable = false, name="CREATED_DATE")
-	private LocalDate createdDate;
-	
-	@OneToMany(mappedBy = "careerDescription")
-	private List<CareerDescriptionContent> careerDescriptionContents = new ArrayList<>();
-	
-	public void updateTitle(String title) {
-		this.title = title;
-	}
-
+    @Column(name = "CREATED_TIME", nullable = false)
+    private LocalDateTime createdTime;
 }
