@@ -2,10 +2,11 @@ package com.jobPrize.jwt;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.jobPrize.entity.common.UserType;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,17 +24,14 @@ public class TokenProvider {
 		this.key = Keys.hmacShaKeyFor(secret.getBytes());
 	}
 
-	public String createToken(String email, List<String> roles, long tokenValidity) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
-	    Date now = new Date();
-	    Date expiry = new Date(now.getTime() + tokenValidity);
+	public String createToken(Long id, UserType userType, long tokenValidity) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
+		Date now = new Date();
+		Date expiry = new Date(now.getTime() + tokenValidity);
 
-	    return Jwts.builder()
-	        .setSubject(email) // email은 여전히 subject로
-	        .claim("roles", roles) // roles는 커스텀 claim으로 추가
-	        .setIssuedAt(now)
-	        .setExpiration(expiry)
-	        .signWith(key, SignatureAlgorithm.HS256)
-	        .compact();
+		return Jwts.builder()
+				.setSubject(String.valueOf(id)) // subject를 id로
+				.claim("userType", userType.name()) // claim에 유저타입 추가
+				.setIssuedAt(now).setExpiration(expiry).signWith(key, SignatureAlgorithm.HS256).compact();
 	}
 
 	public boolean validateToken(String token) {
@@ -46,7 +44,11 @@ public class TokenProvider {
 		}
 	}
 
-	public String getEmailFromToken(String token) {
+	public String getIdFromToken(String token) {
 		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+	}
+	
+	public UserType getUserTypeFromToken(String token) {
+		return UserType.valueOf(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("userType", String.class));
 	}
 }
