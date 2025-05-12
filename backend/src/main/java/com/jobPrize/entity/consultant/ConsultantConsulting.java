@@ -51,13 +51,10 @@ public class ConsultantConsulting {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Consultant consultant;
-
+    
     @CreatedDate
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date")
     private LocalDate createdDate;
-
-    @Column(name = "approved_date")
-    private LocalDate approvedDate;
 
     @Column(name = "completed_date")
     private LocalDate completedDate;

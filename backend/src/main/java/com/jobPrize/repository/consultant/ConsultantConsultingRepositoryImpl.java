@@ -49,7 +49,8 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 
 		return Optional.ofNullable(result);
 	}
-
+	
+	@Override
 	public Page<ConsultantConsulting> findWithAllConsultantConsultingByConsultantId(Long id, Pageable pageable) {
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 

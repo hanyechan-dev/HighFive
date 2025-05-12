@@ -1,5 +1,6 @@
 package com.jobPrize.entity.consultant;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,21 @@ public class AiConsulting {
     
     @OneToOne(mappedBy = "aiConsulting", fetch = FetchType.LAZY)
     private ConsultantConsulting consultantConsulting;
+    
+    @Column(name = "request_date", nullable = false)
+    private LocalDate requestedDate;
+    
+	@Builder.Default
+	@Column(nullable = false, name = "IS_SUBSCRIBED")
+	private boolean isRequested = false;
+	
+	public void request() {
+		if(isRequested) {
+			return;
+		}
+		isRequested = true;
+		requestedDate = LocalDate.now();
+	}
 
-    
-    
+ 
 }
