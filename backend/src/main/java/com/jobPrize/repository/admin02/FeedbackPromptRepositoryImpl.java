@@ -1,0 +1,38 @@
+package com.jobPrize.repository.admin02;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.jobPrize.entity.admin.FeedbackPrompt;
+import com.jobPrize.entity.admin.QFeedbackPrompt;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public class FeedbackPromptRepositoryImpl implements FeedbackPromptRepositoryCustom {
+	
+	private final JPAQueryFactory queryFactory;
+	
+	@Override
+	public Optional<FeedbackPrompt> findAppliedPrompt(){
+		QFeedbackPrompt prompt = QFeedbackPrompt.feedbackPrompt;
+		
+		FeedbackPrompt result = queryFactory
+				.selectFrom(prompt)
+				.where(prompt.isApplied.isTrue())		//isApplied = true
+				.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
+
+	@Override
+	public List<FeedbackPrompt> findAll() {
+		QFeedbackPrompt prompt = QFeedbackPrompt.feedbackPrompt;
+		
+		return queryFactory
+				.selectFrom(prompt)
+				.fetch();
+	}
+
+}
