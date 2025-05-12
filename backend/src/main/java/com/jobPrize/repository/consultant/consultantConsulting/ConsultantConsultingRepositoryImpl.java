@@ -1,4 +1,4 @@
-package com.jobPrize.repository.consultant;
+package com.jobPrize.repository.consultant.consultantConsulting;
 
 import java.util.List;
 import java.util.Optional;

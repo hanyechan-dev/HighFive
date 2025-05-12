@@ -1,4 +1,4 @@
-package com.jobPrize.repository.consultant;
+package com.jobPrize.repository.consultant.consultantConsulting;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
