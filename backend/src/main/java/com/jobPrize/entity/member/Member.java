@@ -7,7 +7,7 @@ import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.Similarity;
-import com.jobPrize.entity.memToCon.RequestDocument;
+import com.jobPrize.entity.memToCon.Request;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,7 +63,7 @@ public class Member {
 	private List<Proposal> proposals = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "member")
-	private List<RequestDocument> requestDocuments = new ArrayList<>();
+	private List<Request> requests = new ArrayList<>();
 	
 
     public void updateNickname(String nickname) {
