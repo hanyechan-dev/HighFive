@@ -31,10 +31,10 @@ public class MemberProposalRepositoryImpl implements MemberProposalRepositoryCus
 			    .limit(pageable.getPageSize())
 			    .fetch();
 		
-		return new PageImpl<Proposal>(results, pageable, countProposalsByMemberId(id));
+		return new PageImpl<Proposal>(results, pageable, countProposalsById(id));
 	}
 	
-	public long countProposalsByMemberId(Long id) {
+	public long countProposalsById(Long id) {
 		QProposal proposal = QProposal.proposal;
 
 	    return queryFactory

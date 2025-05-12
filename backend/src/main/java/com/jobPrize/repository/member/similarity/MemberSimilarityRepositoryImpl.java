@@ -19,7 +19,7 @@ public class MemberSimilarityRepositoryImpl implements MemberSimilarityRepositor
 	
 	private final JPAQueryFactory queryFactory;
 	@Override
-	public Page<Similarity> findSimilaritysByMemberId(Long id, Pageable pageable) {
+	public Page<Similarity> findAllByMemberId(Long id, Pageable pageable) {
 		QSimilarity similarity = QSimilarity.similarity;
 		QMember member = QMember.member;
 		QJobPosting jobPosting = QJobPosting.jobPosting;

@@ -14,7 +14,7 @@ public class CoverLetterRepositoryImpl implements CoverLetterRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 	
 	@Override
-	public Optional<CoverLetter> findWithCoverLetterContentsById(Long id) {
+	public Optional<CoverLetter> findWithCoverLetterContentsByCoverLetterId(Long id) {
 		QCoverLetter coverLetter = QCoverLetter.coverLetter;
 		QCoverLetterContent coverLetterContent = QCoverLetterContent.coverLetterContent;
 		

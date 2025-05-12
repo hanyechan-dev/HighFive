@@ -21,7 +21,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Optional<Member> findWithAllDocumentsById(Long id) {
+	public Optional<Member> findWithAllDocumentsByMemberId(Long id) {
 		QMember member = QMember.member;
 		QResume resume = QResume.resume;
 		QEducation education = QEducation.education;

@@ -14,7 +14,7 @@ public class CareerDescriptionRepositoryImpl implements CareerDescriptionReposit
 	private final JPAQueryFactory queryFactory;
 	
 	@Override
-	public Optional<CareerDescription> findWithCareerDescriptionContentsById(Long id) {
+	public Optional<CareerDescription> findWithCareerDescriptionContentsByCareerDescriptionId(Long id) {
 		QCareerDescription careerDescription = QCareerDescription.careerDescription;
 		QCareerDescriptionContent careerDescriptionContent = QCareerDescriptionContent.careerDescriptionContent;
 		

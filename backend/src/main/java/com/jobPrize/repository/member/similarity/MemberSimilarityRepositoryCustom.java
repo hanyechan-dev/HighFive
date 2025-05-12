@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import com.jobPrize.entity.memToCom.Similarity;
 
 public interface MemberSimilarityRepositoryCustom {
-	Page<Similarity> findSimilaritysByMemberId(Long id, Pageable pageable);
+	Page<Similarity> findAllByMemberId(Long id, Pageable pageable);
 }

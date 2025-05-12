@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberPaymentRepositoryImpl implements MemberPaymentRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 	@Override
-	public Page<Payment> findPaymentsByMemberId(Long id, Pageable pageable) {
+	public Page<Payment> findAllByMemberId(Long id, Pageable pageable) {
 		QPayment payment = QPayment.payment;
 		QMember member = QMember.member;
 		
@@ -25,6 +25,7 @@ public class MemberPaymentRepositoryImpl implements MemberPaymentRepositoryCusto
 				.selectFrom(payment)
 				.where(payment.user.id.eq(id))
 				.orderBy(payment.createdTime.desc())
+				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 			    .fetch();
 		

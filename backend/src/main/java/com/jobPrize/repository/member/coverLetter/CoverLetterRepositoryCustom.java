@@ -5,5 +5,5 @@ import java.util.Optional;
 import com.jobPrize.entity.member.CoverLetter;
 
 public interface CoverLetterRepositoryCustom {
-	Optional<CoverLetter> findWithCoverLetterContentsById(Long id);
+	Optional<CoverLetter> findWithCoverLetterContentsByCoverLetterId(Long id);
 }

@@ -5,5 +5,5 @@ import java.util.Optional;
 import com.jobPrize.entity.member.Member;
 
 public interface MemberRepositoryCustom {
-	Optional<Member> findWithAllDocumentsById(Long id);
+	Optional<Member> findWithAllDocumentsByMemberId(Long id);
 }
