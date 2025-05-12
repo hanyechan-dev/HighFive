@@ -102,7 +102,9 @@ public class Company {
 		this.companyPhone = companyPhone;
 		this.introduction = introduction;
 		this.employeeCount = employeeCount;
+
 	}
+	
 
 	
 }

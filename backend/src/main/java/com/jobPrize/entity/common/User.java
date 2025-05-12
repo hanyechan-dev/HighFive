@@ -87,8 +87,14 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<Payment> payments = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "user1")
+	private List<ChatRoom> chatRoomsAsUser1 = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user2")
+	private List<ChatRoom> chatRoomsAsUser2 = new ArrayList<>();
+	
 	@OneToMany(mappedBy = "user")
-	private List<Chat> chats = new ArrayList<>();
+	private List<ChatContent> chatContents = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
 	private List<Subscription> Subscriptions = new ArrayList<>();

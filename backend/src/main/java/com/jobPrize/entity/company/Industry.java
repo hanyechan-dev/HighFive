@@ -1,10 +1,16 @@
 package com.jobPrize.entity.company;
 
-import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Entity
 @Table(name = "industry")
@@ -24,5 +30,5 @@ public class Industry {
 	private String description;
 
 	@OneToMany(mappedBy = "industry")
-	private List<Company> companies;
+	private List<Company> companies = new ArrayList<>();
 }

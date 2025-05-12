@@ -1,6 +1,7 @@
 package com.jobPrize.entity.company;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -79,13 +80,13 @@ public class JobPosting {
 	private LocalDate expiredDate;
 
 	@OneToMany(mappedBy = "jobPosting")
-	private List<JobPostingImage> jobPostingImages;
+	private List<JobPostingImage> jobPostingImages = new ArrayList<>();
 
 	@OneToMany(mappedBy = "jobPosting")
-	private List<Application> applications;
+	private List<Application> applications = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "jobPosting")
-	private List<Similarity> similarities;
+	private List<Similarity> similarities = new ArrayList<>();
 
 	public void updateJobPostingInfo(String title, String content, String job, String workingHours, String workLocation,
 			String careerType, EducationLevel educationLevel, Integer salary, String requirement) {

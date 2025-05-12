@@ -1,9 +1,12 @@
-package com.jobPrize.entity.common;
+package com.jobPrize.entity.memToCon;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.jobPrize.entity.consultant.AiConsulting;
+import com.jobPrize.entity.member.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,30 +25,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "CHAT_CONTENT")
+@Table(name = "request")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Builder
 @EntityListeners(AuditingEntityListener.class)
-public class ChatContent {
+@Builder
+public class Request {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CHAT_CONTENT_ID", nullable = false)
+	@Column(name = "REQUEST_ID")
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CHAT_ID", nullable = false)
-    private ChatRoom chatRoom;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SENDER_ID", nullable = false)
-    private User user;
-	
-	@Column(name = "content", nullable = false)
-	private String content;
+	@JoinColumn(name = "USER_ID", nullable = false)
+	private Member member;
 	
 	@CreatedDate
-    @Column(name = "CREATED_TIME", nullable = false)
-    private LocalDateTime createdTime;
+	@Column(nullable = false, name="CREATED_DATE")
+	private LocalDate createdDate;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "REQUEST_DOCUMENT_ID", nullable = false)
+	private RequestDocument requestDocument;
+	
+	@OneToOne(mappedBy = "request", fetch = FetchType.LAZY)
+	private AiConsulting aiConsulting;
+
 }

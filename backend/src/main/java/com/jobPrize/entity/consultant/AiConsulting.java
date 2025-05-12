@@ -3,7 +3,7 @@ package com.jobPrize.entity.consultant;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jobPrize.entity.memToCon.RequestDocument;
+import com.jobPrize.entity.memToCon.Request;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -37,8 +37,8 @@ public class AiConsulting {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_document_id", nullable = false, unique = true)
-    private RequestDocument requestDocument;
+    @JoinColumn(name = "request_id", nullable = false, unique = true)
+    private Request request;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

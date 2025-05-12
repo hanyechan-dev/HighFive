@@ -19,26 +19,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "CHAT")			// 채팅 테이블
+@Table(name = "CHAT_ROOM")			// 채팅 테이블
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
-public class Chat {
+public class ChatRoom {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "CHAT_ID", nullable = false)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SENDER_ID", nullable = false)
-    private User sender;
+    @JoinColumn(name = "USER1_ID", nullable = false)
+    private User user1;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RECEIVER_ID", nullable = false)
-    private User receiver;
+    @JoinColumn(name = "USER2_ID", nullable = false)
+    private User user2;
 	
-	@OneToMany(mappedBy = "chat")
+	@OneToMany(mappedBy = "chatRoom")
 	private List<ChatContent> chatContents = new ArrayList<>();
 	
 }
