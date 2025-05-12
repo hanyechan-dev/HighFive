@@ -53,9 +53,9 @@ public class MemberRequestRepositoryImpl implements MemberRequestRepositoryCusto
 				.selectFrom(request)
 				.leftJoin(request.requestDocument, requestDocument).fetchJoin()
 				.leftJoin(request.aiConsulting, aiConsulting).fetchJoin()
-				.leftJoin(aiConsulting.contents, aiConsultingContent).fetchJoin()
+				.leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
 				.leftJoin(aiConsulting.consultantConsulting, consultantConsulting).fetchJoin()
-				.leftJoin(consultantConsulting.contents, consultantConsultingContent).fetchJoin()
+				.leftJoin(consultantConsulting.consultantConsultingContents, consultantConsultingContent).fetchJoin()
 				.where(request.id.eq(id))
 				.distinct()
 				.fetchOne();
