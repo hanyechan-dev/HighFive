@@ -67,7 +67,7 @@ public class ConsultantConsulting {
     private CommonEnum.ConsultingType type;
     
     @OneToMany(mappedBy = "consultantConsulting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ConsultantConsultingContent> contents = new ArrayList<>();
+    private List<ConsultantConsultingContent> consultantConsultingContents = new ArrayList<>();
 
  
 }

@@ -45,7 +45,7 @@ public class AiConsulting {
     private CommonEnum.ConsultingType type;
 
     @OneToMany(mappedBy = "aiConsulting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AiConsultingContent> contents = new ArrayList<>();
+    private List<AiConsultingContent> aiConsultingContents = new ArrayList<>();
     
     @OneToOne(mappedBy = "aiConsulting", fetch = FetchType.LAZY)
     private ConsultantConsulting consultantConsulting;
