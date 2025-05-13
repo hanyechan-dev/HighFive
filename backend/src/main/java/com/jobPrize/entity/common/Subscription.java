@@ -40,10 +40,10 @@ public class Subscription {
     private User user;
 	
 	@CreatedDate
-    @Column(name = "SUBSCRIPTION_START_DATE", nullable = false)	// 해당 컬럼명 START_DATE로 변경 건의
-    private LocalDateTime subsStartDate;	// 구독 시작일
+    @Column(name = "START_DATE", nullable = false)
+    private LocalDateTime startDate;	// 구독 시작일
 	
 	@CreatedDate
-    @Column(name = "SUBSCRIPTION_END_DATE", nullable = false)	// 해당 컬럼명 END_DATE로 변경 건의
-    private LocalDateTime subsEndDate;	//	구독 종료일
+    @Column(name = "END_DATE", nullable = false)
+    private LocalDateTime endDate;	//	구독 종료일
 }
