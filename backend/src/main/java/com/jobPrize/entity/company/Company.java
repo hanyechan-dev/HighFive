@@ -72,7 +72,7 @@ public class Company {
 	private String introduction;
 	
 	@Column(name = "employee_count")
-	private String employeeCount;
+	private int employeeCount;
 	
 	@OneToMany(mappedBy = "company")
 	private List<Schedule> schedules = new ArrayList<>();

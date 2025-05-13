@@ -1,11 +1,14 @@
 package com.jobPrize.repository.company.jobPosting;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.company.JobPosting;
 
 public interface CompanyJobPostingRepositoryCustom {
-	 List<JobPosting> findAllByCompanyId(Long Id); 
-	 Optional<JobPosting> findByCompanyId(Long id);
+	 Page<JobPosting> findAllByCompanyId(Long Id,Pageable pageable); 
+	 Optional<JobPosting> findWithJobPostingImageByJobPostingId(Long id);
+	 Optional<JobPosting> findwithApplicationsByJobPostingId(Long id);
 }
