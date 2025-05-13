@@ -1,10 +1,11 @@
 package com.jobPrize.repository.common02;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -23,7 +24,7 @@ public class AdminPostRepositoryImpl implements AdminPostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Post> findAllWithComments(Pageable pageable) {
+    public Map<String,Object> findAllWithComments(Pageable pageable) {
         QPost post = QPost.post;
         QUser user = QUser.user;
         QComment comment = QComment.comment;
@@ -56,9 +57,14 @@ public class AdminPostRepositoryImpl implements AdminPostRepositoryCustom {
                         tuple -> tuple.get(comment.post.id),
                         tuple -> tuple.get(comment.count())
                 ));
+        
+        Map<String, Object> resultsAndcommentCountMap = new HashMap<>();
+        
+        resultsAndcommentCountMap.put("page", new PageImpl<>(results, pageable, countPosts()));
+        resultsAndcommentCountMap.put("count", commentCountMap);
 
       
-        return new PageImpl<>(results, pageable, countPosts());
+        return resultsAndcommentCountMap;
     }
 
     public long countPosts() {

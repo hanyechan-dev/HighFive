@@ -1,11 +1,12 @@
 package com.jobPrize.repository.common02;
 
-import org.springframework.data.domain.Page;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.domain.Pageable;
 
-import com.jobPrize.entity.common.Post;
-
 public interface AdminPostRepositoryCustom {
-	Page<Post> findAllWithComments(Pageable pageable); 
+	Map<String,Object> findAllWithComments(Pageable pageable); 
+
 
 }
