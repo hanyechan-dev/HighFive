@@ -21,7 +21,7 @@ public class Industry {
 
 	@Id
 	@Column(name = "industry_id")
-	private String id;
+	private Long id;
 
 	@Column(name = "industry_name", nullable = false)
 	private String industryName;

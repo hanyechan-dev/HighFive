@@ -1,0 +1,10 @@
+package com.jobPrize.repository.company.interest;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.jobPrize.entity.memToCom.Interest;
+
+public interface InterestRepositoryCustom {
+	Page<Interest> findAllByCompanyId(Long id, Pageable pageable);
+}
