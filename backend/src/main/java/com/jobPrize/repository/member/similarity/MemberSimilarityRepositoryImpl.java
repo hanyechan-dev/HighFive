@@ -21,7 +21,6 @@ public class MemberSimilarityRepositoryImpl implements MemberSimilarityRepositor
 	@Override
 	public Page<Similarity> findAllByMemberId(Long id, Pageable pageable) {
 		QSimilarity similarity = QSimilarity.similarity;
-		QMember member = QMember.member;
 		QJobPosting jobPosting = QJobPosting.jobPosting;
 		
 		
@@ -34,10 +33,10 @@ public class MemberSimilarityRepositoryImpl implements MemberSimilarityRepositor
 			    .limit(pageable.getPageSize())
 			    .fetch();
 			
-		return new PageImpl<Similarity>(results, pageable, countSimilaritysByMemberId(id));
+		return new PageImpl<Similarity>(results, pageable, countSimilaritiesByMemberId(id));
 	}
 	
-	public long countSimilaritysByMemberId(Long id) {
+	public long countSimilaritiesByMemberId(Long id) {
 	    QSimilarity similarity = QSimilarity.similarity;
 
 	    return queryFactory

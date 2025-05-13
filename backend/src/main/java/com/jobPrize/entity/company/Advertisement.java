@@ -50,7 +50,7 @@ public class Advertisement {
 		if (endDate.isBefore(LocalDate.now())) {
 			return;
 		}
-		this.imageUrl = imageUrl;
+			this.imageUrl = imageUrl;
 
 	}
 }

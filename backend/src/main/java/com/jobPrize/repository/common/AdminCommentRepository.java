@@ -1,4 +1,4 @@
-package com.jobPrize.repository.common02;
+package com.jobPrize.repository.common;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

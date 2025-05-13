@@ -19,7 +19,7 @@ public class MemberProposalRepositoryImpl implements MemberProposalRepositoryCus
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Proposal> findProposalsByMemberId(Long id, Pageable pageable) {
+	public Page<Proposal> findAllByMemberId(Long id, Pageable pageable) {
 		QProposal proposal = QProposal.proposal;
 		QMember member = QMember.member;
 		

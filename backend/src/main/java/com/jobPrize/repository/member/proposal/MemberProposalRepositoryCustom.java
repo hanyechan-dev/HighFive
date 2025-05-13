@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import com.jobPrize.entity.memToCom.Proposal;
 
 public interface MemberProposalRepositoryCustom {
-	Page<Proposal> findProposalsByMemberId(Long id, Pageable pageable);
+	Page<Proposal> findAllByMemberId(Long id, Pageable pageable);
 }

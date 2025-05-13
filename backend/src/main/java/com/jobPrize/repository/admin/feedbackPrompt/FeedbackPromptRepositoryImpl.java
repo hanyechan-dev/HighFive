@@ -1,4 +1,4 @@
-package com.jobPrize.repository.admin02;
+package com.jobPrize.repository.admin.feedbackPrompt;
 
 import java.util.List;
 import java.util.Optional;

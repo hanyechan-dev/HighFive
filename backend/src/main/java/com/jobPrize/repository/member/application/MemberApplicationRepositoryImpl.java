@@ -37,7 +37,7 @@ public class MemberApplicationRepositoryImpl implements MemberApplicationReposit
 	}
 	
 	@Override
-	public Optional<Application> findAllByApplicationId(Long id) {
+	public Optional<Application> findByApplicationId(Long id) {
 		QApplication application = QApplication.application;
 		QPass pass = QPass.pass;
 		QAppDocument appDocument = QAppDocument.appDocument;
