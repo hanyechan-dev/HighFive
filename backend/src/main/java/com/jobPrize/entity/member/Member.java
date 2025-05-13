@@ -13,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -36,12 +37,13 @@ public class Member {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
+	@JoinColumn(name="USER_ID", nullable = false)
 	private User user;
 
 	@Column(nullable = false)
 	private String nickname;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
 	private Resume resume;
 	
 	@OneToMany(mappedBy = "member")

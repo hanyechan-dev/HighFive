@@ -34,12 +34,12 @@ import lombok.NoArgsConstructor;
 public class Company {
 
 	@Id
-	@Column(name = "user_id") 
+	@Column(name="USER_ID", nullable = false)
 	private Long id;
-
+	
 	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId 
-	@JoinColumn(name = "user_id", nullable = false)
+	@MapsId
+	@JoinColumn(name="USER_ID", nullable = false)
 	private User user;
 
 	@Column(name = "company_name", nullable = false)
@@ -59,7 +59,7 @@ public class Company {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type", nullable = false)
-	private CompanyType type;;
+	private CompanyType type;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
@@ -72,7 +72,7 @@ public class Company {
 	private String introduction;
 	
 	@Column(name = "employee_count")
-	private String employeeCount;
+	private int employeeCount;
 	
 	@OneToMany(mappedBy = "company")
 	private List<Schedule> schedules = new ArrayList<>();
@@ -91,7 +91,7 @@ public class Company {
 	
 	public void updateCompanyInfo(String companyName, String representativeName, LocalDate establishedDate, String businessNumber,
 			String companyAddress, CompanyType type, Industry industry, String companyPhone, String introduction,
-			String employeeCount) {
+			int employeeCount) {
 		this.companyName = companyName;
 		this.representativeName = representativeName;
 		this.establishedDate = establishedDate;
