@@ -31,4 +31,5 @@ public class Industry {
 
 	@OneToMany(mappedBy = "industry")
 	private List<Company> companies = new ArrayList<>();
+	
 }

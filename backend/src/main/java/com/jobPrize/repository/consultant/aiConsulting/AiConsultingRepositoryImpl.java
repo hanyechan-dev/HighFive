@@ -70,7 +70,8 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 		
-		return queryFactory
+		return Optional.ofNullable(
+			queryFactory
 	        .select(aiConsulting.count())
 	        .from(aiConsulting)
 	        .leftJoin(aiConsulting.consultantConsulting, consultantConsulting)
@@ -78,7 +79,8 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 					aiConsulting.isRequested.eq(true),
 					aiConsulting.consultantConsulting.isNull()
 					)
-	        .fetchOne();
+	        .fetchOne())
+		    .orElse(0L);
 	}
 
 }

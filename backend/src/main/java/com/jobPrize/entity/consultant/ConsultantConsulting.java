@@ -42,11 +42,13 @@ public class ConsultantConsulting {
     @Column(name = "consultant_consulting_id")
     private Long id;
 
-   
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ai_consulting_id", nullable = false, unique = true)
     private AiConsulting aiConsulting;
-
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CommonEnum.ConsultingType type;
    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -59,10 +61,6 @@ public class ConsultantConsulting {
     @Column(name = "completed_date")
     private LocalDate completedDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CommonEnum.ConsultingType type;
-    
     @OneToMany(mappedBy = "consultantConsulting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConsultantConsultingContent> consultantConsultingContents = new ArrayList<>();
 

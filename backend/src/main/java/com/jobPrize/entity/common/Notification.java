@@ -45,10 +45,6 @@ public class Notification {
     @JoinColumn(name = "PROPOSAL_ID")
     private Proposal proposal;
 	
-	@CreatedDate
-    @Column(name = "CREATED_TIME", nullable = false)
-    private LocalDateTime createdTime;
-	
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CONSULTANT_CONSULTING_ID")
     private ConsultantConsulting consultantConsulting;
@@ -56,4 +52,8 @@ public class Notification {
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMMENT")
     private Comment comment;
+	
+	@CreatedDate
+    @Column(name = "CREATED_TIME", nullable = false)
+    private LocalDateTime createdTime;
 }

@@ -58,11 +58,13 @@ public class MemberApplicationRepositoryImpl implements MemberApplicationReposit
 	public long countApplicationsByMemberId(Long id) {
 		QApplication application = QApplication.application;
 
-	    return queryFactory
+	    return Optional.ofNullable(
+	    	queryFactory
 	        .select(application.count())
 	        .from(application)
 	        .where(application.member.id.eq(id))
-	        .fetchOne();
+	        .fetchOne())
+		    .orElse(0L);
 	}
 
 }

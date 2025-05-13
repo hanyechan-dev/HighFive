@@ -37,6 +37,14 @@ public class Proposal {
 	@Column(name = "proposal_id")
 	private Long id;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "company_id", nullable = false)
+	private Company company;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
+
 	@Column(name = "proposal_title", nullable = false)
 	private String proposalTitle;
 
@@ -57,13 +65,7 @@ public class Proposal {
 	@Column(name = "proposal_status", nullable = false)
 	private ProposalStatus proposalStatus;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false)
-	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "company_id", nullable = false)
-	private Company company;
 	
 	public void changeStatus(ProposalStatus status) {
 		this.proposalStatus = status;

@@ -41,17 +41,10 @@ public class Subscription {
 	
 	@CreatedDate
     @Column(name = "START_DATE", nullable = false)
-<<<<<<< HEAD
-    private LocalDateTime startDate;
-	
-	@CreatedDate
-    @Column(name = "END_DATE", nullable = false)
-    private LocalDateTime endDate;
-=======
     private LocalDateTime startDate;	// 구독 시작일
 	
 	@CreatedDate
     @Column(name = "END_DATE", nullable = false)
     private LocalDateTime endDate;	//	구독 종료일
->>>>>>> origin/ADMIN01_REPOSITORY
+
 }

@@ -29,21 +29,17 @@ public class AiConsultingContent {
     @Column(name = "ai_consulting_content_id")
     private Long id;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ai_consulting_id", nullable = false)
     private AiConsulting aiConsulting;
 
- 
     @Enumerated(EnumType.STRING)
     @Column(name = "document_type", nullable = false)
     private CommonEnum.DocumentType documentType;
 
-   
     @Column(nullable = false)
     private String item;
 
-  
     @Column(nullable = false)
     private String content;
     

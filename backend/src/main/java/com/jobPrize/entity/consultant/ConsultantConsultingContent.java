@@ -28,18 +28,15 @@ public class ConsultantConsultingContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "consultant_consulting_content_id")
     private Long id;
-
    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consultant_consulting_id", nullable = false)
     private ConsultantConsulting consultantConsulting;
 
-   
     @Enumerated(EnumType.STRING)
     @Column(name = "document_type", nullable = false)
     private CommonEnum.DocumentType documentType;
 
- 
     @Column(nullable = false)
     private String item;
 

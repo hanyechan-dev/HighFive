@@ -1,6 +1,7 @@
 package com.jobPrize.repository.member.similarity;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -9,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import com.jobPrize.entity.company.QJobPosting;
 import com.jobPrize.entity.memToCom.QSimilarity;
 import com.jobPrize.entity.memToCom.Similarity;
-import com.jobPrize.entity.member.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -39,11 +39,13 @@ public class MemberSimilarityRepositoryImpl implements MemberSimilarityRepositor
 	public long countSimilaritiesByMemberId(Long id) {
 	    QSimilarity similarity = QSimilarity.similarity;
 
-	    return queryFactory
+	    return Optional.ofNullable(
+	    	queryFactory
 	        .select(similarity.count())
 	        .from(similarity)
 	        .where(similarity.member.id.eq(id))
-	        .fetchOne();
+	        .fetchOne())
+		    .orElse(0L);
 	}
 
 }

@@ -45,18 +45,18 @@ public class AiConsulting {
     @Column(nullable = false)
     private CommonEnum.ConsultingType type;
 
-    @OneToMany(mappedBy = "aiConsulting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AiConsultingContent> aiConsultingContents = new ArrayList<>();
-    
-    @OneToOne(mappedBy = "aiConsulting", fetch = FetchType.LAZY)
-    private ConsultantConsulting consultantConsulting;
+    @Builder.Default
+	@Column(nullable = false, name = "IS_SUBSCRIBED")
+	private boolean isRequested = false;
     
     @Column(name = "request_date", nullable = false)
     private LocalDate requestedDate;
     
-	@Builder.Default
-	@Column(nullable = false, name = "IS_SUBSCRIBED")
-	private boolean isRequested = false;
+    @OneToOne(mappedBy = "aiConsulting", fetch = FetchType.LAZY)
+    private ConsultantConsulting consultantConsulting;
+    
+	@OneToMany(mappedBy = "aiConsulting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AiConsultingContent> aiConsultingContents = new ArrayList<>();
 	
 	public void request() {
 		if(isRequested) {

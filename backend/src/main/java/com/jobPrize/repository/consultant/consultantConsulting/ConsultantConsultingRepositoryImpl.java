@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.entity.consultant.QAiConsulting;
 import com.jobPrize.entity.consultant.QAiConsultingContent;
-import com.jobPrize.entity.consultant.QConsultant;
 import com.jobPrize.entity.consultant.QConsultantConsulting;
 import com.jobPrize.entity.consultant.QConsultantConsultingContent;
 import com.jobPrize.entity.memToCon.QRequest;
@@ -26,7 +25,6 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 
 	@Override
 	public Optional<ConsultantConsulting> findWithAllRequestByConsultantConsultingId(Long id) {
-		QConsultant consultant = QConsultant.consultant;
 
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 		QConsultantConsultingContent consultantConsultingContent = QConsultantConsultingContent.consultantConsultingContent;
@@ -69,11 +67,13 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 	public long countConsultantConsultingByConsultantId(Long id) {
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 
-	    return queryFactory
+	    return Optional.ofNullable(
+	    	queryFactory
 	        .select(consultantConsulting.count())
 	        .from(consultantConsulting)
 	        .where(consultantConsulting.consultant.id.eq(id))
-	        .fetchOne();
+	        .fetchOne())
+	    	.orElse(0L);
 	}
 
 }

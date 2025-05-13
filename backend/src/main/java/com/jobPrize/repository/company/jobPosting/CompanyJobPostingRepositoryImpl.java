@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.QJobPosting;
 import com.jobPrize.entity.company.QJobPostingImage;
-import com.jobPrize.entity.memToCom.AppDocument;
 import com.jobPrize.entity.memToCom.QAppDocument;
 import com.jobPrize.entity.memToCom.QApplication;
 import com.jobPrize.entity.memToCom.QPass;

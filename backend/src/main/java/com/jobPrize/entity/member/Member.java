@@ -71,10 +71,5 @@ public class Member {
     public void updateNickname(String nickname) {
     	this.nickname=nickname;
     }
-    
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 
 }

@@ -34,10 +34,6 @@ public class ChatContent {
 	@Column(name = "CHAT_CONTENT_ID", nullable = false)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CHAT_ID", nullable = false)
-    private ChatRoom chatRoom;
-	
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SENDER_ID", nullable = false)
     private User user;
@@ -48,4 +44,8 @@ public class ChatContent {
 	@CreatedDate
     @Column(name = "CREATED_TIME", nullable = false)
     private LocalDateTime createdTime;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CHAT_ID", nullable = false)
+    private ChatRoom chatRoom;
 }

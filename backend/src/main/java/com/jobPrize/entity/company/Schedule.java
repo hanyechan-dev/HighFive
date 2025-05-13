@@ -28,11 +28,11 @@ public class Schedule {
 	@Column(name = "title", nullable = false)
 	private String title;
 
-	@Column(name = "date")
-	private LocalDate date;
-
 	@Column(name = "content")
 	private String content;
+	
+	@Column(name = "date")
+	private LocalDate date;
 
 	public void updateSchedule(String title, LocalDate date, String content) {
 		this.title = title;

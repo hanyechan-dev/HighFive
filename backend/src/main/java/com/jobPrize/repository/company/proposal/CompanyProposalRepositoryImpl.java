@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.QProposal;
-import com.jobPrize.entity.member.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -40,12 +39,13 @@ public class CompanyProposalRepositoryImpl implements CompanyProposalRepositoryC
 	public long countProposalsById(Long id) {
 		QProposal proposal = QProposal.proposal;
 
-	    return Optional.ofNullable(queryFactory
+	    return Optional.ofNullable(
+	    	queryFactory
 	        .select(proposal.count())
 	        .from(proposal)
 	        .where(proposal.company.id.eq(id))
-	        .fetchOne()
-	    	).orElse(0L);
+	        .fetchOne())
+	    	.orElse(0L);
 	}
 
 }

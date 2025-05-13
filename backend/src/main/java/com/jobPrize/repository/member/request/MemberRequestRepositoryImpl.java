@@ -67,11 +67,13 @@ public class MemberRequestRepositoryImpl implements MemberRequestRepositoryCusto
 	public long countRequestsByMemberId(Long id) {
 		QRequest request = QRequest.request;
 
-	    return queryFactory
+	    return Optional.ofNullable(
+	    	queryFactory
 	        .select(request.count())
 	        .from(request)
 	        .where(request.member.id.eq(id))
-	        .fetchOne();
+	        .fetchOne())
+	    	.orElse(0L);
 	}
 
 }

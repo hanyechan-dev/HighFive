@@ -1,6 +1,7 @@
 package com.jobPrize.repository.member.proposal;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -8,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.QProposal;
-import com.jobPrize.entity.member.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,6 @@ public class MemberProposalRepositoryImpl implements MemberProposalRepositoryCus
 	@Override
 	public Page<Proposal> findAllByMemberId(Long id, Pageable pageable) {
 		QProposal proposal = QProposal.proposal;
-		QMember member = QMember.member;
 		
 		List<Proposal> results = queryFactory
 				.selectFrom(proposal)
@@ -37,11 +36,13 @@ public class MemberProposalRepositoryImpl implements MemberProposalRepositoryCus
 	public long countProposalsById(Long id) {
 		QProposal proposal = QProposal.proposal;
 
-	    return queryFactory
+	    return Optional.ofNullable(
+	    	queryFactory
 	        .select(proposal.count())
 	        .from(proposal)
 	        .where(proposal.member.id.eq(id))
-	        .fetchOne();
+	        .fetchOne())
+		    .orElse(0L);
 	}
 
 }

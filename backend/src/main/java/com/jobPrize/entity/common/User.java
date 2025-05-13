@@ -56,14 +56,14 @@ public class User {
 
 	@Column(nullable = false)
 	private String address;
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private UserType type;
 
 	@Builder.Default
 	@Column(nullable = false, name = "IS_SUBSCRIBED")
 	private boolean isSubscribed = false;
-
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private UserType type;
 
 	@CreatedDate
 	@Column(nullable = false, name = "CREATED_DATE")

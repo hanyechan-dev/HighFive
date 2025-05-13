@@ -38,7 +38,7 @@ public class Payment {
     private User user;
 	
 	@Column(name = "PAYMENT_AMOUNT", nullable = false)
-	private Long paymentAmount;
+	private int paymentAmount;
 	
 	@Column(name = "CONTENT", nullable = false)
 	private String content;

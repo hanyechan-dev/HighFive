@@ -41,39 +41,39 @@ public class Company {
 	@MapsId
 	@JoinColumn(name="USER_ID", nullable = false)
 	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
+	private Industry industry;
 
 	@Column(name = "company_name", nullable = false)
 	private String companyName;
 
 	@Column(name = "representative_name", nullable = false)
 	private String representativeName;
-
-	@Column(name = "established_date", nullable = false)
-	private LocalDate establishedDate;
-
+	
 	@Column(name = "business_number", nullable = false)
 	private String businessNumber;
 
 	@Column(name = "company_adress", nullable = false)
 	private String companyAddress;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "type", nullable = false)
-	private CompanyType type;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
-	private Industry industry;
-
 	@Column(name = "company_phone", nullable = false)
 	private String companyPhone;
 	
 	@Column(name = "introduction")
 	private String introduction;
-	
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
+	private CompanyType type;
+
 	@Column(name = "employee_count")
 	private int employeeCount;
-	
+
+	@Column(name = "established_date", nullable = false)
+	private LocalDate establishedDate;
+
 	@OneToMany(mappedBy = "company")
 	private List<Schedule> schedules = new ArrayList<>();
 	

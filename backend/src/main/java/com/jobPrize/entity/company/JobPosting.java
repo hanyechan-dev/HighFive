@@ -53,6 +53,9 @@ public class JobPosting {
 	@Column(name = "job", nullable = false)
 	private String job;
 
+	@Column(name = "requirement")
+	private String requirement;
+
 	@Column(name = "working_hours", nullable = false)
 	private String workingHours;
 
@@ -67,10 +70,7 @@ public class JobPosting {
 	private EducationLevel educationLevel;
 
 	@Column(name = "salary")
-	private Integer salary;
-
-	@Column(name = "requirement")
-	private String requirement;
+	private int salary;
 
 	@CreatedDate
 	@Column(name = "created_date", nullable = false)
@@ -89,7 +89,7 @@ public class JobPosting {
 	private List<Similarity> similarities = new ArrayList<>();
 
 	public void updateJobPostingInfo(String title, String content, String job, String workingHours, String workLocation,
-			String careerType, EducationLevel educationLevel, Integer salary, String requirement) {
+			String careerType, EducationLevel educationLevel, int salary, String requirement) {
 		this.title = title;
 		this.content = content;
 		this.job = job;
