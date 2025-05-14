@@ -92,5 +92,19 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetchOne()
                 ).orElse(0L);
     }
+//    @Override
+//    public List<Post> findAllWithComments() {
+//        QPost post = QPost.post;
+//        QComment comment = QComment.comment;
+//        QUser user = QUser.user;
+//
+//        return queryFactory
+//                .selectFrom(post)
+//                .join(post.user, user).fetchJoin()
+//                .leftJoin(post.comments, comment).fetchJoin()
+//                .distinct()
+//                .fetch();
+//    }
+
 
 }
