@@ -1,6 +1,5 @@
 package com.jobPrize.repository.admin.editPrompt;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.jobPrize.entity.admin.EditPrompt;
@@ -27,15 +26,5 @@ public class EditPromptRepositoryImpl implements EditPromptRepositoryCustom{
 		
 				
 	}
-
-	@Override
-	public List<EditPrompt> findAll() {
-		QEditPrompt prompt = QEditPrompt.editPrompt;
-		
-		return queryFactory
-				.selectFrom(prompt)
-				.fetch();
-	}
-	
 
 }

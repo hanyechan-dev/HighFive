@@ -25,24 +25,11 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 		QConsultantConsultingContent consultantConsultingContent = QConsultantConsultingContent.consultantConsultingContent;
 
-//		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
-//		QAiConsultingContent aiConsultingContent = QAiConsultingContent.aiConsultingContent;
-//
-//		QRequest request = QRequest.request;
-//		QRequestDocument requestDocument = QRequestDocument.requestDocument;
-//		
-//		QUser user = QUser.user;
-//	    QMember member = QMember.member;
+
 
 		ConsultantConsulting result = queryFactory
 				.selectFrom(consultantConsulting)
 				.leftJoin(consultantConsulting.consultantConsultingContents, consultantConsultingContent).fetchJoin()
-//				.leftJoin(consultantConsulting.aiConsulting, aiConsulting).fetchJoin()
-//				.leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
-//				.leftJoin(aiConsulting.request, request).fetchJoin()
-//				.leftJoin(request.member, member).fetchJoin() // 추가
-//		        .leftJoin(member.user, user).fetchJoin()      // 추가
-//				.leftJoin(request.requestDocument, requestDocument).fetchJoin()
 				.where(consultantConsulting.id.eq(id))
 				.distinct()
 				.fetchOne();

@@ -57,7 +57,7 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 		
 		List<AiConsulting> results = queryFactory
 				.selectFrom(aiConsulting)
-				.leftJoin(aiConsulting.consultantConsulting, consultantConsulting)
+				.leftJoin(aiConsulting.consultantConsulting, consultantConsulting).fetchJoin()
 				.where(
 					aiConsulting.isRequested.isTrue(),
 					aiConsulting.consultantConsulting.isNull()
@@ -80,7 +80,7 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 			queryFactory
 	        .select(aiConsulting.count())
 	        .from(aiConsulting)
-	        .leftJoin(aiConsulting.consultantConsulting, consultantConsulting)
+	        .leftJoin(aiConsulting.consultantConsulting, consultantConsulting).fetchJoin()
 	        .where(
 					aiConsulting.isRequested.eq(true),
 					aiConsulting.consultantConsulting.isNull()

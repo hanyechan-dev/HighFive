@@ -1,6 +1,5 @@
 package com.jobPrize.repository.admin.feedbackPrompt;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.jobPrize.entity.admin.FeedbackPrompt;
@@ -26,13 +25,5 @@ public class FeedbackPromptRepositoryImpl implements FeedbackPromptRepositoryCus
 		return Optional.ofNullable(result);
 	}
 
-	@Override
-	public List<FeedbackPrompt> findAll() {
-		QFeedbackPrompt prompt = QFeedbackPrompt.feedbackPrompt;
-		
-		return queryFactory
-				.selectFrom(prompt)
-				.fetch();
-	}
 
 }

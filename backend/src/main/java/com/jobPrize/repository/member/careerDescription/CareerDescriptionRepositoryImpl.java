@@ -28,15 +28,12 @@ public class CareerDescriptionRepositoryImpl implements CareerDescriptionReposit
 		return Optional.ofNullable(result);
 	}
 	@Override
-	public List<CareerDescription> findAllWithCareerDescriptionContentsByMemberId(Long id) {
+	public List<CareerDescription> findAllByMemberId(Long id) {
 		QCareerDescription careerDescription = QCareerDescription.careerDescription;
-		QCareerDescriptionContent careerDescriptionContent = QCareerDescriptionContent.careerDescriptionContent;
 		
 		List<CareerDescription> results = queryFactory
 				.selectFrom(careerDescription)
-				.leftJoin(careerDescription.careerDescriptionContents,careerDescriptionContent).fetchJoin()
 				.where(careerDescription.member.id.eq(id))
-				.distinct()
 				.orderBy(careerDescription.createdDate.desc())
 				.fetch();
 		

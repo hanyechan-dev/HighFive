@@ -30,15 +30,12 @@ public class CoverLetterRepositoryImpl implements CoverLetterRepositoryCustom {
 	}
 
 	@Override
-	public List<CoverLetter> findAllWithCoverLetterContentsByMemberId(Long id) {
+	public List<CoverLetter> findAllByMemberId(Long id) {
 		QCoverLetter coverLetter = QCoverLetter.coverLetter;
-		QCoverLetterContent coverLetterContent = QCoverLetterContent.coverLetterContent;
 		
 		List<CoverLetter> results = queryFactory
 				.selectFrom(coverLetter)
-				.leftJoin(coverLetter.coverLetterContents, coverLetterContent).fetchJoin()
 				.where(coverLetter.member.id.eq(id))
-				.distinct()
 				.orderBy(coverLetter.createdDate.desc())
 				.fetch();
 		

@@ -1,7 +1,5 @@
 package com.jobPrize.repository.common;
 
-import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +9,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 
 import com.jobPrize.config.QuerydslConfig;
-import com.jobPrize.entity.member.Career;
-import com.jobPrize.entity.member.CareerDescription;
-import com.jobPrize.entity.member.CareerDescriptionContent;
-import com.jobPrize.entity.member.Certification;
-import com.jobPrize.entity.member.CoverLetter;
-import com.jobPrize.entity.member.CoverLetterContent;
-import com.jobPrize.entity.member.Education;
-import com.jobPrize.entity.member.LanguageTest;
-import com.jobPrize.entity.member.Member;
+import com.jobPrize.entity.consultant.AiConsulting;
+import com.jobPrize.entity.consultant.AiConsultingContent;
+import com.jobPrize.entity.consultant.CommonEnum;
+import com.jobPrize.entity.consultant.ConsultantConsulting;
+import com.jobPrize.entity.consultant.ConsultantConsultingContent;
+import com.jobPrize.entity.memToCon.Request;
+import com.jobPrize.entity.memToCon.RequestDocument;
 import com.jobPrize.repository.company.Industry.IndustryRepository;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
@@ -490,83 +486,83 @@ class UserRepositoryTest {
 //		em.clear();		
 //	}
 
-	@Test
-	@Rollback(false)
-	@DisplayName("멤버 서류 조회")
-	void findWithAllByMemberId() {
-
-		Member member = memberRepository.findById(2L)
-				.orElseThrow(() -> new IllegalArgumentException("해당 ID의 멤버가 존재하지 않음"));
-
-
-		List<Education> educations = educationRepository.findAllByMemberId(2L);
-		List<Career> careers = careerRepository.findAllByMemberId(2L);
-		List<Certification> certifications = certificationRepository.findAllByMemberId(2L);
-		List<LanguageTest> languageTests = languageTestRepository.findAllByMemberId(2L);
-		
-		List<CoverLetter> coverLetters = coverLetterRepository.findAllWithCoverLetterContentsByMemberId(2L);
-		List<CareerDescription> careerDescriptions = careerDescriptionRepository.findAllWithCareerDescriptionContentsByMemberId(2L);
-
-		String nickname = member.getNickname();
-		System.out.println("닉네임 : " + nickname);
-		
-		for (Education education : educations) {
-			System.out.println("학교 : "+education.getSchoolName());
-			System.out.println("학력 : "+education.getEducationLevel());
-			System.out.println("전공 : "+education.getMajor());
-			System.out.println("학점 : "+education.getGpa());
-			System.out.println("지역 : "+education.getLocation());
-			System.out.println("입학일 : "+education.getEnterDate());
-			System.out.println("졸업일 : "+education.getGraduateDate());
-
-		}
-		for (Career career : careers) {
-			System.out.println("회사 : "+career.getCompanyName());
-			System.out.println("부서 : "+career.getDepartment());
-			System.out.println("직무 : "+career.getJob());
-			System.out.println("직급 : "+career.getPosition());
-			System.out.println("입사일 : "+career.getStartDate());
-			System.out.println("퇴사일 : "+career.getEndDate());
-
-		}
-		
-		for (Certification certification : certifications) {
-		    System.out.println("자격증명 : " + certification.getCertificationName());
-		    System.out.println("발급기관 : " + certification.getIssuingOrg());
-		    System.out.println("등급 : " + certification.getGrade());
-		    System.out.println("점수 : " + certification.getScore());
-		    System.out.println("자격번호 : " + certification.getCertificationNo());
-		    System.out.println("취득일자 : " + certification.getAcquisitionDate());
-		}
-		
-		for (LanguageTest languageTest : languageTests) {
-		    System.out.println("언어종류 : " + languageTest.getLanguageType());
-		    System.out.println("시험명 : " + languageTest.getTestName());
-		    System.out.println("발급기관 : " + languageTest.getIssuingOrg());
-		    System.out.println("등급 : " + languageTest.getGrade());
-		    System.out.println("점수 : " + languageTest.getScore());
-		    System.out.println("자격번호 : " + languageTest.getCertificationNo());
-		    System.out.println("취득일자 : " + languageTest.getAcquisitionDate());
-		}
-
-		for (CoverLetter coverLetter : coverLetters) {
-			System.out.println("자소서 제목 : " + coverLetter.getTitle());
-			System.out.println("자소서 작성일 : " + coverLetter.getCreatedDate());
-			for (CoverLetterContent content : coverLetter.getCoverLetterContents()) {
-				System.out.println("자소서 항목 : " + content.getItem());
-				System.out.println("자소서 내용 : " + content.getContent());
-			}
-		}
-
-		for (CareerDescription careerDescription : careerDescriptions) {
-			System.out.println("경기서 제목 : " + careerDescription.getTitle());
-			System.out.println("경기서 작성일 : " + careerDescription.getCreatedDate());
-			for (CareerDescriptionContent content : careerDescription.getCareerDescriptionContents()) {
-				System.out.println("경기서 항목 : " + content.getItem());
-				System.out.println("경기서 내용 : " + content.getContent());
-			}
-		}
-	}
+//	@Test
+//	@Rollback(false)
+//	@DisplayName("멤버 서류 조회")
+//	void findWithAllByMemberId() {
+//
+//		Member member = memberRepository.findById(2L)
+//				.orElseThrow(() -> new IllegalArgumentException("해당 ID의 멤버가 존재하지 않음"));
+//
+//
+//		List<Education> educations = educationRepository.findAllByMemberId(2L);
+//		List<Career> careers = careerRepository.findAllByMemberId(2L);
+//		List<Certification> certifications = certificationRepository.findAllByMemberId(2L);
+//		List<LanguageTest> languageTests = languageTestRepository.findAllByMemberId(2L);
+//		
+//		List<CoverLetter> coverLetters = coverLetterRepository.findAllWithCoverLetterContentsByMemberId(2L);
+//		List<CareerDescription> careerDescriptions = careerDescriptionRepository.findAllWithCareerDescriptionContentsByMemberId(2L);
+//
+//		String nickname = member.getNickname();
+//		System.out.println("닉네임 : " + nickname);
+//		
+//		for (Education education : educations) {
+//			System.out.println("학교 : "+education.getSchoolName());
+//			System.out.println("학력 : "+education.getEducationLevel());
+//			System.out.println("전공 : "+education.getMajor());
+//			System.out.println("학점 : "+education.getGpa());
+//			System.out.println("지역 : "+education.getLocation());
+//			System.out.println("입학일 : "+education.getEnterDate());
+//			System.out.println("졸업일 : "+education.getGraduateDate());
+//
+//		}
+//		for (Career career : careers) {
+//			System.out.println("회사 : "+career.getCompanyName());
+//			System.out.println("부서 : "+career.getDepartment());
+//			System.out.println("직무 : "+career.getJob());
+//			System.out.println("직급 : "+career.getPosition());
+//			System.out.println("입사일 : "+career.getStartDate());
+//			System.out.println("퇴사일 : "+career.getEndDate());
+//
+//		}
+//		
+//		for (Certification certification : certifications) {
+//		    System.out.println("자격증명 : " + certification.getCertificationName());
+//		    System.out.println("발급기관 : " + certification.getIssuingOrg());
+//		    System.out.println("등급 : " + certification.getGrade());
+//		    System.out.println("점수 : " + certification.getScore());
+//		    System.out.println("자격번호 : " + certification.getCertificationNo());
+//		    System.out.println("취득일자 : " + certification.getAcquisitionDate());
+//		}
+//		
+//		for (LanguageTest languageTest : languageTests) {
+//		    System.out.println("언어종류 : " + languageTest.getLanguageType());
+//		    System.out.println("시험명 : " + languageTest.getTestName());
+//		    System.out.println("발급기관 : " + languageTest.getIssuingOrg());
+//		    System.out.println("등급 : " + languageTest.getGrade());
+//		    System.out.println("점수 : " + languageTest.getScore());
+//		    System.out.println("자격번호 : " + languageTest.getCertificationNo());
+//		    System.out.println("취득일자 : " + languageTest.getAcquisitionDate());
+//		}
+//
+//		for (CoverLetter coverLetter : coverLetters) {
+//			System.out.println("자소서 제목 : " + coverLetter.getTitle());
+//			System.out.println("자소서 작성일 : " + coverLetter.getCreatedDate());
+//			for (CoverLetterContent content : coverLetter.getCoverLetterContents()) {
+//				System.out.println("자소서 항목 : " + content.getItem());
+//				System.out.println("자소서 내용 : " + content.getContent());
+//			}
+//		}
+//
+//		for (CareerDescription careerDescription : careerDescriptions) {
+//			System.out.println("경기서 제목 : " + careerDescription.getTitle());
+//			System.out.println("경기서 작성일 : " + careerDescription.getCreatedDate());
+//			for (CareerDescriptionContent content : careerDescription.getCareerDescriptionContents()) {
+//				System.out.println("경기서 항목 : " + content.getItem());
+//				System.out.println("경기서 내용 : " + content.getContent());
+//			}
+//		}
+//	}
 	
 	
 //	@Test
@@ -842,6 +838,39 @@ class UserRepositoryTest {
 //	       em.clear();
 //	   }
 	
-	
+	   @Test
+	   @Rollback(false)
+	   @DisplayName("request 조회")
+	   void findRequest() {
+	       Request request = memberRequestRepository.findWithAiConsultingByRequestId(1L).orElseThrow();
+
+	       RequestDocument rd = request.getRequestDocument();
+	       AiConsulting ac = request.getAiConsulting();
+	       List<AiConsultingContent> accs =ac.getAiConsultingContents();
+	       accs.get
+	       
+	       
+	       rd.getCareerDescriptionJson();
+	       rd.getCoverLetterJson();
+	       rd.getResumeJson();
+	       
+
+	       for (int i = 0; i < consultantConsultings.size(); i++) {
+	           ConsultantConsulting consultantConsulting = consultantConsultings.get(i);
+
+	           ConsultantConsultingContent consultantConsultingContent = ConsultantConsultingContent
+	                   .builder()
+	                   .consultantConsulting(consultantConsulting)
+	                   .documentType(i % 2 == 0 ? CommonEnum.DocumentType.경력기술서 : CommonEnum.DocumentType.자기소개서)
+	                   .item(items[i])
+	                   .content(contents[i])
+	                   .build();
+
+	           consultantConsultingContentRepository.save(consultantConsultingContent);
+	       }
+
+	       em.flush();
+	       em.clear();
+	   }
 	
 }

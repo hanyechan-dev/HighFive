@@ -455,6 +455,7 @@ public class JobPrizeAdmin02Test {
 			System.out.println("댓글 일시 : " + comment.getCreatedTime());
 			System.out.println("=========================================== ");
 		}
+		
 
 	}
 	

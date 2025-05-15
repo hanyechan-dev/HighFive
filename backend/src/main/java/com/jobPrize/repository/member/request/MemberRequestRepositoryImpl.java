@@ -46,8 +46,7 @@ public class MemberRequestRepositoryImpl implements MemberRequestRepositoryCusto
 		QRequestDocument requestDocument = QRequestDocument.requestDocument;
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
 		QAiConsultingContent aiConsultingContent = QAiConsultingContent.aiConsultingContent;
-		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
-		QConsultantConsultingContent consultantConsultingContent = QConsultantConsultingContent.consultantConsultingContent;
+
 		
 		Request result = queryFactory
 				.selectFrom(request)

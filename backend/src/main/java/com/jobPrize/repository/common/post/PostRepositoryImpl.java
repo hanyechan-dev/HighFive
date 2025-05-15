@@ -36,7 +36,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         List<Post> results = queryFactory
                 .selectFrom(post)
                 .join(post.user, user).fetchJoin()
-                .join(user.member, member).fetchJoin()
+                .leftJoin(user.member, member).fetchJoin()
                 .orderBy(post.createdTime.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -74,10 +74,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 	public Optional<Post> findWithCommentsByPostId(Long id) {
 		QPost post = QPost.post;
 		QComment comment = QComment.comment;
+		QUser user = QUser.user;
+		QMember member = QMember.member;
 		
 		Post result = queryFactory
 				.selectFrom(post)
 				.leftJoin(post.comments, comment).fetchJoin()
+				.leftJoin(comment.user, user).fetchJoin()
+				.leftJoin(user.member, member).fetchJoin()
 				.where(post.id.eq(id))
 				.distinct()
 				.fetchOne();
