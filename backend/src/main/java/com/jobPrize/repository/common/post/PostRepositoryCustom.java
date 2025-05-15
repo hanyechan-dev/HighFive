@@ -11,7 +11,6 @@ import com.jobPrize.entity.common.Post;
 public interface PostRepositoryCustom {
 	Map<String,Object> findAllWithCommentsCount(Pageable pageable); 
 	Optional<Post> findWithCommentsByPostId(Long id);
-//	List<Post> findAllWithComments();
 
 
 }

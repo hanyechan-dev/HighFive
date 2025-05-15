@@ -13,6 +13,7 @@ import com.jobPrize.entity.common.Post;
 import com.jobPrize.entity.common.QComment;
 import com.jobPrize.entity.common.QPost;
 import com.jobPrize.entity.common.QUser;
+import com.jobPrize.entity.member.QMember;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -27,13 +28,15 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     public Map<String,Object> findAllWithCommentsCount(Pageable pageable) {
         QPost post = QPost.post;
         QUser user = QUser.user;
+        QMember member = QMember.member;
         QComment comment = QComment.comment;
 
         
         // 게시글만 페이징
         List<Post> results = queryFactory
                 .selectFrom(post)
-                .join(post.user, user).fetchJoin() 
+                .join(post.user, user).fetchJoin()
+                .join(user.member, member).fetchJoin()
                 .orderBy(post.createdTime.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -92,19 +95,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetchOne()
                 ).orElse(0L);
     }
-//    @Override
-//    public List<Post> findAllWithComments() {
-//        QPost post = QPost.post;
-//        QComment comment = QComment.comment;
-//        QUser user = QUser.user;
-//
-//        return queryFactory
-//                .selectFrom(post)
-//                .join(post.user, user).fetchJoin()
-//                .leftJoin(post.comments, comment).fetchJoin()
-//                .distinct()
-//                .fetch();
-//    }
+
 
 
 }
