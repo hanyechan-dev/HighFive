@@ -19,16 +19,21 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
         QSchedule schedule = QSchedule.schedule;
 
         return queryFactory.selectFrom(schedule)
+        		.select(schedule)
+        		.from(schedule)
                 .where(schedule.company.id.eq(id))
+                .orderBy(schedule.date.desc())
                 .fetch();
     }
 
     @Override
-    public Optional<Schedule> findByCompanyId(Long Id) {  
+    public Optional<Schedule> findByScheduleId(Long Id) {  
         QSchedule schedule = QSchedule.schedule;
 
         return Optional.ofNullable(
                 queryFactory.selectFrom(schedule)
+                .select(schedule)
+        		.from(schedule)
                 .where(schedule.id.eq(Id))
                 .distinct()
                 .fetchOne()
