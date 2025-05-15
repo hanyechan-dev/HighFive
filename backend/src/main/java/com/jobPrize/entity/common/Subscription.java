@@ -43,7 +43,6 @@ public class Subscription {
     @Column(name = "START_DATE", nullable = false)
     private LocalDateTime startDate;	// 구독 시작일
 	
-	@CreatedDate
     @Column(name = "END_DATE", nullable = false)
     private LocalDateTime endDate;	//	구독 종료일
 
