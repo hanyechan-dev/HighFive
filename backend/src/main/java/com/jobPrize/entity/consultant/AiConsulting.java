@@ -46,7 +46,7 @@ public class AiConsulting {
     private CommonEnum.ConsultingType type;
 
     @Builder.Default
-	@Column(nullable = false, name = "IS_SUBSCRIBED")
+	@Column(nullable = false, name = "IS_REQUESTED")
 	private boolean isRequested = false;
     
     @Column(name = "request_date", nullable = false)

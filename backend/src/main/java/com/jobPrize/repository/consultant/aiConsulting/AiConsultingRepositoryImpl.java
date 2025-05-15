@@ -8,12 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.entity.common.QUser;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.QAiConsulting;
 import com.jobPrize.entity.consultant.QAiConsultingContent;
 import com.jobPrize.entity.consultant.QConsultantConsulting;
 import com.jobPrize.entity.memToCon.QRequest;
 import com.jobPrize.entity.memToCon.QRequestDocument;
+import com.jobPrize.entity.member.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -27,19 +29,23 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	@Override
 	public Optional<AiConsulting> findWithAllRequestByAiConsultingId(Long id) {
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
-		QAiConsultingContent aiConsultingContent = QAiConsultingContent.aiConsultingContent;
+	    QAiConsultingContent aiConsultingContent = QAiConsultingContent.aiConsultingContent;
+	    QRequest request = QRequest.request;
+	    QRequestDocument requestDocument = QRequestDocument.requestDocument;
+	    QUser user = QUser.user;
+	    QMember member = QMember.member;
 
-		QRequest request = QRequest.request;
-		QRequestDocument requestDocument = QRequestDocument.requestDocument;
 		
 		AiConsulting result = queryFactory
 				.selectFrom(aiConsulting)
-				.leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
-				.leftJoin(aiConsulting.request, request).fetchJoin()
-				.leftJoin(request.requestDocument, requestDocument).fetchJoin()
-				.where(aiConsulting.id.eq(id))
-				.distinct()
-				.fetchOne();
+		        .leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
+		        .leftJoin(aiConsulting.request, request).fetchJoin()
+		        .leftJoin(request.member, member).fetchJoin() // member 추가
+		        .leftJoin(member.user, user).fetchJoin() // user 추가
+		        .leftJoin(request.requestDocument, requestDocument).fetchJoin()
+		        .where(aiConsulting.id.eq(id))
+		        .distinct()
+		        .fetchOne();
 
 		return Optional.ofNullable(result);
 	}

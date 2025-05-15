@@ -8,12 +8,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.consultant.ConsultantConsulting;
-import com.jobPrize.entity.consultant.QAiConsulting;
-import com.jobPrize.entity.consultant.QAiConsultingContent;
 import com.jobPrize.entity.consultant.QConsultantConsulting;
 import com.jobPrize.entity.consultant.QConsultantConsultingContent;
-import com.jobPrize.entity.memToCon.QRequest;
-import com.jobPrize.entity.memToCon.QRequestDocument;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -24,23 +20,29 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Optional<ConsultantConsulting> findWithAllRequestByConsultantConsultingId(Long id) {
+	public Optional<ConsultantConsulting> findWithConsultantConsultingContentsByConsultantConsultingId(Long id) {
 
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 		QConsultantConsultingContent consultantConsultingContent = QConsultantConsultingContent.consultantConsultingContent;
 
-		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
-		QAiConsultingContent aiConsultingContent = QAiConsultingContent.aiConsultingContent;
-
-		QRequest request = QRequest.request;
-		QRequestDocument requestDocument = QRequestDocument.requestDocument;
+//		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
+//		QAiConsultingContent aiConsultingContent = QAiConsultingContent.aiConsultingContent;
+//
+//		QRequest request = QRequest.request;
+//		QRequestDocument requestDocument = QRequestDocument.requestDocument;
+//		
+//		QUser user = QUser.user;
+//	    QMember member = QMember.member;
 
 		ConsultantConsulting result = queryFactory
 				.selectFrom(consultantConsulting)
 				.leftJoin(consultantConsulting.consultantConsultingContents, consultantConsultingContent).fetchJoin()
-				.leftJoin(consultantConsulting.aiConsulting, aiConsulting).fetchJoin()
-				.leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
-				.leftJoin(aiConsulting.request, request).fetchJoin().leftJoin(request.requestDocument, requestDocument).fetchJoin()
+//				.leftJoin(consultantConsulting.aiConsulting, aiConsulting).fetchJoin()
+//				.leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
+//				.leftJoin(aiConsulting.request, request).fetchJoin()
+//				.leftJoin(request.member, member).fetchJoin() // 추가
+//		        .leftJoin(member.user, user).fetchJoin()      // 추가
+//				.leftJoin(request.requestDocument, requestDocument).fetchJoin()
 				.where(consultantConsulting.id.eq(id))
 				.distinct()
 				.fetchOne();
