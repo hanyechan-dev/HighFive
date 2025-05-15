@@ -41,7 +41,7 @@ public class MemberRequestRepositoryImpl implements MemberRequestRepositoryCusto
 	}
 
 	@Override
-	public Optional<Request> findWithAllConsultingByRequestId(Long id) {
+	public Optional<Request> findWithAiConsultingByRequestId(Long id) {
 		QRequest request = QRequest.request;
 		QRequestDocument requestDocument = QRequestDocument.requestDocument;
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
@@ -54,8 +54,6 @@ public class MemberRequestRepositoryImpl implements MemberRequestRepositoryCusto
 				.leftJoin(request.requestDocument, requestDocument).fetchJoin()
 				.leftJoin(request.aiConsulting, aiConsulting).fetchJoin()
 				.leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
-				.leftJoin(aiConsulting.consultantConsulting, consultantConsulting).fetchJoin()
-				.leftJoin(consultantConsulting.consultantConsultingContents, consultantConsultingContent).fetchJoin()
 				.where(request.id.eq(id))
 				.distinct()
 				.fetchOne();

@@ -1,5 +1,6 @@
 package com.jobPrize.repository.member.careerDescription;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.jobPrize.entity.member.CareerDescription;
@@ -26,5 +27,19 @@ public class CareerDescriptionRepositoryImpl implements CareerDescriptionReposit
 		
 		return Optional.ofNullable(result);
 	}
-
+	@Override
+	public List<CareerDescription> findAllWithCareerDescriptionContentsByMemberId(Long id) {
+		QCareerDescription careerDescription = QCareerDescription.careerDescription;
+		QCareerDescriptionContent careerDescriptionContent = QCareerDescriptionContent.careerDescriptionContent;
+		
+		List<CareerDescription> results = queryFactory
+				.selectFrom(careerDescription)
+				.leftJoin(careerDescription.careerDescriptionContents,careerDescriptionContent).fetchJoin()
+				.where(careerDescription.member.id.eq(id))
+				.distinct()
+				.orderBy(careerDescription.createdDate.desc())
+				.fetch();
+		
+		return results;
+	}
 }

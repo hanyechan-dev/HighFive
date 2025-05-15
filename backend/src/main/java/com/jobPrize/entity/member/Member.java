@@ -42,9 +42,18 @@ public class Member {
 
 	@Column(nullable = false)
 	private String nickname;
-
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
-	private Resume resume;
+	
+	@OneToMany(mappedBy = "member")
+	private List<Education> educations = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "member")
+	private List<Career> careers = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "member")
+	private List<Certification> certifications = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "member")
+	private List<LanguageTest> languageTests = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "member")
 	private List<CoverLetter> coverLetters = new ArrayList<>();

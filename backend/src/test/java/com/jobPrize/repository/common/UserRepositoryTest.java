@@ -12,14 +12,21 @@ import org.springframework.test.annotation.Rollback;
 
 import com.jobPrize.config.QuerydslConfig;
 import com.jobPrize.entity.member.Career;
+import com.jobPrize.entity.member.CareerDescription;
+import com.jobPrize.entity.member.CareerDescriptionContent;
 import com.jobPrize.entity.member.Certification;
+import com.jobPrize.entity.member.CoverLetter;
+import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.entity.member.Resume;
 import com.jobPrize.repository.company.Industry.IndustryRepository;
 import com.jobPrize.repository.company.company.CompanyRepository;
+import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
+import com.jobPrize.repository.consultant.aiConsultingContent.AiConsultingContentRepository;
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
+import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
+import com.jobPrize.repository.consultant.consultantConsultingContent.ConsultantConsultingContentRepository;
 import com.jobPrize.repository.member.career.CareerRepository;
 import com.jobPrize.repository.member.careerDescription.CareerDescriptionRepository;
 import com.jobPrize.repository.member.careerDescriptionContent.CareerDescriptionContentRepository;
@@ -29,7 +36,8 @@ import com.jobPrize.repository.member.coverLetterContent.CoverLetterContentRepos
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.languageTest.LanguageTestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
-import com.jobPrize.repository.member.resume.ResumeRepository;
+import com.jobPrize.repository.member.request.MemberRequestRepository;
+import com.jobPrize.repository.member.requetDocument.RequestDocumentRepository;
 
 import jakarta.persistence.EntityManager;
 
@@ -46,9 +54,6 @@ class UserRepositoryTest {
 
 	@Autowired
 	private ConsultantRepository consultantRepository;
-
-	@Autowired
-	private ResumeRepository resumeRepository;
 
 	@Autowired
 	private EducationRepository educationRepository;
@@ -70,20 +75,36 @@ class UserRepositoryTest {
 
 	@Autowired
 	private CoverLetterRepository coverLetterRepository;
-	
+
 	@Autowired
 	private CoverLetterContentRepository coverLetterContentRepository;
-	
+
 	@Autowired
 	private CareerDescriptionRepository careerDescriptionRepository;
-	
+
 	@Autowired
 	private CareerDescriptionContentRepository careerDescriptionContentRepository;
+	
+	@Autowired
+	private RequestDocumentRepository requestDocumentRepository;
+	
+	@Autowired
+	private MemberRequestRepository memberRequestRepository;
+	
+	@Autowired
+	private AiConsultingRepository aiConsultingRepository;
+	
+	@Autowired
+	private AiConsultingContentRepository aiConsultingContentRepository;
+	
+	@Autowired
+	private ConsultantConsultingRepository consultantConsultingRepository;
 
+	@Autowired
+	private ConsultantConsultingContentRepository consultantConsultingContentRepository;
 	@Autowired
 	private EntityManager em;
 
-	
 //	@Test // 완료
 //	@Rollback(false)
 //	@DisplayName("User 및 Member 저장")
@@ -101,8 +122,12 @@ class UserRepositoryTest {
 //					.address(sidos[i])
 //					.type(UserType.일반회원)
 //					.build();
-//
+//			
+//			
 //			userRepository.save(user);
+//						
+//			em.flush();
+//			
 //			Member member = Member.builder()
 //					.user(user)
 //					.nickname(nickNames[i])
@@ -115,22 +140,7 @@ class UserRepositoryTest {
 
 //	@Test
 //	@Rollback(false)
-//	@DisplayName("Member에 Resume 저장")
-//	void saveResume() {
-//		for (int i = 1; i <= 10; i++) {
-//			Member member = memberRepository.findById(Long.valueOf(i)).orElseThrow(() -> new IllegalArgumentException("해당 ID의 멤버가 존재하지 않음"));
-//			Resume resume = Resume.builder().member(member).build();
-//			
-//			resumeRepository.save(resume);
-//		}
-//		em.flush();
-//		em.clear();
-//	}
-
-	
-//	@Test
-//	@Rollback(false)
-//	@DisplayName("Resume에 Education 저장")
+//	@DisplayName("Member에 Education 저장")
 //	void saveEducation() {
 //		Random random = new Random();
 //		String[] highSchoolNames= {"서울예술", "서울과학", "대원외국어", "경기과학", "하나", "성산", "민족사관", "대구과학", "대전과학", "선화예술"};
@@ -140,14 +150,14 @@ class UserRepositoryTest {
 //		String[] majors = {"컴퓨터공학", "경영학", "기계공학", "화학공학", "심리학", "간호학", "사회복지학", "식품영약학", "철학", "국제무역학"};
 //		
 //		for (int i = 1; i <= 10; i++) {
-//			Resume resume = resumeRepository.findById(Long.valueOf(i)).orElseThrow(() -> new IllegalArgumentException("해당 ID의 이력서가 존재하지 않음"));
+//			Member member = memberRepository.findById(Long.valueOf(i)).orElseThrow(() -> new IllegalArgumentException("해당 ID의 회원이 존재하지 않음"));
 //			int randomNo1 = random.nextInt(4)+1;
 //			boolean randomBoolean = random.nextBoolean();
 //			for(int j=0 ; j<randomNo1;j++) {
 //				if(j==0) {
 //					Education education = Education
 //							.builder()
-//							.resume(resume)
+//							.member(member)
 //							.schoolName(highSchoolNames[random.nextInt(10)]+"고등학교")
 //							.educationLevel(EducationLevel.고등학교졸업)
 //							.location(sidos[random.nextInt(10)])
@@ -161,7 +171,7 @@ class UserRepositoryTest {
 //					if(randomBoolean) {
 //						Education education = Education
 //								.builder()
-//								.resume(resume)
+//								.member(member)
 //								.schoolName(collegeNames[random.nextInt(10)]+"전문대학")
 //								.educationLevel(EducationLevel.전문학사)
 //								.location(sidos[random.nextInt(10)])
@@ -176,7 +186,7 @@ class UserRepositoryTest {
 //					else {
 //						Education education = Education
 //								.builder()
-//								.resume(resume)
+//								.member(member)
 //								.schoolName(universityNames[random.nextInt(10)]+"대학교")
 //								.educationLevel(EducationLevel.학사)
 //								.location(sidos[random.nextInt(10)])
@@ -194,7 +204,7 @@ class UserRepositoryTest {
 //				else if(j==2) {
 //					Education education = Education
 //							.builder()
-//							.resume(resume)
+//							.member(member)
 //							.schoolName(universityNames[random.nextInt(10)]+"대학교")
 //							.educationLevel(EducationLevel.석사)
 //							.location(sidos[random.nextInt(10)])
@@ -209,7 +219,7 @@ class UserRepositoryTest {
 //				else if(j==3) {
 //					Education education = Education
 //							.builder()
-//							.resume(resume)
+//							.member(member)
 //							.schoolName(universityNames[random.nextInt(10)]+"대학교")
 //							.educationLevel(EducationLevel.박사)
 //							.location(sidos[random.nextInt(10)])
@@ -227,10 +237,9 @@ class UserRepositoryTest {
 //		em.clear();
 //	}
 
-	
 //	@Test
 //	@Rollback(false)
-//	@DisplayName("Resume에 Career 저장")
+//	@DisplayName("Member에 Career 저장")
 //	void saveCareer() {
 //		Random random = new Random();
 //		String[] companyNames = { "한빛소프트", "카카오모빌리티", "LG CNS", "쿠팡", "뷰노", "삼성 SDS", "토스페이먼츠", "더존비즈온", "컬리",
@@ -240,13 +249,12 @@ class UserRepositoryTest {
 //		String[] Positions = { "사원", "주임", "대리", "과장", "차장", "부장" };
 //
 //		for (int i = 1; i <= 10; i++) {
-//			Resume resume = resumeRepository.findById(Long.valueOf(i))
-//					.orElseThrow(() -> new IllegalArgumentException("해당 ID의 이력서가 존재하지 않음"));
+//			Member member = memberRepository.findById(Long.valueOf(i)).orElseThrow(() -> new IllegalArgumentException("해당 ID의 회원이 존재하지 않음"));
 //			int randomNo1 = random.nextInt(5) + 1;
 //			for (int j = 0; j < randomNo1; j++) {
 //
 //				Career career = Career.builder()
-//						.resume(resume)
+//						.member(member)
 //						.companyName(companyNames[random.nextInt(10)])
 //						.department(departmentNames[random.nextInt(10)])
 //						.job(jobNames[random.nextInt(10)])
@@ -263,10 +271,9 @@ class UserRepositoryTest {
 //		em.clear();
 //	}
 
-	
 //	@Test
 //	@Rollback(false)
-//	@DisplayName("Resume에 Certification 저장")
+//	@DisplayName("Member에 Certification 저장")
 //	void saveCertification() {
 //		Random random = new Random();
 //		String[] certificationNames = { "정보처리기사", "SQLD", "네트워크관리사", "컴퓨터활용능력", "GTQ", "전기기사", "산업안전기사", "기계설계산업기사", "건축기사", "소방설비기사" };
@@ -275,13 +282,12 @@ class UserRepositoryTest {
 //		String[] scores = { null, null, String.valueOf(random.nextInt(100)), String.valueOf(random.nextInt(800)), String.valueOf(random.nextInt(100)), String.valueOf(random.nextInt(100)), String.valueOf(random.nextInt(100)), null, null, null };
 //
 //		for (int i = 1; i <= 10; i++) {
-//			Resume resume = resumeRepository.findById(Long.valueOf(i))
-//					.orElseThrow(() -> new IllegalArgumentException("해당 ID의 이력서가 존재하지 않음"));
+//			Member member = memberRepository.findById(Long.valueOf(i)).orElseThrow(() -> new IllegalArgumentException("해당 ID의 회원이 존재하지 않음"));
 //			int randomNo1 = random.nextInt(5) + 1;
 //			for (int j = 0; j < randomNo1; j++) {
 //				int randomNo2 = random.nextInt(10);
 //				Certification certification = Certification.builder()
-//						.resume(resume)
+//						.member(member)
 //						.certificationName(certificationNames[randomNo2])
 //						.issuingOrg(issuingOrgs[randomNo2])
 //						.grade(grades[randomNo2])
@@ -298,10 +304,9 @@ class UserRepositoryTest {
 //		em.clear();
 //	}
 
-	
 //	@Test
 //	@Rollback(false)
-//	@DisplayName("Resume에 LanguageTest 저장")
+//	@DisplayName("Member에 LanguageTest 저장")
 //	void saveLanguageTest() {
 //		Random random = new Random();
 //		String[] testNames = { "TOEIC", "TOEFL", "IELTS", "OPIc", "TEPS", "HSK", "JLPT", "DELF", "DELE", "BCT" };
@@ -312,13 +317,12 @@ class UserRepositoryTest {
 //		String[] scores = { String.valueOf(random.nextInt(981)+10), String.valueOf(random.nextInt(121)), String.valueOf(random.nextInt(9)+1), String.valueOf(random.nextInt(301)), String.valueOf(random.nextInt(791)+200), null, null, null, null, null };
 //
 //		for (int i = 1; i <= 10; i++) {
-//			Resume resume = resumeRepository.findById(Long.valueOf(i))
-//					.orElseThrow(() -> new IllegalArgumentException("해당 ID의 이력서가 존재하지 않음"));
+//			Member member = memberRepository.findById(Long.valueOf(i)).orElseThrow(() -> new IllegalArgumentException("해당 ID의 회원이 존재하지 않음"));
 //			int randomNo1 = random.nextInt(5) + 1;
 //			for (int j = 0; j < randomNo1; j++) {
 //				int randomNo2 = random.nextInt(10);
 //				LanguageTest languageTest = LanguageTest.builder()
-//						.resume(resume)
+//						.member(member)
 //						.languageType(languageTypes[randomNo2])
 //						.testName(testNames[randomNo2])
 //						.issuingOrg(languageTypes[randomNo2])
@@ -337,8 +341,6 @@ class UserRepositoryTest {
 //		em.clear();
 //	}
 
-
-	
 //    @Test
 //    @Rollback(false)
 //    @DisplayName("Member에 CoverLetter 저장")
@@ -375,7 +377,6 @@ class UserRepositoryTest {
 //        em.clear();
 //    }
 
-	
 //	@Test
 //	@Rollback(false)
 //	@DisplayName("CoverLetter에 내용 저장")
@@ -411,8 +412,7 @@ class UserRepositoryTest {
 //		em.flush();
 //		em.clear();
 //	}
-	
-	
+
 //  @Test
 //  @Rollback(false)
 //  @DisplayName("Member에 CareerDescription 저장")
@@ -444,12 +444,11 @@ class UserRepositoryTest {
 //          	
 //      		careerDescriptionRepository.save(careerDescription);
 //      	}
-
 //      }
 //      em.flush();
 //      em.clear();
 //  }
-	
+
 //	@Test
 //	@Rollback(false)
 //	@DisplayName("CareerDescription에 내용 저장")
@@ -490,23 +489,359 @@ class UserRepositoryTest {
 //		em.flush();
 //		em.clear();		
 //	}
-//}
 
-@Test
-@Rollback(false)
-@DisplayName("CareerDescription에 내용 저장")
-void findMemberWithAll() {
-	Member member = memberRepository.findWithAllDocumentsByMemberId(null).orElseThrow(() -> new IllegalArgumentException("해당 ID의 멤버가 존재하지 않음"));
-	String nickname = member.getNickname();
-	Resume resume = member.getResume();
-	List<Education> educations = resume.getEducations();
-	List<Career> careers= resume.getCareers();	
-	List<Certification> certifications= resume.getCertifications();
-	List<LanguageTest> languageTests= resume.getLanguageTests();
+	@Test
+	@Rollback(false)
+	@DisplayName("멤버 서류 조회")
+	void findWithAllByMemberId() {
+
+		Member member = memberRepository.findById(2L)
+				.orElseThrow(() -> new IllegalArgumentException("해당 ID의 멤버가 존재하지 않음"));
+
+
+		List<Education> educations = educationRepository.findAllByMemberId(2L);
+		List<Career> careers = careerRepository.findAllByMemberId(2L);
+		List<Certification> certifications = certificationRepository.findAllByMemberId(2L);
+		List<LanguageTest> languageTests = languageTestRepository.findAllByMemberId(2L);
+		
+		List<CoverLetter> coverLetters = coverLetterRepository.findAllWithCoverLetterContentsByMemberId(2L);
+		List<CareerDescription> careerDescriptions = careerDescriptionRepository.findAllWithCareerDescriptionContentsByMemberId(2L);
+
+		String nickname = member.getNickname();
+		System.out.println("닉네임 : " + nickname);
+		
+		for (Education education : educations) {
+			System.out.println("학교 : "+education.getSchoolName());
+			System.out.println("학력 : "+education.getEducationLevel());
+			System.out.println("전공 : "+education.getMajor());
+			System.out.println("학점 : "+education.getGpa());
+			System.out.println("지역 : "+education.getLocation());
+			System.out.println("입학일 : "+education.getEnterDate());
+			System.out.println("졸업일 : "+education.getGraduateDate());
+
+		}
+		for (Career career : careers) {
+			System.out.println("회사 : "+career.getCompanyName());
+			System.out.println("부서 : "+career.getDepartment());
+			System.out.println("직무 : "+career.getJob());
+			System.out.println("직급 : "+career.getPosition());
+			System.out.println("입사일 : "+career.getStartDate());
+			System.out.println("퇴사일 : "+career.getEndDate());
+
+		}
+		
+		for (Certification certification : certifications) {
+		    System.out.println("자격증명 : " + certification.getCertificationName());
+		    System.out.println("발급기관 : " + certification.getIssuingOrg());
+		    System.out.println("등급 : " + certification.getGrade());
+		    System.out.println("점수 : " + certification.getScore());
+		    System.out.println("자격번호 : " + certification.getCertificationNo());
+		    System.out.println("취득일자 : " + certification.getAcquisitionDate());
+		}
+		
+		for (LanguageTest languageTest : languageTests) {
+		    System.out.println("언어종류 : " + languageTest.getLanguageType());
+		    System.out.println("시험명 : " + languageTest.getTestName());
+		    System.out.println("발급기관 : " + languageTest.getIssuingOrg());
+		    System.out.println("등급 : " + languageTest.getGrade());
+		    System.out.println("점수 : " + languageTest.getScore());
+		    System.out.println("자격번호 : " + languageTest.getCertificationNo());
+		    System.out.println("취득일자 : " + languageTest.getAcquisitionDate());
+		}
+
+		for (CoverLetter coverLetter : coverLetters) {
+			System.out.println("자소서 제목 : " + coverLetter.getTitle());
+			System.out.println("자소서 작성일 : " + coverLetter.getCreatedDate());
+			for (CoverLetterContent content : coverLetter.getCoverLetterContents()) {
+				System.out.println("자소서 항목 : " + content.getItem());
+				System.out.println("자소서 내용 : " + content.getContent());
+			}
+		}
+
+		for (CareerDescription careerDescription : careerDescriptions) {
+			System.out.println("경기서 제목 : " + careerDescription.getTitle());
+			System.out.println("경기서 작성일 : " + careerDescription.getCreatedDate());
+			for (CareerDescriptionContent content : careerDescription.getCareerDescriptionContents()) {
+				System.out.println("경기서 항목 : " + content.getItem());
+				System.out.println("경기서 내용 : " + content.getContent());
+			}
+		}
+	}
+	
+	
+//	@Test
+//	@Rollback(false)
+//	@DisplayName("멤버 서류 조회")
+//	void findWithAllByMemberId() {
+//
+//		Member member = memberRepository.findById(10L)
+//				.orElseThrow(() -> new IllegalArgumentException("해당 ID의 멤버가 존재하지 않음"));
+//
+//
+//		List<Education> educations = member.getEducations();
+//		List<Career> careers = member.getCareers();
+//		List<Certification> certifications = member.getCertifications();
+//		List<LanguageTest> languageTests = member.getLanguageTests();
+//		
+//		List<CoverLetter> coverLetters = member.getCoverLetters();
+//		List<CareerDescription> careerDescriptions = member.getCareerDescriptions();
+//
+//		String nickname = member.getNickname();
+//		System.out.println("닉네임 : " + nickname);
+//		
+//		for (Education education : educations) {
+//			System.out.println("학교 : "+education.getSchoolName());
+//			System.out.println("학력 : "+education.getEducationLevel());
+//			System.out.println("전공 : "+education.getMajor());
+//			System.out.println("학점 : "+education.getGpa());
+//			System.out.println("지역 : "+education.getLocation());
+//			System.out.println("입학일 : "+education.getEnterDate());
+//			System.out.println("졸업일 : "+education.getGraduateDate());
+//
+//		}
+//		for (Career career : careers) {
+//			System.out.println("회사 : "+career.getCompanyName());
+//			System.out.println("부서 : "+career.getDepartment());
+//			System.out.println("직무 : "+career.getJob());
+//			System.out.println("직급 : "+career.getPosition());
+//			System.out.println("입사일 : "+career.getStartDate());
+//			System.out.println("퇴사일 : "+career.getEndDate());
+//
+//		}
+//		
+//		for (Certification certification : certifications) {
+//		    System.out.println("자격증명 : " + certification.getCertificationName());
+//		    System.out.println("발급기관 : " + certification.getIssuingOrg());
+//		    System.out.println("등급 : " + certification.getGrade());
+//		    System.out.println("점수 : " + certification.getScore());
+//		    System.out.println("자격번호 : " + certification.getCertificationNo());
+//		    System.out.println("취득일자 : " + certification.getAcquisitionDate());
+//		}
+//		
+//		for (LanguageTest languageTest : languageTests) {
+//		    System.out.println("언어종류 : " + languageTest.getLanguageType());
+//		    System.out.println("시험명 : " + languageTest.getTestName());
+//		    System.out.println("발급기관 : " + languageTest.getIssuingOrg());
+//		    System.out.println("등급 : " + languageTest.getGrade());
+//		    System.out.println("점수 : " + languageTest.getScore());
+//		    System.out.println("자격번호 : " + languageTest.getCertificationNo());
+//		    System.out.println("취득일자 : " + languageTest.getAcquisitionDate());
+//		}
+//
+//		for (CoverLetter coverLetter : coverLetters) {
+//			System.out.println("자소서 제목 : " + coverLetter.getTitle());
+//			System.out.println("자소서 작성일 : " + coverLetter.getCreatedDate());
+//			for (CoverLetterContent content : coverLetter.getCoverLetterContents()) {
+//				System.out.println("자소서 항목 : " + content.getItem());
+//				System.out.println("자소서 내용 : " + content.getContent());
+//			}
+//		}
+//
+//		for (CareerDescription careerDescription : careerDescriptions) {
+//			System.out.println("경기서 제목 : " + careerDescription.getTitle());
+//			System.out.println("경기서 작성일 : " + careerDescription.getCreatedDate());
+//			for (CareerDescriptionContent content : careerDescription.getCareerDescriptionContents()) {
+//				System.out.println("경기서 항목 : " + content.getItem());
+//				System.out.println("경기서 내용 : " + content.getContent());
+//			}
+//		}
+//	}
+	
+//	   @Test
+//	   @Rollback(false)
+//	   @DisplayName("User 및 Consultant 저장")
+//	   void saveConsultants() {
+//	       String[] names = { "홍지민", "이성훈", "배지수", "정유진", "박찬호" };
+//	       String[] emails = {
+//	           "consult1@job.com",
+//	           "consult2@job.com",
+//	           "consult3@job.com",
+//	           "consult4@job.com",
+//	           "consult5@job.com"
+//	       };
+//	       String[] addresses = {
+//	           "서울 강남구", "서울 성동구", "부산 해운대구", "대구 수성구", "광주 서구"
+//	       };
+//
+//	       for (int i = 0; i < 5; i++) {
+//	           // 1. 유저 저장 (컨설턴트 타입)
+//	           User user = User
+//	                 .builder()
+//	                   .email(emails[i])
+//	                   .password("pass1234")
+//	                   .name(names[i])
+//	                   .phone("0108888" + String.format("%04d", i))
+//	                   .address(addresses[i])
+//	                   .type(UserType.컨설턴트회원)
+//	                   .build();
+//
+//	           userRepository.save(user);
+//
+//	           // 2. 컨설턴트 저장 (User 기반)
+//	           Consultant consultant = Consultant
+//	                 .builder()
+//	                   .user(user)
+//	                   .build();
+//
+//	           consultantRepository.save(consultant);
+//	       }
+//
+//	       em.flush();
+//	       em.clear();
+//	   }
+
+	   
+   
+//	   @Test
+//	   @Rollback(false)
+//	   @DisplayName("Member에 Request + RequestDocument 정보 저장")
+//	   void saveRequestList() {
+//	       List<Member> members = memberRepository.findAll();
+//
+//	       for (int i = 0; i < members.size(); i++) {
+//	           Member member = members.get(i);
+//
+//	           // 요청 문서 생성
+//	           RequestDocument requestDocument = RequestDocument
+//	                 .builder()
+//	                   .resumeJson("{\"resume\": \"이력 내용 " + i + "\"}")
+//	                   .careerDescriptionJson("{\"career\": \"경력 내용 " + i + "\"}")
+//	                   .coverLetterJson("{\"coverLetter\": \"자소서 내용 " + i + "\"}")
+//	                   .build();
+//
+//	           requestDocumentRepository.save(requestDocument);
+//
+//	           // 요청 저장
+//	           Request request = Request
+//	                 .builder()
+//	                   .member(member)
+//	                   .requestDocument(requestDocument)
+//	                   .createdDate(LocalDate.now())
+//	                   .build();
+//
+//	           memberRequestRepository.save(request);
+//	       }
+//
+//	       em.flush();
+//	       em.clear();
+//	   }
+
+//	   @Test
+//	   @Rollback(false)
+//	   @DisplayName("AI Consulting 저장")
+//	   void saveAiConsulting() {
+//	       List<Request> requestList = memberRequestRepository.findAll();
+//
+//	       for (int i = 0; i < requestList.size(); i++) {
+//	           Request request = requestList.get(i);
+//
+//	           AiConsulting aiConsulting = AiConsulting
+//	                 .builder()
+//	                   .request(request)
+//	                   .type(i % 2 == 0 ? CommonEnum.ConsultingType.피드백 : CommonEnum.ConsultingType.첨삭)
+//	                   .isRequested(true)
+//	                   .requestedDate(LocalDate.now())
+//	                   .build();
+//
+//	           aiConsultingRepository.save(aiConsulting);
+//	       }
+//
+//	       em.flush();
+//	       em.clear();
+//	   }
+
+//	   @Test
+//	   @Rollback(false)
+//	   @DisplayName("AiConsultingContent 저장")
+//	   void saveAiConsultingContents() {
+//	       List<AiConsulting> aiConsultings = aiConsultingRepository.findAll();
+//	       String[] items = { "경력사항", "자기소개", "기술스택", "목표", "의견" };
+//	       String[] contents = {
+//	           "10년간 백엔드 개발 경력",
+//	           "열정과 책임감을 가진 개발자입니다.",
+//	           "Spring, JPA, React",
+//	           "AI 분석 기반 컨설팅 강화",
+//	           "꼼꼼하고 분석력이 뛰어남"
+//	       };
+//
+//	       for (int i = 0; i < aiConsultings.size(); i++) {
+//	           AiConsulting aiconsulting = aiConsultings.get(i);
+//
+//	           AiConsultingContent aiConsultingContent = AiConsultingContent
+//	                 .builder()
+//	                   .aiConsulting(aiconsulting)
+//	                   .documentType(i % 2 == 0 ? CommonEnum.DocumentType.경력기술서 : CommonEnum.DocumentType.자기소개서)
+//	                   .item(items[i%5])
+//	                   .content(contents[i%5])
+//	                   .build();
+//
+//	           aiConsultingContentRepository.save(aiConsultingContent);
+//	       }
+//
+//	       em.flush();
+//	       em.clear();
+//	   }
+
+//	   @Test
+//	   @Rollback(false)
+//	   @DisplayName("ConsultantConsulting 저장")
+//	   void saveConsultantConsultings() {
+//	       List<Consultant> consultants = consultantRepository.findAll();
+//	       List<AiConsulting> aiConsultings = aiConsultingRepository.findAll();
+//
+//	       for (int i = 0; i < aiConsultings.size(); i++) {
+//	           Consultant consultant = consultants.get(i%5);
+//	           AiConsulting aiConsulting = aiConsultings.get(i);
+//
+//	           ConsultantConsulting consultantConsulting = ConsultantConsulting
+//	                 .builder()
+//	                   .consultant(consultant)
+//	                   .aiConsulting(aiConsulting)
+//	                   .type(i % 2 == 0 ? CommonEnum.ConsultingType.피드백 : CommonEnum.ConsultingType.첨삭)
+//	                   .createdDate(LocalDate.now())
+//	                   .completedDate(LocalDate.now().plusDays(2))
+//	                   .build();
+//
+//	           consultantConsultingRepository.save(consultantConsulting);
+//	       }
+//
+//	       em.flush();
+//	       em.clear();
+//	   }
+	
+//	   @Test
+//	   @Rollback(false)
+//	   @DisplayName("ConsultantConsultingContent 저장")
+//	   void saveConsultantConsultingContents() {
+//	       List<ConsultantConsulting> consultantConsultings = consultantConsultingRepository.findAll();
+//
+//	       String[] items = { "경력사항", "자기소개", "기술스택", "목표", "의견" };
+//	       String[] contents = {
+//	           "10년간 백엔드 컨설팅 경험",
+//	           "지원자와 적극 소통하는 스타일",
+//	           "Spring, JPA, Vue 사용 경험",
+//	           "커리어 성장 방향 제시",
+//	           "피드백이 구체적이고 명확함"
+//	       };
+//
+//	       for (int i = 0; i < consultantConsultings.size(); i++) {
+//	           ConsultantConsulting consultantConsulting = consultantConsultings.get(i);
+//
+//	           ConsultantConsultingContent consultantConsultingContent = ConsultantConsultingContent
+//	                   .builder()
+//	                   .consultantConsulting(consultantConsulting)
+//	                   .documentType(i % 2 == 0 ? CommonEnum.DocumentType.경력기술서 : CommonEnum.DocumentType.자기소개서)
+//	                   .item(items[i])
+//	                   .content(contents[i])
+//	                   .build();
+//
+//	           consultantConsultingContentRepository.save(consultantConsultingContent);
+//	       }
+//
+//	       em.flush();
+//	       em.clear();
+//	   }
 	
 	
 	
-	
-	
-}	
 }

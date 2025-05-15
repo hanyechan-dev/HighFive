@@ -3,6 +3,7 @@ package com.jobPrize.entity.member;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.memToCom.EducationLevel;
 
 import jakarta.persistence.Column;
@@ -35,8 +36,8 @@ public class Education {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESUME_ID", nullable = false)
-	private Resume resume;
+	@JoinColumn(name = "USER_ID", nullable = false)
+	private Member member;
 	
 	@Column(name="SCHOOL_NAME", nullable = false)
 	private String schoolName;
