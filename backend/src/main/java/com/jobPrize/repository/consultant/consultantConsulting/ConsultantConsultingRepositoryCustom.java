@@ -10,7 +10,7 @@ import com.jobPrize.entity.consultant.ConsultantConsulting;
 public interface ConsultantConsultingRepositoryCustom {
 		
 
-	Optional<ConsultantConsulting> findWithAllRequestByConsultantConsultingId(Long id);
+	Optional<ConsultantConsulting> findWithConsultantConsultingContentsByConsultantConsultingId(Long id);
 	Page<ConsultantConsulting> findWithAllConsultantConsultingByConsultantId(Long id, Pageable pageable);
-
+	long countConsultantConsultingByConsultantId(Long id);
 }

@@ -12,5 +12,6 @@ public interface AiConsultingRepositoryCustom {
 
 	Optional<AiConsulting> findWithAllRequestByAiConsultingId(Long id);
 	Page<AiConsulting> findAllByCondition(Pageable pageable);
+	long countAiConsultingByCondition();
 
 }
