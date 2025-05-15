@@ -32,8 +32,8 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		
 		List<ChatRoom> results = queryFactory
 				.selectFrom(chatRoom)
-				.join(chatRoom.user1).fetchJoin()
-				.join(chatRoom.user2).fetchJoin()
+				.leftJoin(chatRoom.user1).fetchJoin()
+				.leftJoin(chatRoom.user2).fetchJoin()
 				.where(
 						chatRoom.user1.id.eq(id)
 						.or(chatRoom.user2.id.eq(id))

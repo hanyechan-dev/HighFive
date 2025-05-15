@@ -19,6 +19,7 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepositoryCusto
 
 		List<Advertisement> results = queryFactory
 				.selectFrom(advertisement)
+				.join(advertisement.company).fetchJoin()
 				.where(advertisement.company.id.eq(id))
 				.fetch();
 

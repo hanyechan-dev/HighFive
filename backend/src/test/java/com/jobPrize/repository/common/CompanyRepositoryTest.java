@@ -1,63 +1,63 @@
-package com.jobPrize.repository.common;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-
-import com.jobPrize.config.QuerydslConfig;
-import com.jobPrize.entity.company.JobPosting;
-import com.jobPrize.entity.company.JobPostingImage;
-import com.jobPrize.repository.company.Industry.IndustryRepository;
-import com.jobPrize.repository.company.advertisement.AdvertisementRepository;
-import com.jobPrize.repository.company.company.CompanyRepository;
-import com.jobPrize.repository.company.jobPosting.CompanyJobPostingRepository;
-import com.jobPrize.repository.company.jobPostingImage.CompanyJobPostingImageRepository;
-import com.jobPrize.repository.company.schedule.ScheduleRepository;
-import com.jobPrize.repository.member.member.MemberRepository;
-
-import jakarta.persistence.EntityManager;
-
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(QuerydslConfig.class)
-public class CompanyRepositoryTest {
-   
-   @Autowired
-   private UserRepository userRepository;
-   
-   @Autowired
-   private MemberRepository memberRepository;
-   
-   @Autowired
-   private IndustryRepository industryRepository;
-   
-   @Autowired
-   private CompanyRepository companyRepository;
-
-	
-   @Autowired
-	private ScheduleRepository scheduleRepository;
-
-	@Autowired
-	private AdvertisementRepository advertisementRepository;
-
-	@Autowired
-	private CompanyJobPostingImageRepository jobPostingImageRepository;
-
-	@Autowired
-	private CompanyJobPostingRepository companyJobPostingRepository;
-
-	@Autowired
-	private EntityManager em;
+//package com.jobPrize.repository.common;
+//
+//import java.util.List;
+//import java.util.Optional;
+//
+//import org.junit.jupiter.api.DisplayName;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+//import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+//import org.springframework.context.annotation.Import;
+//import org.springframework.data.domain.Page;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.Pageable;
+//
+//import com.jobPrize.config.QuerydslConfig;
+//import com.jobPrize.entity.company.JobPosting;
+//import com.jobPrize.entity.company.JobPostingImage;
+//import com.jobPrize.repository.company.Industry.IndustryRepository;
+//import com.jobPrize.repository.company.advertisement.AdvertisementRepository;
+//import com.jobPrize.repository.company.company.CompanyRepository;
+//import com.jobPrize.repository.company.jobPosting.CompanyJobPostingRepository;
+//import com.jobPrize.repository.company.jobPostingImage.CompanyJobPostingImageRepository;
+//import com.jobPrize.repository.company.schedule.ScheduleRepository;
+//import com.jobPrize.repository.member.member.MemberRepository;
+//
+//import jakarta.persistence.EntityManager;
+//
+//@DataJpaTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@Import(QuerydslConfig.class)
+//public class CompanyRepositoryTest {
+//   
+//   @Autowired
+//   private UserRepository userRepository;
+//   
+//   @Autowired
+//   private MemberRepository memberRepository;
+//   
+//   @Autowired
+//   private IndustryRepository industryRepository;
+//   
+//   @Autowired
+//   private CompanyRepository companyRepository;
+//
+//	
+//   @Autowired
+//	private ScheduleRepository scheduleRepository;
+//
+//	@Autowired
+//	private AdvertisementRepository advertisementRepository;
+//
+//	@Autowired
+//	private CompanyJobPostingImageRepository jobPostingImageRepository;
+//
+//	@Autowired
+//	private CompanyJobPostingRepository companyJobPostingRepository;
+//
+//	@Autowired
+//	private EntityManager em;
 
 	/*
 	 * @Test

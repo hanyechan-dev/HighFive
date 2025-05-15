@@ -838,39 +838,39 @@ class UserRepositoryTest {
 //	       em.clear();
 //	   }
 	
-	   @Test
-	   @Rollback(false)
-	   @DisplayName("request 조회")
-	   void findRequest() {
-	       Request request = memberRequestRepository.findWithAiConsultingByRequestId(1L).orElseThrow();
-
-	       RequestDocument rd = request.getRequestDocument();
-	       AiConsulting ac = request.getAiConsulting();
-	       List<AiConsultingContent> accs =ac.getAiConsultingContents();
-	       accs.get
-	       
-	       
-	       rd.getCareerDescriptionJson();
-	       rd.getCoverLetterJson();
-	       rd.getResumeJson();
-	       
-
-	       for (int i = 0; i < consultantConsultings.size(); i++) {
-	           ConsultantConsulting consultantConsulting = consultantConsultings.get(i);
-
-	           ConsultantConsultingContent consultantConsultingContent = ConsultantConsultingContent
-	                   .builder()
-	                   .consultantConsulting(consultantConsulting)
-	                   .documentType(i % 2 == 0 ? CommonEnum.DocumentType.경력기술서 : CommonEnum.DocumentType.자기소개서)
-	                   .item(items[i])
-	                   .content(contents[i])
-	                   .build();
-
-	           consultantConsultingContentRepository.save(consultantConsultingContent);
-	       }
-
-	       em.flush();
-	       em.clear();
-	   }
+//	   @Test
+//	   @Rollback(false)
+//	   @DisplayName("request 조회")
+//	   void findRequest() {
+//	       Request request = memberRequestRepository.findWithAiConsultingByRequestId(1L).orElseThrow();
+//
+//	       RequestDocument rd = request.getRequestDocument();
+//	       AiConsulting ac = request.getAiConsulting();
+//	       List<AiConsultingContent> accs =ac.getAiConsultingContents();
+//	       accs.get
+//	       
+//	       
+//	       rd.getCareerDescriptionJson();
+//	       rd.getCoverLetterJson();
+//	       rd.getResumeJson();
+//	       
+//
+//	       for (int i = 0; i < consultantConsultings.size(); i++) {
+//	           ConsultantConsulting consultantConsulting = consultantConsultings.get(i);
+//
+//	           ConsultantConsultingContent consultantConsultingContent = ConsultantConsultingContent
+//	                   .builder()
+//	                   .consultantConsulting(consultantConsulting)
+//	                   .documentType(i % 2 == 0 ? CommonEnum.DocumentType.경력기술서 : CommonEnum.DocumentType.자기소개서)
+//	                   .item(items[i])
+//	                   .content(contents[i])
+//	                   .build();
+//
+//	           consultantConsultingContentRepository.save(consultantConsultingContent);
+//	       }
+//
+//	       em.flush();
+//	       em.clear();
+//	   }
 	
 }

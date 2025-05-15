@@ -35,7 +35,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         // 게시글만 페이징
         List<Post> results = queryFactory
                 .selectFrom(post)
-                .join(post.user, user).fetchJoin()
+                .leftJoin(post.user, user).fetchJoin()
                 .leftJoin(user.member, member).fetchJoin()
                 .orderBy(post.createdTime.desc())
                 .offset(pageable.getOffset())

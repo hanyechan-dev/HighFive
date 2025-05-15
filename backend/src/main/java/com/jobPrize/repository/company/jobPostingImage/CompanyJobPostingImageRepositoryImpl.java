@@ -19,6 +19,7 @@ public class CompanyJobPostingImageRepositoryImpl implements CompanyJobPostingIm
 
 		List<JobPostingImage> results = queryFactory
 				.selectFrom(jobPostingImage)
+				.join(jobPostingImage.jobPosting).fetchJoin()
 				.where(jobPostingImage.jobPosting.id.eq(Id))
 				.fetch();
 		

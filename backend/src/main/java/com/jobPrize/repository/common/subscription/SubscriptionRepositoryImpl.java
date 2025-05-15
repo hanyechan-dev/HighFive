@@ -21,7 +21,7 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)
-				.leftJoin(subscription.user, user).fetchJoin()
+				.leftJoin(subscription.user).fetchJoin()
 				.distinct()
 				.orderBy(subscription.startDate.desc())
 				.fetch();
@@ -31,12 +31,11 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 	@Override
 	public List<Subscription> findAllByUserType(UserType userType){ // UserType에 따른 구독자 조회
 		QSubscription subscription = QSubscription.subscription;
-		QUser user = QUser.user;
 		
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)
-				.join(subscription.user, user).fetchJoin()
-				.where(user.type.eq(userType))
+				.join(subscription.user).fetchJoin()
+				.where(subscription.user.type.eq(userType))
 				.distinct()
 				.orderBy(subscription.startDate.desc())
 				.fetch();

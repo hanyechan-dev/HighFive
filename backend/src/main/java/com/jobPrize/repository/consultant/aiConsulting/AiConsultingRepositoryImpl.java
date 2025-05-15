@@ -29,7 +29,6 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	@Override
 	public Optional<AiConsulting> findWithAllRequestByAiConsultingId(Long id) {
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
-	    QAiConsultingContent aiConsultingContent = QAiConsultingContent.aiConsultingContent;
 	    QRequest request = QRequest.request;
 	    QRequestDocument requestDocument = QRequestDocument.requestDocument;
 	    QUser user = QUser.user;
@@ -38,11 +37,11 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 		
 		AiConsulting result = queryFactory
 				.selectFrom(aiConsulting)
-		        .leftJoin(aiConsulting.aiConsultingContents, aiConsultingContent).fetchJoin()
-		        .leftJoin(aiConsulting.request, request).fetchJoin()
+		        .leftJoin(aiConsulting.aiConsultingContents).fetchJoin()
+		        .join(aiConsulting.request, request).fetchJoin()
+		        .join(request.requestDocument, requestDocument).fetchJoin()
 		        .leftJoin(request.member, member).fetchJoin() // member 추가
-		        .leftJoin(member.user, user).fetchJoin() // user 추가
-		        .leftJoin(request.requestDocument, requestDocument).fetchJoin()
+		        .join(member.user, user).fetchJoin() // user 추가
 		        .where(aiConsulting.id.eq(id))
 		        .distinct()
 		        .fetchOne();
@@ -53,11 +52,10 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	@Override
 	public Page<AiConsulting> findAllByCondition(Pageable pageable) {
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
-		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 		
 		List<AiConsulting> results = queryFactory
 				.selectFrom(aiConsulting)
-				.leftJoin(aiConsulting.consultantConsulting, consultantConsulting).fetchJoin()
+				.leftJoin(aiConsulting.consultantConsulting).fetchJoin()
 				.where(
 					aiConsulting.isRequested.isTrue(),
 					aiConsulting.consultantConsulting.isNull()
@@ -74,13 +72,12 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	public long countAiConsultingByCondition() {
 		
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
-		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 		
 		return Optional.ofNullable(
 			queryFactory
 	        .select(aiConsulting.count())
 	        .from(aiConsulting)
-	        .leftJoin(aiConsulting.consultantConsulting, consultantConsulting).fetchJoin()
+	        .leftJoin(aiConsulting.consultantConsulting).fetchJoin()
 	        .where(
 					aiConsulting.isRequested.eq(true),
 					aiConsulting.consultantConsulting.isNull()

@@ -17,10 +17,9 @@ public class CareerDescriptionRepositoryImpl implements CareerDescriptionReposit
 	@Override
 	public Optional<CareerDescription> findWithCareerDescriptionContentsByCareerDescriptionId(Long id) {
 		QCareerDescription careerDescription = QCareerDescription.careerDescription;
-		QCareerDescriptionContent careerDescriptionContent = QCareerDescriptionContent.careerDescriptionContent;
 		
 		CareerDescription result = queryFactory.selectFrom(careerDescription)
-				.leftJoin(careerDescription.careerDescriptionContents, careerDescriptionContent).fetchJoin()
+				.leftJoin(careerDescription.careerDescriptionContents).fetchJoin()
 				.where(careerDescription.id.eq(id))
 				.distinct()
 				.fetchOne();

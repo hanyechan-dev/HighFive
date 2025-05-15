@@ -22,7 +22,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
 		
 		List<Notification> results = queryFactory
 				.selectFrom(notification)
-				.join(notification.user)
+				.join(notification.user).fetchJoin()
 				.where(
 						notification.user.id.eq(id),
 						notification.createdTime.between(oneMonthAgo, currentTime)

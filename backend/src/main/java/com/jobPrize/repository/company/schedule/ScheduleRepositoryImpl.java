@@ -21,6 +21,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
         return queryFactory.selectFrom(schedule)
         		.select(schedule)
         		.from(schedule)
+        		.join(schedule.company).fetchJoin()
                 .where(schedule.company.id.eq(id))
                 .orderBy(schedule.date.desc())
                 .fetch();

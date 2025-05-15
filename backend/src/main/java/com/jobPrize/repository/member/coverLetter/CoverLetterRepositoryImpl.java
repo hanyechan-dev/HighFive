@@ -18,10 +18,9 @@ public class CoverLetterRepositoryImpl implements CoverLetterRepositoryCustom {
 	@Override
 	public Optional<CoverLetter> findWithCoverLetterContentsByCoverLetterId(Long id) {
 		QCoverLetter coverLetter = QCoverLetter.coverLetter;
-		QCoverLetterContent coverLetterContent = QCoverLetterContent.coverLetterContent;
 		
 		CoverLetter result = queryFactory.selectFrom(coverLetter)
-				.leftJoin(coverLetter.coverLetterContents, coverLetterContent).fetchJoin()
+				.leftJoin(coverLetter.coverLetterContents).fetchJoin()
 				.where(coverLetter.id.eq(id))
 				.distinct()
 				.fetchOne();

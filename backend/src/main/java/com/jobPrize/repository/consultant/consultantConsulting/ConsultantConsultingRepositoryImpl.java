@@ -23,13 +23,10 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 	public Optional<ConsultantConsulting> findWithConsultantConsultingContentsByConsultantConsultingId(Long id) {
 
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
-		QConsultantConsultingContent consultantConsultingContent = QConsultantConsultingContent.consultantConsultingContent;
-
-
 
 		ConsultantConsulting result = queryFactory
 				.selectFrom(consultantConsulting)
-				.leftJoin(consultantConsulting.consultantConsultingContents, consultantConsultingContent).fetchJoin()
+				.leftJoin(consultantConsulting.consultantConsultingContents).fetchJoin()
 				.where(consultantConsulting.id.eq(id))
 				.distinct()
 				.fetchOne();
@@ -43,7 +40,7 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 
 		List<ConsultantConsulting> results = queryFactory
 				.selectFrom(consultantConsulting)
-				.leftJoin(consultantConsulting.consultant).fetchJoin()
+				.join(consultantConsulting.consultant).fetchJoin()
 				.where(consultantConsulting.consultant.id.eq(id))
 				.orderBy(consultantConsulting.id.desc())
 				.offset(pageable.getOffset())
