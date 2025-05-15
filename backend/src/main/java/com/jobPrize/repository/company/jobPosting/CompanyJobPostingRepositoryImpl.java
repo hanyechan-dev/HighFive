@@ -16,7 +16,6 @@ import com.jobPrize.entity.memToCom.QPass;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
-
 @RequiredArgsConstructor
 public class CompanyJobPostingRepositoryImpl implements CompanyJobPostingRepositoryCustom {
 
@@ -28,10 +27,12 @@ public class CompanyJobPostingRepositoryImpl implements CompanyJobPostingReposit
 
 		List<JobPosting> results = queryFactory
 				.selectFrom(jobPosting)
+				.join(jobPosting.company) .fetchJoin()
 				.where(jobPosting.company.id.eq(id))
 				.orderBy(jobPosting.createdDate.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
+				.distinct()
 				.fetch();
 
 		return new PageImpl<JobPosting>(results, pageable, countJobPostingsByCompanyId(id));
@@ -58,7 +59,8 @@ public class CompanyJobPostingRepositoryImpl implements CompanyJobPostingReposit
 		
 		JobPosting result = queryFactory
 				.selectFrom(jobPosting)
-				.leftJoin(jobPosting.jobPostingImages, jobPostingImage).fetchJoin()
+				.join(jobPosting.jobPostingImages, jobPostingImage).fetchJoin()
+				.fetchJoin()
 				.where(jobPosting.id.eq(id))
 				.distinct()
 				.fetchOne();
@@ -72,7 +74,8 @@ public class CompanyJobPostingRepositoryImpl implements CompanyJobPostingReposit
 		QPass pass = QPass.pass;
 		QAppDocument appDocument = QAppDocument.appDocument;
 		JobPosting result = queryFactory
-				.selectFrom(jobPosting)
+				.select(jobPosting)
+				.from(jobPosting)
 				.leftJoin(jobPosting.applications, application).fetchJoin()
 				.leftJoin(application.pass, pass).fetchJoin()
 				.join(application.appDocument ,appDocument).fetchJoin()

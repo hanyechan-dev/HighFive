@@ -19,7 +19,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
 		
 	Company result = queryFactory	
 				.selectFrom(company)
-				.where(company.user.id.eq(id)) // 회원 ID로 회사 조회
+				.where(company.user.id.eq(id)) 
 				.fetchOne();
 				
 		return Optional.ofNullable(result);

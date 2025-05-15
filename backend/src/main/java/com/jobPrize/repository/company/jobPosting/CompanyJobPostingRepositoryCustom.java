@@ -11,4 +11,5 @@ public interface CompanyJobPostingRepositoryCustom {
 	 Page<JobPosting> findAllByCompanyId(Long Id,Pageable pageable); 
 	 Optional<JobPosting> findWithJobPostingImageByJobPostingId(Long id);
 	 Optional<JobPosting> findwithApplicationsByJobPostingId(Long id);
+	 long countJobPostingsByCompanyId(Long id);
 }

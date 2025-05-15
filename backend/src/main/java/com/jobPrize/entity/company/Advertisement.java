@@ -1,6 +1,7 @@
 package com.jobPrize.entity.company;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,8 +18,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+@Getter
 @Entity
 @Table(name = "advertisement")
 @NoArgsConstructor

@@ -3,12 +3,14 @@ package com.jobPrize.entity.company;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.jobPrize.entity.admin.Admin;
 import com.jobPrize.entity.common.User;
-
+@Getter
 @Entity
 @Table(name = "schedule")
 @NoArgsConstructor
