@@ -18,6 +18,7 @@ public class EducationRepositoryImpl implements EducationRepositoryCostom{
 		
 		List<Education> results = queryFactory
 				.selectFrom(education)
+				.join(education.member).fetchJoin()
 				.where(education.member.id.eq(id))
 				.orderBy(education.enterDate.desc())
 				.fetch();

@@ -18,7 +18,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 	
 	@Override
-	public List<ChatRoom> findAll(){	// 채팅방 리스트 조회(가장 최근 메시지의 시간을 기준으로 내림차순 정렬)
+	public List<ChatRoom> findAllByUserId(Long id){	// 채팅방 리스트 조회(가장 최근 메시지의 시간을 기준으로 내림차순 정렬)
 		QChatRoom chatRoom = QChatRoom.chatRoom;
 		QChatContent chatContent = QChatContent.chatContent;
 		
@@ -32,6 +32,12 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		
 		List<ChatRoom> results = queryFactory
 				.selectFrom(chatRoom)
+				.join(chatRoom.user1).fetchJoin()
+				.join(chatRoom.user2).fetchJoin()
+				.where(
+						chatRoom.user1.id.eq(id)
+						.or(chatRoom.user2.id.eq(id))
+						)
 				.orderBy(orderByLatestChat.nullsLast())
 				.fetch();
 		

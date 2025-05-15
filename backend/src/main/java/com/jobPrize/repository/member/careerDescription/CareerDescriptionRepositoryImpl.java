@@ -33,6 +33,7 @@ public class CareerDescriptionRepositoryImpl implements CareerDescriptionReposit
 		
 		List<CareerDescription> results = queryFactory
 				.selectFrom(careerDescription)
+				.join(careerDescription.member).fetchJoin()
 				.where(careerDescription.member.id.eq(id))
 				.orderBy(careerDescription.createdDate.desc())
 				.fetch();

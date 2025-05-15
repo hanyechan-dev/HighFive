@@ -22,6 +22,7 @@ public class PaymentRepositoryImpl implements PaymentRepositoryCustom{
 		
 		List<Payment> results = queryFactory
 				.selectFrom(payment)
+				.join(payment.user).fetchJoin()
 				.where(payment.user.id.eq(id))
 				.orderBy(payment.createdTime.desc())
 				.offset(pageable.getOffset())

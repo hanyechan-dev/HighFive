@@ -14,7 +14,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public List<Notification> findAllForOneMonth(){	// 1개월 전까지의 모든 알림 조회
+	public List<Notification> findAllForOneMonthByUserId(Long id){	// 1개월 전까지의 모든 알림 조회
 		QNotification notification = QNotification.notification;
 		
 		LocalDateTime currentTime = LocalDateTime.now();
@@ -22,7 +22,11 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
 		
 		List<Notification> results = queryFactory
 				.selectFrom(notification)
-				.where(notification.createdTime.between(oneMonthAgo, currentTime))
+				.join(notification.user)
+				.where(
+						notification.user.id.eq(id),
+						notification.createdTime.between(oneMonthAgo, currentTime)
+						)
 				.orderBy(notification.createdTime.desc())
 				.fetch();
 		

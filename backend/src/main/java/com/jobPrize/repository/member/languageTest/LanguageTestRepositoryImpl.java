@@ -18,6 +18,7 @@ public class LanguageTestRepositoryImpl implements LanguageTestRepositoryCostom{
 		
 		List<LanguageTest> results = queryFactory
 				.selectFrom(languageTest)
+				.join(languageTest.member).fetchJoin()
 				.where(languageTest.member.id.eq(id))
 				.orderBy(languageTest.acquisitionDate.desc())
 				.fetch();

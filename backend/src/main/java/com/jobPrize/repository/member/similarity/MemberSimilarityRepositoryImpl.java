@@ -27,6 +27,7 @@ public class MemberSimilarityRepositoryImpl implements MemberSimilarityRepositor
 		List<Similarity> results = queryFactory
 			    .selectFrom(similarity)
 			    .join(similarity.jobPosting, jobPosting).fetchJoin()
+			    .join(similarity.member).fetchJoin()
 			    .where(similarity.member.id.eq(id))
 			    .orderBy(similarity.score.desc())
 			    .offset(pageable.getOffset())

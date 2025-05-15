@@ -26,6 +26,7 @@ public class MemberApplicationRepositoryImpl implements MemberApplicationReposit
 		
 		List<Application> results = queryFactory
 				.selectFrom(application)
+				.join(application.member).fetchJoin()
 				.where(application.member.id.eq(id))
 				.orderBy(application.createdDate.desc())
 				.offset(pageable.getOffset())

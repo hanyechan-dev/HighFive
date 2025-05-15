@@ -43,6 +43,7 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 
 		List<ConsultantConsulting> results = queryFactory
 				.selectFrom(consultantConsulting)
+				.leftJoin(consultantConsulting.consultant).fetchJoin()
 				.where(consultantConsulting.consultant.id.eq(id))
 				.orderBy(consultantConsulting.id.desc())
 				.offset(pageable.getOffset())

@@ -30,6 +30,7 @@ public class MemberRequestRepositoryImpl implements MemberRequestRepositoryCusto
 		
 		List<Request> results = queryFactory
 				.selectFrom(request)
+				.join(request.member).fetchJoin()
 				.where(request.member.id.eq(id))
 				.orderBy(request.createdDate.desc())
 				.offset(pageable.getOffset())

@@ -18,6 +18,7 @@ public class CareerRepositoryImpl implements CareerRepositoryCostom{
 		
 		List<Career> results = queryFactory
 				.selectFrom(career)
+				.join(career.member).fetchJoin()
 				.where(career.member.id.eq(id))
 				.orderBy(career.startDate.desc())
 				.fetch();

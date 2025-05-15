@@ -24,6 +24,7 @@ public class MemberProposalRepositoryImpl implements MemberProposalRepositoryCus
 		
 		List<Proposal> results = queryFactory
 				.selectFrom(proposal)
+				.join(proposal.member).fetchJoin()
 				.where(proposal.member.id.eq(id))
 				.orderBy(proposal.proposalDate.desc())
 				.offset(pageable.getOffset())

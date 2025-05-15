@@ -1,11 +1,21 @@
 package com.jobPrize.repository.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
 
 import com.jobPrize.config.QuerydslConfig;
+import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.consultant.aiConsultingContent.AiConsultingContentRepository;
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;

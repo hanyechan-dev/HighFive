@@ -35,6 +35,7 @@ public class CoverLetterRepositoryImpl implements CoverLetterRepositoryCustom {
 		
 		List<CoverLetter> results = queryFactory
 				.selectFrom(coverLetter)
+				.join(coverLetter.member).fetchJoin()
 				.where(coverLetter.member.id.eq(id))
 				.orderBy(coverLetter.createdDate.desc())
 				.fetch();

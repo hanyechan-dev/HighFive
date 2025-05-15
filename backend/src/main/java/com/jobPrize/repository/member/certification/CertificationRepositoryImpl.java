@@ -18,6 +18,7 @@ public class CertificationRepositoryImpl implements CertificationRepositoryCosto
 		
 		List<Certification> results = queryFactory
 				.selectFrom(certification)
+				.join(certification.member).fetchJoin()
 				.where(certification.member.id.eq(id))
 				.orderBy(certification.acquisitionDate.desc())
 				.fetch();
