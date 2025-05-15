@@ -2,6 +2,8 @@ package com.jobPrize.entity.member;
 
 import java.time.LocalDate;
 
+import com.jobPrize.entity.common.User;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,8 +32,8 @@ public class LanguageTest {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESUME_ID", nullable = false)
-	private Resume resume;
+	@JoinColumn(name = "USER_ID", nullable = false)
+	private Member member;
 	
 	@Column(name="LANGUAGE_TYPE", nullable = false)
 	private String languageType;

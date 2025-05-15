@@ -9,5 +9,5 @@ import com.jobPrize.entity.memToCon.Request;
 
 public interface MemberRequestRepositoryCustom {
 	Page<Request> findAllByMemberId(Long id, Pageable pageable);
-	Optional<Request> findWithAllConsultingByRequestId(Long id);
+	Optional<Request> findWithAiConsultingByRequestId(Long id);
 }

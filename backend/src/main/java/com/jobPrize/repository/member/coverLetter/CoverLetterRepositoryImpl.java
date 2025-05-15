@@ -1,8 +1,10 @@
 package com.jobPrize.repository.member.coverLetter;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.jobPrize.entity.member.CoverLetter;
+import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.QCoverLetter;
 import com.jobPrize.entity.member.QCoverLetterContent;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -25,6 +27,22 @@ public class CoverLetterRepositoryImpl implements CoverLetterRepositoryCustom {
 				.fetchOne();
 		
 		return Optional.ofNullable(result);
+	}
+
+	@Override
+	public List<CoverLetter> findAllWithCoverLetterContentsByMemberId(Long id) {
+		QCoverLetter coverLetter = QCoverLetter.coverLetter;
+		QCoverLetterContent coverLetterContent = QCoverLetterContent.coverLetterContent;
+		
+		List<CoverLetter> results = queryFactory
+				.selectFrom(coverLetter)
+				.leftJoin(coverLetter.coverLetterContents, coverLetterContent).fetchJoin()
+				.where(coverLetter.member.id.eq(id))
+				.distinct()
+				.orderBy(coverLetter.createdDate.desc())
+				.fetch();
+		
+		return results;
 	}
 
 }
