@@ -15,11 +15,9 @@ import org.springframework.test.annotation.Rollback;
 
 import com.jobPrize.config.QuerydslConfig;
 import com.jobPrize.entity.common.Payment;
-import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.repository.common.UserRepository;
-import com.jobPrize.repository.admin.payment.AdminPaymentRepository;
-import com.jobPrize.repository.admin.payment.AdminPaymentRepositoryImpl;
+import com.jobPrize.repository.common.payment.PaymentRepository;
 
 import jakarta.persistence.EntityManager;
 
@@ -29,10 +27,8 @@ import jakarta.persistence.EntityManager;
 class PaymentRepositoryTest {
 
 	@Autowired
-	private AdminPaymentRepository adminPaymentRepository;
-	
-	@Autowired
-	private AdminPaymentRepositoryImpl adminPaymentRepositoryImpl;
+	private PaymentRepository paymentRepository;
+
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -69,7 +65,7 @@ class PaymentRepositoryTest {
 
     	LocalDateTime start = LocalDateTime.of(2025, Month.MAY, 14, 2, 15);
     	LocalDateTime end = LocalDateTime.of(2025, Month.MAY, 15, 22, 35);
-    	List<Payment> paidUsers = adminPaymentRepositoryImpl.findAllByUserTypeAndPeriod(start, end, UserType.일반회원);
+    	List<Payment> paidUsers = paymentRepository.findAllByUserTypeAndPeriod(start, end, UserType.일반회원);
     	
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
     	

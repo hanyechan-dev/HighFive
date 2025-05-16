@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.QJobPosting;
 import com.jobPrize.entity.memToCom.QSimilarity;
 import com.jobPrize.entity.memToCom.Similarity;
@@ -21,11 +22,13 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	@Override
 	public Page<Similarity> findAllWithJobPostingByMemberId(Long id, Pageable pageable) {
 		QSimilarity similarity = QSimilarity.similarity;
+		QJobPosting jobPosting = QJobPosting.jobPosting;
 		
 		
 		List<Similarity> results = queryFactory
 			    .selectFrom(similarity)
-			    .join(similarity.jobPosting).fetchJoin()
+			    .join(similarity.jobPosting, jobPosting).fetchJoin()
+			    .join(jobPosting.company).fetchJoin()
 			    .join(similarity.member).fetchJoin()
 			    .where(similarity.member.id.eq(id))
 			    .orderBy(similarity.score.desc())

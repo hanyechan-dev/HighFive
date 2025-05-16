@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.jobPrize.dummy.JobPostingFilterCondition;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.QJobPosting;
+import com.jobPrize.memberService.dto.jobPositing.JobPostingFilterCondition;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 		
 		List<JobPosting> results = queryFactory
 				.selectFrom(jobPosting)
+				.join(jobPosting.company)
 				.where(
 					jobPosting.careerType.like("%"+condition.getCareerType().toString()+"%"),
 					jobPosting.educationLevel.eq(condition.getEducationLevel()),

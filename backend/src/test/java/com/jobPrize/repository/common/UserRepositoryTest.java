@@ -1,21 +1,11 @@
 package com.jobPrize.repository.common;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
 
 import com.jobPrize.config.QuerydslConfig;
-import com.jobPrize.entity.consultant.AiConsulting;
-import com.jobPrize.entity.consultant.AiConsultingContent;
-import com.jobPrize.entity.consultant.CommonEnum;
-import com.jobPrize.entity.consultant.ConsultantConsulting;
-import com.jobPrize.entity.consultant.ConsultantConsultingContent;
-import com.jobPrize.entity.memToCon.Request;
-import com.jobPrize.entity.memToCon.RequestDocument;
 import com.jobPrize.repository.company.Industry.IndustryRepository;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
@@ -23,6 +13,8 @@ import com.jobPrize.repository.consultant.aiConsultingContent.AiConsultingConten
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
 import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
 import com.jobPrize.repository.consultant.consultantConsultingContent.ConsultantConsultingContentRepository;
+import com.jobPrize.repository.memToCon.request.RequestRepository;
+import com.jobPrize.repository.memToCon.requetDocument.RequestDocumentRepository;
 import com.jobPrize.repository.member.career.CareerRepository;
 import com.jobPrize.repository.member.careerDescription.CareerDescriptionRepository;
 import com.jobPrize.repository.member.careerDescriptionContent.CareerDescriptionContentRepository;
@@ -32,8 +24,6 @@ import com.jobPrize.repository.member.coverLetterContent.CoverLetterContentRepos
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.languageTest.LanguageTestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
-import com.jobPrize.repository.member.request.MemberRequestRepository;
-import com.jobPrize.repository.member.requetDocument.RequestDocumentRepository;
 
 import jakarta.persistence.EntityManager;
 
@@ -85,7 +75,7 @@ class UserRepositoryTest {
 	private RequestDocumentRepository requestDocumentRepository;
 	
 	@Autowired
-	private MemberRequestRepository memberRequestRepository;
+	private RequestRepository memberRequestRepository;
 	
 	@Autowired
 	private AiConsultingRepository aiConsultingRepository;

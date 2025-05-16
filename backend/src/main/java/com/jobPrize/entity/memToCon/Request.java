@@ -46,9 +46,17 @@ public class Request {
 	@JoinColumn(name = "REQUEST_DOCUMENT_ID", nullable = false)
 	private RequestDocument requestDocument;
 	
+	@Column(name = "TARGET_JOB")
+	private String targetJob;
+	
+	@Column(name = "TARGET_COMPANY_NAME")
+	private String targetCompanyName;
+	
 	@CreatedDate
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
+	
+	
 	
 	@OneToOne(mappedBy = "request", fetch = FetchType.LAZY)
 	private AiConsulting aiConsulting;

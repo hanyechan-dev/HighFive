@@ -1,29 +1,19 @@
 package com.jobPrize.repository.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.annotation.Rollback;
 
 import com.jobPrize.config.QuerydslConfig;
-import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.consultant.aiConsultingContent.AiConsultingContentRepository;
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
 import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
 import com.jobPrize.repository.consultant.consultantConsultingContent.ConsultantConsultingContentRepository;
+import com.jobPrize.repository.memToCon.request.RequestRepository;
+import com.jobPrize.repository.memToCon.requetDocument.RequestDocumentRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
-import com.jobPrize.repository.member.request.MemberRequestRepository;
-import com.jobPrize.repository.member.requetDocument.RequestDocumentRepository;
 
 import jakarta.persistence.EntityManager;
 
@@ -56,7 +46,7 @@ public class ConsultantRepositoryTest {
 	private ConsultantConsultingContentRepository consultantConsultingContentRepository;
 	
 	@Autowired
-	private MemberRequestRepository memberRequestRepository;
+	private RequestRepository memberRequestRepository;
 	
 	@Autowired
 	private RequestDocumentRepository requestDocumentRepository;
