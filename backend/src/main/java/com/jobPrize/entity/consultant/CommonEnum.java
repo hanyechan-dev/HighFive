@@ -10,4 +10,8 @@ public class CommonEnum {
 	public enum DocumentType {
 		경력기술서, 자기소개서
 	}
+	
+	public enum CompleteType {
+		작업중, 작업완료
+	}
 }
