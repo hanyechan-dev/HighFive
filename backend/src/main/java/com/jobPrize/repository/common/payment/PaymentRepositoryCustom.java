@@ -10,6 +10,6 @@ import com.jobPrize.entity.common.Payment;
 import com.jobPrize.entity.common.UserType;
 
 public interface PaymentRepositoryCustom {
-	Page<Payment> findAllByMemberId(Long id, Pageable pageable);
+	Page<Payment> findAllByUserId(Long id, Pageable pageable);
 	List<Payment> findAllByUserTypeAndPeriod(LocalDateTime start, LocalDateTime end, UserType userType);
 }

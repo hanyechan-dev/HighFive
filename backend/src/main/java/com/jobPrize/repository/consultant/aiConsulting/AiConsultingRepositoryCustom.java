@@ -8,10 +8,7 @@ import org.springframework.data.domain.Pageable;
 import com.jobPrize.entity.consultant.AiConsulting;
 
 public interface AiConsultingRepositoryCustom {
-		
-
 	Optional<AiConsulting> findWithAllRequestByAiConsultingId(Long id);
 	Page<AiConsulting> findAllByCondition(Pageable pageable);
-	long countAiConsultingByCondition();
 
 }

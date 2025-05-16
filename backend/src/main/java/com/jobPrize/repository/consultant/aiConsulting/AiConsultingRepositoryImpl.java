@@ -65,11 +65,11 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 				.limit(pageable.getPageSize())
 				.fetch();
 		
-		return new PageImpl<>(results, pageable, countAiConsultingByCondition());
+		return new PageImpl<>(results, pageable, countAiConsultingsByCondition());
 
 	}
 	
-	public long countAiConsultingByCondition() {
+	public long countAiConsultingsByCondition() {
 		
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
 		

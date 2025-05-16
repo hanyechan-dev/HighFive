@@ -32,11 +32,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
         QSchedule schedule = QSchedule.schedule;
 
         return Optional.ofNullable(
-                queryFactory.selectFrom(schedule)
-                .select(schedule)
-        		.from(schedule)
+                queryFactory
+                .selectFrom(schedule)
                 .where(schedule.id.eq(Id))
-                .distinct()
                 .fetchOne()
         );
     }

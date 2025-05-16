@@ -36,7 +36,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         List<Post> results = queryFactory
                 .selectFrom(post)
                 .leftJoin(post.user, user).fetchJoin()
-                .leftJoin(user.member, member).fetchJoin()
+                .leftJoin(user.member).fetchJoin()
                 .orderBy(post.createdTime.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -81,7 +81,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 				.selectFrom(post)
 				.leftJoin(post.comments, comment).fetchJoin()
 				.leftJoin(comment.user, user).fetchJoin()
-				.leftJoin(user.member, member).fetchJoin()
+				.leftJoin(user.member).fetchJoin()
 				.where(post.id.eq(id))
 				.distinct()
 				.fetchOne();

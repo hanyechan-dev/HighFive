@@ -12,5 +12,4 @@ public interface ConsultantConsultingRepositoryCustom {
 
 	Optional<ConsultantConsulting> findWithConsultantConsultingContentsByConsultantConsultingId(Long id);
 	Page<ConsultantConsulting> findWithAllConsultantConsultingByConsultantId(Long id, Pageable pageable);
-	long countConsultantConsultingByConsultantId(Long id);
 }

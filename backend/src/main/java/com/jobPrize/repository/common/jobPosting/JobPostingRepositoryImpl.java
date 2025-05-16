@@ -24,7 +24,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 		List<JobPosting> results = queryFactory
 				.selectFrom(jobPosting)
 				.where(
-					jobPosting.careerType.like("%"+condition.getCareerType()+"%"),
+					jobPosting.careerType.like("%"+condition.getCareerType().toString()+"%"),
 					jobPosting.educationLevel.eq(condition.getEducationLevel()),
 					jobPosting.job.like("%"+condition.getJob().toString()+"%"),
 					jobPosting.workLocation.like("%"+condition.getWorkLocation().toString()+"%"),

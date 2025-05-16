@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class PaymentRepositoryImpl implements PaymentRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 	@Override
-	public Page<Payment> findAllByMemberId(Long id, Pageable pageable) {
+	public Page<Payment> findAllByUserId(Long id, Pageable pageable) {
 		QPayment payment = QPayment.payment;
 		
 		List<Payment> results = queryFactory
@@ -42,7 +42,7 @@ public class PaymentRepositoryImpl implements PaymentRepositoryCustom{
 		
 		List<Payment> results = queryFactory
 				.selectFrom(payment)
-				.join(payment.user).fetchJoin()
+				.leftJoin(payment.user).fetchJoin()
 				.where(payment.createdTime.between(start, end),
 						payment.user.type.eq(userType))
 				.orderBy(payment.createdTime.asc())

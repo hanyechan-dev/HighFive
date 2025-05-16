@@ -27,15 +27,28 @@ public class CompanyJobPostingRepositoryImpl implements CompanyJobPostingReposit
 
 		List<JobPosting> results = queryFactory
 				.selectFrom(jobPosting)
-				.join(jobPosting.company) .fetchJoin()
+				.join(jobPosting.company).fetchJoin()
 				.where(jobPosting.company.id.eq(id))
 				.orderBy(jobPosting.createdDate.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
-				.distinct()
 				.fetch();
 
 		return new PageImpl<JobPosting>(results, pageable, countJobPostingsByCompanyId(id));
+	}
+	
+	@Override
+	public  Optional<JobPosting> findWithJobPostingImageByJobPostingId(Long id) {
+		QJobPosting jobPosting = QJobPosting.jobPosting;
+		
+		JobPosting result = queryFactory
+				.selectFrom(jobPosting)
+				.leftJoin(jobPosting.jobPostingImages).fetchJoin()
+				.fetchJoin()
+				.where(jobPosting.id.eq(id))
+				.distinct()
+				.fetchOne();
+				return Optional.ofNullable(result);
 	}
 	
 	public long countJobPostingsByCompanyId(Long id) {
@@ -48,41 +61,5 @@ public class CompanyJobPostingRepositoryImpl implements CompanyJobPostingReposit
 				.where(jobPosting.company.id.eq(id))
 				.fetchOne())
 				.orElse(0L);
-	}
-	
-
-
-	@Override
-	public  Optional<JobPosting> findWithJobPostingImageByJobPostingId(Long id) {
-		QJobPosting jobPosting = QJobPosting.jobPosting;
-		QJobPostingImage jobPostingImage = QJobPostingImage.jobPostingImage;
-		
-		JobPosting result = queryFactory
-				.selectFrom(jobPosting)
-				.join(jobPosting.jobPostingImages, jobPostingImage).fetchJoin()
-				.fetchJoin()
-				.where(jobPosting.id.eq(id))
-				.distinct()
-				.fetchOne();
-				return Optional.ofNullable(result);
-	}
-
-	@Override
-	public Optional<JobPosting> findwithApplicationsByJobPostingId(Long id){
-		QJobPosting jobPosting = QJobPosting.jobPosting;
-		QApplication application = QApplication.application;
-		QPass pass = QPass.pass;
-		QAppDocument appDocument = QAppDocument.appDocument;
-		JobPosting result = queryFactory
-				.select(jobPosting)
-				.from(jobPosting)
-				.leftJoin(jobPosting.applications, application).fetchJoin()
-				.leftJoin(application.pass, pass).fetchJoin()
-				.join(application.appDocument ,appDocument).fetchJoin()
-				.where(jobPosting.id.eq(id))
-				.distinct()
-				.fetchOne();
-				return Optional.ofNullable(result); 
-				
 	}
 }

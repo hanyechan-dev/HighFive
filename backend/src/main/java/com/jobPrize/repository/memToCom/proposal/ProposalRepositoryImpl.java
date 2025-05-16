@@ -27,6 +27,7 @@ public class ProposalRepositoryImpl implements ProposalRepositoryCustom{
 		
 		List<Proposal> results = queryFactory
 				.selectFrom(proposal)
+				.join(proposal.company).fetchJoin()
 				.where(proposal.company.id.eq(id))
 				.orderBy(proposal.proposalDate.desc())
 				.offset(pageable.getOffset())
@@ -70,7 +71,7 @@ public class ProposalRepositoryImpl implements ProposalRepositoryCustom{
 	    	queryFactory
 	        .select(proposal.count())
 	        .from(proposal)
-	        .where(proposal.company.id.eq(id))
+	        .where(proposal.member.id.eq(id))
 	        .fetchOne())
 	    	.orElse(0L);
 	}
