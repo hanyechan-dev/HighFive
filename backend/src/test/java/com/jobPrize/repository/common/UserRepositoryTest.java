@@ -14,7 +14,6 @@ import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
 import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
 import com.jobPrize.repository.consultant.consultantConsultingContent.ConsultantConsultingContentRepository;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
-import com.jobPrize.repository.memToCon.requetDocument.RequestDocumentRepository;
 import com.jobPrize.repository.member.career.CareerRepository;
 import com.jobPrize.repository.member.careerDescription.CareerDescriptionRepository;
 import com.jobPrize.repository.member.careerDescriptionContent.CareerDescriptionContentRepository;
@@ -70,9 +69,7 @@ class UserRepositoryTest {
 
 	@Autowired
 	private CareerDescriptionContentRepository careerDescriptionContentRepository;
-	
-	@Autowired
-	private RequestDocumentRepository requestDocumentRepository;
+
 	
 	@Autowired
 	private RequestRepository memberRequestRepository;

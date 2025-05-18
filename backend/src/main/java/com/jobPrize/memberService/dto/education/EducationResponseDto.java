@@ -4,21 +4,19 @@ package com.jobPrize.memberService.dto.education;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.member.Education;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class EducationResponseDto {
+	
+	private Long id;
 	
 	private String schoolName;
 	
@@ -36,6 +34,7 @@ public class EducationResponseDto {
 	
 	public static EducationResponseDto from(Education education) {
 		return EducationResponseDto.builder()
+				.id(education.getId())
 				.schoolName(education.getSchoolName())
 				.educationLevel(education.getEducationLevel())
 				.major(education.getMajor())

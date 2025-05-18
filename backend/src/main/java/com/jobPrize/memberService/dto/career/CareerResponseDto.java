@@ -2,6 +2,7 @@ package com.jobPrize.memberService.dto.career;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jobPrize.entity.member.Career;
 
 import lombok.Builder;
@@ -9,7 +10,10 @@ import lombok.Getter;
 
 @Getter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CareerResponseDto {
+	
+	private Long id;
 
 	private String companyName;
 
@@ -25,6 +29,7 @@ public class CareerResponseDto {
 	
 	public static CareerResponseDto from(Career career) {
 		return CareerResponseDto.builder()
+				.id(career.getId())
 				.companyName(career.getCompanyName())
 				.job(career.getJob())
 				.department(career.getDepartment())

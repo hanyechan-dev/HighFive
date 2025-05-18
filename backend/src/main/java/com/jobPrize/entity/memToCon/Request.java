@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.jobPrize.entity.consultant.AiConsulting;
+import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.member.Member;
 
 import jakarta.persistence.Column;
@@ -42,22 +43,29 @@ public class Request {
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private Member member;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "REQUEST_DOCUMENT_ID", nullable = false)
-	private RequestDocument requestDocument;
-	
 	@Column(name = "TARGET_JOB")
 	private String targetJob;
 	
 	@Column(name = "TARGET_COMPANY_NAME")
 	private String targetCompanyName;
+
+	@Column(name = "CONSULTING_TYPE", nullable = false)
+	private CommonEnum.ConsultingType type;
+
+	@Column(name = "resume_json", columnDefinition = "TEXT", nullable = false)
+	private String resumeJson;
+
+	@Column(name = "career_description_json", columnDefinition = "TEXT")
+	private String careerDescriptionJson;
+	
+	@Column(name = "cover_letter_json", columnDefinition = "TEXT", nullable = false)
+	private String coverLetterJson;
 	
 	@CreatedDate
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
 	
-	
-	
+
 	@OneToOne(mappedBy = "request", fetch = FetchType.LAZY)
 	private AiConsulting aiConsulting;
 

@@ -15,7 +15,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class EducationRequestDto {
+public class EducationUpdateDto {
+	
+	@NotNull(message = "수정 시 id는 필수입니다.")
+	private Long id;
 	
 	@Size(max = 20, message = "학교명은 20자 이하로 입력해야합니다.")
 	@NotBlank(message = "학교명은 필수로 입력해야합니다")
@@ -32,8 +35,10 @@ public class EducationRequestDto {
 	private BigDecimal gpa;
 	
 	@Size(max = 10,message = "지역은 10자 이하로 입력해야합니다.")
+	@NotBlank(message = "지역은 필수로 입력해야합니다")
 	private String location;
 	
+	@NotNull(message = "입학일은 필수로 입력해야합니다.")
 	@Past(message = "입학일은 현재 이하로 입력해야합니다.")
 	private LocalDate enterDate;
 	

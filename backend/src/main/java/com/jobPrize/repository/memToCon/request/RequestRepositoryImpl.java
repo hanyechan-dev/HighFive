@@ -8,12 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.consultant.QAiConsulting;
-import com.jobPrize.entity.consultant.QAiConsultingContent;
-import com.jobPrize.entity.consultant.QConsultantConsulting;
-import com.jobPrize.entity.consultant.QConsultantConsultingContent;
 import com.jobPrize.entity.memToCon.QRequest;
-import com.jobPrize.entity.memToCon.QRequestDocument;
 import com.jobPrize.entity.memToCon.Request;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -25,13 +22,16 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Request> findAllByMemberId(Long id, Pageable pageable) {
+	public Page<Request> findAllByMemberIdAndType(Long id, CommonEnum.ConsultingType type, Pageable pageable) {
 		QRequest request = QRequest.request;
 		
 		List<Request> results = queryFactory
 				.selectFrom(request)
 				.join(request.member).fetchJoin()
-				.where(request.member.id.eq(id))
+				.where(
+					request.member.id.eq(id),
+					request.type.eq(type)
+					)
 				.orderBy(request.createdDate.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
@@ -50,7 +50,6 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 		
 		Request result = queryFactory
 				.selectFrom(request)
-				.join(request.requestDocument).fetchJoin()
 				.join(request.aiConsulting,aiConsulting).fetchJoin()
 				.join(aiConsulting.aiConsultingContents).fetchJoin()
 				.where(request.id.eq(id))

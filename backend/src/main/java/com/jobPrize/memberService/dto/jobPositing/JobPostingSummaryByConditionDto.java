@@ -12,6 +12,8 @@ import lombok.Getter;
 @Builder
 public class JobPostingSummaryByConditionDto {
 	
+	private Long id;
+	
 	private String title;
 	
 	private String companyName;
@@ -29,6 +31,7 @@ public class JobPostingSummaryByConditionDto {
 	public static JobPostingSummaryByConditionDto from(JobPosting jobPosting) {
 		return JobPostingSummaryByConditionDto
 				.builder()
+				.id(jobPosting.getId())
 				.title(jobPosting.getTitle())
 				.companyName(jobPosting.getCompany().getCompanyName())
 				.job(jobPosting.getJob())

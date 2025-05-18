@@ -11,10 +11,7 @@ import org.springframework.data.domain.Pageable;
 import com.jobPrize.entity.common.QUser;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.QAiConsulting;
-import com.jobPrize.entity.consultant.QAiConsultingContent;
-import com.jobPrize.entity.consultant.QConsultantConsulting;
 import com.jobPrize.entity.memToCon.QRequest;
-import com.jobPrize.entity.memToCon.QRequestDocument;
 import com.jobPrize.entity.member.QMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -30,7 +27,6 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	public Optional<AiConsulting> findWithAllRequestByAiConsultingId(Long id) {
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
 	    QRequest request = QRequest.request;
-	    QRequestDocument requestDocument = QRequestDocument.requestDocument;
 	    QUser user = QUser.user;
 	    QMember member = QMember.member;
 
@@ -39,7 +35,6 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 				.selectFrom(aiConsulting)
 		        .leftJoin(aiConsulting.aiConsultingContents).fetchJoin()
 		        .join(aiConsulting.request, request).fetchJoin()
-		        .join(request.requestDocument, requestDocument).fetchJoin()
 		        .leftJoin(request.member, member).fetchJoin() // member 추가
 		        .join(member.user, user).fetchJoin() // user 추가
 		        .where(aiConsulting.id.eq(id))

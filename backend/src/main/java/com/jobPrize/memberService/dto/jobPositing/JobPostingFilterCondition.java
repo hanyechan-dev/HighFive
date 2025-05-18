@@ -2,8 +2,8 @@ package com.jobPrize.memberService.dto.jobPositing;
 
 import com.jobPrize.entity.memToCom.EducationLevel;
 
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class JobPostingFilterCondition {
@@ -11,5 +11,6 @@ public class JobPostingFilterCondition {
 	private EducationLevel educationLevel;
 	private String workLocation;
 	private String job;
+	@Min(value=0,message = "급여는 0 이상이어야 합니다.")
 	private int salary;
 }

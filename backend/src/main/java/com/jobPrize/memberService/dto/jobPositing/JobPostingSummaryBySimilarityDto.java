@@ -3,6 +3,7 @@ package com.jobPrize.memberService.dto.jobPositing;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.company.CompanyType;
+import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.Similarity;
 
 import lombok.Builder;
@@ -11,6 +12,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class JobPostingSummaryBySimilarityDto {
+	
+	private Long id;
 	
 	private String title;
 	
@@ -29,16 +32,20 @@ public class JobPostingSummaryBySimilarityDto {
 	private LocalDate createdDate;
 	
 	public static JobPostingSummaryBySimilarityDto from(Similarity similarity) {
+		JobPosting jobPosting = similarity.getJobPosting();
+		
+		
 		return JobPostingSummaryBySimilarityDto
 				.builder()
-				.title(similarity.getJobPosting().getTitle())
-				.companyName(similarity.getJobPosting().getCompany().getCompanyName())
-				.job(similarity.getJobPosting().getJob())
-				.type(similarity.getJobPosting().getCompany().getType())
-				.workLocation(similarity.getJobPosting().getWorkLocation())
-				.careerType(similarity.getJobPosting().getCareerType())
+				.id(jobPosting.getId())
+				.title(jobPosting.getTitle())
+				.companyName(jobPosting.getCompany().getCompanyName())
+				.job(jobPosting.getJob())
+				.type(jobPosting.getCompany().getType())
+				.workLocation(jobPosting.getWorkLocation())
+				.careerType(jobPosting.getCareerType())
 				.similarityScore(similarity.getScore())
-				.createdDate(similarity.getJobPosting().getCreatedDate())
+				.createdDate(jobPosting.getCreatedDate())
 				.build();
 		
 	}

@@ -1,4 +1,4 @@
-package com.jobPrize;
+package com.jobPrize.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;

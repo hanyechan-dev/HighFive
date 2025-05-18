@@ -24,9 +24,9 @@ public class TokenProvider {
 		this.key = Keys.hmacShaKeyFor(secret.getBytes());
 	}
 
-	public String createToken(Long id, UserType userType, long tokenValidity) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
+	public String createToken(Long id, UserType userType) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
 		Date now = new Date();
-		Date expiry = new Date(now.getTime() + tokenValidity);
+		Date expiry = new Date(now.getTime()+1000*60*60*2);
 
 		return Jwts.builder()
 				.setSubject(String.valueOf(id)) // subject를 id로
@@ -44,8 +44,8 @@ public class TokenProvider {
 		}
 	}
 
-	public String getIdFromToken(String token) {
-		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+	public Long getIdFromToken(String token) {
+		return Long.valueOf(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject());
 	}
 	
 	public UserType getUserTypeFromToken(String token) {

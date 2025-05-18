@@ -12,7 +12,6 @@ import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
 import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
 import com.jobPrize.repository.consultant.consultantConsultingContent.ConsultantConsultingContentRepository;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
-import com.jobPrize.repository.memToCon.requetDocument.RequestDocumentRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 
 import jakarta.persistence.EntityManager;
@@ -48,8 +47,6 @@ public class ConsultantRepositoryTest {
 	@Autowired
 	private RequestRepository memberRequestRepository;
 	
-	@Autowired
-	private RequestDocumentRepository requestDocumentRepository;
 	
 	@Autowired
 	private EntityManager em;

@@ -11,6 +11,7 @@ import com.jobPrize.entity.admin.Admin;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.consultant.Consultant;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.memberService.dto.signUp.UserSignUpDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -51,6 +52,13 @@ public class User {
 
 	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false, name = "BIRTH_DATE")
+	private LocalDate birthDate;
+	
+	@Column(nullable = false, name = "GENDER_TYPE")
+	@Enumerated(EnumType.STRING)
+	private GenderType genderType;
 
 	@Column(nullable = false)
 	private String phone;
@@ -124,6 +132,19 @@ public class User {
 
 	public void unSubscribe() {
 		this.isSubscribed = false;
+	}
+
+	public static User of(UserSignUpDto userSignUpDto, String encodedPassword) {
+		return User.builder()
+			.email(userSignUpDto.getEmail())
+			.password(encodedPassword)
+			.name(userSignUpDto.getName())
+			.birthDate(userSignUpDto.getBirthDate())
+			.genderType(userSignUpDto.getGenderType())
+			.phone(userSignUpDto.getPhone())
+			.address(userSignUpDto.getAddress())
+			.type(userSignUpDto.getType())
+			.build();
 	}
 
 }

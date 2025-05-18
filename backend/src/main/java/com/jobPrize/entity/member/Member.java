@@ -8,6 +8,7 @@ import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.memToCon.Request;
+import com.jobPrize.memberService.dto.signUp.MemberSignUpDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -80,5 +81,12 @@ public class Member {
     public void updateNickname(String nickname) {
     	this.nickname=nickname;
     }
+
+	public static Member of(User user, MemberSignUpDto memberSignUpDto) {
+		return Member.builder()
+			.user(user)
+			.nickname(memberSignUpDto.getNickname())
+			.build();
+	}
 
 }

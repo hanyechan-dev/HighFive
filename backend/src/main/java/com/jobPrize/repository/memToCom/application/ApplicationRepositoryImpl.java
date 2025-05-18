@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.entity.company.QJobPosting;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.QApplication;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -21,10 +22,13 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom{
 	@Override
 	public Page<Application> findAllByMemberId(Long id, Pageable pageable) {
 		QApplication application = QApplication.application;
+		QJobPosting jobPosting = QJobPosting.jobPosting;
 		
 		List<Application> results = queryFactory
 				.selectFrom(application)
 				.join(application.member).fetchJoin()
+				.join(application.jobPosting,jobPosting).fetchJoin()
+				.join(jobPosting.company).fetchJoin()
 				.where(application.member.id.eq(id))
 				.orderBy(application.createdDate.desc())
 				.offset(pageable.getOffset())

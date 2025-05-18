@@ -16,9 +16,8 @@ import lombok.Getter;
 
 
 @Getter
-public class CompanySignUpAdditionalDto {
-	
-	private Long id;
+public class CompanySignUpDto {
+
 	
 	@NotBlank(message = "기업명은 필수로 입력해야합니다.")
 	@Size(max=20, message = "기업명은 20자 이하로 입력해야합니다.")
@@ -29,7 +28,7 @@ public class CompanySignUpAdditionalDto {
 	
 	@NotBlank(message = "대표자명은 필수로 입력해야합니다")
 	@Size(max=10, message = "대표자명은 10자 이하로 입력해야합니다.")
-	private String representiveName;
+	private String representativeName;
 
 	@NotBlank(message = "사업자 등록 번호는 필수로 입력해야합니다")
 	@BusinessNumber
@@ -39,7 +38,7 @@ public class CompanySignUpAdditionalDto {
 	@Size(max=50, message = "기업 주소는 50자 이하로 입력해야합니다.")
 	private String companyAddress;
 	
-	@NotBlank
+	@NotBlank(message = "기업 전화번호는 필수로 입력해야합니다.")
 	@Phone
 	private String companyPhone;
 	
