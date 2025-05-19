@@ -45,7 +45,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom{
 
 		Application result = queryFactory
 				.selectFrom(application)
-				.join(application.appDocument).fetchJoin()
+				.join(application).fetchJoin()
 				.leftJoin(application.pass).fetchJoin()
 				.where(application.id.eq(id))
 				.fetchOne();

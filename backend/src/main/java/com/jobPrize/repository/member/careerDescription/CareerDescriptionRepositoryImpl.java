@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.QCareerDescription;
-import com.jobPrize.entity.member.QCareerDescriptionContent;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -39,4 +38,6 @@ public class CareerDescriptionRepositoryImpl implements CareerDescriptionReposit
 		
 		return results;
 	}
+	
+
 }

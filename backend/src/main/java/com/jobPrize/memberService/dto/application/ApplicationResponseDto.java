@@ -38,9 +38,9 @@ public class ApplicationResponseDto {
 			.job(application.getJobPosting().getJob())
 			.createdDate(application.getCreatedDate())
 			.isPassed(application.getPass() != null)
-			.resumeJson(application.getAppDocument().getResumeJson())
-			.coverLetterJson(application.getAppDocument().getCoverLetterJson())
-			.careerDescriptionJson(application.getAppDocument().getCareerDescriptionJson())
+			.resumeJson(application.getResumeJson())
+			.coverLetterJson(application.getCoverLetterJson())
+			.careerDescriptionJson(application.getCareerDescriptionJson())
 			.build();
 	}
 	

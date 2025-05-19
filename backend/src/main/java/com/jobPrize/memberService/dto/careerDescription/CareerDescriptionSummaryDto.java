@@ -1,8 +1,6 @@
 package com.jobPrize.memberService.dto.careerDescription;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.jobPrize.entity.member.CareerDescription;
 

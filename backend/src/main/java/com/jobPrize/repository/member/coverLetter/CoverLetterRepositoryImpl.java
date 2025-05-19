@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jobPrize.entity.member.CoverLetter;
-import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.QCoverLetter;
-import com.jobPrize.entity.member.QCoverLetterContent;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -41,5 +39,7 @@ public class CoverLetterRepositoryImpl implements CoverLetterRepositoryCustom {
 		
 		return results;
 	}
+
+
 
 }

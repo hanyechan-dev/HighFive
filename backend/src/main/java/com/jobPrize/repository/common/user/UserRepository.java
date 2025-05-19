@@ -1,4 +1,4 @@
-package com.jobPrize.repository.common;
+package com.jobPrize.repository.common.user;
 
 import java.util.Optional;
 

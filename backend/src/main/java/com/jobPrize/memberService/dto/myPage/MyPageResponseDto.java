@@ -25,11 +25,10 @@ public class MyPageResponseDto {
 
 	private String address;
 
-	private String nickname;
-
 	private UserType type;
 
 	public static MyPageResponseDto from(User user) {
+
 		return MyPageResponseDto.builder()
 			.email(user.getEmail())
 			.name(user.getName())
@@ -37,7 +36,6 @@ public class MyPageResponseDto {
 			.genderType(user.getGenderType())
 			.phone(user.getPhone())
 			.address(user.getAddress())
-			.nickname(user.getMember().getNickname())
 			.type(user.getType())
 			.build();
 	}
