@@ -15,11 +15,10 @@ import org.springframework.test.annotation.Rollback;
 
 import com.jobPrize.config.QuerydslConfig;
 import com.jobPrize.entity.common.Payment;
-import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.repository.common.UserRepository;
-import com.jobPrize.repository.admin.payment.AdminPaymentRepository;
-import com.jobPrize.repository.admin.payment.AdminPaymentRepositoryImpl;
+import com.jobPrize.repository.common.payment.PaymentRepository;
+import com.jobPrize.repository.common.payment.PaymentRepositoryImpl;
 
 import jakarta.persistence.EntityManager;
 
@@ -29,10 +28,10 @@ import jakarta.persistence.EntityManager;
 class PaymentRepositoryTest {
 
 	@Autowired
-	private AdminPaymentRepository adminPaymentRepository;
+	private PaymentRepository adminPaymentRepository;
 	
 	@Autowired
-	private AdminPaymentRepositoryImpl adminPaymentRepositoryImpl;
+	private PaymentRepositoryImpl adminPaymentRepositoryImpl;
 	
 	@Autowired
 	private UserRepository userRepository;
