@@ -1,4 +1,4 @@
-package com.jobPrize.Admin02.service.dto;
+package com.jobPrize.Admin02.service.dto.member;
 
 import java.time.LocalDate;
 
@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberUserManagementDto {
+public class MemberUserManagementSummaryDto {
     private Long id;
     private String email;
     private String name;
@@ -19,10 +19,10 @@ public class MemberUserManagementDto {
     private String address;
     private LocalDate createdDate;
 
-    public static MemberUserManagementDto from(Member member){
+    public static MemberUserManagementSummaryDto from(Member member){
     	User user = member.getUser();
     	
-        return MemberUserManagementDto
+        return MemberUserManagementSummaryDto
                 .builder()
                 .id(user.getId())
                 .email(user.getEmail())

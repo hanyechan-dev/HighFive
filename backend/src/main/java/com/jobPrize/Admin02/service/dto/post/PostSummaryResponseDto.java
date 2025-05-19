@@ -1,4 +1,4 @@
-package com.jobPrize.Admin02.service.dto;
+package com.jobPrize.Admin02.service.dto.post;
 
 import java.time.LocalDateTime;
 
@@ -9,15 +9,15 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PostListResponseDto {
+public class PostSummaryResponseDto {
 	private Long authorId;
 	private String title;
 	private String content;
 	private int commentCount;
 	private LocalDateTime createdDate;
 	
-	public static PostListResponseDto from(Post post) {
-		return PostListResponseDto
+	public static PostSummaryResponseDto from(Post post) {
+		return PostSummaryResponseDto
 				.builder()
 				.authorId(post.getUser().getId())
 				.title(post.getTitle())

@@ -1,4 +1,4 @@
-package com.jobPrize.Admin02.service.dto;
+package com.jobPrize.Admin02.service.dto.feedbackPrompt;
 
 import com.jobPrize.entity.admin.FeedbackPrompt;
 
@@ -11,16 +11,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FeedbackPromptRequestDto {
-
+public class FeedbackPromptUpdateDto {
 	private String title;
 	private String content;
 	
-	public static FeedbackPromptRequestDto from (FeedbackPrompt feedbackPrompt) {
-		return FeedbackPromptRequestDto
+	public static FeedbackPromptUpdateDto from(FeedbackPrompt feedbackPrompt) {
+		return FeedbackPromptUpdateDto
 				.builder()
 				.title(feedbackPrompt.getTitle())
 				.content(feedbackPrompt.getContent())
 				.build();
+				
 	}
+
 }

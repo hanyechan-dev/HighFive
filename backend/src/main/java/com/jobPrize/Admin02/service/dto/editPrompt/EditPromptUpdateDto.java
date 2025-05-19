@@ -1,4 +1,4 @@
-package com.jobPrize.Admin02.service.dto;
+package com.jobPrize.Admin02.service.dto.editPrompt;
 
 import com.jobPrize.entity.admin.EditPrompt;
 
@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EditPromptRequestDto {
+public class EditPromptUpdateDto {
 	private String title;
 	private String content;
 	
-	public static EditPromptRequestDto form(EditPrompt editPrompt) {
-		return EditPromptRequestDto
+	public static EditPromptUpdateDto from(EditPrompt editPrompt) {
+		return EditPromptUpdateDto
 				.builder()
 				.title(editPrompt.getTitle())
 				.content(editPrompt.getContent())

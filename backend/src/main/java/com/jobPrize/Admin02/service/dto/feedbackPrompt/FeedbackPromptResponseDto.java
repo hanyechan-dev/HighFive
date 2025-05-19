@@ -1,4 +1,4 @@
-package com.jobPrize.Admin02.service.dto;
+package com.jobPrize.Admin02.service.dto.feedbackPrompt;
 
 import com.jobPrize.entity.admin.FeedbackPrompt;
 
