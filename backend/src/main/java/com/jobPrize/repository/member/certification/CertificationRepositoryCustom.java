@@ -4,6 +4,6 @@ import java.util.List;
 
 import com.jobPrize.entity.member.Certification;
 
-public interface CertificationRepositoryCostom {
+public interface CertificationRepositoryCustom {
 	List<Certification> findAllByMemberId(Long id);
 }

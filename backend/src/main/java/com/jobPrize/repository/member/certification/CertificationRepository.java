@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.jobPrize.entity.member.Certification;
 
-public interface CertificationRepository extends JpaRepository<Certification, Long>, CertificationRepositoryCostom {
+public interface CertificationRepository extends JpaRepository<Certification, Long>, CertificationRepositoryCustom {
 
 }

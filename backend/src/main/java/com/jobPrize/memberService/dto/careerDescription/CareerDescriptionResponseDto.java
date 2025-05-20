@@ -1,7 +1,6 @@
 package com.jobPrize.memberService.dto.careerDescription;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.jobPrize.entity.member.CareerDescription;
 
@@ -18,16 +17,11 @@ public class CareerDescriptionResponseDto {
 	
 	List<CareerDescriptionContentResponseDto> contents;
 	
-	public static CareerDescriptionResponseDto from(CareerDescription careerDescription) {
+	public static CareerDescriptionResponseDto of(CareerDescription careerDescription,List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos) {
 		return CareerDescriptionResponseDto.builder()
 				.id(careerDescription.getId())
 				.title(careerDescription.getTitle())
-				.contents(
-					careerDescription.getCareerDescriptionContents()
-						.stream()
-						.map(CareerDescriptionContentResponseDto::from)
-						.collect(Collectors.toList())
-				)
+				.contents(careerDescriptionContentResponseDtos)
 				.build();
 	}
 }

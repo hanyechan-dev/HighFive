@@ -14,9 +14,9 @@ import com.jobPrize.memberService.dto.myPage.MyPageUpdateDto;
 import com.jobPrize.memberService.dto.myPage.PasswordUpdateDto;
 import com.jobPrize.memberService.dto.signUp.UserSignUpDto;
 import com.jobPrize.memberService.dto.token.TokenDto;
-import com.jobPrize.memberService.service.commom.UserService;
 import com.jobPrize.repository.common.user.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -50,40 +50,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 
-
-
-//	@Override
-//	public void registerCompanyInfo(CompanySignUpDto companySignUpAdditionalDto, String token) {
-//		Long id = tokenProvider.getIdFromToken(token);
-//		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-//				.orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
-//		Company company = Company.builder()
-//				.user(user)
-//				.industry(companySignUpAdditionalDto.getIndustry())
-//				.companyName(companySignUpAdditionalDto.getCompanyName())
-//				.representativeName(companySignUpAdditionalDto.getRepresentativeName())
-//				.businessNumber(companySignUpAdditionalDto.getBusinessNumber())
-//				.companyPhone(companySignUpAdditionalDto.getCompanyPhone())
-//				.introduction(companySignUpAdditionalDto.getIntroduction())
-//				.type(companySignUpAdditionalDto.getType())
-//				.employeeCount(companySignUpAdditionalDto.getEmployeeCount())
-//				.establishedDate(companySignUpAdditionalDto.getEstablishedDate())
-//				.build();
-//		
-//		companyRepository.save(company);
-//				
-//	}
-
-
-
-
-
-
 	@Override
 	public TokenDto logIn(LogInDto logInDto) {
 		String email = logInDto.getEmail();
 		User user = userRepository.findByEmailAndDeletedDateIsNull(email)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 		
 		if(!passwordEncoder.matches(logInDto.getPassword(),user.getPassword())) {
 			throw new IllegalStateException("이메일 또는 비밀번호가 일치하지 않습니다.");
@@ -97,19 +68,17 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public MyPageResponseDto getUserMyPageInfo(String token) {
-		Long id = tokenProvider.getIdFromToken(token);
+	public MyPageResponseDto getUserMyPageInfo(Long id) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 		return MyPageResponseDto.from(user);
 	}
 
 
 	@Override
-	public void updateUserMyPageInfo(String token, MyPageUpdateDto myPageUpdateDto) {
-		Long id = tokenProvider.getIdFromToken(token);
+	public void updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 		user.updateAddress(myPageUpdateDto.getAddress());
 		user.updatePhone(myPageUpdateDto.getPhone());
 		
@@ -117,10 +86,9 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void updateUserPassword(String token, PasswordUpdateDto passwordUpdateDto) {
-		Long id = tokenProvider.getIdFromToken(token);
+	public void updateUserPassword(Long id, PasswordUpdateDto passwordUpdateDto) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 		if(!passwordEncoder.matches(passwordUpdateDto.getPassword(),user.getPassword())) {
 			throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
 		}
@@ -137,16 +105,13 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void softDeleteUser(String token) {
-		Long id = tokenProvider.getIdFromToken(token);
+	public void softDeleteUser(Long id) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 		user.deleteUser();
 		
 		
 	}
-
-
 
 	
 	private boolean isExistEmail(String email) {

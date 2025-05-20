@@ -1,5 +1,8 @@
 package com.jobPrize.entity.member;
 
+import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentCreateDto;
+import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentUpdateDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,9 +40,17 @@ public class CareerDescriptionContent {
 	@Column(name="CONTENT", nullable = false)
 	private String content;
 
-	public void updateContent(String item, String content) {
-		this.item = item;
-		this.content = content;
+	public void updateContent(CareerDescriptionContentUpdateDto careerDescriptionContentUpdateDto) {
+		this.item = careerDescriptionContentUpdateDto.getItem();
+		this.content = careerDescriptionContentUpdateDto.getContent();
+	}
+
+	public static CareerDescriptionContent of(CareerDescription careerDescription, CareerDescriptionContentCreateDto careerDescriptionContentCreateDto) {
+		return CareerDescriptionContent.builder()
+			.careerDescription(careerDescription)
+			.item(careerDescriptionContentCreateDto.getItem())
+			.content(careerDescriptionContentCreateDto.getContent())
+			.build();
 	}
 	
 	

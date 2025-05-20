@@ -7,6 +7,9 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.memberService.dto.coverLetter.CoverLetterCreateDto;
+import com.jobPrize.memberService.dto.coverLetter.CoverLetterUpdateDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -51,9 +54,16 @@ public class CoverLetter {
 	@OneToMany(mappedBy = "coverLetter")
 	private List<CoverLetterContent> coverLetterContents = new ArrayList<>();
 	
-	public void updateTitle(String title) {
-		this.title = title;
+	public void updateCoverLetter(CoverLetterUpdateDto coverLetterUpdateDto) {
+		this.title = coverLetterUpdateDto.getTitle();
 	}
-		
+
+	public static CoverLetter of(Member member, CoverLetterCreateDto coverLetterCreateDto) {
+		return CoverLetter.builder()
+			.member(member)
+			.title(coverLetterCreateDto.getTitle())
+			.build();	
+	}
+	
 
 }

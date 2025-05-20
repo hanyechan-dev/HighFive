@@ -1,7 +1,6 @@
 package com.jobPrize.memberService.dto.coverLetter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.jobPrize.entity.member.CoverLetter;
 
@@ -18,16 +17,11 @@ public class CoverLetterResponseDto {
 	
 	List<CoverLetterContentResponseDto> contents;
 	
-	public static CoverLetterResponseDto from(CoverLetter coverLetter) {
+	public static CoverLetterResponseDto of(CoverLetter coverLetter, List<CoverLetterContentResponseDto> coverLetterContentResponseDtos ) {
 		return CoverLetterResponseDto.builder()
 				.id(coverLetter.getId())
 				.title(coverLetter.getTitle())
-				.contents(
-						coverLetter.getCoverLetterContents()
-						.stream()
-						.map(CoverLetterContentResponseDto::from)
-						.collect(Collectors.toList())
-				)
+				.contents(coverLetterContentResponseDtos)
 				.build();
 	}
 }

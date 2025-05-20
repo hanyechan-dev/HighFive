@@ -2,7 +2,8 @@ package com.jobPrize.entity.member;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.User;
+import com.jobPrize.memberService.dto.languageTest.LanguageTestCreateDto;
+import com.jobPrize.memberService.dto.languageTest.LanguageTestUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,15 +57,27 @@ public class LanguageTest {
 	@Column(name="ACQUISITION_DATE", nullable = false)
 	private LocalDate acquisitionDate;
 
-	public void updateLanguageTest(String languageType, String testName, String issuingOrg, String grade, String score,
-			String certificationNo, LocalDate acquisitionDate) {
-		this.languageType = languageType;
-		this.testName = testName;
-		this.issuingOrg = issuingOrg;
-		this.grade = grade;
-		this.score = score;
-		this.certificationNo = certificationNo;
-		this.acquisitionDate = acquisitionDate;
+	public void updateLanguageTest(LanguageTestUpdateDto languageTestUpdateDto) {
+		this.languageType = languageTestUpdateDto.getLanguageType();
+		this.testName = languageTestUpdateDto.getTestName();
+		this.issuingOrg = languageTestUpdateDto.getIssuingOrg();
+		this.grade = languageTestUpdateDto.getGrade();
+		this.score = languageTestUpdateDto.getScore();
+		this.certificationNo = languageTestUpdateDto.getCertificationNo();
+		this.acquisitionDate = languageTestUpdateDto.getAcquisitionDate();
+	}
+
+	public static LanguageTest of(Member member, LanguageTestCreateDto languageTestCreateDto) {
+		return LanguageTest.builder()
+			.member(member)
+			.languageType(languageTestCreateDto.getLanguageType())
+			.testName(languageTestCreateDto.getTestName())
+			.issuingOrg(languageTestCreateDto.getIssuingOrg())
+			.grade(languageTestCreateDto.getGrade())
+			.score(languageTestCreateDto.getScore())
+			.certificationNo(languageTestCreateDto.getCertificationNo())
+			.acquisitionDate(languageTestCreateDto.getAcquisitionDate())
+			.build();
 	}
 	
 	

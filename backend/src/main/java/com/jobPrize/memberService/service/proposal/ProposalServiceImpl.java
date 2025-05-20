@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.entity.memToCom.Proposal;
-import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.memberService.dto.proposal.ProposalResponseDto;
 import com.jobPrize.memberService.dto.proposal.ProposalSummaryDto;
-import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.repository.memToCom.proposal.ProposalRepository;
-import com.jobPrize.repository.member.member.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,14 +20,11 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class ProposalServiceImpl implements ProposalService {
-
-	private final TokenProvider tokenProvider;
 	
 	private final ProposalRepository proposalRepository;
 
 	@Override
-	public Page<ProposalSummaryDto> getListProposal(String token, Pageable pageable) {
-		Long id = tokenProvider.getIdFromToken(token);
+	public Page<ProposalSummaryDto> getProposalPage(Long id, Pageable pageable) {
 		Page<Proposal> proposals = proposalRepository.findAllByMemberId(id, pageable);
 
 		List<ProposalSummaryDto> proposalSummaryDtos = new ArrayList<>();
@@ -44,8 +38,7 @@ public class ProposalServiceImpl implements ProposalService {
 	}
 
 	@Override
-	public ProposalResponseDto getProposal(String token, Long proposalId) {
-		Long id = tokenProvider.getIdFromToken(token);
+	public ProposalResponseDto getProposal(Long id, Long proposalId) {
 		Proposal proposal = proposalRepository.findById(proposalId)
 				.orElseThrow(() -> new IllegalStateException("존재하지 않는 제안입니다."));
 		

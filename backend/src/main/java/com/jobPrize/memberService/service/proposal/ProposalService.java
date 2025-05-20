@@ -9,6 +9,6 @@ import com.jobPrize.memberService.dto.proposal.ProposalResponseDto;
 import com.jobPrize.memberService.dto.proposal.ProposalSummaryDto;
 
 public interface ProposalService {
-	Page<ProposalSummaryDto> getListProposal(String token, Pageable pageable);
-	ProposalResponseDto getProposal(String token, Long proposalId);
+	Page<ProposalSummaryDto> getProposalPage(Long id, Pageable pageable);
+	ProposalResponseDto getProposal(Long id, Long proposalId);
 }

@@ -11,9 +11,9 @@ public interface UserService {
 	public TokenDto signUpUser(UserSignUpDto userSignUpDto);
 //	public void registerCompanyInfo(CompanySignUpDto companySignUpAdditionalDto, String token);
 	public TokenDto logIn(LogInDto logInDto);
-	public MyPageResponseDto getUserMyPageInfo(String token);
-	public void updateUserMyPageInfo(String token, MyPageUpdateDto myPageUpdateDto);
-	public void updateUserPassword(String token, PasswordUpdateDto passwordUpdateDto);
-	public void softDeleteUser(String token);
+	public MyPageResponseDto getUserMyPageInfo(Long id);
+	public void updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto);
+	public void updateUserPassword(Long id, PasswordUpdateDto passwordUpdateDto);
+	public void softDeleteUser(Long id);
 		
 }

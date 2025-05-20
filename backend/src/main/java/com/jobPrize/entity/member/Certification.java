@@ -2,7 +2,8 @@ package com.jobPrize.entity.member;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.User;
+import com.jobPrize.memberService.dto.certification.CertificationCreateDto;
+import com.jobPrize.memberService.dto.certification.CertificationUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,14 +54,25 @@ public class Certification {
 	@Column(name = "ACQUISITION_DATE", nullable = false)
 	private LocalDate acquisitionDate;
 
-	public void updateCertification(String certificationName, String issuingOrg, String grade, String score,
-			String certificationNo, LocalDate acquisitionDate) {
-		this.certificationName = certificationName;
-		this.issuingOrg = issuingOrg;
-		this.grade = grade;
-		this.score = score;
-		this.certificationNo = certificationNo;
-		this.acquisitionDate = acquisitionDate;
+	public void updateCertification(CertificationUpdateDto certificationUpdateDto) {
+		this.certificationName = certificationUpdateDto.getCertificationName();
+		this.issuingOrg = certificationUpdateDto.getIssuingOrg();
+		this.grade = certificationUpdateDto.getGrade();
+		this.score = certificationUpdateDto.getScore();
+		this.certificationNo = certificationUpdateDto.getCertificationNo();
+		this.acquisitionDate = certificationUpdateDto.getAcquisitionDate();
+	}
+
+	public static Certification of(Member member, CertificationCreateDto certificationCreateDto) {
+		return Certification.builder()
+			.member(member)
+			.certificationName(certificationCreateDto.getCertificationName())
+			.issuingOrg(certificationCreateDto.getIssuingOrg())
+			.grade(certificationCreateDto.getGrade())
+			.score(certificationCreateDto.getScore())
+			.certificationNo(certificationCreateDto.getCertificationNo())
+			.acquisitionDate(certificationCreateDto.getAcquisitionDate())
+			.build();
 	}
 
 }

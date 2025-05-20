@@ -1,17 +1,16 @@
 package com.jobPrize.memberService.service.request;
 
-import java.util.Map;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.memberService.dto.request.RequestCreateDto;
-import com.jobPrize.memberService.dto.request.RequestResponseDto;
+import com.jobPrize.memberService.dto.request.RequestDetailDto;
 import com.jobPrize.memberService.dto.request.RequestSummaryDto;
 
 public interface RequestService {
-	Page<RequestSummaryDto> getListFeedbackRequest(String token, Pageable pageable);
-	Page<RequestSummaryDto> getListEditRequest(String token, Pageable pageable);
-	Map<String, Object> getRequest(String token, Long requestId);
-	void createRequest(String token, RequestCreateDto requestCreateDto);
+	Page<RequestSummaryDto> getFeedbackRequestPage(Long id, Pageable pageable);
+	Page<RequestSummaryDto> getEditRequestPage(Long id, Pageable pageable);
+	RequestDetailDto getRequestDetail(Long id, Long requestId);
+	void createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto);
 }

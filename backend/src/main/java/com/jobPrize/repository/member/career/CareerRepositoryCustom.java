@@ -4,6 +4,6 @@ import java.util.List;
 
 import com.jobPrize.entity.member.Career;
 
-public interface CareerRepositoryCostom {
+public interface CareerRepositoryCustom {
 	List<Career> findAllByMemberId(Long id);
 }
