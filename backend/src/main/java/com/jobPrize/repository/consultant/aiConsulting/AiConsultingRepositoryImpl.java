@@ -30,7 +30,6 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	public Optional<AiConsulting> findWithAllRequestByAiConsultingId(Long id) {
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
 	    QRequest request = QRequest.request;
-	    QRequestDocument requestDocument = QRequestDocument.requestDocument;
 	    QUser user = QUser.user;
 	    QMember member = QMember.member;
 
@@ -39,7 +38,6 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 				.selectFrom(aiConsulting)
 		        .leftJoin(aiConsulting.aiConsultingContents).fetchJoin()
 		        .join(aiConsulting.request, request).fetchJoin()
-		        .join(request.requestDocument, requestDocument).fetchJoin()
 		        .leftJoin(request.member, member).fetchJoin() // member 추가
 		        .join(member.user, user).fetchJoin() // user 추가
 		        .where(aiConsulting.id.eq(id))
@@ -57,7 +55,7 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 				.selectFrom(aiConsulting)
 				.leftJoin(aiConsulting.consultantConsulting).fetchJoin()
 				.where(
-					aiConsulting.isRequested.isTrue(),
+					aiConsulting.requestedDate.isNotNull(),
 					aiConsulting.consultantConsulting.isNull()
 					)
 				.orderBy(aiConsulting.requestedDate.desc())

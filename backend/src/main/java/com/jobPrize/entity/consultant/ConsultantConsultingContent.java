@@ -43,9 +43,10 @@ public class ConsultantConsultingContent {
     @Column(nullable = false)
     private String content;
     
-	public void updateContent(String item, String content) {
-		this.item = item;
-		this.content = content;
-	}
+    public void updateContent(String item, String content) { // 기존 항목이 있으면 내용만 수정
+    	this.item = item;
+    	this.content = content;
+    }
+  
     
 }

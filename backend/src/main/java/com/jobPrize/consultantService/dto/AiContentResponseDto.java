@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class AiCommentResponseDto {
+public class AiContentResponseDto {
 	
 	private String item;
-    private String comment; 
+    private String content; 
 }

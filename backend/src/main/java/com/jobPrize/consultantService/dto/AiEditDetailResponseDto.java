@@ -13,11 +13,12 @@ public class AiEditDetailResponseDto {
 	private String targetCompanyName;
 	private String targetJob;
 	private LocalDate requestedDate;
-	private LocalDate createdDate;
-
+	
+	private String resume;
 	private String careerDescription;
 	private String coverLetter;
 
-	private List<AiCommentResponseDto> aiComments;
+	private List<AiContentResponseDto> aiContents;
    
 }
+

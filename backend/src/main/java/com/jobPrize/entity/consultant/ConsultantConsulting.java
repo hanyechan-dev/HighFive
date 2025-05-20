@@ -65,4 +65,8 @@ public class ConsultantConsulting {
     private List<ConsultantConsultingContent> consultantConsultingContents = new ArrayList<>();
 
  
+    public void complete() {
+    	this.completedDate = LocalDate.now();
+    }
+ 
 }
