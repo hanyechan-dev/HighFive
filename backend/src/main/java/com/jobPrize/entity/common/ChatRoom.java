@@ -3,6 +3,7 @@ package com.jobPrize.entity.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,7 +39,7 @@ public class ChatRoom {
     @JoinColumn(name = "USER2_ID", nullable = false)
     private User user2;
 	
-	@OneToMany(mappedBy = "chatRoom")
+	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ChatContent> chatContents = new ArrayList<>();
 	
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentRequestDto {
     @NotBlank(message = "유저 ID는 필수입니다.")
-    private String userId;
+    private Long userId;
 
     @NotBlank(message = "결제 금액은 필수입니다.")
     @Positive(message = "결제 금액은 0보다 커야 합니다.")

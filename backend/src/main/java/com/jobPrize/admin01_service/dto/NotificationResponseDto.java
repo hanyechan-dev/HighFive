@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationResponseDto {
-    private String userId;
+    private Long userId;
     private String notificationId;
     private String content; // 알림 내용
     private LocalDateTime createdTime;

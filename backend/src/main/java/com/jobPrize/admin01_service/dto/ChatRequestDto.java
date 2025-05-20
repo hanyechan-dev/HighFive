@@ -17,7 +17,7 @@ public class ChatRequestDto {
     private Long chatRoomId;
 
     @NotBlank(message = "발신자는 비어 있을 수 없습니다.")
-    private String senderId;
+    private Long senderId;
     
     @NotBlank(message = "채팅 내용은 비어 있을 수 없습니다.")
     @Size(max = 100, message = "채팅 내용은 최대 100자까지 입력 가능합니다.")

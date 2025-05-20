@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NotificationRequestDto {
     @NotBlank(message = "알림을 보내는 사용자 ID는 비어 있을 수 없습니다.")
-    private String userId;
+    private Long userId;
 
     @NotNull
     private boolean isRead; // 알림 확인 여부

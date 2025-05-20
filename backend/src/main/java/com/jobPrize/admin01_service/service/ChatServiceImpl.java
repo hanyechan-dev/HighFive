@@ -7,26 +7,48 @@ import org.springframework.stereotype.Service;
 
 import com.jobPrize.admin01_service.dto.ChatRequestDto;
 import com.jobPrize.admin01_service.dto.ChatResponseDto;
+import com.jobPrize.entity.common.ChatContent;
 import com.jobPrize.entity.common.ChatRoom;
+import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.chatRoom.ChatRoomRepositoryImpl;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
+
 public class ChatServiceImpl implements ChatService {
 
+    private final TokenProvider tokenProvider;
+    private final ChatRoomRepository chatRoomRepository;
+
     @Autowired
-    ChatRoomRepositoryImpl chatRoomRepositoryImpl;
+    public ChatServiceImpl(TokenProvider tokenProvider, ChatRoomRepositoryImpl chatRoomRepositoryImpl){
+        this.tokenProvider = tokenProvider;
+        this.chatRoomRepository = chatRoomRepository;
+    }
 
     @Override
-    public List<ChatRoom> selectChatRooms() throws Exception {
-        // 토큰으로부터 ID를 받아서 채팅방 리스트 조회
-        // 어차피 출력하는 기능일 거라 return을 void로 해도 될 듯?
-        List<ChatRoom> chatRooms = chatRoomRepositoryImpl.findAllByUserId(Long id);
+    public List<ChatRoom> selectChatRooms(String token) throws Exception {
+        
+        // ID 추출
+        Long userId = Long.parseLong(tokenProvider.getIdFromToken(token));
+
+        List<ChatRoom> chatRooms = chatRoomRepositoryImpl.findAllByUserId(userId);
         return chatRooms;
     }
 	
 	@Override
-	public List<ChatResponseDto> selectMessages() throws Exception {
-        
+	public List<ChatResponseDto> selectMessages(Long roomId) throws Exception {
+        ChatRoom chatRoom = chatRoomRepository.findWithChatContentsByChatRoomId(roomId)
+            .orElseThrow(() -> new EntityNotFoundException());
+
+        return chatRoom.getChatContents().stream()
+            .map(c -> new ChatContentDTO(
+                c.getUser().getUsername(),  // User에 getUsername() 또는 getNickname() 등이 있다고 가정
+                c.getContent(),
+                c.getCreatedTime()
+            ))
+            .collect(Collectors.toList());
 	}
 
 	@Override
