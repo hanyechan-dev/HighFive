@@ -16,7 +16,6 @@ import com.jobPrize.consultantService.dto.AiFeedbackDetailResponseDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
-import com.jobPrize.repository.consultant.aiConsultingContent.AiConsultingContentRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AiConsultingServiceImpl implements AiConsultingService {
 
-    private final AiConsultingContentRepository aiConsultingContentRepository;
     private final AiConsultingRepository aiConsultingRepository;
 
     
@@ -120,4 +118,6 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 	    throw new IllegalArgumentException("지원하지 않는 DTO 타입입니다.");
 	}
+
+
 }
