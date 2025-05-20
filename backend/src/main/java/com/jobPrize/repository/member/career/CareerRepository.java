@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.jobPrize.entity.member.Career;
 
-public interface CareerRepository extends JpaRepository<Career, Long>, CareerRepositoryCostom {
+public interface CareerRepository extends JpaRepository<Career, Long>, CareerRepositoryCustom {
 
 }

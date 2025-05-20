@@ -3,8 +3,9 @@ package com.jobPrize.entity.member;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.memToCom.EducationLevel;
+import com.jobPrize.memberService.dto.education.EducationCreateDto;
+import com.jobPrize.memberService.dto.education.EducationUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -61,15 +62,27 @@ public class Education {
 	@Column(name="GRADUATE_DATE")
 	private LocalDate graduateDate;
 
-	public void updateEducation(String schoolName, EducationLevel educationLevel, String major, BigDecimal gpa, String location,
-			LocalDate enterDate, LocalDate graduateDate) {
-		this.schoolName = schoolName;
-		this.educationLevel = educationLevel;
-		this.major = major;
-		this.gpa = gpa;
-		this.location = location;
-		this.enterDate = enterDate;
-		this.graduateDate = graduateDate;
+	public void updateEducation(EducationUpdateDto educationUpdateDto) {
+		this.schoolName = educationUpdateDto.getSchoolName();
+		this.educationLevel = educationUpdateDto.getEducationLevel();
+		this.major = educationUpdateDto.getMajor();
+		this.gpa = educationUpdateDto.getGpa();
+		this.location = educationUpdateDto.getLocation();
+		this.enterDate = educationUpdateDto.getEnterDate();
+		this.graduateDate = educationUpdateDto.getGraduateDate();
+	}
+
+	public static Education of(Member member, EducationCreateDto educationCreateDto) {
+		return Education.builder()
+			.member(member)
+			.schoolName(educationCreateDto.getSchoolName())
+			.educationLevel(educationCreateDto.getEducationLevel())
+			.major(educationCreateDto.getMajor())
+			.gpa(educationCreateDto.getGpa())
+			.location(educationCreateDto.getLocation())
+			.enterDate(educationCreateDto.getEnterDate())
+			.graduateDate(educationCreateDto.getGraduateDate())
+			.build();
 	}
 	
 	

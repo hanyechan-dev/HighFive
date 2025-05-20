@@ -9,7 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CertificationRepositoryImpl implements CertificationRepositoryCostom{
+public class CertificationRepositoryImpl implements CertificationRepositoryCustom{
 	
 	private final JPAQueryFactory queryFactory;
 	@Override

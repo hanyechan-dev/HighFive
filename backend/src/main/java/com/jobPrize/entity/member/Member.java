@@ -81,4 +81,5 @@ public class Member {
     	this.nickname=nickname;
     }
 
+
 }

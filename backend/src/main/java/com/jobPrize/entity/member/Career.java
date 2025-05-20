@@ -2,7 +2,8 @@ package com.jobPrize.entity.member;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.User;
+import com.jobPrize.memberService.dto.career.CareerCreateDto;
+import com.jobPrize.memberService.dto.career.CareerUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +30,7 @@ public class Career {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="CAREER_ID")
-    private Long careerId;
+    private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false)
@@ -53,14 +54,27 @@ public class Career {
 	@Column(name="END_DATE")
 	private LocalDate endDate;
 	
-	public void updateCareer(String companyName, String job, String department, String position, LocalDate startDate, LocalDate endDate) {
-		this.companyName = companyName;
-		this.job = job;
-		this.department = department;
-		this.position = position;
-		this.startDate = startDate;
-		this.endDate = endDate;
+	public void updateCareer(CareerUpdateDto careerUpdateDto) {
+		this.companyName = careerUpdateDto.getCompanyName();
+		this.job = careerUpdateDto.getJob();
+		this.department = careerUpdateDto.getDepartment();
+		this.position = careerUpdateDto.getPosition();
+		this.startDate = careerUpdateDto.getStartDate();
+		this.endDate = careerUpdateDto.getEndDate();
 	}
+
+	public static Career of(Member member, CareerCreateDto careerCreateDto) {
+		return Career.builder()
+			.member(member)
+			.companyName(careerCreateDto.getCompanyName())
+			.job(careerCreateDto.getJob())
+			.department(careerCreateDto.getDepartment())
+			.position(careerCreateDto.getPosition())
+			.startDate(careerCreateDto.getStartDate())
+			.endDate(careerCreateDto.getEndDate())
+			.build();
+	}
+	
 	
 	
 

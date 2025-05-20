@@ -7,6 +7,9 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionCreateDto;
+import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionUpdateDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -51,8 +54,15 @@ public class CareerDescription {
 	@OneToMany(mappedBy = "careerDescription")
 	private List<CareerDescriptionContent> careerDescriptionContents = new ArrayList<>();
 	
-	public void updateTitle(String title) {
-		this.title = title;
+	public void updateCareerDescription(CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
+		this.title = careerDescriptionUpdateDto.getTitle();
+	}
+
+	public static CareerDescription of(Member member, CareerDescriptionCreateDto careerDescriptionCreateDto) {
+		return CareerDescription.builder()
+			.member(member)
+			.title(careerDescriptionCreateDto.getTitle())
+			.build();
 	}
 
 }

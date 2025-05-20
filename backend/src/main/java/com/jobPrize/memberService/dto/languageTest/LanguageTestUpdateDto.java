@@ -1,0 +1,44 @@
+package com.jobPrize.memberService.dto.languageTest;
+
+import java.time.LocalDate;
+
+import com.jobPrize.validation.scoreAndGrade.ScoreAndGrade;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+
+@Getter
+@ScoreAndGrade
+public class LanguageTestUpdateDto {
+	
+	@NotNull(message = "수정 시 id는 필수입니다.")
+	private Long id;
+	
+	@Size(max = 10, message = "언어는 10자 이하로 입력해야합니다.")
+	@NotBlank(message = "언어는 필수로 입력해야합니다")
+	private String languageType;
+
+	@Size(max = 20, message = "시험명은 20자 이하로 입력해야합니다.")
+	@NotBlank(message = "시험명은 필수로 입력해야합니다")
+	private String testName;
+
+	@Size(max = 20, message = "발행처는 20자 이하로 입력해야합니다.")
+	@NotBlank(message = "발행처는 필수로 입력해야합니다")
+	private String issuingOrg;
+
+	@Size(max = 10, message = "등급은 10자 이하로 입력해야합니다.")
+	private String grade;
+
+	@Size(max = 10, message = "점수는 10자 이하로 입력해야합니다.")
+	private String score;
+
+	@Size(max = 20, message = "인증번호는 20자 이하로 입력해야합니다.")
+	private String certificationNo;
+
+	@NotNull(message = "취득일은 필수로 입력해야합니다.")
+	@Past(message = "취득일은 현재 이하로 입력해야합니다.")
+	private LocalDate acquisitionDate;
+}

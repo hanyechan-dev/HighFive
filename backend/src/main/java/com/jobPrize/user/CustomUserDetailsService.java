@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jobPrize.entity.common.SecurityUser;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.repository.common.UserRepository;
+import com.jobPrize.repository.common.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

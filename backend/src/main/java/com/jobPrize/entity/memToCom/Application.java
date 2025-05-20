@@ -49,13 +49,19 @@ public class Application {
     @JoinColumn(name = "JOB_POSTING_ID", nullable = false)
     private JobPosting jobPosting;
     
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "APP_DOCUMENT_ID", nullable = false)
-    private AppDocument appDocument;
+	@Column(name = "resume_json", columnDefinition = "TEXT", nullable = false)
+	private String resumeJson;
+
+	@Column(name = "career_description_json", columnDefinition = "TEXT")
+	private String careerDescriptionJson;
+	
+	@Column(name = "cover_letter_json", columnDefinition = "TEXT", nullable = false)
+	private String coverLetterJson;
     
 	@CreatedDate
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
+
 	
 	@OneToOne(mappedBy = "application", fetch = FetchType.LAZY)
 	private Pass pass;

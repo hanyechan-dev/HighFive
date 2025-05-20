@@ -1,5 +1,8 @@
 package com.jobPrize.entity.member;
 
+import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentCreateDto;
+import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentUpdateDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,9 +40,18 @@ public class CoverLetterContent {
 	@Column(name="CONTENT", nullable = false)
 	private String content;
 	
-	public void updateContent(String item, String content) {
-		this.item = item;
-		this.content = content;
+	public void updateContent(CoverLetterContentUpdateDto coverLetterContentUpdateDto) {
+		this.item = coverLetterContentUpdateDto.getItem();
+		this.content = coverLetterContentUpdateDto.getContent();
 	}
+	
+    public static CoverLetterContent of(CoverLetter coverLetter, CoverLetterContentCreateDto coverLetterContentCreateDto) {
+    	return CoverLetterContent.builder()
+    			.coverLetter(coverLetter)
+    			.item(coverLetterContentCreateDto.getItem())
+    			.content(coverLetterContentCreateDto.getContent())
+    			.build();
+
+    }
 
 }

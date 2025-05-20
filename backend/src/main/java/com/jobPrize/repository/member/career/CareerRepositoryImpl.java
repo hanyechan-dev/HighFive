@@ -9,7 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CareerRepositoryImpl implements CareerRepositoryCostom{
+public class CareerRepositoryImpl implements CareerRepositoryCustom{
 	
 	private final JPAQueryFactory queryFactory;
 	@Override
