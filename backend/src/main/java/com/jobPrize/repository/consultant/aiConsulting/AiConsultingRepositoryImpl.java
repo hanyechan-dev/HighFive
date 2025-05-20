@@ -52,7 +52,7 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 				.selectFrom(aiConsulting)
 				.leftJoin(aiConsulting.consultantConsulting).fetchJoin()
 				.where(
-					aiConsulting.isRequested.isTrue(),
+					aiConsulting.requestedDate.isNotNull(),
 					aiConsulting.consultantConsulting.isNull()
 					)
 				.orderBy(aiConsulting.requestedDate.desc())
