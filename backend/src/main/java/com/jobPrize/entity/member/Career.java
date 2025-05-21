@@ -2,8 +2,8 @@ package com.jobPrize.entity.member;
 
 import java.time.LocalDate;
 
-import com.jobPrize.memberService.dto.career.CareerCreateDto;
-import com.jobPrize.memberService.dto.career.CareerUpdateDto;
+import com.jobPrize.dto.member.career.CareerCreateDto;
+import com.jobPrize.dto.member.career.CareerUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

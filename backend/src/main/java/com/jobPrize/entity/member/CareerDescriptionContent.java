@@ -1,7 +1,7 @@
 package com.jobPrize.entity.member;
 
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentCreateDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentUpdateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentCreateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

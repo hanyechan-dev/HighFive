@@ -2,8 +2,8 @@ package com.jobPrize.entity.member;
 
 import java.time.LocalDate;
 
-import com.jobPrize.memberService.dto.languageTest.LanguageTestCreateDto;
-import com.jobPrize.memberService.dto.languageTest.LanguageTestUpdateDto;
+import com.jobPrize.dto.member.languageTest.LanguageTestCreateDto;
+import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

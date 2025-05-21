@@ -1,17 +1,16 @@
 package com.jobPrize.service.common.user;
 
-import com.jobPrize.memberService.dto.login.LogInDto;
-import com.jobPrize.memberService.dto.myPage.MyPageResponseDto;
-import com.jobPrize.memberService.dto.myPage.MyPageUpdateDto;
-import com.jobPrize.memberService.dto.myPage.PasswordUpdateDto;
-import com.jobPrize.memberService.dto.signUp.UserSignUpDto;
-import com.jobPrize.memberService.dto.token.TokenDto;
+import com.jobPrize.dto.common.myPage.MyPageResponseDto;
+import com.jobPrize.dto.common.myPage.MyPageUpdateDto;
+import com.jobPrize.dto.common.myPage.PasswordUpdateDto;
+import com.jobPrize.dto.common.token.TokenDto;
+import com.jobPrize.dto.common.user.login.LogInDto;
+import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
 
 public interface UserService {
-	public TokenDto signUpUser(UserSignUpDto userSignUpDto);
-//	public void registerCompanyInfo(CompanySignUpDto companySignUpAdditionalDto, String token);
+	public TokenDto createUser(UserSignUpDto userSignUpDto);
 	public TokenDto logIn(LogInDto logInDto);
-	public MyPageResponseDto getUserMyPageInfo(Long id);
+	public MyPageResponseDto readUserMyPageInfo(Long id);
 	public void updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto);
 	public void updateUserPassword(Long id, PasswordUpdateDto passwordUpdateDto);
 	public void softDeleteUser(Long id);

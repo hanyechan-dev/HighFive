@@ -3,10 +3,10 @@ package com.jobPrize.service.member.careerDescriptionContent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentCreateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentUpdateDto;
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.CareerDescriptionContent;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentCreateDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentUpdateDto;
 import com.jobPrize.repository.member.careerDescriptionContent.CareerDescriptionContentRepository;
 
 import jakarta.persistence.EntityNotFoundException;

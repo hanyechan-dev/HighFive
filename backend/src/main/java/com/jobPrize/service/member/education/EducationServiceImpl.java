@@ -7,11 +7,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.education.EducationCreateDto;
+import com.jobPrize.dto.member.education.EducationResponseDto;
+import com.jobPrize.dto.member.education.EducationUpdateDto;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.education.EducationCreateDto;
-import com.jobPrize.memberService.dto.education.EducationResponseDto;
-import com.jobPrize.memberService.dto.education.EducationUpdateDto;
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 
@@ -43,7 +43,8 @@ public class EducationServiceImpl implements EducationService {
 	}
 
 	@Override
-	public List<EducationResponseDto> getEducationList(Long id) {
+	@Transactional(readOnly = true)
+	public List<EducationResponseDto> readEducationList(Long id) {
 
 		List<Education> educations = educationRepository.findAllByMemberId(id);
 		List<EducationResponseDto> educationResponseDtos = new ArrayList<>();

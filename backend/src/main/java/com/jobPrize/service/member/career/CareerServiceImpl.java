@@ -7,11 +7,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.career.CareerCreateDto;
+import com.jobPrize.dto.member.career.CareerResponseDto;
+import com.jobPrize.dto.member.career.CareerUpdateDto;
 import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.career.CareerCreateDto;
-import com.jobPrize.memberService.dto.career.CareerResponseDto;
-import com.jobPrize.memberService.dto.career.CareerUpdateDto;
 import com.jobPrize.repository.member.career.CareerRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 
@@ -46,7 +46,8 @@ public class CareerServiceImpl implements CareerService {
 	}
 
 	@Override
-	public List<CareerResponseDto> getCareerList(Long id) {
+	@Transactional(readOnly = true)
+	public List<CareerResponseDto> readCareerList(Long id) {
 
 		List<Career> careers = careerRepository.findAllByMemberId(id);
 		List<CareerResponseDto> careerResponseDtos = new ArrayList<>();

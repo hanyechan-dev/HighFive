@@ -10,13 +10,13 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
+import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
+import com.jobPrize.dto.memToCom.application.ApplicationSummaryDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.application.ApplicationCreateDto;
-import com.jobPrize.memberService.dto.application.ApplicationResponseDto;
-import com.jobPrize.memberService.dto.application.ApplicationSummaryDto;
 import com.jobPrize.repository.common.jobPosting.JobPostingRepository;
 import com.jobPrize.repository.memToCom.application.ApplicationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
@@ -39,7 +39,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private final DocumentToJson documentToJson;
 
 	@Override
-	public Page<ApplicationSummaryDto> getApplicationPage(Long id, Pageable pageable) {
+	public Page<ApplicationSummaryDto> readApplicationPage(Long id, Pageable pageable) {
 		Page<Application> applications = applicationRepository.findAllByMemberId(id, pageable);
 
 		List<ApplicationSummaryDto> applicationSummaryDtos = new ArrayList<>();
@@ -53,7 +53,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 
 	@Override
-	public ApplicationResponseDto getApplication(Long id, Long applicationId) {
+	@Transactional(readOnly = true)
+	public ApplicationResponseDto readApplication(Long id, Long applicationId) {
 		Application application = applicationRepository.findByApplicationId(applicationId)
 			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 지원서입니다."));
 		
@@ -93,6 +94,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 				.careerDescriptionJson(careerDescriptionJson)
 				.coverLetterJson(coverLetterJson)
 				.build();
+		
 		applicationRepository.save(application);
 
 	}

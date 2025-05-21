@@ -1,7 +1,7 @@
 package com.jobPrize.entity.member;
 
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentCreateDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentUpdateDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentCreateDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

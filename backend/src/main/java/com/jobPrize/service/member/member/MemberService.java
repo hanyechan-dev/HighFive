@@ -1,12 +1,12 @@
 package com.jobPrize.service.member.member;
 
-import com.jobPrize.memberService.dto.member.MemberCreateDto;
-import com.jobPrize.memberService.dto.member.MemberResponseDto;
-import com.jobPrize.memberService.dto.member.MemberUpdateDto;
+import com.jobPrize.dto.member.member.MemberCreateDto;
+import com.jobPrize.dto.member.member.MemberResponseDto;
+import com.jobPrize.dto.member.member.MemberUpdateDto;
 
 public interface MemberService {
-	public void registerMemberInfo(Long id, MemberCreateDto memberCreateDto);
+	public void createMemberInfo(Long id, MemberCreateDto memberCreateDto);
 	public void updateMemberInfo(Long id, MemberUpdateDto memberUpdateDto);
-	public MemberResponseDto getMemberInfo(Long id);
+	public MemberResponseDto readMemberInfo(Long id);
 
 }

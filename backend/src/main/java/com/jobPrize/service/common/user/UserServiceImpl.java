@@ -6,14 +6,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.common.myPage.MyPageResponseDto;
+import com.jobPrize.dto.common.myPage.MyPageUpdateDto;
+import com.jobPrize.dto.common.myPage.PasswordUpdateDto;
+import com.jobPrize.dto.common.token.TokenDto;
+import com.jobPrize.dto.common.user.login.LogInDto;
+import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.jwt.TokenProvider;
-import com.jobPrize.memberService.dto.login.LogInDto;
-import com.jobPrize.memberService.dto.myPage.MyPageResponseDto;
-import com.jobPrize.memberService.dto.myPage.MyPageUpdateDto;
-import com.jobPrize.memberService.dto.myPage.PasswordUpdateDto;
-import com.jobPrize.memberService.dto.signUp.UserSignUpDto;
-import com.jobPrize.memberService.dto.token.TokenDto;
 import com.jobPrize.repository.common.user.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	private final TokenProvider tokenProvider;
 	
 	@Override
-	public TokenDto signUpUser(UserSignUpDto userSignUpDto) {
+	public TokenDto createUser(UserSignUpDto userSignUpDto) {
 		
 		
 		if(isExistEmail(userSignUpDto.getEmail())) {
@@ -40,6 +41,11 @@ public class UserServiceImpl implements UserService {
 		String encodedPassword=passwordEncoder.encode(userSignUpDto.getPassword());
 		
 		User user = User.of(userSignUpDto, encodedPassword);
+		
+		if(userSignUpDto.getType()==UserType.일반회원) {
+			user.approve();
+		}
+		
 		userRepository.save(user);
 
 		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType());
@@ -68,7 +74,8 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public MyPageResponseDto getUserMyPageInfo(Long id) {
+	@Transactional(readOnly = true)
+	public MyPageResponseDto readUserMyPageInfo(Long id) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 		return MyPageResponseDto.from(user);

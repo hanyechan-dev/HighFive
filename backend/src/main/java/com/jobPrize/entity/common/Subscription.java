@@ -1,15 +1,9 @@
 package com.jobPrize.entity.common;
 
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.jobPrize.entity.common.User;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +22,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class Subscription {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,11 +32,10 @@ public class Subscription {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 	
-	@CreatedDate
     @Column(name = "START_DATE", nullable = false)
-    private LocalDateTime startDate;	// 구독 시작일
+    private LocalDate startDate;	// 구독 시작일
 	
     @Column(name = "END_DATE", nullable = false)
-    private LocalDateTime endDate;	//	구독 종료일
+    private LocalDate endDate;	//	구독 종료일
 
 }

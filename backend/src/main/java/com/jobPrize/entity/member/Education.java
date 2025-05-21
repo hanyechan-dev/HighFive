@@ -3,9 +3,9 @@ package com.jobPrize.entity.member;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.jobPrize.dto.member.education.EducationCreateDto;
+import com.jobPrize.dto.member.education.EducationUpdateDto;
 import com.jobPrize.entity.memToCom.EducationLevel;
-import com.jobPrize.memberService.dto.education.EducationCreateDto;
-import com.jobPrize.memberService.dto.education.EducationUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.dto.memToCom.jobPosting.JobPostingFilterCondition;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.QJobPosting;
-import com.jobPrize.memberService.dto.jobPositing.JobPostingFilterCondition;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;

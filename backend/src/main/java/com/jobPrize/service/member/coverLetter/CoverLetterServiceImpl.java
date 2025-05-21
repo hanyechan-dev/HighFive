@@ -7,16 +7,16 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentCreateDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentResponseDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentUpdateDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterCreateDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterResponseDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterSummaryDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterUpdateDto;
 import com.jobPrize.entity.member.CoverLetter;
 import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentCreateDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentResponseDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentUpdateDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterCreateDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterResponseDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterSummaryDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterUpdateDto;
 import com.jobPrize.repository.member.coverLetter.CoverLetterRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.coverLetterContent.CoverLetterContentService;
@@ -55,7 +55,8 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	}
 
 	@Override
-	public List<CoverLetterSummaryDto> getCoverLetterList(Long id) {
+	@Transactional(readOnly = true)
+	public List<CoverLetterSummaryDto> readCoverLetterList(Long id) {
 		
 		List<CoverLetter> coverLetters = coverLetterRepository.findAllByMemberId(id);
 		List<CoverLetterSummaryDto> coverLetterSummaryDtos = new ArrayList<>();
@@ -68,7 +69,8 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	}
 
 	@Override
-	public CoverLetterResponseDto getCoverLetter(Long id, Long coverLetterId) {
+	@Transactional(readOnly = true)
+	public CoverLetterResponseDto readCoverLetter(Long id, Long coverLetterId) {
 		CoverLetter coverLetter =coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
 				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자기소개서입니다."));
 		

@@ -3,10 +3,10 @@ package com.jobPrize.service.member.coverLetterContent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentCreateDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentUpdateDto;
 import com.jobPrize.entity.member.CoverLetter;
 import com.jobPrize.entity.member.CoverLetterContent;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentCreateDto;
-import com.jobPrize.memberService.dto.coverLetter.CoverLetterContentUpdateDto;
 import com.jobPrize.repository.member.coverLetterContent.CoverLetterContentRepository;
 
 import jakarta.persistence.EntityNotFoundException;

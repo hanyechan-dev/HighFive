@@ -7,16 +7,16 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentCreateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentResponseDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentUpdateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionResponseDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionSummaryDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionUpdateDto;
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.CareerDescriptionContent;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentCreateDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentResponseDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionContentUpdateDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionCreateDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionResponseDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionSummaryDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionUpdateDto;
 import com.jobPrize.repository.member.careerDescription.CareerDescriptionRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.careerDescriptionContent.CareerDescriptionContentService;
@@ -50,7 +50,8 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	}
 
 	@Override
-	public List<CareerDescriptionSummaryDto> getCareerDescriptionList(Long id) {
+	@Transactional(readOnly = true)
+	public List<CareerDescriptionSummaryDto> readCareerDescriptionList(Long id) {
 
 		List<CareerDescription> careerDescriptions = careerDescriptionRepository.findAllByMemberId(id);
 		List<CareerDescriptionSummaryDto> careerDescriptionSummaryDtos = new ArrayList<>();
@@ -61,7 +62,8 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	}
 
 	@Override
-	public CareerDescriptionResponseDto getCareerDescription(Long id, Long careerDescriptionId) {
+	@Transactional(readOnly = true)
+	public CareerDescriptionResponseDto readCareerDescription(Long id, Long careerDescriptionId) {
 		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionId)
 			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 경력기술서입니다."));
 		

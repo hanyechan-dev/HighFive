@@ -7,11 +7,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.certification.CertificationCreateDto;
+import com.jobPrize.dto.member.certification.CertificationResponseDto;
+import com.jobPrize.dto.member.certification.CertificationUpdateDto;
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.certification.CertificationCreateDto;
-import com.jobPrize.memberService.dto.certification.CertificationResponseDto;
-import com.jobPrize.memberService.dto.certification.CertificationUpdateDto;
 import com.jobPrize.repository.member.certification.CertificationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 
@@ -39,7 +39,8 @@ public class CertificationServiceImpl implements CertificationService {
 	}
 
 	@Override
-	public List<CertificationResponseDto> getCertificationList(Long id) {
+	@Transactional(readOnly = true)
+	public List<CertificationResponseDto> readCertificationList(Long id) {
 
 		List<Certification> certifications = certificationRepository.findAllByMemberId(id);
 		List<CertificationResponseDto> certificationResponseDtos = new ArrayList<CertificationResponseDto>();

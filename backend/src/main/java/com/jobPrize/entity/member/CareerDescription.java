@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionCreateDto;
-import com.jobPrize.memberService.dto.careerDescription.CareerDescriptionUpdateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionUpdateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

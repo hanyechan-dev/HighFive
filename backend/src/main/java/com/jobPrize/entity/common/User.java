@@ -7,11 +7,11 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
 import com.jobPrize.entity.admin.Admin;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.consultant.Consultant;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.signUp.UserSignUpDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
+import com.jobPrize.dto.memToCom.proposal.ProposalSummaryDto;
 import com.jobPrize.entity.memToCom.Proposal;
-import com.jobPrize.memberService.dto.proposal.ProposalResponseDto;
-import com.jobPrize.memberService.dto.proposal.ProposalSummaryDto;
 import com.jobPrize.repository.memToCom.proposal.ProposalRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class ProposalServiceImpl implements ProposalService {
 	private final ProposalRepository proposalRepository;
 
 	@Override
-	public Page<ProposalSummaryDto> getProposalPage(Long id, Pageable pageable) {
+	public Page<ProposalSummaryDto> readProposalPage(Long id, Pageable pageable) {
 		Page<Proposal> proposals = proposalRepository.findAllByMemberId(id, pageable);
 
 		List<ProposalSummaryDto> proposalSummaryDtos = new ArrayList<>();
@@ -38,7 +38,8 @@ public class ProposalServiceImpl implements ProposalService {
 	}
 
 	@Override
-	public ProposalResponseDto getProposal(Long id, Long proposalId) {
+	@Transactional(readOnly = true)
+	public ProposalResponseDto readProposal(Long id, Long proposalId) {
 		Proposal proposal = proposalRepository.findById(proposalId)
 				.orElseThrow(() -> new IllegalStateException("존재하지 않는 제안입니다."));
 		

@@ -7,11 +7,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.member.languageTest.LanguageTestCreateDto;
+import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
+import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
 import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.languageTest.LanguageTestCreateDto;
-import com.jobPrize.memberService.dto.languageTest.LanguageTestResponseDto;
-import com.jobPrize.memberService.dto.languageTest.LanguageTestUpdateDto;
 import com.jobPrize.repository.member.languageTest.LanguageTestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 
@@ -40,7 +40,8 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 	}
 
 	@Override
-	public List<LanguageTestResponseDto> getLanguageTestList(Long id) {
+	@Transactional(readOnly = true)
+	public List<LanguageTestResponseDto> readLanguageTestList(Long id) {
 
 		List<LanguageTest> languageTests = languageTestRepository.findAllByMemberId(id);
 		List<LanguageTestResponseDto> languageTestResponseDtos = new ArrayList<>();

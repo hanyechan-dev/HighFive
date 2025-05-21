@@ -11,18 +11,18 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
+import com.jobPrize.dto.memToCon.request.RequestCreateDto;
+import com.jobPrize.dto.memToCon.request.RequestDetailDto;
+import com.jobPrize.dto.memToCon.request.RequestResponseDto;
+import com.jobPrize.dto.memToCon.request.RequestSummaryDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.memberService.dto.request.AiConsultingContentResponseDto;
-import com.jobPrize.memberService.dto.request.AiConsultingResponseDto;
-import com.jobPrize.memberService.dto.request.RequestCreateDto;
-import com.jobPrize.memberService.dto.request.RequestDetailDto;
-import com.jobPrize.memberService.dto.request.RequestResponseDto;
-import com.jobPrize.memberService.dto.request.RequestSummaryDto;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.document.DocumentToJson;
@@ -42,7 +42,8 @@ public class RequestServiceImpl implements RequestService {
 	private final DocumentToJson documentToJson;
 	
 	@Override
-	public Page<RequestSummaryDto> getFeedbackRequestPage(Long id, Pageable pageable) {
+	@Transactional(readOnly = true)
+	public Page<RequestSummaryDto> readFeedbackRequestPage(Long id, Pageable pageable) {
 		Page<Request> requests = requestRepository.findAllByMemberIdAndType(id,CommonEnum.ConsultingType.피드백 ,pageable);
 		
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
@@ -59,7 +60,8 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	public Page<RequestSummaryDto> getEditRequestPage(Long id, Pageable pageable) {
+	@Transactional(readOnly = true)
+	public Page<RequestSummaryDto> readEditRequestPage(Long id, Pageable pageable) {
 		Page<Request> requests = requestRepository.findAllByMemberIdAndType(id,CommonEnum.ConsultingType.첨삭 ,pageable);
 		
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
@@ -76,7 +78,8 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	public RequestDetailDto getRequestDetail(Long id, Long requestId) {
+	@Transactional(readOnly = true)
+	public RequestDetailDto readRequestDetail(Long id, Long requestId) {
 		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
 			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 컨설팅 요청입니다."));
 		
