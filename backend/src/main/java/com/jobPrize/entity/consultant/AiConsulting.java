@@ -44,10 +44,6 @@ public class AiConsulting {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CommonEnum.ConsultingType type;
-
-    @Builder.Default
-	@Column(nullable = false, name = "IS_REQUESTED")
-	private boolean isRequested = false;
     
     @Column(name = "request_date", nullable = false)
     private LocalDate requestedDate;
@@ -57,14 +53,7 @@ public class AiConsulting {
     
 	@OneToMany(mappedBy = "aiConsulting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AiConsultingContent> aiConsultingContents = new ArrayList<>();
-	
-	public void request() {
-		if(isRequested) {
-			return;
-		}
-		isRequested = true;
-		requestedDate = LocalDate.now();
-	}
+
 
  
 }

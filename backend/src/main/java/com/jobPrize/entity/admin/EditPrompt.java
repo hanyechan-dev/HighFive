@@ -1,6 +1,6 @@
 package com.jobPrize.entity.admin;
 
-import com.jobPrize.Admin02.service.dto.editPrompt.EditPrompCreateDto;
+import com.jobPrize.dto.admin.editPrompt.EditPrompCreateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

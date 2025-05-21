@@ -10,14 +10,20 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.dto.consultant.AiConsultingSummaryDto;
-import com.jobPrize.dto.consultant.AiContentResponseDto;
-import com.jobPrize.dto.consultant.AiEditDetailResponseDto;
-import com.jobPrize.dto.consultant.AiFeedbackDetailResponseDto;
+import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
+import com.jobPrize.dto.consultant.aiConuslting.AiConsultingSummaryDto;
+import com.jobPrize.dto.consultant.aiConuslting.AiEditDetailResponseDto;
+import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentCreateDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
+import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
+import com.jobPrize.repository.memToCon.request.RequestRepository;
+import com.jobPrize.service.consultant.aiConsultingContent.AiConsultingContentService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,6 +32,10 @@ import lombok.RequiredArgsConstructor;
 public class AiConsultingServiceImpl implements AiConsultingService {
 
     private final AiConsultingRepository aiConsultingRepository;
+    
+    private final AiConsultingContentService aiConsultingContentService;
+    
+    private final RequestRepository requestRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -131,6 +141,32 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 	    throw new IllegalArgumentException("지원하지 않는 DTO 타입입니다.");
 	}
+
+
+	@Override
+	public void createConsulting(Long id, AiConsultingCreateDto aiConsultingCreateDto) {
+		Request request = requestRepository.findById(aiConsultingCreateDto.getRequestId())
+				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 요청입니다."));
+		
+		
+		AiConsulting aiConsulting = AiConsulting.builder()
+				.request(request)
+				.type(aiConsultingCreateDto.getType())
+				.build();
+		
+		aiConsultingRepository.save(aiConsulting);
+		
+		List<AiConsultingContentCreateDto> aiConsultingContentCreateDtos = aiConsultingCreateDto.getAiConsultingContentCreateDtos();
+		for(AiConsultingContentCreateDto aiConsultingContentCreateDto : aiConsultingContentCreateDtos) {
+			aiConsultingContentService.createAiConsultingContent(aiConsulting, aiConsultingContentCreateDto);
+		}
+		
+		
+		
+	}
+
+
+
 
 
 }

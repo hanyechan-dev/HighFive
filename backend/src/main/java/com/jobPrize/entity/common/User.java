@@ -69,6 +69,11 @@ public class User {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private UserType type;
+	
+	@Builder.Default
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private ApprovalStatus approvalStatus = ApprovalStatus.WAITING;
 
 	@Builder.Default
 	@Column(nullable = false, name = "IS_SUBSCRIBED")
@@ -132,6 +137,14 @@ public class User {
 
 	public void unSubscribe() {
 		this.isSubscribed = false;
+	}
+	
+	public void approve() {
+		this.approvalStatus = approvalStatus.APPROVED;
+	}
+	
+	public void reject() {
+		this.approvalStatus = approvalStatus.REJECTED;
 	}
 
 	public static User of(UserSignUpDto userSignUpDto, String encodedPassword) {

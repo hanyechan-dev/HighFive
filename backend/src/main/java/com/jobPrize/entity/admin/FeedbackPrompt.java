@@ -1,6 +1,6 @@
 package com.jobPrize.entity.admin;
 
-import com.jobPrize.Admin02.service.dto.feedbackPrompt.FeedbackPromptCreateDto;
+import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptCreateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

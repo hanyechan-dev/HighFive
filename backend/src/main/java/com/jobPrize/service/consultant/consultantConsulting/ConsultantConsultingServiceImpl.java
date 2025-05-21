@@ -11,12 +11,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.dto.consultant.AiContentResponseDto;
-import com.jobPrize.dto.consultant.ConsultantConsultingSummaryDto;
-import com.jobPrize.dto.consultant.ConsultantContentRequestDto;
-import com.jobPrize.dto.consultant.ConsultantContentResponseDto;
-import com.jobPrize.dto.consultant.ConsultantEditDetailResponseDto;
-import com.jobPrize.dto.consultant.ConsultantFeedBackDetailResponseDto;
+import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResponseDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
+import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentRequestDto;
+import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentResponseDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;

@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.jobPrize.dto.consultant.ConsultantConsultingSummaryDto;
-import com.jobPrize.dto.consultant.ConsultantContentRequestDto;
-import com.jobPrize.dto.consultant.ConsultantContentResponseDto;
-import com.jobPrize.dto.consultant.ConsultantEditDetailResponseDto;
-import com.jobPrize.dto.consultant.ConsultantFeedBackDetailResponseDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResponseDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
+import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentRequestDto;
+import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentResponseDto;
 import com.jobPrize.entity.common.UserType;
 
 public interface ConsultantConsultingService {
