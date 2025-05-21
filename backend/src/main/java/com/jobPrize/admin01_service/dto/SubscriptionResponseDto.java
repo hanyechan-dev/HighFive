@@ -1,6 +1,8 @@
 package com.jobPrize.admin01_service.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
+import com.jobPrize.entity.common.UserType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubscriptionResponseDto {
-    private Long userId;
-    LocalDateTime startDate;
-    LocalDateTime endDate;
+    private Long id;
+    private String name;
+    private UserType userType;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.admin01_service.dto.ChatRequestDto;
 import com.jobPrize.admin01_service.dto.ChatResponseDto;
@@ -35,8 +36,9 @@ public class ChatServiceImpl implements ChatService {
         this.chatContentRepository = chatContentRepository;
     }
 
+    @Transactional
 	@Override
-	public void insertMessage(ChatRequestDto chatRequestDto) throws Exception {
+	public void createMessage(ChatRequestDto chatRequestDto) throws Exception {
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRequestDto.getChatRoomId())
 				.orElseThrow(() -> new EntityNotFoundException("ChatRoom not found"));
 		
@@ -50,8 +52,9 @@ public class ChatServiceImpl implements ChatService {
 		chatContentRepository.save(newMessage);
     }
     
+    @Transactional(readOnly = true)
     @Override
-    public List<ChatRoom> selectChatRooms(String token) throws Exception {
+    public List<ChatRoom> readChatRoomsList(String token) throws Exception {
         
         Long userId = Long.parseLong(tokenProvider.getIdFromToken(token));
 
@@ -59,18 +62,19 @@ public class ChatServiceImpl implements ChatService {
         return chatRooms;
     }
 	
+    @Transactional(readOnly = true)
 	@Override
-	public List<ChatResponseDto> selectMessages(Long roomId) throws Exception {
+	public List<ChatResponseDto> readMessagesList(Long roomId) throws Exception {
         ChatRoom chatRoom = chatRoomRepository.findWithChatContentsByChatRoomId(roomId)
             .orElseThrow(() -> new EntityNotFoundException("ChatRoom not found with id: " + roomId));
 
         return chatRoom.getChatContents().stream()
-            .map(c -> ChatResponseDto.builder()
+            .map(chatContent -> ChatResponseDto.builder()
                 .chatRoomId(roomId)
-                .senderId(c.getUser().getId())
-                .senderName(c.getUser().getName())
-                .content(c.getContent())
-                .createdAt(c.getCreatedTime())
+                .senderId(chatContent.getUser().getId())
+                .senderName(chatContent.getUser().getName())
+                .content(chatContent.getContent())
+                .createdAt(chatContent.getCreatedTime())
                 .build()
             )
             .collect(Collectors.toList());

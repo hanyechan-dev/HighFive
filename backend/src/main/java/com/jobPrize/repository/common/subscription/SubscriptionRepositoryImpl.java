@@ -1,5 +1,6 @@
 package com.jobPrize.repository.common.subscription;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.jobPrize.entity.common.QSubscription;
@@ -18,9 +19,11 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 	public List<Subscription> findAll() {	// 모든 구독자 조회
 		QSubscription subscription = QSubscription.subscription;
 		QUser user = QUser.user;
+		LocalDate now = LocalDate.now();
 
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)
+				.where(subscription.endDate.loe(now))
 				.leftJoin(subscription.user).fetchJoin()
 				.distinct()
 				.orderBy(subscription.startDate.desc())
@@ -31,11 +34,13 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 	@Override
 	public List<Subscription> findAllByUserType(UserType userType){ // UserType에 따른 구독자 조회
 		QSubscription subscription = QSubscription.subscription;
+		LocalDate now = LocalDate.now();
 		
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)
 				.leftJoin(subscription.user).fetchJoin()
-				.where(subscription.user.type.eq(userType))
+				.where(subscription.user.type.eq(userType),
+						subscription.endDate.loe(now))
 				.distinct()
 				.orderBy(subscription.startDate.desc())
 				.fetch();

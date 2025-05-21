@@ -2,13 +2,15 @@ package com.jobPrize.admin01_service.service;
 
 import java.util.List;
 
-import com.jobPrize.entity.common.Subscription;
+import com.jobPrize.admin01_service.dto.SubscriptionRequestDto;
+import com.jobPrize.admin01_service.dto.SubscriptionResponseDto;
 import com.jobPrize.entity.common.UserType;
 
 public interface SubscriptionService {
 	
-	// 실제 구독 기능을 넣어야 할 듯. 해당 부분 상의 필요.
-	void insertSubscriber() throws Exception;
+	void createSubscription(SubscriptionRequestDto subscriptionRequestDto) throws Exception;
 	
-	List<Subscription> selectSubscriberByUserType(UserType userType);
+	List<SubscriptionResponseDto> readSubscriberByUserTypeList(UserType userType);
+	
+	// 구독 기간 만료 시, User.isSubscribed 필드가 자동으로 false 설정되는 기능 구현 필수.
 }

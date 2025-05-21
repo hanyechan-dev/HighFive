@@ -1,11 +1,8 @@
 package com.jobPrize.entity.common;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.jobPrize.entity.common.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,11 +36,10 @@ public class Subscription {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 	
-	@CreatedDate
     @Column(name = "START_DATE", nullable = false)
-    private LocalDateTime startDate;	// 구독 시작일
+    private LocalDate startDate;	// 구독 시작일
 	
     @Column(name = "END_DATE", nullable = false)
-    private LocalDateTime endDate;	//	구독 종료일
+    private LocalDate endDate;	//	구독 종료일
 
 }

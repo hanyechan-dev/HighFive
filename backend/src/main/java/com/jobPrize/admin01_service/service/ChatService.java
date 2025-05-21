@@ -7,7 +7,7 @@ import com.jobPrize.admin01_service.dto.ChatResponseDto;
 import com.jobPrize.entity.common.ChatRoom;
 
 public interface ChatService {
-	void insertMessage(ChatRequestDto chatRequestDto) throws Exception;
-    List<ChatRoom> selectChatRooms(String authorizationHeader) throws Exception;
-	List<ChatResponseDto> selectMessages(Long roomId) throws Exception;
+	void createMessage(ChatRequestDto chatRequestDto) throws Exception;
+    List<ChatRoom> readChatRoomsList(String authorizationHeader) throws Exception;
+	List<ChatResponseDto> readMessagesList(Long roomId) throws Exception;
 }
