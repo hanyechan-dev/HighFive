@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.Admin02.service.dto.post.PostCreateDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -57,6 +59,14 @@ public class Post {
 	public void updatePost(String title, String content) {
 		this.title = title;
 		this.content = content; // 게시글 제목, 게시글 내용을 업데이트 처리하는 메서드
+	}
+
+	public static Post createFrom(PostCreateDto dto, User user) {
+	    return Post.builder()
+	        .title(dto.getTitle())
+	        .content(dto.getContent())
+	        .user(user)
+	        .build();
 	}
 
 }

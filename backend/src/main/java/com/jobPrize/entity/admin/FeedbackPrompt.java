@@ -1,5 +1,7 @@
 package com.jobPrize.entity.admin;
 
+import com.jobPrize.Admin02.service.dto.feedbackPrompt.FeedbackPromptCreateDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,4 +49,11 @@ public class FeedbackPrompt {
 		isApplied = false;			//프롬르트를 미적용 상태로 설정하는 메서드
 	}
 
+	public static FeedbackPrompt createFrom(FeedbackPromptCreateDto dto) {
+	    return FeedbackPrompt.builder()
+	        .title(dto.getTitle())
+	        .content(dto.getContent())
+	        .isApplied(false)
+	        .build();
+	}
 }

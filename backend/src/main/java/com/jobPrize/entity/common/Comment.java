@@ -50,4 +50,12 @@ public class Comment {
     @Column(name = "CREATED_TIME", nullable = false)
     private LocalDateTime createdTime;
     
+    public static Comment createOf(Post post, User user, String content) {
+        return Comment.builder()
+            .post(post)
+            .user(user)
+            .content(content)
+            .build();
+    }
+
 }
