@@ -21,29 +21,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EditPromptServiceImpl implements EditPromptService {
 	private final EditPromptRepository editPromptRepository;
-	private final TokenProvider tokenProvider;
 
 	@Override
 	@Transactional
-	public void editPromptCreate(EditPrompCreateDto dto, String token) {
-		UserType userType = tokenProvider.getUserTypeFromToken(token);
-		if(userType != UserType.관리자) {
-			throw new IllegalArgumentException("관리자만 작성할 수 있습니다");
+	public void createEditPrompt(UserType userType, EditPrompCreateDto dto) {
+		if(userType !=UserType.관리자) {
+			throw new IllegalArgumentException("관리자만 수정할 수 있습니다.");
 		}
-		EditPrompt prompt = EditPrompt
-				.builder()
-				.title(dto.getTitle())
-				.content(dto.getContent())
-				.isApplied(false)
-				.build();
-		editPromptRepository.save(prompt);
+		  EditPrompt prompt = EditPrompt.createFrom(dto);
+		    editPromptRepository.save(prompt);
 	}
 	
 	@Override
 	@Transactional
-	public void editPromptUpdate(Long id, EditPromptUpdateDto dto, String token) {
-		UserType userType = tokenProvider.getUserTypeFromToken(token);
-		EditPrompt editPrompt = editPromptRepository.findById(id)
+	public void updateEditPrompt(UserType userType, EditPromptUpdateDto dto) {
+		EditPrompt editPrompt = editPromptRepository.findById(dto.getId())
 			    .orElseThrow(() -> new IllegalArgumentException("해당 프롬프트가 존재하지 않습니다."));
 
 		if(userType !=UserType.관리자) {
@@ -54,7 +46,7 @@ public class EditPromptServiceImpl implements EditPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<EditPromptResponseDto> getAll() {
+	public List<EditPromptResponseDto> readAllList() {
 		List<EditPrompt> editPrompts = editPromptRepository.findAll();
 		List<EditPromptResponseDto> results = new ArrayList<>();
 
@@ -68,25 +60,25 @@ public class EditPromptServiceImpl implements EditPromptService {
 	}
 	@Override
 	@Transactional(readOnly = true)
-	public EditPromptResponseDto getById(Long Id) {
-		EditPrompt prompt = editPromptRepository.findById(Id)
-		        .orElseThrow(() -> new IllegalArgumentException("해당 ID의 프롬프트가 없습니다: " + Id));
+	public EditPromptResponseDto readEditPromptById(EditPromptResponseDto dto) {
+		EditPrompt prompt = editPromptRepository.findById(dto.getId())
+		        .orElseThrow(() -> new IllegalArgumentException("해당 ID의 프롬프트가 없습니다: " + dto.getId()));
 		return EditPromptResponseDto.from(prompt);
 	
 	}
 	
 	@Override
 	@Transactional
-	public void EditPromptapplyChange(Long Id) {
-		EditPromptcancelApplied();
-		 EditPrompt editPrompt = editPromptRepository.findById(Id)
+	public void applyChangedEditPrompt(Long promptId) {
+		 cancelChangedEditPrompt();
+		 EditPrompt editPrompt = editPromptRepository.findById(promptId)
 				 .orElseThrow(() -> new IllegalArgumentException("해당 프롬프트가 존재하지 않습니다"));
 		 editPrompt.apply();
 	}
 	
 	@Override
 	@Transactional
-	public void EditPromptcancelApplied() {
+	public void  cancelChangedEditPrompt() {
 		 Optional<EditPrompt> optional = editPromptRepository.findAppliedPrompt();
 		 optional.ifPresent(editPrompt -> {
 		        editPrompt.unApply(); 

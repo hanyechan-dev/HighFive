@@ -18,7 +18,7 @@ public class PostContentResponseDto {
 	private Long id;
 	private String title;
 	private String content;
-	private String authorId;
+	private String authorName;
 	private List<String> commentsContent;
 	private LocalDateTime createdDate;
 	
@@ -36,7 +36,7 @@ public class PostContentResponseDto {
 				.id(post.getId())
 				.title(post.getTitle())
 				.content(post.getContent())
-				.authorId(user.getName())
+				.authorName(user.getName())
 				.commentsContent(commentContents)
 				.createdDate(post.getCreatedTime())
 				.build();

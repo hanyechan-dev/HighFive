@@ -21,45 +21,38 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
-	
-	private final TokenProvider tokenProvider;
-	  private final CommentRepository commentRepository;
-	    private final PostRepository postRepository;
-	    private final UserRepository userRepository;
+public class CommentServiceImpl implements CommentService {
+
+	private final CommentRepository commentRepository;
+	private final PostRepository postRepository;
+	private final UserRepository userRepository;
+
 	@Override
 	@Transactional
-	public void createComment(CommentCreateDto dto, String token) {
-		Long userId = Long.parseLong(tokenProvider.getIdFromToken(token));
-		 User user = userRepository.findByIdAndDeletedDateIsNull(userId)
-		            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-		 Post post = postRepository.findById(dto.getPostId())
-	                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
-	     
-	        
-	        Comment comment = Comment.builder()
-	                .post(post)
-	                .user(user)
-	                .content(dto.getContent())
-	                .build();
+	public void createComment(Long id, CommentCreateDto dto) {
+		User user = userRepository.findByIdAndDeletedDateIsNull(id)
+				.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+		Post post = postRepository.findById(dto.getPostId())
+				.orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
 
-	        commentRepository.save(comment);
+		Comment comment = Comment.createOf(post, user, dto.getContent());
+
+		commentRepository.save(comment);
 	}
+
 	@Override
 	@Transactional(readOnly = true)
-	public List<CommentResponseDto> getCommentsByPostId(Long postId) {
-	    Post post = postRepository.findWithCommentsByPostId(postId)
-	            .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않거나 댓글이 없습니다."));
+	public List<CommentResponseDto> readCommentsByPostIdList(Long postId) {
+		Post post = postRepository.findWithCommentsByPostId(postId)
+				.orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않거나 댓글이 없습니다."));
 
-	    List<CommentResponseDto> result = new ArrayList<>();
+		List<CommentResponseDto> result = new ArrayList<>();
 
-	    for (Comment comment : post.getComments()) {
-	        result.add(CommentResponseDto.from(comment));
-	    }
+		for (Comment comment : post.getComments()) {
+			result.add(CommentResponseDto.from(comment));
+		}
 
-	    return result;
+		return result;
 	}
-
-
 
 }

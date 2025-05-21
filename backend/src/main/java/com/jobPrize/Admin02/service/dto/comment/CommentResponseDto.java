@@ -11,7 +11,7 @@ import lombok.Getter;
 @Builder
 public class CommentResponseDto {
 	private Long id;
-	private Long author;
+	private String authorNickname;
 	private String content;
 	private LocalDateTime createdDate;
 	
@@ -19,7 +19,7 @@ public class CommentResponseDto {
 		return CommentResponseDto
 				.builder()
 				.id(comment.getPost().getId())
-				.author(comment.getPost().getUser().getId())
+				.authorNickname(comment.getUser().getMember().getNickname())
 				.content(comment.getContent())
 				.createdDate(comment.getCreatedTime())
 				.build();

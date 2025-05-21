@@ -5,21 +5,22 @@ import java.util.List;
 import com.jobPrize.Admin02.service.dto.editPrompt.EditPrompCreateDto;
 import com.jobPrize.Admin02.service.dto.editPrompt.EditPromptResponseDto;
 import com.jobPrize.Admin02.service.dto.editPrompt.EditPromptUpdateDto;
+import com.jobPrize.entity.common.UserType;
 
 public interface EditPromptService {
 	
-	void editPromptCreate(EditPrompCreateDto dto, String token);
+	void createEditPrompt(UserType userType, EditPrompCreateDto dto);
 	
-	void editPromptUpdate(Long id, EditPromptUpdateDto dto, String token);
+	void updateEditPrompt(UserType userType, EditPromptUpdateDto dto);
 	
 	
-	List<EditPromptResponseDto> getAll();
+	List<EditPromptResponseDto> readAllList();
 	
-	EditPromptResponseDto getById(Long Id);
+	EditPromptResponseDto readEditPromptById(EditPromptResponseDto dto);
 	
-	void EditPromptapplyChange(Long Id);      
+	void applyChangedEditPrompt(Long editPromptId);      
 	
-	void EditPromptcancelApplied();     
+	void cancelChangedEditPrompt();     
 
 
 

@@ -3,16 +3,17 @@ package com.jobPrize.Admin02.service.service.userApprove;
 import java.util.List;
 
 import com.jobPrize.entity.common.User;
+import com.jobPrize.entity.common.UserType;
 
 public interface ApproveService {
 
-	void singUpApproveUser(Long userId, String token);
+	void approveSingUpUser(UserType userType, Long targetUserId);
+	
+	void rejectSingUpUser(UserType userType, Long targetUserId);
 
-	void singUpRejectUser(Long userId, String token);
+	List<User> readWaitingUserList();
 
-	List<User> waitingUsers();
+	List<User> readApprovedUserList();
 
-	List<User> approvedUsersCheck();
-
-	List<User> rejectedUsersCheck();
+	List<User> readRejectedUserList();
 }

@@ -11,44 +11,40 @@ import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.UserRepository;
+import com.jobPrize.repository.member.member.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ApproveServiceImpl implements ApproveService {
 
 	private final UserRepository userRepository;
-	private final TokenProvider tokenProvider;
 
 	@Override
-	@Transactional
-	public void singUpApproveUser(Long userId, String token) {
-		UserType userType = tokenProvider.getUserTypeFromToken(token);
-		User user = userRepository.findById(userId)
+	
+	public void approveSingUpUser(UserType userType, Long targetUserId) {
+		
+		User user = userRepository.findById(targetUserId)
 				.orElseThrow(() -> new IllegalArgumentException("가입 유저가 존재하지 않습니다"));
 
 		if (userType != UserType.관리자) {
 			throw new IllegalArgumentException("관리자만 승인 할 수 있습니다");
 		}
 
-		if (user.getType() == UserType.일반회원) {
-			user.approve();
-			return;
-		}
-
 		if (user.getType() == UserType.기업회원 || user.getType() == UserType.컨설턴트회원) {
 			user.approve();
+			userRepository.save(user);
 		} else {
 			throw new IllegalArgumentException("승인 할 수 없는 회원입니다");
 		}
 	}
-
+	
+	
 	@Override
-	@Transactional
-	public void singUpRejectUser(Long userId, String token) {
-		UserType userType = tokenProvider.getUserTypeFromToken(token);
-		User user = userRepository.findById(userId)
+	public void rejectSingUpUser(UserType userType, Long targetUserId) {
+		User user = userRepository.findById(targetUserId)
 				.orElseThrow(() -> new IllegalArgumentException("가입 유저가 존재하지 않습니다"));
 
 		if (userType != UserType.관리자) {
@@ -57,12 +53,15 @@ public class ApproveServiceImpl implements ApproveService {
 		if (user.getType() == UserType.일반회원) {
 			throw new IllegalArgumentException("일반회원은 거절 할 수 없습니다");
 		}
-		user.reject();
+		if(user.getType() == UserType.기업회원 || user.getType() == UserType.컨설턴트회원) {
+			user.reject();
+			userRepository.save(user);
+		}
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> waitingUsers() {
+	public List<User> readWaitingUserList() {
 		List<User> allUsers = userRepository.findAll();
 		List<User> waitingUsers = new ArrayList<>();
 
@@ -77,7 +76,7 @@ public class ApproveServiceImpl implements ApproveService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> approvedUsersCheck() {
+	public List<User> readApprovedUserList() {
 		List<User> allUsers = userRepository.findAll();
 		List<User> approvedUsers = new ArrayList<>();
 
@@ -91,7 +90,7 @@ public class ApproveServiceImpl implements ApproveService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> rejectedUsersCheck() {
+	public List<User> readRejectedUserList() {
 		List<User> allUsers = userRepository.findAll();
 		List<User> rejectUsers = new ArrayList<>();
 

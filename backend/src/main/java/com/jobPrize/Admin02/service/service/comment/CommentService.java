@@ -7,8 +7,8 @@ import com.jobPrize.Admin02.service.dto.comment.CommentResponseDto;
 
 public interface CommentService {
 
-	void createComment(CommentCreateDto dto, String token);
+	void createComment(Long id, CommentCreateDto dto);
 	
-	List<CommentResponseDto> getCommentsByPostId(Long postId);
+	List<CommentResponseDto> readCommentsByPostIdList(Long postId);
 
 }

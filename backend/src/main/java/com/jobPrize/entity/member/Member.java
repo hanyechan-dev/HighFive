@@ -81,4 +81,11 @@ public class Member {
     	this.nickname=nickname;
     }
 
+    public static Member from(User user, String nickname) {
+        return Member.builder()
+            .user(user)
+            .nickname(nickname)
+            .build();
+    }
+
 }
