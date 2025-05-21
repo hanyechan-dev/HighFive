@@ -43,7 +43,7 @@ public class ChatServiceImpl implements ChatService {
 				.orElseThrow(() -> new EntityNotFoundException("ChatRoom not found"));
 		
 		ChatContent newMessage = ChatContent.builder()
-				.user(userRepository.findById(chatRequestDto.getSenderId())
+				.user(userRepository.findById(chatRequestDto.getId())
 						.orElseThrow(() -> new EntityNotFoundException("User not found")))
 				.chatRoom(chatRoom)
 				.content(chatRequestDto.getContent())
@@ -64,15 +64,15 @@ public class ChatServiceImpl implements ChatService {
 	
     @Transactional(readOnly = true)
 	@Override
-	public List<ChatResponseDto> readMessagesList(Long roomId) throws Exception {
-        ChatRoom chatRoom = chatRoomRepository.findWithChatContentsByChatRoomId(roomId)
+	public List<ChatResponseDto> readMessagesList(ChatRequestDto chatRequestDto) throws Exception {
+        ChatRoom chatRoom = chatRoomRepository.findWithChatContentsByChatRoomId(chatRequestDto.getChatRoomId)
             .orElseThrow(() -> new EntityNotFoundException("ChatRoom not found with id: " + roomId));
 
         return chatRoom.getChatContents().stream()
             .map(chatContent -> ChatResponseDto.builder()
                 .chatRoomId(roomId)
-                .senderId(chatContent.getUser().getId())
-                .senderName(chatContent.getUser().getName())
+                .id(chatContent.getUser().getId())
+                .name(chatContent.getUser().getName())
                 .content(chatContent.getContent())
                 .createdAt(chatContent.getCreatedTime())
                 .build()

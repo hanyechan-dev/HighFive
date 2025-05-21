@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatResponseDto {
     private Long chatRoomId;
-    private Long senderId;
-    private String senderName;
+    private Long id;
+    private String name;
     private String content;
     private LocalDateTime createdAt;
 }
