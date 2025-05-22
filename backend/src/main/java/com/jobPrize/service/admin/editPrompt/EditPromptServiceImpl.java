@@ -7,7 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.dto.admin.editPrompt.EditPrompCreateDto;
+import com.jobPrize.dto.admin.editPrompt.EditPromptCreateDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptResponseDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptSummaryDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptUpdateDto;
@@ -25,7 +25,7 @@ public class EditPromptServiceImpl implements EditPromptService {
 	private final EditPromptRepository editPromptRepository;
 
 	@Override
-	public void createEditPrompt(UserType userType, EditPrompCreateDto dto) {
+	public void createEditPrompt(UserType userType, EditPromptCreateDto dto) {
 		if(userType !=UserType.관리자) {
 			throw new AccessDeniedException("관리자만 작성할 수 있습니다.");
 		}
@@ -60,8 +60,8 @@ public class EditPromptServiceImpl implements EditPromptService {
 	}
 	@Override
 	@Transactional(readOnly = true)
-	public EditPromptResponseDto readEditPromptById(EditPromptResponseDto dto) {
-		EditPrompt prompt = editPromptRepository.findById(dto.getId())
+	public EditPromptResponseDto readEditPromptById(Long editPromptId) {
+		EditPrompt prompt = editPromptRepository.findById(editPromptId)
 				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
 		return EditPromptResponseDto.from(prompt);
 	
@@ -81,6 +81,16 @@ public class EditPromptServiceImpl implements EditPromptService {
 				 .orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다"));
 		 editPrompt.unApply();
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public EditPromptResponseDto readApplyedEditPrompt(){
+		 EditPrompt editPrompt = editPromptRepository.findAppliedPrompt()
+			        .orElseThrow(() -> new EntityNotFoundException("현재 '적용중'인 프롬프트가 존재하지 않습니다"));
+
+			    return EditPromptResponseDto.from(editPrompt);
+
+}
 
 
 
