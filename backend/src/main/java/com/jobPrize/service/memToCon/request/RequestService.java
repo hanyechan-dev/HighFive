@@ -12,5 +12,5 @@ public interface RequestService {
 	Page<RequestSummaryDto> readFeedbackRequestPage(Long id, Pageable pageable);
 	Page<RequestSummaryDto> readEditRequestPage(Long id, Pageable pageable);
 	RequestDetailDto readRequestDetail(Long id, Long requestId);
-	void createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto);
+	Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto);
 }

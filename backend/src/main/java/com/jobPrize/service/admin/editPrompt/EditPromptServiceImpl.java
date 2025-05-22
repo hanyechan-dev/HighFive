@@ -60,8 +60,8 @@ public class EditPromptServiceImpl implements EditPromptService {
 	}
 	@Override
 	@Transactional(readOnly = true)
-	public EditPromptResponseDto readEditPromptById(EditPromptResponseDto dto) {
-		EditPrompt prompt = editPromptRepository.findById(dto.getId())
+	public EditPromptResponseDto readEditPromptById(Long editPromptId) {
+		EditPrompt prompt = editPromptRepository.findById(editPromptId)
 				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
 		return EditPromptResponseDto.from(prompt);
 	

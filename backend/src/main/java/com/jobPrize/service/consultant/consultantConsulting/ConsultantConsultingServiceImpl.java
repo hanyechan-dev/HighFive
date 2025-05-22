@@ -27,6 +27,7 @@ import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
 import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -44,10 +45,10 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 			throw new AccessDeniedException("승인은 컨설턴트만 가능 합니다.");
 		}
 	    AiConsulting aiConsulting = aiConsultingRepository.findById(aiConsultingId)
-	        .orElseThrow(() -> new IllegalArgumentException("해당 AI 컨설팅이 존재하지 않습니다."));
+	        .orElseThrow(() -> new EntityNotFoundException("해당 AI 컨설팅이 존재하지 않습니다."));
 
 	    Consultant consultant = consultantRepository.findById(consultantId)
-	        .orElseThrow(() -> new IllegalArgumentException("해당 컨설턴트가 존재하지 않습니다."));
+	        .orElseThrow(() -> new EntityNotFoundException("해당 컨설턴트가 존재하지 않습니다."));
 
 	    if (aiConsulting.getConsultantConsulting() != null) {
 	        throw new IllegalStateException("이미 승인된 컨설팅입니다.");
@@ -71,7 +72,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    }
 
 	    ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingId)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 컨설팅 이력이 존재하지 않습니다."));
+	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
 	    
 	    if(!consultantConsulting.getConsultant().getId().equals(consultantId)){
 	    	throw new AccessDeniedException("저장 권한이 없습니다.");
@@ -115,7 +116,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	@Transactional(readOnly = true)
 	public List<ConsultantContentResponseDto> readConsultantContentList(Long consultantId, Long consultantConsultingId) {
 	    ConsultantConsulting consulting = consultantConsultingRepository.findById(consultantConsultingId)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 컨설팅 이력이 존재하지 않습니다."));
+	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
 	    
 	    
 	    if(!consulting.getConsultant().getId().equals(consultantId)){
@@ -142,7 +143,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	@Override
 	public void completeConsulting(Long consultantId, Long consultantConsultingId) {
 	    ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingId)
-	        .orElseThrow(() -> new IllegalArgumentException("해당 컨설팅 이력이 존재하지 않습니다."));
+	        .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
 	    
 	    if (!consultantConsulting.getConsultant().getId().equals(consultantId)) {
 	    	throw new AccessDeniedException("완료 권한이 없습니다.");
@@ -181,7 +182,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    public ConsultantEditDetailResponseDto readEditDetail(Long consultantId,Long consultantConsultingId) {
 	        ConsultantConsulting consultantConsulting = consultantConsultingRepository
 	            .findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 컨설팅 이력이 존재하지 않습니다."));
+	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
 	        
 	        if(!consultantConsulting.getConsultant().getId().equals(consultantId)) {
 	        	throw new AccessDeniedException("조회 권한이 없습니다.");
@@ -229,7 +230,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    public ConsultantFeedBackDetailResponseDto readFeedbackDetail(Long consultantId, Long consultantConsultingId) {
 	        ConsultantConsulting consultantConsulting = consultantConsultingRepository
 	            .findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 컨설팅 이력이 존재하지 않습니다."));
+	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
 	        
 	        if (!consultantConsulting.getConsultant().getId().equals(consultantId)) {
 	            throw new AccessDeniedException("조회 권한이 없습니다.");

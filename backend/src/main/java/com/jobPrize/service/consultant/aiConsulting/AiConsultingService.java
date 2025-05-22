@@ -18,7 +18,7 @@ public interface AiConsultingService {
 
 	AiFeedbackDetailResponseDto readFeedbackDetail(Long id, Long aiConsultingId);
 	
-	void createConsulting(Long id, AiConsultingCreateDto aiConsultingCreateDto);
+	void createConsulting(AiConsultingCreateDto aiConsultingCreateDto, Long requestId);
 
 	
 }

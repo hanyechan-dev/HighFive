@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional(readOnly = true)
 	public List<CommentResponseDto> readCommentsByPostIdList(Long postId) {
 		Post post = postRepository.findWithCommentsByPostId(postId)
-				.orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+				.orElseThrow(() -> new EntityNotFoundException("게시글이 존재하지 않습니다."));
 
 		List<CommentResponseDto> results = new ArrayList<>();
 

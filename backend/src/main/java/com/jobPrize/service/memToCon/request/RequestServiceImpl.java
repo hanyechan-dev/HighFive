@@ -102,7 +102,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	public void createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
+	public Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
 		if (!userType.equals(UserType.일반회원)) {
 			throw new AccessDeniedException("일반회원만 요청할 수 있습니다.");
 		}
@@ -128,6 +128,8 @@ public class RequestServiceImpl implements RequestService {
 				.coverLetterJson(coverLetterJson)
 				.build();
 		requestRepository.save(request);
+		
+		return request.getId();
 		
 	}
 	

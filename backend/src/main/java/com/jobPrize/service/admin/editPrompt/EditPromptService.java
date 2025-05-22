@@ -16,7 +16,7 @@ public interface EditPromptService {
 	
 	List<EditPromptSummaryDto> readAllList();
 	
-	EditPromptResponseDto readEditPromptById(EditPromptResponseDto dto);
+	EditPromptResponseDto readEditPromptById(Long editPromptId);
 	
 	void applyEditPrompt(Long editPromptId);      
 	

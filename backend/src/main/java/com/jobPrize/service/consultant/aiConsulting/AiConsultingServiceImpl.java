@@ -57,7 +57,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	@Transactional(readOnly = true)
 	public AiEditDetailResponseDto readEditDetail(Long id, Long aiConsultingId) {
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 AiConsulting이 존재하지 않습니다."));
+	            .orElseThrow(() -> new EntityNotFoundException("해당 AiConsulting이 존재하지 않습니다."));
 	    
 	    if(!aiConsulting.getConsultantConsulting().getConsultant().equals(id)) {
 	    	throw new AccessDeniedException("조회 권한이 없습니다.");
@@ -70,7 +70,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	@Transactional(readOnly = true)
 	public AiFeedbackDetailResponseDto readFeedbackDetail(Long id, Long aiConsultingId) {
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 AiConsulting이 존재하지 않습니다."));
+	            .orElseThrow(() -> new EntityNotFoundException("해당 AiConsulting이 존재하지 않습니다."));
 	    
 	    if(!aiConsulting.getConsultantConsulting().getConsultant().equals(id)) {
 	    	throw new AccessDeniedException("조회 권한이 없습니다.");
@@ -144,8 +144,8 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 
 	@Override
-	public void createConsulting(Long id, AiConsultingCreateDto aiConsultingCreateDto) {
-		Request request = requestRepository.findById(aiConsultingCreateDto.getRequestId())
+	public void createConsulting(AiConsultingCreateDto aiConsultingCreateDto, Long requestId ) {
+		Request request = requestRepository.findById(requestId)
 				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 요청입니다."));
 		
 		
