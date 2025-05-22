@@ -3,7 +3,6 @@ package com.jobPrize.service.consultant.consultantConsultingContent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentCreateDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
 import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.consultant.ConsultantConsulting;

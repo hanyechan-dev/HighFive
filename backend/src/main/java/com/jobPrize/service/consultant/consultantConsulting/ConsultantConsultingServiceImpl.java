@@ -16,7 +16,6 @@ import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSumm
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
-import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentCreateDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentResponseDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
 import com.jobPrize.entity.common.UserType;
@@ -51,13 +50,9 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    AiConsulting aiConsulting = aiConsultingRepository.findById(aiConsultingId)
 	        .orElseThrow(() -> new EntityNotFoundException("해당 AI 컨설팅이 존재하지 않습니다."));
 
-<<<<<<< HEAD
-	    Consultant consultant = consultantRepository.findById(consultantId)
-	        .orElseThrow(() -> new EntityNotFoundException("해당 컨설턴트가 존재하지 않습니다."));
-=======
 	    Consultant consultant = consultantRepository.findById(id)
 	        .orElseThrow(() -> new IllegalArgumentException("해당 컨설턴트가 존재하지 않습니다."));
->>>>>>> origin/CONSULTANT_SERVICE_1
+
 
 	    if (aiConsulting.getConsultantConsulting() != null) {
 	        throw new IllegalStateException("이미 승인된 컨설팅입니다.");
@@ -80,85 +75,10 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    
 	    
 	}
-	
-	@Override
-<<<<<<< HEAD
-	public void saveConsulting(Long consultantId, Long consultantConsultingId, List<ConsultantContentRequestDto> dtoList) {
-
-	    if (dtoList == null || dtoList.isEmpty()) {
-	        throw new IllegalArgumentException("저장할 항목이 없습니다.");
-	    }
-
-	    ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingId)
-	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
-	    
-	    if(!consultantConsulting.getConsultant().getId().equals(consultantId)){
-	    	throw new AccessDeniedException("저장 권한이 없습니다.");
-	    }
-	    
-	    
-	    if(consultantConsulting.getCompletedDate()!=null) {
-	    	throw new IllegalArgumentException("이미 완료된 컨설팅입니다.");
-	    }
-
-	    List<ConsultantConsultingContent> contentList = consultantConsulting.getConsultantConsultingContents();
-
-	    for (ConsultantContentRequestDto consultantContentRequestDto : dtoList) {
-	        boolean isUpdated = false;
-
-	        for (ConsultantConsultingContent consultantConsultingContent : contentList) {
-	            if (consultantConsultingContent.getItem().equals(consultantContentRequestDto.getItem()) &&
-	            	consultantConsultingContent.getDocumentType().equals(consultantContentRequestDto.getDocumentType())) {
-	            	consultantConsultingContent.updateContent(consultantContentRequestDto.getItem(), consultantContentRequestDto.getContent());
-	                isUpdated = true;
-	                break;
-	            }
-	        }
-
-	        if (!isUpdated) {
-	            ConsultantConsultingContent newContent = ConsultantConsultingContent
-	            		.builder()
-	                    .consultantConsulting(consultantConsulting)
-	                    .item(consultantContentRequestDto.getItem())
-	                    .content(consultantContentRequestDto.getContent())
-	                    .documentType(consultantContentRequestDto.getDocumentType())
-	                    .build();
-
-	            contentList.add(newContent);
-	        }
-	    }
-	}
 
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<ConsultantContentResponseDto> readConsultantContentList(Long consultantId, Long consultantConsultingId) {
-	    ConsultantConsulting consulting = consultantConsultingRepository.findById(consultantConsultingId)
-	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
-	    
-	    
-	    if(!consulting.getConsultant().getId().equals(consultantId)){
-	    	throw new AccessDeniedException("조회 권한이 없습니다.");
-	    }
-	    
-	    List<ConsultantContentResponseDto> responseList = new ArrayList<>();
-
-	    for (ConsultantConsultingContent content : consulting.getConsultantConsultingContents()) {
-	        ConsultantContentResponseDto responseDto = ConsultantContentResponseDto
-	        		.builder()
-	                .item(content.getItem())
-	                .content(content.getContent())
-	                .documentType(content.getDocumentType())
-	                .build();
-	        responseList.add(responseDto);
-	    }
-
-	    return responseList;
-	}
-
-=======
 	public void updateConsultantConsulting(Long id, ConsultantConsultingUpdateDto consultantConsultingUpdateDto) {
->>>>>>> origin/CONSULTANT_SERVICE_1
+
 	
 		ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingUpdateDto.getConsultantConsultingid())
 				.orElseThrow(()-> new IllegalArgumentException("해당 컨설턴트 컨설팅이 존재하지 않습니다."));
@@ -198,9 +118,9 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	// 컨설팅 현황 관리 페이지 
 	 @Override
-	 public Page<ConsultantConsultingSummaryDto> readConsultantConsultingPageByCondition(Long consultantId, Pageable pageable) {
+	 public Page<ConsultantConsultingSummaryDto> readConsultantConsultingPage(Long id, Pageable pageable) {
 		 Page<ConsultantConsulting> entityPage =
-				    consultantConsultingRepository.findWithAllConsultantConsultingByConsultantId(consultantId, pageable);
+				    consultantConsultingRepository.findWithAllConsultantConsultingByConsultantId(id, pageable);
 
 
 	        List<ConsultantConsultingSummaryDto> dtoList = new ArrayList<>();
