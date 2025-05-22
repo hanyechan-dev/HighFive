@@ -144,7 +144,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 
 	@Override
-	public void createConsulting(Long id, AiConsultingCreateDto aiConsultingCreateDto) {
+	public void createAiConsulting(Long id, AiConsultingCreateDto aiConsultingCreateDto) {
 		Request request = requestRepository.findById(aiConsultingCreateDto.getRequestId())
 				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 요청입니다."));
 		

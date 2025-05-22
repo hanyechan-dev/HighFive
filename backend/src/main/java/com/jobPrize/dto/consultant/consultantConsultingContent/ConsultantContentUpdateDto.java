@@ -9,10 +9,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class ConsultantContentRequestDto {
+public class ConsultantContentUpdateDto {
 	
-	@NotNull(message = "컨설턴트 컨설팅 id는 필수입니다.")
-    private Long consultantConsultingId;
+	@NotNull(message = "컨설턴트 컨설팅 내용 id는 필수입니다.")
+	private Long id;
 	
 	@Size(max = 100, message = "항목은 50자 이하로 입력해야합니다.")
 	@NotBlank(message = "항목은 필수로 입력해야합니다")
