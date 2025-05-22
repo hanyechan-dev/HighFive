@@ -16,7 +16,4 @@ import lombok.NoArgsConstructor;
 public class SubscriptionRequestDto {
     @NotBlank(message = "구독자 ID는 비어 있을 수 없습니다.")
     private Long id;
-    
-    @NotNull
-    private UserType userType;
 }

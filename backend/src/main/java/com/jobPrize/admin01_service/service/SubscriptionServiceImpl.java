@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.admin01_service.dto.SubscriptionRequestDto;
@@ -12,21 +12,19 @@ import com.jobPrize.admin01_service.dto.SubscriptionResponseDto;
 import com.jobPrize.entity.common.Subscription;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
-import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.subscription.SubscriptionRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
+@Service
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
-	private final TokenProvider tokenProvider;
 	private final SubscriptionRepository subscriptionRepository;
 	private final UserRepository userRepository;
 	
-
-	
+	// 구독자 생성
 	@Transactional
 	@Override
 	public void createSubscription(SubscriptionRequestDto subscriptionRequestDto) throws Exception {
@@ -44,15 +42,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		User user = userRepository.findById(subscriptionRequestDto.getId())
 				.orElseThrow(() -> new EntityNotFoundException("No User Found"));
 		
-		// 구독 중인 회원으로 상태 변경
-		user.subscribe();
+		user.subscribe();	// 구독 중인 회원으로 상태 변경
 		
 		userRepository.save(user);
 	}
 	
+	// 사용자 유형에 따른 구독자 조회
 	@Transactional(readOnly = true)
 	@Override
-	public List<SubscriptionResponseDto> readSubscriberByUserTypeList(UserType userType) {
+	public List<SubscriptionResponseDto> readSubscriberByUserTypeList(UserType userType) throws Exception {
 		
 		List<Subscription> subscribers = subscriptionRepository.findAllByUserType(userType);
 		

@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationResponseDto {
+public class NotificationDto {
+    private Long notificationId;
     private Long id;
-    private String notificationId;
     private String content; // 알림 내용
     private LocalDateTime createdTime;
 }

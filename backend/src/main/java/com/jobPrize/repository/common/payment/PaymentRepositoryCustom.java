@@ -11,5 +11,7 @@ import com.jobPrize.entity.common.UserType;
 
 public interface PaymentRepositoryCustom {
 	Page<Payment> findAllByUserId(Long id, Pageable pageable);
+	
+	// 시간 남았을 때 추후 구현
 	List<Payment> findAllByUserTypeAndPeriod(LocalDateTime start, LocalDateTime end, UserType userType);
 }
