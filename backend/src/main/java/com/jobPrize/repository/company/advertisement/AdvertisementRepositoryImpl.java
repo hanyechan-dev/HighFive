@@ -1,6 +1,7 @@
 package com.jobPrize.repository.company.advertisement;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.jobPrize.entity.company.Advertisement;
 import com.jobPrize.entity.company.QAdvertisement;
@@ -25,5 +26,19 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepositoryCusto
 
 		
 		return results;
+	}
+
+	@Override
+	public Optional<Advertisement> findLatestByCompanyId(Long id) {
+		QAdvertisement advertisement = QAdvertisement.advertisement;
+
+		Advertisement result = queryFactory
+				.selectFrom(advertisement)
+				.join(advertisement.company).fetchJoin()
+				.where(advertisement.company.id.eq(id))
+				.orderBy(advertisement.startDate.desc())
+				.fetchOne();
+		
+		return Optional.ofNullable(result);
 	}
 }

@@ -12,13 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
-import com.jobPrize.dto.memToCom.application.ApplicationSummaryDto;
+import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
+import com.jobPrize.dto.memToCom.application.ApplicationSummaryForMemberDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.Application;
+import com.jobPrize.entity.memToCom.EducationLevel;
+import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.repository.admin.admin.AdminRepository;
 import com.jobPrize.repository.common.jobPosting.JobPostingRepository;
 import com.jobPrize.repository.memToCom.application.ApplicationRepository;
+import com.jobPrize.repository.memToCom.interest.InterestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.document.DocumentToJson;
 
@@ -30,26 +35,54 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
 
+    private final AdminRepository adminRepository;
+
 	private final MemberRepository memberRepository;
 
 	private final ApplicationRepository applicationRepository;
 
 	private final JobPostingRepository jobPostingRepository;
 	
+	private final InterestRepository interestRepository;
+	
 	private final DocumentToJson documentToJson;
 
+    
 	@Override
-	public Page<ApplicationSummaryDto> readApplicationPage(Long id, Pageable pageable) {
+	public Page<ApplicationSummaryForMemberDto> readApplicationForMemberPage(Long id, Pageable pageable) {
 		Page<Application> applications = applicationRepository.findAllByMemberId(id, pageable);
 
-		List<ApplicationSummaryDto> applicationSummaryDtos = new ArrayList<>();
+		List<ApplicationSummaryForMemberDto> applicationSummaryDtos = new ArrayList<>();
 		for(Application application : applications) {
-			ApplicationSummaryDto applicationSummaryDto = ApplicationSummaryDto.from(application);
+			ApplicationSummaryForMemberDto applicationSummaryDto = ApplicationSummaryForMemberDto.from(application);
 			applicationSummaryDtos.add(applicationSummaryDto);
 		}
 		
 		
-		return new PageImpl<ApplicationSummaryDto>(applicationSummaryDtos,pageable,applications.getTotalElements());
+		return new PageImpl<ApplicationSummaryForMemberDto>(applicationSummaryDtos,pageable,applications.getTotalElements());
+	}
+	
+
+	@Override
+	public Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long jobPostingId, Pageable pageable) {
+		Page<Application> applications = applicationRepository.findAllByJobPostingId(jobPostingId, pageable);
+
+		
+		List<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = new ArrayList<>();
+		
+		for(Application application : applications) {
+
+			boolean hasCareer = hasCareer(application);
+			EducationLevel latestEducationLevel = latestEducationLevel(application);
+			boolean isInterested = isInterested(jobPostingId, application);
+
+			ApplicationSummaryForCompanyDto applicationSummaryForCompanyDto = ApplicationSummaryForCompanyDto.of(application, hasCareer, latestEducationLevel, isInterested);
+
+			
+			applicationSummaryForCompanyDtos.add(applicationSummaryForCompanyDto);
+		}
+		
+		return new PageImpl<ApplicationSummaryForCompanyDto>(applicationSummaryForCompanyDtos, pageable, applications.getTotalElements() );
 	}
 
 	@Override
@@ -98,5 +131,39 @@ public class ApplicationServiceImpl implements ApplicationService {
 		applicationRepository.save(application);
 
 	}
+	
+	
+	private boolean hasCareer(Application application) {
+		int careerNumber = application.getMember().getCareers().size();
+		boolean result = careerNumber>0? true : false;
+		return result;
+	}
+	
+	
+	private EducationLevel latestEducationLevel(Application application) {
+		int educationNumber = application.getMember().getEducations().size();
+		Education latestEducation = application.getMember().getEducations().get(educationNumber);
+		return latestEducation.getEducationLevel();
+		
+	} 
+	
+	
+	private boolean isInterested(Long jobPostingId, Application application) {
+		
+		Long memberId = application.getMember().getId();
+		return interestRepository.existsByCompanyIdAndMemberId(jobPostingId, memberId);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
 
 }

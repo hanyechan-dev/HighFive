@@ -1,10 +1,11 @@
 package com.jobPrize.entity.company;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.jobPrize.dto.company.advertisement.AdvertisementCreateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +27,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class Advertisement {
 
 	@Id
@@ -41,18 +41,22 @@ public class Advertisement {
 	@Column(name = "image_url", nullable = false)
 	private String imageUrl;
 
-	@CreatedDate
 	@Column(name = "start_date")
 	private LocalDate startDate;
 
 	@Column(name = "end_date")
 	private LocalDate endDate;
 
-	public void updateImageUrl(String imageUrl) {
-		if (endDate.isBefore(LocalDate.now())) {
-			return;
-		}
-			this.imageUrl = imageUrl;
-
+	public boolean isActivated() {
+		return LocalDate.now().isAfter(startDate) && LocalDate.now().isBefore(endDate);
 	}
+	public static Advertisement of(Company company, AdvertisementCreateDto advertisementCreateDto) {
+		return Advertisement.builder()
+			.company(company)
+			.imageUrl(advertisementCreateDto.getImageUrl())
+			.startDate(LocalDate.now())
+			.endDate(LocalDate.now().plusMonths(1))
+			.build();
+	}
+
 }

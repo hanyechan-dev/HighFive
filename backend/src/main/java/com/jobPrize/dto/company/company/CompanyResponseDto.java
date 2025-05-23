@@ -2,16 +2,10 @@ package com.jobPrize.dto.company.company;
 
 import java.time.LocalDate;
 
+import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.company.CompanyType;
 import com.jobPrize.entity.company.Industry;
-import com.jobPrize.validation.businessNumber.BusinessNumber;
-import com.jobPrize.validation.phone.Phone;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -39,4 +33,19 @@ public class CompanyResponseDto {
 	private Integer employeeCount;
 
 	private LocalDate establishedDate;
+
+	public static CompanyResponseDto from(Company company) {
+		return CompanyResponseDto.builder()
+			.companyName(company.getCompanyName())
+			.industry(company.getIndustry())
+			.representativeName(company.getRepresentativeName())
+			.businessNumber(company.getBusinessNumber())
+			.companyAddress(company.getCompanyAddress())
+			.companyPhone(company.getCompanyPhone())
+			.introduction(company.getIntroduction())
+			.type(company.getType())
+			.employeeCount(company.getEmployeeCount())
+			.establishedDate(company.getEstablishedDate())
+			.build();
+	}
 }

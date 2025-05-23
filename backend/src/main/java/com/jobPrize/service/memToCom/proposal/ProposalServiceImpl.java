@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
-import com.jobPrize.dto.memToCom.proposal.ProposalSummaryDto;
+import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.repository.memToCom.proposal.ProposalRepository;
 
@@ -24,17 +24,17 @@ public class ProposalServiceImpl implements ProposalService {
 	private final ProposalRepository proposalRepository;
 
 	@Override
-	public Page<ProposalSummaryDto> readProposalPage(Long id, Pageable pageable) {
+	public Page<ProposalSummaryForMemberDto> readProposalPage(Long id, Pageable pageable) {
 		Page<Proposal> proposals = proposalRepository.findAllByMemberId(id, pageable);
 
-		List<ProposalSummaryDto> proposalSummaryDtos = new ArrayList<>();
+		List<ProposalSummaryForMemberDto> proposalSummaryDtos = new ArrayList<>();
 		for(Proposal proposal : proposals) {
-			ProposalSummaryDto proposalSummaryDto = ProposalSummaryDto.from(proposal);
+			ProposalSummaryForMemberDto proposalSummaryDto = ProposalSummaryForMemberDto.from(proposal);
 			proposalSummaryDtos.add(proposalSummaryDto);
 		}
 		
 		
-		return new PageImpl<ProposalSummaryDto>(proposalSummaryDtos,pageable,proposals.getTotalElements());
+		return new PageImpl<ProposalSummaryForMemberDto>(proposalSummaryDtos,pageable,proposals.getTotalElements());
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ApplicationSummaryDto {
+public class ApplicationSummaryForMemberDto {
 	
 	private Long id;
 	
@@ -25,8 +25,8 @@ public class ApplicationSummaryDto {
 	
 	
 
-	public static ApplicationSummaryDto from(Application application) {
-		return ApplicationSummaryDto.builder()
+	public static ApplicationSummaryForMemberDto from(Application application) {
+		return ApplicationSummaryForMemberDto.builder()
 			.id(application.getId())
 			.title(application.getJobPosting().getTitle())
 			.companyName(application.getJobPosting().getCompany().getCompanyName())

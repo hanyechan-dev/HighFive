@@ -3,10 +3,11 @@ package com.jobPrize.entity.company;
 
 
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jobPrize.dto.company.company.CompanyCreateDto;
+import com.jobPrize.dto.company.company.CompanyUpdateDto;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.memToCom.Interest;
 import com.jobPrize.entity.memToCom.Proposal;
@@ -91,22 +92,36 @@ public class Company {
 	@OneToMany(mappedBy = "company")
 	private List<Interest> interests = new ArrayList<>();
 	
-	public void updateCompanyInfo(String companyName, String representativeName, LocalDate establishedDate, String businessNumber,
-			String companyAddress, CompanyType type, Industry industry, String companyPhone, String introduction,
-			int employeeCount) {
-		this.companyName = companyName;
-		this.representativeName = representativeName;
-		this.establishedDate = establishedDate;
-		this.businessNumber = businessNumber;
-		this.companyAddress = companyAddress;
-		this.type = type;
-		this.industry = industry;
-		this.companyPhone = companyPhone;
-		this.introduction = introduction;
-		this.employeeCount = employeeCount;
+	public void updateCompanyInfo(CompanyUpdateDto companyUpdateDto) {
+		this.companyName = companyUpdateDto.getCompanyName();
+		this.representativeName = companyUpdateDto.getRepresentativeName();
+		this.establishedDate = companyUpdateDto.getEstablishedDate();
+		this.businessNumber = companyUpdateDto.getBusinessNumber();
+		this.companyAddress = companyUpdateDto.getCompanyAddress();
+		this.type = companyUpdateDto.getType();
+		this.industry = companyUpdateDto.getIndustry();
+		this.companyPhone = companyUpdateDto.getCompanyPhone();
+		this.introduction = companyUpdateDto.getIntroduction();
+		this.employeeCount = companyUpdateDto.getEmployeeCount();
 
 	}
 	
+	public static Company of(User user, CompanyCreateDto companyCreateDto) {
+		return Company.builder()
+			.id(user.getId())
+			.user(user)
+			.companyName(companyCreateDto.getCompanyName())
+			.representativeName(companyCreateDto.getRepresentativeName())
+			.establishedDate(companyCreateDto.getEstablishedDate())
+			.businessNumber(companyCreateDto.getBusinessNumber())
+			.companyAddress(companyCreateDto.getCompanyAddress())	
+			.type(companyCreateDto.getType())
+			.industry(companyCreateDto.getIndustry())
+			.companyPhone(companyCreateDto.getCompanyPhone())
+			.introduction(companyCreateDto.getIntroduction())
+			.employeeCount(companyCreateDto.getEmployeeCount())
+			.build();
+	}
 
 	
 }

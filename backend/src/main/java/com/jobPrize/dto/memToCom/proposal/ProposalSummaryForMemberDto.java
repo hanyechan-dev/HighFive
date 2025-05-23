@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ProposalSummaryDto {
+public class ProposalSummaryForMemberDto {
 	
 	private Long id;
 	
@@ -22,8 +22,8 @@ public class ProposalSummaryDto {
 
 	private LocalDate proposalDate;
 	
-	public static ProposalSummaryDto from(Proposal proposal) {
-		return ProposalSummaryDto.builder()
+	public static ProposalSummaryForMemberDto from(Proposal proposal) {
+		return ProposalSummaryForMemberDto.builder()
 			.id(proposal.getId())
 			.proposalTitle(proposal.getProposalTitle())
 			.companyName(proposal.getCompany().getCompanyName())

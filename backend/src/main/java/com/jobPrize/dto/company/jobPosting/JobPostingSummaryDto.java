@@ -1,16 +1,17 @@
-package com.jobPrize.dto.memToCom.jobPosting;
+package com.jobPrize.dto.company.jobPosting;
 
 import java.time.LocalDate;
 
 import com.jobPrize.entity.company.CompanyType;
 import com.jobPrize.entity.company.JobPosting;
+import com.jobPrize.entity.memToCom.EducationLevel;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class JobPostingSummaryByConditionDto {
+public class JobPostingSummaryDto {
 	
 	private Long id;
 	
@@ -26,10 +27,12 @@ public class JobPostingSummaryByConditionDto {
 	
 	private String careerType;
 	
+	private EducationLevel educationLevel;
+	
 	private LocalDate createdDate;
 	
-	public static JobPostingSummaryByConditionDto from(JobPosting jobPosting) {
-		return JobPostingSummaryByConditionDto
+	public static JobPostingSummaryDto from(JobPosting jobPosting) {
+		return JobPostingSummaryDto
 				.builder()
 				.id(jobPosting.getId())
 				.title(jobPosting.getTitle())
@@ -38,6 +41,7 @@ public class JobPostingSummaryByConditionDto {
 				.type(jobPosting.getCompany().getType())
 				.workLocation(jobPosting.getWorkLocation())
 				.careerType(jobPosting.getCareerType())
+				.educationLevel(jobPosting.getEducationLevel())
 				.createdDate(jobPosting.getCreatedDate())
 				.build();
 		

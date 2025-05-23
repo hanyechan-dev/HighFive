@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
-import com.jobPrize.dto.memToCom.proposal.ProposalSummaryDto;
+import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
 
 public interface ProposalService {
-	Page<ProposalSummaryDto> readProposalPage(Long id, Pageable pageable);
+	Page<ProposalSummaryForMemberDto> readProposalPage(Long id, Pageable pageable);
 	ProposalResponseDto readProposal(Long id, Long proposalId);
 }

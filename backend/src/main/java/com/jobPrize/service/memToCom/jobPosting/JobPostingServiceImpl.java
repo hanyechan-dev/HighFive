@@ -9,8 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.memToCom.jobPosting.JobPostingFilterCondition;
-import com.jobPrize.dto.memToCom.jobPosting.JobPostingSummaryByConditionDto;
 import com.jobPrize.dto.memToCom.jobPosting.JobPostingSummaryBySimilarityDto;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.Similarity;
@@ -30,11 +30,11 @@ public class JobPostingServiceImpl implements JobPostingService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Page<JobPostingSummaryByConditionDto> readJobPostingPageByCondition(JobPostingFilterCondition jobPostingFilterCondition, Pageable pageable) {
+	public Page<JobPostingSummaryDto> readJobPostingPageByCondition(JobPostingFilterCondition jobPostingFilterCondition, Pageable pageable) {
 		Page<JobPosting> jobPostings = jobPostingRepository.findAllByCondition(jobPostingFilterCondition, pageable);
-		List<JobPostingSummaryByConditionDto> jobPostingSummaryByConditionDtos = new ArrayList<>();
+		List<JobPostingSummaryDto> jobPostingSummaryByConditionDtos = new ArrayList<>();
 		for(JobPosting jobPosting : jobPostings) {
-			JobPostingSummaryByConditionDto jobPostingSummaryByConditionDto = JobPostingSummaryByConditionDto.from(jobPosting);
+			JobPostingSummaryDto jobPostingSummaryByConditionDto = JobPostingSummaryDto.from(jobPosting);
 			jobPostingSummaryByConditionDtos.add(jobPostingSummaryByConditionDto);
 		}
 
