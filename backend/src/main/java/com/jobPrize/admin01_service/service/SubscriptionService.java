@@ -8,9 +8,13 @@ import com.jobPrize.entity.common.UserType;
 
 public interface SubscriptionService {
 	
+	// 구독자 생성
 	void createSubscription(SubscriptionRequestDto subscriptionRequestDto) throws Exception;
 	
+	// 사용자 유형에 따른 구독자 조회
 	List<SubscriptionResponseDto> readSubscriberByUserTypeList(UserType userType) throws Exception;
 	
-	// 구독 기간 만료 시, User.isSubscribed 필드가 자동으로 false 설정되는 기능 구현 필수.
+	// 구독 만료 시, 구독 상태 자동 업데이트
+	void updateStatus();
+
 }

@@ -12,7 +12,9 @@ public interface PaymentService {
 	// 결제 기능
 	void createPayment(PaymentRequestDto paymentRequestDto) throws Exception;
 	
-	// 결제 내역 조회(주문명세서)
-	// PaymentResponseDto 반환.
-	List<PaymentResponseDto> readPayment(Long id, Pageable pageable) throws Exception;
+	// 결제 내역 리스트 조회
+	List<PaymentResponseDto> readPaymentList(Long id, Pageable pageable) throws Exception;
+	
+	// 결제 내용 조회
+	PaymentResponseDto readPayment(Long paymentId) throws Exception;
 }

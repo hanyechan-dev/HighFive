@@ -44,12 +44,12 @@ public class Notification {
 	private String message;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RECEIVER_ID", nullable = false)
-    private User receiver;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SENDER_ID", nullable = false)
     private User sender;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RECEIVER_ID", nullable = false)
+    private User receiver;
 	
 	@CreatedDate
     @Column(name = "CREATED_TIME", nullable = false)

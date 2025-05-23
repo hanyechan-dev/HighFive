@@ -12,8 +12,6 @@ import com.jobPrize.admin01_service.dto.PaymentRequestDto;
 import com.jobPrize.admin01_service.dto.PaymentResponseDto;
 import com.jobPrize.admin01_service.dto.SubscriptionRequestDto;
 import com.jobPrize.entity.common.Payment;
-import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.payment.PaymentRepository;
 
@@ -57,25 +55,36 @@ public class PaymentServiceImpl implements PaymentService {
 		subscriptionService.createSubscription(subscriptionRequestDto);
 	}
 	
-	// 결제 내역 조회
+	// 결제 내역 리스트 조회
 	@Override
-	public List<PaymentResponseDto> readPayment(Long id, Pageable pageable) throws Exception {
+	public List<PaymentResponseDto> readPaymentList(Long id, Pageable pageable) throws Exception {
 		Page<Payment> paymentPage = paymentRepository.findAllByUserId(id, pageable);
 		List<Payment> paymentList = paymentPage.getContent();
 		
-		User user = userRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("User Not Found"));
-		UserType userType = user.getType();
-		
 		return paymentList.stream()
 			.map(payment -> PaymentResponseDto.builder()
-				.userType(userType)
 				.paymentId(payment.getId())
 				.paymentAmount(payment.getPaymentAmount())
 				.createdTime(payment.getCreatedTime())
 				.build()
 				)
 			.collect(Collectors.toList());
+	}
+	
+	// 결제 내용 조회
+	@Override
+	public PaymentResponseDto readPayment(Long paymentId) throws Exception {
+		Payment payment = paymentRepository.findById(paymentId)
+				.orElseThrow(() -> new EntityNotFoundException("Payment Not Found"));
+		
+		PaymentResponseDto paymentResponseDto = PaymentResponseDto.builder()
+				.paymentId(payment.getId())
+				.id(payment.getUser().getId())
+				.paymentAmount(payment.getPaymentAmount())
+				.createdTime(payment.getCreatedTime())
+				.build();
+		
+		return paymentResponseDto;
 	}
 	
 }
