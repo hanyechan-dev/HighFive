@@ -16,7 +16,6 @@ import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSumm
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
-import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentCreateDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentResponseDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
 import com.jobPrize.entity.common.UserType;
@@ -116,7 +115,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	// 컨설팅 현황 관리 페이지 
 	 @Override
-	 public Page<ConsultantConsultingSummaryDto> readConsultantConsultingPageByCondition(Long consultantId, Pageable pageable) {
+	 public Page<ConsultantConsultingSummaryDto> readConsultantConsultingPage(Long consultantId, Pageable pageable) {
 		 Page<ConsultantConsulting> entityPage =
 				    consultantConsultingRepository.findWithAllConsultantConsultingByConsultantId(consultantId, pageable);
 

@@ -39,7 +39,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<AiConsultingSummaryDto> readAiConsultingPageByCondition(Pageable pageable) {
+	public Page<AiConsultingSummaryDto> readAiConsultingPage(Pageable pageable) {
 	    Page<AiConsulting> entityPage = aiConsultingRepository.findAllByCondition(pageable);
 
 	    List<AiConsultingSummaryDto> dtoList = new ArrayList<>();

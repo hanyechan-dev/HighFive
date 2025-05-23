@@ -2,7 +2,6 @@ package com.jobPrize.dto.consultant.consultantConsulting;
 
 import java.util.List;
 
-import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentCreateDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
 
 import jakarta.validation.constraints.NotNull;

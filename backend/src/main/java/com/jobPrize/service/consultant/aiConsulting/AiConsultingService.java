@@ -12,7 +12,7 @@ import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
 
 public interface AiConsultingService {
 
-	Page<AiConsultingSummaryDto> readAiConsultingPageByCondition(Pageable pageable);
+	Page<AiConsultingSummaryDto> readAiConsultingPage(Pageable pageable);
 
 	AiEditDetailResponseDto readEditDetail(Long id, Long aiConsultingId);
 

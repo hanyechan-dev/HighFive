@@ -74,7 +74,7 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	        .from(aiConsulting)
 	        .leftJoin(aiConsulting.consultantConsulting).fetchJoin()
 	        .where(
-					aiConsulting.isRequested.eq(true),
+					aiConsulting.requestedDate.isNotNull(),
 					aiConsulting.consultantConsulting.isNull()
 					)
 	        .fetchOne())
