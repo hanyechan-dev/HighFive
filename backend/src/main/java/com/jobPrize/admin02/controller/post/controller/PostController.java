@@ -36,7 +36,7 @@ public class PostController {
 		return "게시글이 등록되었습니다.";
 	}
     
-    @PutMapping("/update{id}")
+    @PutMapping("/update/{id}")
     public String updatePost(@PathVariable Long id,
     		@RequestBody @Valid PostUpdateDto dto) {
     	postService.updatePost(id, dto);

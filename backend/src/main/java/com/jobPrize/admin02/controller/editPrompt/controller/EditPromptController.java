@@ -58,12 +58,12 @@ public class EditPromptController {
 
 	}	
 	
-	@GetMapping("/list/{id}")		
+	@GetMapping("/list/{editPromptId}")		
 	public EditPromptResponseDto getEditPromptById(@PathVariable Long editPromptId) {
 		return editPromptService.readEditPromptById(editPromptId);
 	}
 	
-	@PutMapping("/apply/{id}")		
+	@PutMapping("/apply/{editPromptId}")		
 	public String applyEditPrompt(@PathVariable Long editPromptId) {
 		editPromptService.applyEditPrompt(editPromptId);
 		return "프롬프트가 적용으로 변경되었습니다.";
@@ -71,7 +71,7 @@ public class EditPromptController {
 	@PutMapping("/unapply")		
 	public String unApplyEditPrompt() {
 		editPromptService.unApplyEditPrompt();
-		return "프롬르트 적용이 취소되었습니다.";
+		return "프롬프트 적용이 취소되었습니다.";
 	}
 	
 

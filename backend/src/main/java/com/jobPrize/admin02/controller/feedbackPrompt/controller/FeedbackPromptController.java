@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FeedbackPromptController {
 	
-	private FeedbackPromptService feedbackPromptService;
+	private final FeedbackPromptService feedbackPromptService;
 
 	
 	@PostMapping("/create")		
@@ -60,12 +60,12 @@ public class FeedbackPromptController {
 	
 
 	
-	@GetMapping("/list/{id}")
-	public FeedbackPromptResponseDto getFeedbackPromptBuId(@PathVariable Long feedbackPromptId) {
+	@GetMapping("/list/{feedbackPromptId}")
+	public FeedbackPromptResponseDto getFeedbackPromptById(@PathVariable Long feedbackPromptId) {
 		return feedbackPromptService.readFeedbackPromptById(feedbackPromptId);
 	}
 	
-	@PutMapping("/apply{id}")
+	@PutMapping("/apply/{feedbackPromptId}")
 	public String applyFeedbackPrompt(@PathVariable Long feedbackPromptId) {
 		feedbackPromptService.applyFeedbackPrompt(feedbackPromptId);
 		return "프롬프트가 적용으로 변경되었습니다.";
@@ -74,7 +74,7 @@ public class FeedbackPromptController {
 	@PutMapping("unapply")
 	public String unApplyFeedbackPrompt() {
 		feedbackPromptService.unApplyFeedbackPrompt();
-		return "프롭프트 적용이 취소되었습니다.";
+		return "프롬프트 적용이 취소되었습니다.";
 	}
 	
 }

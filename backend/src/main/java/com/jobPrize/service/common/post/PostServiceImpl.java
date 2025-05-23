@@ -50,7 +50,6 @@ public class PostServiceImpl implements PostService {
 		}
 		post.updatePost(dto.getTitle(), dto.getContent());
 
-		postRepository.save(post);
 	}
 
 	@Override
