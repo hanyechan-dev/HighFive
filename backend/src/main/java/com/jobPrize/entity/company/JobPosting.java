@@ -4,16 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
+import com.jobPrize.dto.company.jobPosting.JobPostingCreateDto;
+import com.jobPrize.dto.company.jobPosting.JobPostingUpdateDto;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Similarity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +31,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class JobPosting {
 
 	@Id
@@ -73,7 +70,6 @@ public class JobPosting {
 	@Column(name = "salary")
 	private int salary;
 
-	@CreatedDate
 	@Column(name = "created_date", nullable = false)
 	private LocalDate createdDate;
 
@@ -89,17 +85,32 @@ public class JobPosting {
 	@OneToMany(mappedBy = "jobPosting")
 	private List<Similarity> similarities = new ArrayList<>();
 
-	public void updateJobPostingInfo(String title, String content, String job, String workingHours, String workLocation,
-			String careerType, EducationLevel educationLevel, int salary, String requirement) {
-		this.title = title;
-		this.content = content;
-		this.job = job;
-		this.workingHours = workingHours;
-		this.workLocation = workLocation;
-		this.careerType = careerType;
-		this.educationLevel = educationLevel;
-		this.salary = salary;
-		this.requirement = requirement;
+	public void updateJobPostingInfo(JobPostingUpdateDto jobPostingUpdateDto) {
+		this.title = jobPostingUpdateDto.getTitle();
+		this.job = jobPostingUpdateDto.getJob();
+		this.workingHours = jobPostingUpdateDto.getWorkingHours();
+		this.workLocation = jobPostingUpdateDto.getWorkLocation();
+		this.careerType = jobPostingUpdateDto.getCareerType();
+		this.educationLevel = jobPostingUpdateDto.getEducationLevel();
+		this.salary = jobPostingUpdateDto.getSalary();
+		this.requirement = jobPostingUpdateDto.getRequirement();
+	}
+
+	public static JobPosting of(Company company, JobPostingCreateDto jobPostingCreateDto) {
+		return JobPosting.builder()
+			.company(company)
+			.title(jobPostingCreateDto.getTitle())
+			.content(jobPostingCreateDto.getContent())
+			.job(jobPostingCreateDto.getJob())
+			.workingHours(jobPostingCreateDto.getWorkingHours())
+			.workLocation(jobPostingCreateDto.getWorkLocation())
+			.careerType(jobPostingCreateDto.getCareerType())
+			.educationLevel(jobPostingCreateDto.getEducationLevel())
+			.salary(jobPostingCreateDto.getSalary())
+			.createdDate(LocalDate.now())
+			.expiredDate(LocalDate.now().plusMonths(1))
+			.requirement(jobPostingCreateDto.getRequirement())
+			.build();
 	}
 	
 }

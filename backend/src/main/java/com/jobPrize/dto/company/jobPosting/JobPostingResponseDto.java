@@ -1,8 +1,7 @@
 package com.jobPrize.dto.company.jobPosting;
 
-import java.util.List;
-
 import com.jobPrize.entity.company.CompanyType;
+import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.EducationLevel;
 
 import lombok.Builder;
@@ -33,7 +32,21 @@ public class JobPostingResponseDto {
 	private String content;
 	
 	private String requirement;
-	
-	private List<String> imageUrls;
+
+	public static JobPostingResponseDto from(JobPosting jobPosting) {
+		return JobPostingResponseDto.builder()
+			.id(jobPosting.getId())
+			.title(jobPosting.getTitle())
+			.companyType(jobPosting.getCompany().getType())
+			.workingHours(jobPosting.getWorkingHours())
+			.workLocation(jobPosting.getWorkLocation())
+			.job(jobPosting.getJob())
+			.careerType(jobPosting.getCareerType())
+			.educationLevel(jobPosting.getEducationLevel())
+			.salary(jobPosting.getSalary())
+			.content(jobPosting.getContent())
+			.requirement(jobPosting.getRequirement())
+			.build();
+	}
 
 }

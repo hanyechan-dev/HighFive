@@ -18,13 +18,11 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.EducationLevel;
-import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.repository.admin.admin.AdminRepository;
-import com.jobPrize.repository.common.jobPosting.JobPostingRepository;
+import com.jobPrize.repository.company.jobPosting.JobPostingRepository;
 import com.jobPrize.repository.memToCom.application.ApplicationRepository;
-import com.jobPrize.repository.memToCom.interest.InterestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.service.memToCom.util.MemToComUtil;
 import com.jobPrize.service.member.document.DocumentToJson;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -35,20 +33,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private final AdminRepository adminRepository;
-
 	private final MemberRepository memberRepository;
 
 	private final ApplicationRepository applicationRepository;
 
 	private final JobPostingRepository jobPostingRepository;
 	
-	private final InterestRepository interestRepository;
-	
 	private final DocumentToJson documentToJson;
+	
+	private final MemToComUtil memToComUtil;
 
     
 	@Override
+	@Transactional(readOnly = true)
 	public Page<ApplicationSummaryForMemberDto> readApplicationForMemberPage(Long id, Pageable pageable) {
 		Page<Application> applications = applicationRepository.findAllByMemberId(id, pageable);
 
@@ -64,6 +61,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long jobPostingId, Pageable pageable) {
 		Page<Application> applications = applicationRepository.findAllByJobPostingId(jobPostingId, pageable);
 
@@ -72,9 +70,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 		
 		for(Application application : applications) {
 
-			boolean hasCareer = hasCareer(application);
-			EducationLevel latestEducationLevel = latestEducationLevel(application);
-			boolean isInterested = isInterested(jobPostingId, application);
+			boolean hasCareer = memToComUtil.hasCareer(application);
+			EducationLevel latestEducationLevel = memToComUtil.latestEducationLevel(application);
+			boolean isInterested = memToComUtil.isInterested(application);
 
 			ApplicationSummaryForCompanyDto applicationSummaryForCompanyDto = ApplicationSummaryForCompanyDto.of(application, hasCareer, latestEducationLevel, isInterested);
 
@@ -133,26 +131,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 	
 	
-	private boolean hasCareer(Application application) {
-		int careerNumber = application.getMember().getCareers().size();
-		boolean result = careerNumber>0? true : false;
-		return result;
-	}
 	
-	
-	private EducationLevel latestEducationLevel(Application application) {
-		int educationNumber = application.getMember().getEducations().size();
-		Education latestEducation = application.getMember().getEducations().get(educationNumber);
-		return latestEducation.getEducationLevel();
-		
-	} 
-	
-	
-	private boolean isInterested(Long jobPostingId, Application application) {
-		
-		Long memberId = application.getMember().getId();
-		return interestRepository.existsByCompanyIdAndMemberId(jobPostingId, memberId);
-	}
 	
 	
 	

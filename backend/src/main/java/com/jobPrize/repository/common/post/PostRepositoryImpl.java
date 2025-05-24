@@ -13,7 +13,6 @@ import com.jobPrize.entity.common.Post;
 import com.jobPrize.entity.common.QComment;
 import com.jobPrize.entity.common.QPost;
 import com.jobPrize.entity.common.QUser;
-import com.jobPrize.entity.member.QMember;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -28,7 +27,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     public Map<String,Object> findAllWithCommentsCount(Pageable pageable) {
         QPost post = QPost.post;
         QUser user = QUser.user;
-        QMember member = QMember.member;
         QComment comment = QComment.comment;
 
         
@@ -75,7 +73,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 		QPost post = QPost.post;
 		QComment comment = QComment.comment;
 		QUser user = QUser.user;
-		QMember member = QMember.member;
 		
 		Post result = queryFactory
 				.selectFrom(post)

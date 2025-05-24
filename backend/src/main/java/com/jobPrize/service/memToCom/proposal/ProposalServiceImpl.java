@@ -9,11 +9,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
+import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
+import com.jobPrize.entity.company.Company;
+import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Proposal;
+import com.jobPrize.entity.member.Member;
+import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.memToCom.proposal.ProposalRepository;
+import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.service.memToCom.util.MemToComUtil;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,9 +31,30 @@ import lombok.RequiredArgsConstructor;
 public class ProposalServiceImpl implements ProposalService {
 	
 	private final ProposalRepository proposalRepository;
+	
+	private final CompanyRepository companyRepository;
+	
+	private final MemberRepository memberRepository;
+	
+	private final MemToComUtil memToComUtil;
+	
+	@Override
+	public void createProposal(Long id, ProposalCreateDto proposalCreateDtodto) {
+		Company company = companyRepository.findById(id)
+				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 기업입니다."));
+		
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(proposalCreateDtodto.getMemberId())
+				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 회원입니다."));
+		
+		Proposal proposal = Proposal.of(proposalCreateDtodto, company, member);
+		
+		proposalRepository.save(proposal);
+		
+	}
 
 	@Override
-	public Page<ProposalSummaryForMemberDto> readProposalPage(Long id, Pageable pageable) {
+	@Transactional(readOnly = true)
+	public Page<ProposalSummaryForMemberDto> readProposalForMemberPage(Long id, Pageable pageable) {
 		Page<Proposal> proposals = proposalRepository.findAllByMemberId(id, pageable);
 
 		List<ProposalSummaryForMemberDto> proposalSummaryDtos = new ArrayList<>();
@@ -35,6 +65,25 @@ public class ProposalServiceImpl implements ProposalService {
 		
 		
 		return new PageImpl<ProposalSummaryForMemberDto>(proposalSummaryDtos,pageable,proposals.getTotalElements());
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<ProposalSummaryForCompanyDto> readProposalForCompanyPage(Long id, Pageable pageable) {
+		Page<Proposal> proposals = proposalRepository.findAllByCompanyId(id, pageable);
+
+		List<ProposalSummaryForCompanyDto> proposalSummaryDtos = new ArrayList<>();
+		for(Proposal proposal : proposals) {
+			
+			boolean hasCareer = memToComUtil.hasCareer(proposal);
+			EducationLevel latestEducationLevel = memToComUtil.latestEducationLevel(proposal);
+			
+			
+			ProposalSummaryForCompanyDto proposalSummaryDto = ProposalSummaryForCompanyDto.of(proposal, hasCareer, latestEducationLevel);
+			proposalSummaryDtos.add(proposalSummaryDto);
+		}
+		
+		return new PageImpl<ProposalSummaryForCompanyDto>(proposalSummaryDtos,pageable,proposals.getTotalElements());
 	}
 
 	@Override
@@ -50,5 +99,9 @@ public class ProposalServiceImpl implements ProposalService {
 		
 		return ProposalResponseDto.from(proposal);
 	}
+	
+
+
+
 
 }

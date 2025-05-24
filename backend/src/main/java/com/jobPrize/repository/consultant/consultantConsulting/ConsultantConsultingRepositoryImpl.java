@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.entity.consultant.QConsultantConsulting;
-import com.jobPrize.entity.consultant.QConsultantConsultingContent;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;

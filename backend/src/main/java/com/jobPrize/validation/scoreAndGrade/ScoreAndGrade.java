@@ -6,8 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.jobPrize.validation.phone.PhoneValidator;
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

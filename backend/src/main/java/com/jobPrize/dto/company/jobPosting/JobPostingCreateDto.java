@@ -48,6 +48,4 @@ public class JobPostingCreateDto {
 	@Size(min = 50, message = "자격 요건은 최소 50자 이상 입력해야 합니다.")
 	private String requirement;
 
-	@Size(max = 5, message = "최대 5개의 이미지만 업로드 가능합니다.")
-	private List<String> imageUrls;
 }

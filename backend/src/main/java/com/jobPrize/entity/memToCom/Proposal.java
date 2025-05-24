@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.member.Member;
 
@@ -67,9 +68,19 @@ public class Proposal {
 	@Column(name = "proposal_status", nullable = false)
 	private ProposalStatus proposalStatus;
 
-
-	
 	public void changeStatus(ProposalStatus status) {
 		this.proposalStatus = status;
+	}
+
+	public static Proposal of(ProposalCreateDto proposalCreateDto, Company company, Member member) {
+		return Proposal.builder()
+			.company(company)
+			.member(member)
+			.proposalTitle(proposalCreateDto.getProposalTitle())
+			.proposalContent(proposalCreateDto.getProposalContent())
+			.proposalSalary(proposalCreateDto.getProposalSalary())
+			.proposalJob(proposalCreateDto.getProposalJob())
+			.proposalStatus(ProposalStatus.대기)
+			.build();
 	}
 }

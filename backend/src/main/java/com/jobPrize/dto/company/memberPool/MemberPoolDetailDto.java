@@ -1,4 +1,4 @@
-package com.jobPrize.dto.company.member;
+package com.jobPrize.dto.company.memberPool;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberDetailDto {
+public class MemberPoolDetailDto {
 	
 	private String name;
 	
@@ -40,11 +40,11 @@ public class MemberDetailDto {
 	
 	private boolean isInterested;
 
-	public static MemberDetailDto of(User user, boolean hasCareer, String job, EducationResponseDto educationResponseDto,
+	public static MemberPoolDetailDto of(User user, boolean hasCareer, String job, EducationResponseDto educationResponseDto,
 				CareerResponseDto  careerResponseDto,CertificationResponseDto certificationResponseDto,
 				LanguageTestResponseDto languageTestResponseDto, boolean isInterested) {
 		
-		return MemberDetailDto.builder()
+		return MemberPoolDetailDto.builder()
 			.name(user.getName())
 			.email(user.getEmail())
 			.gender(user.getGenderType())

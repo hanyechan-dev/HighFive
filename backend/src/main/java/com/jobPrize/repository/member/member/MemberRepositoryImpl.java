@@ -28,6 +28,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
         return Optional.ofNullable(result);
     }
+
 }
 
 

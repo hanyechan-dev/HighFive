@@ -13,7 +13,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
-public class CompanyJobPostingRepositoryImpl implements CompanyJobPostingRepositoryCustom {
+public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 
 	private final JPAQueryFactory queryFactory;
 

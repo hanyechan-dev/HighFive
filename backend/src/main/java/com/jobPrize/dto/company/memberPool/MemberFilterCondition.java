@@ -1,4 +1,4 @@
-package com.jobPrize.dto.company.member;
+package com.jobPrize.dto.company.memberPool;
 
 import java.time.LocalDate;
 

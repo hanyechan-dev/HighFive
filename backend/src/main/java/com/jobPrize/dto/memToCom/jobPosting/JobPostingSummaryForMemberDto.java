@@ -12,7 +12,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class JobPostingSummaryBySimilarityDto {
+public class JobPostingSummaryForMemberDto {
 	
 	private Long id;
 	
@@ -34,11 +34,11 @@ public class JobPostingSummaryBySimilarityDto {
 	
 	private LocalDate createdDate;
 	
-	public static JobPostingSummaryBySimilarityDto from(Similarity similarity) {
+	public static JobPostingSummaryForMemberDto from(Similarity similarity) {
 		JobPosting jobPosting = similarity.getJobPosting();
 		
 		
-		return JobPostingSummaryBySimilarityDto
+		return JobPostingSummaryForMemberDto
 				.builder()
 				.id(jobPosting.getId())
 				.title(jobPosting.getTitle())

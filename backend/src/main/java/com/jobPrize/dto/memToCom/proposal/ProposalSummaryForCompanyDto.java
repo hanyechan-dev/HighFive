@@ -33,7 +33,7 @@ public class ProposalSummaryForCompanyDto {
     
     private ProposalStatus proposalStatus;
 
-    public static ProposalSummaryForCompanyDto of(Proposal proposal, boolean hasCareer, String job, EducationLevel educationLevel) {
+    public static ProposalSummaryForCompanyDto of(Proposal proposal, boolean hasCareer, EducationLevel educationLevel) {
     	User user = proposal.getMember().getUser();
 		return ProposalSummaryForCompanyDto.builder()
 			.id(proposal.getId())
@@ -41,7 +41,7 @@ public class ProposalSummaryForCompanyDto {
 			.genderType(user.getGenderType())
 			.birthDate(user.getBirthDate())
 			.hasCareer(hasCareer)
-			.job(job)
+			.job(proposal.getProposalJob())
 			.educationLevel(educationLevel)
 			.proposalDate(proposal.getProposalDate())
 			.proposalStatus(proposal.getProposalStatus())

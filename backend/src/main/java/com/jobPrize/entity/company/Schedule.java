@@ -1,15 +1,23 @@
 package com.jobPrize.entity.company;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import com.jobPrize.dto.company.schedule.ScheduleCreateDto;
+import com.jobPrize.dto.company.schedule.ScheduleUpdateDto;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.time.LocalDate;
-import java.util.List;
-
-import com.jobPrize.entity.admin.Admin;
-import com.jobPrize.entity.common.User;
 @Getter
 @Entity
 @Table(name = "schedule")
@@ -36,10 +44,19 @@ public class Schedule {
 	@Column(name = "date")
 	private LocalDate date;
 
-	public void updateSchedule(String title, LocalDate date, String content) {
-		this.title = title;
-		this.date = date;
-		this.content = content;
+	public void updateSchedule(ScheduleUpdateDto scheduleUpdateDto) {
+		this.title = scheduleUpdateDto.getTitle();
+		this.date = scheduleUpdateDto.getDate();
+		this.content = scheduleUpdateDto.getContent();
+	}
+
+	public static Schedule of(Company company,ScheduleCreateDto scheduleCreateDto) {
+		return Schedule.builder()
+			.company(company)
+			.title(scheduleCreateDto.getTitle())
+			.date(scheduleCreateDto.getDate())
+			.content(scheduleCreateDto.getContent())
+			.build();
 	}
 	
 	

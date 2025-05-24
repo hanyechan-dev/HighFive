@@ -7,10 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.jobPrize.entity.company.JobPosting;
+import com.jobPrize.dto.company.memberPool.MemberFilterCondition;
+import com.jobPrize.dto.memToCom.jobPosting.JobPostingFilterCondition;
 import com.jobPrize.entity.company.QJobPosting;
 import com.jobPrize.entity.memToCom.QSimilarity;
 import com.jobPrize.entity.memToCom.Similarity;
+import com.jobPrize.entity.member.QMember;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -20,66 +23,176 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	
 	private final JPAQueryFactory queryFactory;
 	@Override
-	public Page<Similarity> findAllWithJobPostingByMemberId(Long id, Pageable pageable) {
+	public Page<Similarity> findAllWithJobPostingByMemberIdAndCondition(Long id, JobPostingFilterCondition condition, Pageable pageable) {
 		QSimilarity similarity = QSimilarity.similarity;
 		QJobPosting jobPosting = QJobPosting.jobPosting;
 		
+		BooleanBuilder builder = getBuilderFromJobPostingFilterCondition(condition);
 		
 		List<Similarity> results = queryFactory
 			    .selectFrom(similarity)
 			    .join(similarity.jobPosting, jobPosting).fetchJoin()
 			    .join(jobPosting.company).fetchJoin()
 			    .join(similarity.member).fetchJoin()
-			    .where(similarity.member.id.eq(id))
+			    .where(
+			    		similarity.member.id.eq(id),
+			    		builder
+			    		)
 			    .orderBy(similarity.score.desc())
 			    .offset(pageable.getOffset())
 			    .limit(pageable.getPageSize())
 			    .fetch();
 			
-		return new PageImpl<Similarity>(results, pageable, countSimilaritiesByMemberId(id));
+		return new PageImpl<Similarity>(results, pageable, countSimilaritiesByMemberIdAndCondition(id,condition));
 	}
 	
-
 	@Override
-	public Page<Similarity> findAllWithMemberByJobPostingId(Long id, Pageable pageable) {
+	public Page<Similarity> findAllWithMemberByCompanyIdAndCondition(Long id, MemberFilterCondition condition, Pageable pageable) {
+		
+		
 		QSimilarity similarity = QSimilarity.similarity;
 		
+		Long jobPostingId=latestJobPostingIdByCompanyId(id);
+		
+		
+		
+		BooleanBuilder builder = getBuilderFromMemberFilterCondition(condition);
 		
 		List<Similarity> results = queryFactory
 			    .selectFrom(similarity)
 			    .join(similarity.jobPosting).fetchJoin()
 			    .join(similarity.member).fetchJoin()
-			    .where(similarity.jobPosting.id.eq(id))
+			    .where(
+			    		similarity.jobPosting.id.eq(jobPostingId),
+			    		builder
+			    		)
 			    .orderBy(similarity.score.desc())
 			    .offset(pageable.getOffset())
 			    .limit(pageable.getPageSize())
 			    .fetch();
 			
-		return new PageImpl<Similarity>(results, pageable, countSimilaritiesByJobPostingId(id));
+		return new PageImpl<Similarity>(results, pageable, countSimilaritiesByJobPostingIdAndCondition(jobPostingId,condition));
 	}
 	
-	public long countSimilaritiesByMemberId(Long id) {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private long countSimilaritiesByMemberIdAndCondition(Long id, JobPostingFilterCondition condition) {
 	    QSimilarity similarity = QSimilarity.similarity;
+	    
+	    BooleanBuilder builder = getBuilderFromJobPostingFilterCondition(condition);
 
 	    return Optional.ofNullable(
 	    	queryFactory
 	        .select(similarity.count())
 	        .from(similarity)
-	        .where(similarity.member.id.eq(id))
+	        .where(
+	        		similarity.member.id.eq(id),
+	        		builder
+	        		)
 	        .fetchOne())
 		    .orElse(0L);
 	}
 	
-	public long countSimilaritiesByJobPostingId(Long id) {
+	private long countSimilaritiesByJobPostingIdAndCondition(Long id, MemberFilterCondition condition) {
 	    QSimilarity similarity = QSimilarity.similarity;
 
+	    BooleanBuilder builder = getBuilderFromMemberFilterCondition(condition);
+	    
 	    return Optional.ofNullable(
 	    	queryFactory
 	        .select(similarity.count())
 	        .from(similarity)
-	        .where(similarity.jobPosting.id.eq(id))
+	        .where(
+	        		similarity.jobPosting.id.eq(id),
+	        		builder
+	        		)
 	        .fetchOne())
 		    .orElse(0L);
+	}
+	
+	
+	
+	
+	private BooleanBuilder getBuilderFromJobPostingFilterCondition(JobPostingFilterCondition condition) {
+	    QJobPosting jobPosting = QJobPosting.jobPosting;
+	    BooleanBuilder builder = new BooleanBuilder();
+
+	    if (condition.getCareerType() != null) {
+	        builder.and(jobPosting.careerType.like("%" + condition.getCareerType().toString() + "%"));
+	    }
+	    if (condition.getEducationLevel() != null) {
+	        builder.and(jobPosting.educationLevel.eq(condition.getEducationLevel()));
+	    }
+	    if (condition.getJob() != null) {
+	        builder.and(jobPosting.job.like("%" + condition.getJob().toString() + "%"));
+	    }
+	    if (condition.getWorkLocation() != null) {
+	        builder.and(jobPosting.workLocation.like("%" + condition.getWorkLocation().toString() + "%"));
+	    }
+	    if (condition.getSalary() != 0) {
+	        builder.and(jobPosting.salary.goe(condition.getSalary()));
+	    }
+
+	    return builder;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	private BooleanBuilder getBuilderFromMemberFilterCondition(MemberFilterCondition condition) {
+		
+		QMember member = QMember.member;
+		BooleanBuilder builder = new BooleanBuilder();
+
+	    if (condition.isHasCareer()) {
+	    	builder.and(member.careers.any().isNotNull());	    }
+	    if (condition.getEducationLevel() != null) {
+	        builder.and(member.educations.any().educationLevel.eq(condition.getEducationLevel()));
+	    }
+	    if (condition.getAddress() != null && !condition.getAddress().isBlank()) {
+	        builder.and(member.user.address.like("%" + condition.getAddress() + "%"));
+	    }
+	    if (condition.getJob() != null && !condition.getJob().isBlank()) {
+	        builder.and(member.careers.any().job.like("%" + condition.getJob() + "%"));
+	    }
+	    
+	    return builder;
+		
+	}
+	
+	
+	
+	private Long latestJobPostingIdByCompanyId(Long id) {
+		
+		QJobPosting jobPosting = QJobPosting.jobPosting;
+		
+		
+		Long jobPostingId = queryFactory
+				.select(jobPosting.id)
+				.from(jobPosting)
+				.orderBy(jobPosting.createdDate.desc())
+				.where(jobPosting.company.id.eq(id))
+				.fetchFirst();
+		
+		return Optional.ofNullable(jobPostingId).orElse(0L);
 	}
 
 }

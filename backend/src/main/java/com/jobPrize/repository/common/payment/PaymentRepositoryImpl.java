@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.common.Payment;
 import com.jobPrize.entity.common.QPayment;
-import com.jobPrize.entity.common.QUser;
 import com.jobPrize.entity.common.UserType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
