@@ -1,5 +1,7 @@
 package com.jobPrize.admin01_service.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,5 +36,11 @@ public class NotificationServiceImpl implements NotificationService {
 	public void sendNotification(User sender, User receiver, NotificationType notificationType) {
 		Notification notification = createNotification(sender, receiver, notificationType);
 		// WebSocket 통신 시 추후 구현
+	}
+	
+	// 알림 조회
+	public List<Notification> readNotification(Long id){
+		List<Notification> notification = notificationRepository.findAllForOneMonthByUserId(id);
+		return notification;
 	}
 }

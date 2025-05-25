@@ -55,8 +55,6 @@ public class ChatServiceImpl implements ChatService {
 		chatRoomRepository.save(chatRoom);
 	}
 	
-	// ChatRequestDto가 들어오는 순간, createChatRoom
-	
 	// 채팅 알림 기능, 추후 구현.
 	@Override
 	public void chatNotify() {
