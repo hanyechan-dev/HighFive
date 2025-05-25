@@ -6,22 +6,24 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiConsultingSummaryDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiEditDetailResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentCreateDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.service.consultant.aiConsultingContent.AiConsultingContentService;
+import com.jobPrize.util.AssertUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,8 @@ public class AiConsultingServiceImpl implements AiConsultingService {
     private final AiConsultingContentService aiConsultingContentService;
     
     private final RequestRepository requestRepository;
+
+	private final AssertUtil assertUtil;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -55,26 +59,25 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public AiEditDetailResponseDto readEditDetail(Long id, Long aiConsultingId) {
+	public AiEditDetailResponseDto readEditDetail(Long id, UserType userType, Long aiConsultingId) {
+		
+		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
+		
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
-	            .orElseThrow(() -> new EntityNotFoundException("해당 AiConsulting이 존재하지 않습니다."));
-	    
-	    if(!aiConsulting.getConsultantConsulting().getConsultant().equals(id)) {
-	    	throw new AccessDeniedException("조회 권한이 없습니다.");
-	    }
+	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 	    
 	    return createDetailDto(aiConsulting, AiEditDetailResponseDto.class);
+
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public AiFeedbackDetailResponseDto readFeedbackDetail(Long id, Long aiConsultingId) {
+	public AiFeedbackDetailResponseDto readFeedbackDetail(Long id, UserType userType, Long aiConsultingId) {
+		
+		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
+		
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
-	            .orElseThrow(() -> new EntityNotFoundException("해당 AiConsulting이 존재하지 않습니다."));
-	    
-	    if(!aiConsulting.getConsultantConsulting().getConsultant().equals(id)) {
-	    	throw new AccessDeniedException("조회 권한이 없습니다.");
-	    }
+	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 	    
 	    return createDetailDto(aiConsulting, AiFeedbackDetailResponseDto.class);
 	}

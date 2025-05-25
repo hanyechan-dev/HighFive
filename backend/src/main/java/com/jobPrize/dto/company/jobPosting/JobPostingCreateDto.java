@@ -2,6 +2,9 @@ package com.jobPrize.dto.company.jobPosting;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.jobPrize.dto.company.jobPostingImage.JobPostingImageCreateDto;
 import com.jobPrize.entity.memToCom.EducationLevel;
 
 import jakarta.validation.constraints.Max;
@@ -47,5 +50,7 @@ public class JobPostingCreateDto {
 	@NotBlank(message = "자격 요건을 입력해주세요.")
 	@Size(min = 50, message = "자격 요건은 최소 50자 이상 입력해야 합니다.")
 	private String requirement;
+	
+	private List<JobPostingImageCreateDto> jobPostingImageCreateDtos;
 
 }

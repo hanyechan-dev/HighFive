@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.comment.CommentCreateDto;
 import com.jobPrize.dto.common.comment.CommentResponseDto;
 import com.jobPrize.entity.common.Comment;
@@ -15,7 +16,6 @@ import com.jobPrize.repository.common.comment.CommentRepository;
 import com.jobPrize.repository.common.post.PostRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,10 +29,12 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public void createComment(Long id, CommentCreateDto dto) {
+
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new EntityNotFoundException("유효하지 않은 사용자입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+
 		Post post = postRepository.findById(dto.getPostId())
-				.orElseThrow(() -> new EntityNotFoundException("게시글이 존재하지 않습니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
 
 		Comment comment = Comment.createOf(post, user, dto.getContent());
 
@@ -42,8 +44,9 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<CommentResponseDto> readCommentsByPostIdList(Long postId) {
+		
 		Post post = postRepository.findWithCommentsByPostId(postId)
-				.orElseThrow(() -> new EntityNotFoundException("게시글이 존재하지 않습니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
 
 		List<CommentResponseDto> results = new ArrayList<>();
 

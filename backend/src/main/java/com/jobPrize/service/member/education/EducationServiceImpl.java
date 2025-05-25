@@ -3,19 +3,20 @@ package com.jobPrize.service.member.education;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.education.EducationCreateDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,13 +27,18 @@ public class EducationServiceImpl implements EducationService {
 	private final EducationRepository educationRepository;
 	
 	private final MemberRepository memberRepository;
+
+	private final AssertUtil assertUtil;
 	
 	@Override
-	public void createEducation(Long id, EducationCreateDto educationCreateDto) {
-		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+	public void createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto) {
 
-        if(!educationCreateDto.getEnterDate().isBefore(educationCreateDto.getGraduateDate())) {
+		assertUtil.assertUserType(userType, UserType.일반회원, "학력 등록");
+
+		Member member = memberRepository.findById(id)
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+
+        if(educationCreateDto.getEnterDate().isAfter(educationCreateDto.getGraduateDate())) {
             throw new IllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
         }
 
@@ -59,14 +65,11 @@ public class EducationServiceImpl implements EducationService {
 	public void updateEducation(Long id, EducationUpdateDto educationUpdateDto) {
 		Long educationId = educationUpdateDto.getId();
 		Education education = educationRepository.findById(educationId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 교육입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("학력"));
 
+		assertUtil.assertId(id, education, "수정");
 
-		if (!education.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("교육의 대상과 회원이 일치하지 않습니다.");
-		}
-
-		if (!educationUpdateDto.getEnterDate().isBefore(educationUpdateDto.getGraduateDate())) {
+		if (educationUpdateDto.getEnterDate().isAfter(educationUpdateDto.getGraduateDate())) {
 			throw new IllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
 		}
 
@@ -77,11 +80,9 @@ public class EducationServiceImpl implements EducationService {
 	@Override
 	public void deleteEducation(Long id, Long educationId) {
         Education education = educationRepository.findById(educationId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 교육입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("학력"));
 
-        if (!education.getMember().getId().equals(id)) {
-            throw new AccessDeniedException("교육의 대상과 회원이 일치하지 않습니다.");
-        }
+        assertUtil.assertId(id, education, "삭제");
 
         educationRepository.delete(education);
 		

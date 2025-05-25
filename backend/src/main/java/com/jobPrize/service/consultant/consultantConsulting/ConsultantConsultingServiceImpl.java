@@ -7,10 +7,12 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomAccessDeniedException;
+import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
@@ -28,8 +30,8 @@ import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
 import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
 import com.jobPrize.service.consultant.consultantConsultingContent.ConsultantConsultingContentService;
+import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -41,17 +43,18 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	private final AiConsultingRepository aiConsultingRepository;
 	private final ConsultantRepository consultantRepository;
 	private final ConsultantConsultingContentService consultantConsultingContentService;
+	private final AssertUtil assertUtil;
 	
 	@Override
 	public void approveConsulting(Long id, UserType userType, Long aiConsultingId) {
 		if(userType!=UserType.컨설턴트회원) {
-			throw new AccessDeniedException("승인은 컨설턴트만 가능 합니다.");
+			throw new CustomAccessDeniedException(UserType.컨설턴트회원, "승인");
 		}
 	    AiConsulting aiConsulting = aiConsultingRepository.findById(aiConsultingId)
-	        .orElseThrow(() -> new EntityNotFoundException("해당 AI 컨설팅이 존재하지 않습니다."));
+	        .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 
 	    Consultant consultant = consultantRepository.findById(id)
-	        .orElseThrow(() -> new IllegalArgumentException("해당 컨설턴트가 존재하지 않습니다."));
+	        .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트"));
 
 
 	    if (aiConsulting.getConsultantConsulting() != null) {
@@ -81,12 +84,9 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	
 		ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingUpdateDto.getConsultantConsultingid())
-				.orElseThrow(()-> new IllegalArgumentException("해당 컨설턴트 컨설팅이 존재하지 않습니다."));
+				.orElseThrow(()-> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
 		
-		if(!consultantConsulting.getConsultant().getId().equals(id)) {
-			throw new AccessDeniedException("해당 컨설팅을 수정할 권한이 없습니다.");
-		}
-		
+		assertUtil.assertId(id, consultantConsulting, "수정");
 		
 		List<ConsultantContentUpdateDto> consultantContentUpdateDtos = consultantConsultingUpdateDto.getConsultantContentUpdateDtos();
 		
@@ -99,13 +99,11 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	 
 	
 	@Override
-	public void completeConsulting(Long consultantId, Long consultantConsultingId) {
+	public void completeConsulting(Long id, Long consultantConsultingId) {
 	    ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingId)
-	        .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
+	        .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
 	    
-	    if (!consultantConsulting.getConsultant().getId().equals(consultantId)) {
-	    	throw new AccessDeniedException("완료 권한이 없습니다.");
-	    }
+	    assertUtil.assertId(id, consultantConsulting, "완료");
 
 	    if (consultantConsulting.getCompletedDate() != null) {
 	        throw new IllegalStateException("이미 완료된 컨설팅입니다.");
@@ -137,14 +135,21 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	    
 	    @Override
-	    public ConsultantEditDetailResponseDto readEditDetail(Long consultantId,Long consultantConsultingId) {
-	        ConsultantConsulting consultantConsulting = consultantConsultingRepository
-	            .findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
-	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
+	    public ConsultantEditDetailResponseDto readEditDetail(Long id, UserType userType, Long consultantConsultingId) {
+	        ConsultantConsulting consultantConsulting = consultantConsultingRepository.findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
+	            .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
 	        
-	        if(!consultantConsulting.getConsultant().getId().equals(consultantId)) {
-	        	throw new AccessDeniedException("조회 권한이 없습니다.");
+	        if(UserType.컨설턴트회원.equals(userType)) {
+	        	if(!consultantConsulting.getConsultant().getId().equals(id)) {
+	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
+	        	}
 	        }
+	        else if(UserType.일반회원.equals(userType)) {
+	        	if(!consultantConsulting.getAiConsulting().getRequest().getMember().getId().equals(id)) {
+	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
+	        	}
+	        }
+	        
 
 	        AiConsulting aiConsulting = consultantConsulting.getAiConsulting();
 
@@ -185,13 +190,20 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	    
 	    @Override
-	    public ConsultantFeedBackDetailResponseDto readFeedbackDetail(Long consultantId, Long consultantConsultingId) {
+	    public ConsultantFeedBackDetailResponseDto readFeedbackDetail(Long id, UserType userType, Long consultantConsultingId) {
 	        ConsultantConsulting consultantConsulting = consultantConsultingRepository
 	            .findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
-	            .orElseThrow(() -> new EntityNotFoundException("해당 컨설팅 이력이 존재하지 않습니다."));
+	            .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
 	        
-	        if (!consultantConsulting.getConsultant().getId().equals(consultantId)) {
-	            throw new AccessDeniedException("조회 권한이 없습니다.");
+	        if(UserType.컨설턴트회원.equals(userType)) {
+	        	if(!consultantConsulting.getConsultant().getId().equals(id)) {
+	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
+	        	}
+	        }
+	        else if(UserType.일반회원.equals(userType)) {
+	        	if(!consultantConsulting.getAiConsulting().getRequest().getMember().getId().equals(id)) {
+	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
+	        	}
 	        }
 
 	        AiConsulting aiConsulting = consultantConsulting.getAiConsulting();

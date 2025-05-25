@@ -7,12 +7,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptCreateDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptUpdateDto;
 import com.jobPrize.entity.admin.FeedbackPrompt;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.repository.admin.feedbackPrompt.FeedbackPromptRepository;
+import com.jobPrize.util.AssertUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +23,28 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class FeedbackPromptServiceImpl implements FeedbackPromptService {
+	
 	private final FeedbackPromptRepository feedbackPromptRepository;
+	
+	private final AssertUtil assertUtil;
 
 	@Override
 	public void createFeedbackPrompt(UserType userType, FeedbackPromptCreateDto dto) {
-	if(userType != UserType.관리자) {
-		throw new AccessDeniedException("관리자만 작성할 수 있습니다.");
+		
+		assertUtil.assertUserType(userType, UserType.관리자, "작성");
+	
+		FeedbackPrompt prompt = FeedbackPrompt.createFrom(dto);
+	
+		feedbackPromptRepository.save(prompt);
 	}
-	FeedbackPrompt prompt = FeedbackPrompt.createFrom(dto);
-	feedbackPromptRepository.save(prompt);
-}
 
 	@Override
 	public void updateFeedbackPrompt(UserType userType, FeedbackPromptUpdateDto dto) {
 		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findById(dto.getId())
-				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
-		if (userType != UserType.관리자) {
-			throw new AccessDeniedException("관리자만 작성할 수 있습니다.");
-		}
+				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+		
+		assertUtil.assertUserType(userType, UserType.관리자, "수정");
+		
 		feedbackPrompt.updateFeedbackPrompt(dto.getTitle(), dto.getContent());
 
 	}
@@ -58,9 +64,9 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public FeedbackPromptResponseDto readFeedbackPromptById(FeedbackPromptResponseDto dto) {
-		FeedbackPrompt prompt = feedbackPromptRepository.findById(dto.getId())
-				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
+	public FeedbackPromptResponseDto readFeedbackPrompt(Long feedbackPromptId) {
+		FeedbackPrompt prompt = feedbackPromptRepository.findById(feedbackPromptId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 		return FeedbackPromptResponseDto.from(prompt);
 	}
 
@@ -68,15 +74,13 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	public void applyFeedbackPrompt(Long feedbackPromptId) {
 		unApplyFeedbackPrompt();
 		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findById(feedbackPromptId)
-				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 		feedbackPrompt.apply();
 	}
 
-	@Override
-	public void unApplyFeedbackPrompt() {
-		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findAppliedPrompt()
-				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
-		feedbackPrompt.unApply();
+	private void unApplyFeedbackPrompt() {
+		feedbackPromptRepository.findAppliedPrompt()
+			.ifPresent(feedbackPrompt -> feedbackPrompt.unApply());
 		
 	}
 

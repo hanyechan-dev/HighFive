@@ -3,10 +3,10 @@ package com.jobPrize.service.member.coverLetter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentResponseDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentUpdateDto;
@@ -14,14 +14,15 @@ import com.jobPrize.dto.member.coverLetter.CoverLetterCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterResponseDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterSummaryDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterUpdateDto;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.CoverLetter;
 import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.member.coverLetter.CoverLetterRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.coverLetterContent.CoverLetterContentService;
+import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,18 +30,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CoverLetterServiceImpl implements CoverLetterService{
 
-
 	private final CoverLetterRepository coverLetterRepository;
+
 	private final MemberRepository memberRepository;
+
 	private final CoverLetterContentService coverLetterContentService;
 
-	
-	
+	private final AssertUtil assertUtil;
 	
 	@Override
-	public void createCoverLetter(Long id, CoverLetterCreateDto coverLetterCreateDto) {
+	public void createCoverLetter(Long id, UserType userType, CoverLetterCreateDto coverLetterCreateDto) {
+		
+		assertUtil.assertUserType(userType, UserType.일반회원, "자기소개서 등록");
+		
 		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
 		CoverLetter coverLetter = CoverLetter.of(member, coverLetterCreateDto);
 		coverLetterRepository.save(coverLetter);
@@ -72,11 +76,9 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	@Transactional(readOnly = true)
 	public CoverLetterResponseDto readCoverLetter(Long id, Long coverLetterId) {
 		CoverLetter coverLetter =coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
-				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자기소개서입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
 		
-		if(!coverLetter.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("해당 자기소개서를 조회할 수 없습니다.");
-		}
+		assertUtil.assertId(id, coverLetter, "조회");
 		
 		List<CoverLetterContent> coverLetterContents = coverLetter.getCoverLetterContents();
 		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
@@ -92,11 +94,9 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	public void updateCoverLetter(Long id, CoverLetterUpdateDto coverLetterUpdateDto) {
 
 		CoverLetter coverLetter = coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterUpdateDto.getId())
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자기소개서입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
 		
-		if(!coverLetter.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("해당 자기소개서를 수정할 수 없습니다.");
-		}
+		assertUtil.assertId(id, coverLetter, "수정");
 		
 		coverLetter.updateCoverLetter(coverLetterUpdateDto);
 		List<CoverLetterContentUpdateDto> coverLetterContentUpdateDtos = coverLetterUpdateDto.getContents();
@@ -111,11 +111,9 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	public void deleteCoverLetter(Long id, Long coverLetterId) {
 
 		CoverLetter coverLetter = coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자기소개서입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
 		
-		if(!coverLetter.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("해당 자기소개서를 삭제할 수 없습니다.");
-		}
+		assertUtil.assertId(id, coverLetter, "삭제");
 		
 		List<CoverLetterContent> coverLetterContents = coverLetter.getCoverLetterContents();
 		for(CoverLetterContent coverLetterContent : coverLetterContents ) {

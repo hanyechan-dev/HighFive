@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.dto.memToCon.request.RequestCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.member.Member;
@@ -64,9 +65,20 @@ public class Request {
 	@CreatedDate
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
-	
 
 	@OneToOne(mappedBy = "request", fetch = FetchType.LAZY)
 	private AiConsulting aiConsulting;
+
+	public static Request of(Member member, RequestCreateDto requestCreateDto, String resumeJson, String careerDescriptionJson, String coverLetterJson) {
+		return Request.builder()
+			.member(member)
+			.targetJob(requestCreateDto.getTargetJob())
+			.targetCompanyName(requestCreateDto.getTargetCompanyName())
+			.resumeJson(resumeJson)
+			.careerDescriptionJson(careerDescriptionJson)
+			.coverLetterJson(coverLetterJson)
+			.type(requestCreateDto.getType())
+			.build();
+	}
 
 }

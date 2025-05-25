@@ -6,21 +6,25 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.company.jobPosting.JobPostingCreateDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingResponseDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingUpdateDto;
+import com.jobPrize.dto.company.jobPostingImage.JobPostingImageCreateDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.company.JobPosting;
+import com.jobPrize.entity.company.JobPostingImage;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.company.jobPosting.JobPostingRepository;
+import com.jobPrize.service.company.jobPostingImage.JobPostingImageService;
+import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -32,19 +36,30 @@ public class JobPostingServiceImpl implements JobPostingService{
 	private final JobPostingRepository jobPostingRepository;
 
 	private final CompanyRepository companyRepository;
+	
+	private final JobPostingImageService jobPostingImageService;
+
+	private final AssertUtil assertUtil;
 
 	@Override
 	public void createJobPosting(Long id, UserType userType, JobPostingCreateDto jobPostingCreateDto) {
-		if(userType != UserType.기업회원){
-			throw new AccessDeniedException("해당 기업 정보 조회 권한이 없습니다.");
-		}
+		
+		assertUtil.assertUserType(userType, UserType.기업회원, "채용공고 등록");
 		
 		Company company = companyRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 기업입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("기업"));
 		
 		JobPosting jobPosting = JobPosting.of(company,jobPostingCreateDto);
 		
 		jobPostingRepository.save(jobPosting);
+		
+		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingCreateDto.getJobPostingImageCreateDtos();
+		List<MultipartFile> multipartFiles = new ArrayList<>();
+		for(JobPostingImageCreateDto jobPostingImageCreateDto : jobPostingImageCreateDtos) {
+			MultipartFile multipartFile= jobPostingImageCreateDto.getImage();
+			multipartFiles.add(multipartFile);
+		}
+		jobPostingImageService.createImages(jobPosting, multipartFiles);
 	}
 
 	@Override
@@ -61,8 +76,16 @@ public class JobPostingServiceImpl implements JobPostingService{
 	@Override
 	public JobPostingResponseDto readJobPosting(Long jobPostingId) {
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 채용공고입니다."));
-		return JobPostingResponseDto.from(jobPosting);
+			.orElseThrow(() -> new CustomEntityNotFoundException("채용공고"));
+		
+		List<JobPostingImage> jobPostingImages = jobPosting.getJobPostingImages();
+		List<String> jobPostingImageUrls = new ArrayList<>();
+		
+		for(JobPostingImage jobPostingImage:jobPostingImages) {
+			String jobPostingImageUrl = "/images/" + jobPostingImage.getImageName();
+			jobPostingImageUrls.add(jobPostingImageUrl);
+		}
+		return JobPostingResponseDto.of(jobPosting, jobPostingImageUrls);
 	}
 
 	@Override
@@ -70,22 +93,20 @@ public class JobPostingServiceImpl implements JobPostingService{
 		Long jobPostingId = jobPostingUpdateDto.getId();
 		
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 채용공고입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("채용공고"));
 		
-		if(!jobPosting.getCompany().getId().equals(id)) {
-			throw new AccessDeniedException("해당 공고 수정 권한이 없습니다.");
-		}
+		assertUtil.assertId(id, jobPosting, "수정");
+		
 		jobPosting.updateJobPostingInfo(jobPostingUpdateDto);
 	}
 
 	@Override
 	public void deleteJobPosting(Long id, Long jobPostingId) {
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 채용공고입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("채용공고"));
 		
-		if(!jobPosting.getCompany().getId().equals(id)) {
-			throw new AccessDeniedException("해당 공고 삭제 권한이 없습니다.");
-		}
+		assertUtil.assertId(id, jobPosting, "삭제");
+		
 		jobPostingRepository.delete(jobPosting);
 	}
 

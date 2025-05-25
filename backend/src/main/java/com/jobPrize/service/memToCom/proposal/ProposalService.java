@@ -9,10 +9,11 @@ import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
+import com.jobPrize.entity.common.UserType;
 
 public interface ProposalService {
-	void createProposal(Long id, ProposalCreateDto proposalCreateDtodto);
+	void createProposal(Long id, UserType userType, ProposalCreateDto proposalCreateDto);
 	Page<ProposalSummaryForMemberDto> readProposalForMemberPage(Long id, Pageable pageable);
 	Page<ProposalSummaryForCompanyDto> readProposalForCompanyPage(Long id, Pageable pageable);
-	ProposalResponseDto readProposal(Long id, Long proposalId);
+	ProposalResponseDto readProposal(Long id, UserType userType, Long proposalId);
 }

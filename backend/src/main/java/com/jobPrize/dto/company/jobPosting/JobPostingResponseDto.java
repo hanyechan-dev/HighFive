@@ -1,5 +1,7 @@
 package com.jobPrize.dto.company.jobPosting;
 
+import java.util.List;
+
 import com.jobPrize.entity.company.CompanyType;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.EducationLevel;
@@ -32,8 +34,10 @@ public class JobPostingResponseDto {
 	private String content;
 	
 	private String requirement;
+	
+	private List<String> imageUrls;
 
-	public static JobPostingResponseDto from(JobPosting jobPosting) {
+	public static JobPostingResponseDto of(JobPosting jobPosting, List<String> imageUrls) {
 		return JobPostingResponseDto.builder()
 			.id(jobPosting.getId())
 			.title(jobPosting.getTitle())
@@ -46,6 +50,7 @@ public class JobPostingResponseDto {
 			.salary(jobPosting.getSalary())
 			.content(jobPosting.getContent())
 			.requirement(jobPosting.getRequirement())
+			.imageUrls(imageUrls)
 			.build();
 	}
 

@@ -9,8 +9,9 @@ import com.jobPrize.dto.memToCon.request.RequestSummaryDto;
 import com.jobPrize.entity.common.UserType;
 
 public interface RequestService {
+	Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto);
 	Page<RequestSummaryDto> readFeedbackRequestPage(Long id, Pageable pageable);
 	Page<RequestSummaryDto> readEditRequestPage(Long id, Pageable pageable);
-	RequestDetailDto readRequestDetail(Long id, Long requestId);
-	Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto);
+	RequestDetailDto readRequestDetail(Long id, UserType userType, Long requestId);
+	
 }

@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomAccessDeniedException;
+import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
@@ -22,10 +24,10 @@ import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.company.jobPosting.JobPostingRepository;
 import com.jobPrize.repository.memToCom.application.ApplicationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
-import com.jobPrize.service.memToCom.util.MemToComUtil;
-import com.jobPrize.service.member.document.DocumentToJson;
+import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.JsonUtil;
+import com.jobPrize.util.MemToComUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,9 +41,36 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	private final JobPostingRepository jobPostingRepository;
 	
-	private final DocumentToJson documentToJson;
+	private final JsonUtil jsonUtil;
 	
 	private final MemToComUtil memToComUtil;
+
+	private final AssertUtil assertUtil;
+
+	@Override
+	public void createApplication(Long id, UserType userType, ApplicationCreateDto applicationCreateDto) {
+		
+		assertUtil.assertUserType(userType, UserType.일반회원, "지원서 등록");
+		
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
+				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+		
+		JobPosting jobPosting = jobPostingRepository.findById(applicationCreateDto.getJobPostingId())
+				.orElseThrow(() -> new CustomEntityNotFoundException("공고"));
+		
+		Long careerDescriptionId = applicationCreateDto.getCareerDescriptionId();
+		Long coverLetterId = applicationCreateDto.getCoverLetterId();
+
+		String resumeJson =jsonUtil.getResumeJsonByMemberId(id);
+		String careerDescriptionJson =jsonUtil.getCareerDescriptionJsonByCareerDescriptionId(id, careerDescriptionId);
+		String coverLetterJson =jsonUtil.getCoverLetterJsonByCoverLetterId(id, coverLetterId);
+		
+		
+		Application application = Application.of(member, jobPosting, resumeJson, careerDescriptionJson, coverLetterJson);
+		
+		applicationRepository.save(application);
+
+	}
 
     
 	@Override
@@ -85,64 +114,26 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ApplicationResponseDto readApplication(Long id, Long applicationId) {
+	public ApplicationResponseDto readApplication(Long id, UserType userType, Long applicationId) {
+		
+		assertUtil.assertUserType(userType,UserType.일반회원,UserType.기업회원,"조회");
+		
 		Application application = applicationRepository.findByApplicationId(applicationId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 지원서입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("지원서"));
+
 		
-		if(!application.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("지원한 회원만 조회할 수 있습니다.");
-		}
-		
+		if(UserType.기업회원.equals(userType)) {
+        	if(!application.getJobPosting().getCompany().getId().equals(id)) {
+        		throw new CustomOwnerMismatchException("Application", "조회");
+        	}
+        }
+        else if(UserType.일반회원.equals(userType)) {
+        	if(!application.getMember().getId().equals(id)) {
+        		throw new CustomOwnerMismatchException("Application", "조회");
+        	}
+        }
 		
 		return ApplicationResponseDto.from(application);
 	}
-
-	@Override
-	public void createApplication(Long id, UserType userType, ApplicationCreateDto applicationCreateDto) {
-		
-		if (userType.equals(UserType.일반회원)) {
-			throw new AccessDeniedException("일반회원만 지원할 수 있습니다.");
-		}
-
-		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
-		
-		JobPosting jobPosting = jobPostingRepository.findById(applicationCreateDto.getJobPostingId())
-				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 공고입니다."));
-		
-		Long careerDescriptionId = applicationCreateDto.getCareerDescriptionId();
-		Long coverLetterId = applicationCreateDto.getCoverLetterId();
-
-		String resumeJson =documentToJson.getResumeJsonByMemberId(id);
-		String careerDescriptionJson =documentToJson.getCareerDescriptionJsonByCareerDescriptionId(id, careerDescriptionId);
-		String coverLetterJson =documentToJson.getCoverLetterJsonByCoverLetterId(id, coverLetterId);
-		
-		
-		Application application = Application.builder()
-				.member(member)
-				.jobPosting(jobPosting)
-				.resumeJson(resumeJson)
-				.careerDescriptionJson(careerDescriptionJson)
-				.coverLetterJson(coverLetterJson)
-				.build();
-		
-		applicationRepository.save(application);
-
-	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
 }

@@ -3,19 +3,20 @@ package com.jobPrize.service.member.certification;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.certification.CertificationCreateDto;
 import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.certification.CertificationUpdateDto;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.member.certification.CertificationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,11 +28,15 @@ public class CertificationServiceImpl implements CertificationService {
 
     private final MemberRepository memberRepository;
 
+	private final AssertUtil assertUtil;
+
 	@Override
-	public void createCertification(Long id, CertificationCreateDto certificationCreateDto) {
+	public void createCertification(Long id, UserType userType, CertificationCreateDto certificationCreateDto) {
         
+		assertUtil.assertUserType(userType, UserType.일반회원, "자격증 등록");
+
 		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
 		Certification certification = Certification.of(member, certificationCreateDto);
 
@@ -56,11 +61,9 @@ public class CertificationServiceImpl implements CertificationService {
         Long certificationId = certificationUpdateDto.getId();
 
 		Certification certification = certificationRepository.findById(certificationId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자격증입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("자격증"));
 
-        if (!certification.getMember().getId().equals(id)) {
-            throw new AccessDeniedException("자격증의 대상과 회원이 일치하지 않습니다.");
-        }
+		assertUtil.assertId(id, certification, "수정");
         
 		certification.updateCertification(certificationUpdateDto);
 
@@ -70,11 +73,9 @@ public class CertificationServiceImpl implements CertificationService {
 	public void deleteCertification(Long id, Long certificationId) {
         
         Certification certification = certificationRepository.findById(certificationId)
-            .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자격증입니다."));
+            .orElseThrow(() -> new CustomEntityNotFoundException("자격증"));
 
-        if (!certification.getMember().getId().equals(id)) {
-            throw new AccessDeniedException("자격증의 대상과 회원이 일치하지 않습니다.");
-        }
+        assertUtil.assertId(id, certification, "삭제");
 
         certificationRepository.delete(certification);
 		

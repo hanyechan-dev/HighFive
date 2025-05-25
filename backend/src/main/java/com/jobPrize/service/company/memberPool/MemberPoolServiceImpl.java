@@ -14,7 +14,7 @@ import com.jobPrize.dto.company.memberPool.MemberPoolSummaryDto;
 import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
-import com.jobPrize.service.memToCom.util.MemToComUtil;
+import com.jobPrize.util.MemToComUtil;
 
 import lombok.RequiredArgsConstructor;
 

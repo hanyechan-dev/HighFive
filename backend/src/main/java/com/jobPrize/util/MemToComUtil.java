@@ -1,4 +1,4 @@
-package com.jobPrize.service.memToCom.util;
+package com.jobPrize.util;
 
 import java.util.List;
 

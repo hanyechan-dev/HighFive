@@ -9,10 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomAccessDeniedException;
+import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Proposal;
@@ -20,9 +24,9 @@ import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.memToCom.proposal.ProposalRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
-import com.jobPrize.service.memToCom.util.MemToComUtil;
+import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.MemToComUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -37,16 +41,21 @@ public class ProposalServiceImpl implements ProposalService {
 	private final MemberRepository memberRepository;
 	
 	private final MemToComUtil memToComUtil;
+
+	private final AssertUtil assertUtil;
 	
 	@Override
-	public void createProposal(Long id, ProposalCreateDto proposalCreateDtodto) {
+	public void createProposal(Long id, UserType userType, ProposalCreateDto proposalCreateDto) {
+
+		assertUtil.assertUserType(userType, UserType.기업회원, "제안 등록");
+		
 		Company company = companyRepository.findById(id)
-				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 기업입니다."));
+				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
-		Member member = memberRepository.findByIdAndDeletedDateIsNull(proposalCreateDtodto.getMemberId())
-				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 회원입니다."));
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(proposalCreateDto.getMemberId())
+				.orElseThrow(()-> new CustomEntityNotFoundException("회원"));
 		
-		Proposal proposal = Proposal.of(proposalCreateDtodto, company, member);
+		Proposal proposal = Proposal.of(proposalCreateDto, company, member);
 		
 		proposalRepository.save(proposal);
 		
@@ -88,13 +97,23 @@ public class ProposalServiceImpl implements ProposalService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProposalResponseDto readProposal(Long id, Long proposalId) {
-		Proposal proposal = proposalRepository.findById(proposalId)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 제안입니다."));
+	public ProposalResponseDto readProposal(Long id, UserType userType, Long proposalId) {
 		
-		if(!proposal.getMember().getId().equals(id)) {
-			throw new IllegalStateException("제안의 대상과 회원이 일치하지 않습니다.");
-		}
+		assertUtil.assertUserType(userType,UserType.일반회원,UserType.기업회원,"조회");
+		
+		Proposal proposal = proposalRepository.findById(proposalId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("제안"));
+		
+		if(UserType.기업회원.equals(userType)) {
+        	if(!proposal.getCompany().getId().equals(id)) {
+        		throw new CustomOwnerMismatchException("proposal", "조회");
+        	}
+        }
+        else if(UserType.일반회원.equals(userType)) {
+        	if(!proposal.getMember().getId().equals(id)) {
+        		throw new CustomOwnerMismatchException("proposal", "조회");
+        	}
+        }
 		
 		
 		return ProposalResponseDto.from(proposal);

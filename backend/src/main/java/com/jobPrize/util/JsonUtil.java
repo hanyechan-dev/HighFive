@@ -1,4 +1,4 @@
-package com.jobPrize.service.member.document;
+package com.jobPrize.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class DocumentToJson {
+public class JsonUtil {
 
 	private final EducationRepository educationRepository;
 	private final CareerRepository careerRepository;

@@ -3,19 +3,20 @@ package com.jobPrize.service.member.languageTest;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.languageTest.LanguageTestCreateDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.member.languageTest.LanguageTestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -28,10 +29,13 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 
 	private final MemberRepository memberRepository;
 
+	private final AssertUtil assertUtil;
+
 	@Override
-	public void createLanguageTest(Long id, LanguageTestCreateDto languageTestCreateDto) {
+	public void createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto) {
+		assertUtil.assertUserType(userType, UserType.일반회원, "어학시험 등록");
 		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
 		LanguageTest languageTest = LanguageTest.of(member, languageTestCreateDto);
 		
@@ -56,11 +60,9 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 	public void updateLanguageTest(Long id, LanguageTestUpdateDto languageTestUpdateDto) {
 		Long languageTestId = languageTestUpdateDto.getId();
 		LanguageTest languageTest = languageTestRepository.findById(languageTestId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자격증입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("어학시험"));
 		
-		if(!languageTest.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("자격증의 대상과 회원이 일치하지 않습니다.");
-		}
+		assertUtil.assertId(id, languageTest, "수정");
 		
 		languageTest.updateLanguageTest(languageTestUpdateDto);
 		
@@ -70,11 +72,9 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 	public void deleteLanguageTest(Long id, Long languageTestId) {
 		
 		LanguageTest languageTest = languageTestRepository.findById(languageTestId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자격증입니다."));
+			.orElseThrow(() -> new CustomEntityNotFoundException("어학시험"));
 		
-		if(!languageTest.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("자격증의 대상과 회원이 일치하지 않습니다.");
-		}
+		assertUtil.assertId(id, languageTest, "삭제");
 		
 		languageTestRepository.delete(languageTest);
 		

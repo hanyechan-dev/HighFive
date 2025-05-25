@@ -15,10 +15,8 @@ public interface FeedbackPromptService {
 
 	List<FeedbackPromptResponseDto> readAllList();
 
-	FeedbackPromptResponseDto readFeedbackPromptById(FeedbackPromptResponseDto dto);
+	FeedbackPromptResponseDto readFeedbackPrompt(Long feedbackPromptId);
 
 	void applyFeedbackPrompt(Long feedbackPromptId);
-
-	void unApplyFeedbackPrompt();
 
 }

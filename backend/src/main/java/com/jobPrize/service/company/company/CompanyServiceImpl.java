@@ -3,15 +3,17 @@ package com.jobPrize.service.company.company;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.company.company.CompanyCreateDto;
 import com.jobPrize.dto.company.company.CompanyResponseDto;
 import com.jobPrize.dto.company.company.CompanyUpdateDto;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.repository.company.company.CompanyRepository;
+import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -24,10 +26,15 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	private final CompanyRepository companyRepository;
 
+	private final AssertUtil assertUtil;
+
 	@Override
-	public void createCompanyInfo(Long id, CompanyCreateDto companyCreateDto) {
+	public void createCompanyInfo(Long id , UserType usertype, CompanyCreateDto companyCreateDto) {
+
+		assertUtil.assertUserType(usertype, UserType.기업회원, "기업정보 등록");
+
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(()-> new EntityNotFoundException("해당 유저가 존재하지 않습니다."));
+				.orElseThrow(()-> new CustomEntityNotFoundException("유저"));
 		
 		Company company = Company.of(user,companyCreateDto);
 		
@@ -39,7 +46,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional(readOnly = true)
 	public CompanyResponseDto readCompanyInfo(Long id) {
 		Company company = companyRepository.findById(id)
-				.orElseThrow(()-> new EntityNotFoundException("해당 기업이 존재하지 않습니다."));
+				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
 		return CompanyResponseDto.from(company);
 	}
@@ -47,7 +54,9 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public void updateCompanyInfo(Long id, CompanyUpdateDto companyUpdateDto) {
 		Company company = companyRepository.findById(id)
-				.orElseThrow(()-> new EntityNotFoundException("해당 기업이 존재하지 않습니다."));
+				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
+
+		assertUtil.assertId(id, company, "수정");
 		
 		company.updateCompanyInfo(companyUpdateDto);
 		

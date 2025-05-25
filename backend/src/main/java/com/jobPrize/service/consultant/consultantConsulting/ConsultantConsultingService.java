@@ -20,9 +20,9 @@ public interface ConsultantConsultingService {
 
 	Page<ConsultantConsultingSummaryDto> readConsultantConsultingPage(Long id, Pageable pageable);
 
-	ConsultantEditDetailResponseDto readEditDetail(Long id,Long consultantConsultingId);
+	ConsultantEditDetailResponseDto readEditDetail(Long id, UserType userType, Long consultantConsultingId);
 
-	ConsultantFeedBackDetailResponseDto readFeedbackDetail(Long id, Long consultantConsultingId);
+	ConsultantFeedBackDetailResponseDto readFeedbackDetail(Long id, UserType userType, Long consultantConsultingId);
 
 }
 

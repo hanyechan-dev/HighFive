@@ -7,10 +7,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
 import com.jobPrize.dto.memToCon.request.RequestCreateDto;
@@ -25,9 +25,9 @@ import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
-import com.jobPrize.service.member.document.DocumentToJson;
+import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.JsonUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,7 +39,32 @@ public class RequestServiceImpl implements RequestService {
 	
 	private final RequestRepository requestRepository;
 	
-	private final DocumentToJson documentToJson;
+	private final JsonUtil jsonUtil;
+
+	private final AssertUtil assertUtil;
+
+	@Override
+	public Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
+
+		assertUtil.assertUserType(userType, UserType.일반회원, "컨설팅 요청");
+		
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
+				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+
+		Long careerDescriptionId = requestCreateDto.getCareerDescriptionId();
+		Long coverLetterId = requestCreateDto.getCoverLetterId();
+
+		String resumeJson =jsonUtil.getResumeJsonByMemberId(id);
+		String careerDescriptionJson =jsonUtil.getCareerDescriptionJsonByCareerDescriptionId(id, careerDescriptionId);
+		String coverLetterJson =jsonUtil.getCoverLetterJsonByCoverLetterId(id, coverLetterId);
+
+		Request request = Request.of(member, requestCreateDto, resumeJson, careerDescriptionJson, coverLetterJson);
+
+		requestRepository.save(request);
+		
+		return request.getId();
+		
+	}
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -79,13 +104,12 @@ public class RequestServiceImpl implements RequestService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public RequestDetailDto readRequestDetail(Long id, Long requestId) {
-		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 컨설팅 요청입니다."));
+	public RequestDetailDto readRequestDetail(Long id, UserType userType, Long requestId) {
 		
-		if(!request.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("요청한 회원만 조회할 수 있습니다.");
-		}
+		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("컨설팅 요청"));
+		
+		assertUtil.assertId(id, request, "조회");
 		
 		AiConsulting aiConsulting = request.getAiConsulting();
 		List<AiConsultingContent> aiConsultingContents = aiConsulting.getAiConsultingContents();
@@ -101,37 +125,7 @@ public class RequestServiceImpl implements RequestService {
 		return RequestDetailDto.of(requestResponseDto, aiConsultingResponseDto, aiConsultingContentResponseDtos);
 	}
 
-	@Override
-	public Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
-		if (!userType.equals(UserType.일반회원)) {
-			throw new AccessDeniedException("일반회원만 요청할 수 있습니다.");
-		}
-		
 
-
-		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
-
-		Long careerDescriptionId = requestCreateDto.getCareerDescriptionId();
-		Long coverLetterId = requestCreateDto.getCoverLetterId();
-
-		String resumeJson =documentToJson.getResumeJsonByMemberId(id);
-		String careerDescriptionJson =documentToJson.getCareerDescriptionJsonByCareerDescriptionId(id, careerDescriptionId);
-		String coverLetterJson =documentToJson.getCoverLetterJsonByCoverLetterId(id, coverLetterId);
-
-		Request request = Request.builder()
-				.member(member)
-				.targetJob(requestCreateDto.getTargetJob())
-				.targetCompanyName(requestCreateDto.getTargetCompanyName())
-				.resumeJson(resumeJson)
-				.careerDescriptionJson(careerDescriptionJson)
-				.coverLetterJson(coverLetterJson)
-				.build();
-		requestRepository.save(request);
-		
-		return request.getId();
-		
-	}
 	
 	
 	
@@ -162,12 +156,5 @@ public class RequestServiceImpl implements RequestService {
 		return date;
 	}
 	
-
-
-
-
-
-
-
 
 }

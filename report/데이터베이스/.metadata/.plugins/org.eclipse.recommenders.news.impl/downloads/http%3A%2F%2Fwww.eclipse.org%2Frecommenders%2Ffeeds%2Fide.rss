@@ -902,6 +902,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <tr><td>Featuremodel project</td><td>4.1M</td><td>March 2015</td><td>https://archive.eclipse.org/archived_projects/featuremodel.tgz</td></tr>
         <tr><td>Flux project</td><td>13M</td><td>February 2019</td><td>https://archive.eclipse.org/archived_projects/flux.tgz</td></tr>
         <tr><td>FMC project</td><td>11M</td><td>June 2022</td><td>https://archive.eclipse.org/archived_projects/fmc.tgz</td></tr>
+        <tr><td>Fog05 project</td><td>11M</td><td>June 2022</td><td>https://archive.eclipse.org/archived_projects/fog05.tgz</td></tr>
         <tr><td>Fproj project</td><td>931K</td><td>January 2012</td><td>https://archive.eclipse.org/archived_projects/fproj.tgz</td></tr>
         <tr><td>Ganomatic project</td><td>23K</td><td>January 2012</td><td>https://archive.eclipse.org/archived_projects/ganomatic.tgz</td></tr>
         <tr><td>Gems project</td><td>31M</td><td>January 2015</td><td>https://archive.eclipse.org/archived_projects/gems.tgz</td></tr>
@@ -930,10 +931,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <tr><td>JET project</td><td>3.4M</td><td>May 2020.</td><td>https://archive.eclipse.org/archived_projects/jet.tgz</td></tr>
         <tr><td>Js4emf project</td><td>5.7M</td><td>January 2015.</td><td>https://archive.eclipse.org/archived_projects/js4emf.tgz</td></tr>
         <tr><td>Jubula project</td><td>146M</td><td>October 2023</td><td>https://archive.eclipse.org/archived_projects/jubula.tgz</td></tr>
-        <tr><td>Koi project</td><td></td><td>April 2006</td><td>https://archive.eclipse.org/archived_projects/koi-project.tar.gz</td></tr>
-        <tr><td>Kiso project</td><td>5.3M</td><td>July 2021</td><td>https://archive.eclipse.org/archived_projects/kiso.tar.gz</td></tr>
-        <tr><td>Koneki project</td><td>42M</td><td>September 2015</td><td>https://archive.eclipse.org/archived_projects/koneki.tgz</td></tr>
         <tr><td>Kepler project</td><td>2K</td><td>July 2008</td><td>https://archive.eclipse.org/archived_projects/kepler.tgz</td></tr>
+        <tr><td>Keti project</td><td></td><td>May 2025</td><td>https://archive.eclipse.org/archived_projects/keti.tgz</td></tr>
+        <tr><td>Kiso project</td><td>5.3M</td><td>July 2021</td><td>https://archive.eclipse.org/archived_projects/kiso.tar.gz</td></tr>
+        <tr><td>Koi project</td><td></td><td>April 2006</td><td>https://archive.eclipse.org/archived_projects/koi-project.tar.gz</td></tr>
+        <tr><td>Koneki project</td><td>42M</td><td>September 2015</td><td>https://archive.eclipse.org/archived_projects/koneki.tgz</td></tr>
         <tr><td>Krikkit project</td><td>4.4M</td><td>October 2017</td><td>https://archive.eclipse.org/archived_projects/krikkit.tgz</td></tr>
         <tr><td>Laszlo project</td><td>27M</td><td>December 2006</td><td>https://archive.eclipse.org/archived_projects/laszlo-project.tar.gz</td></tr>
         <tr><td>Lepido project</td><td>8.9M</td><td>June 2006</td><td>https://archive.eclipse.org/archived_projects/lepido-project.tar.gz</td></tr>

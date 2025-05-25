@@ -85,6 +85,7 @@ public class JobPosting {
 	@OneToMany(mappedBy = "jobPosting")
 	private List<Similarity> similarities = new ArrayList<>();
 
+
 	public void updateJobPostingInfo(JobPostingUpdateDto jobPostingUpdateDto) {
 		this.title = jobPostingUpdateDto.getTitle();
 		this.job = jobPostingUpdateDto.getJob();

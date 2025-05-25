@@ -1,7 +1,5 @@
 package com.jobPrize.entity.company;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,11 +30,7 @@ public class JobPostingImage {
 	@JoinColumn(name = "job_posting_id", nullable = false)
 	private JobPosting jobPosting;
 
-	@Column(name = "image_url", nullable = false)
-	private String imageUrl;
+	@Column(name = "image_name", nullable = false)
+	private String imageName;
 	
-	public void updateImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
 }

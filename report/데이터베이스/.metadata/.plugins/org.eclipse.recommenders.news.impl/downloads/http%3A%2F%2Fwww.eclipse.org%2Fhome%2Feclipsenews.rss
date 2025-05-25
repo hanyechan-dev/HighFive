@@ -7,6 +7,36 @@
     <language>en</language>
     
     <item>
+  <title>Announcing Security Training on Vulnerability Management, SBOM and related subjects</title>
+  <link>https://newsroom.eclipse.org/news/announcements/announcing-security-training-vulnerability-management-sbom-and-related-subjects</link>
+  <description>
+&lt;span&gt;Announcing Security Training on Vulnerability Management, SBOM and related subjects&lt;/span&gt;
+
+&lt;span&gt;&lt;span&gt;Marta Rybczynska&lt;/span&gt;&lt;/span&gt;
+
+&lt;span&gt;&lt;time datetime="2025-05-19T09:40:16-04:00" title="Monday, May 19, 2025 - 09:40"&gt;Mon, 2025-05-19 09:40&lt;/time&gt;
+&lt;/span&gt;
+
+            &lt;div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"&gt;&lt;p dir="ltr"&gt;After the first series of training focused on general concepts, the Eclipse Foundation Security team is offering a new set of training, this time focused on vulnerability management and related subjects like dependencies and Software Bills of Materials.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&amp;nbsp;&lt;/p&gt;&lt;/div&gt;
+      
+  &lt;div class="field field--name-field-news-url field--type-link field--label-above"&gt;
+    &lt;div class="field--label"&gt;URL&lt;/div&gt;
+              &lt;div class="field--item"&gt;&lt;a href="https://blogs.eclipse.org/post/marta-rybczynska/announcing-security-training-vulnerability-management-sbom-and-related"&gt;https://blogs.eclipse.org/post/marta-rybczynska/announcing-security-training-vu…&lt;/a&gt;&lt;/div&gt;
+          &lt;/div&gt;
+
+  &lt;div class="field field--name-field-tags field--type-entity-reference field--label-above"&gt;
+    &lt;div class="field--label"&gt;Tags&lt;/div&gt;
+          &lt;div class="field--items"&gt;
+              &lt;div class="field--item"&gt;&lt;a href="https://newsroom.eclipse.org/tags/security" hreflang="en"&gt;Security&lt;/a&gt;&lt;/div&gt;
+              &lt;/div&gt;
+      &lt;/div&gt;
+</description>
+  <pubDate>Mon, 19 May 2025 13:40:16 +0000</pubDate>
+    <dc:creator>Marta Rybczynska</dc:creator>
+    <guid isPermaLink="false">42103 at https://newsroom.eclipse.org</guid>
+    </item>
+<item>
   <title>Security Incident Review: API Endpoint Exposure on accounts.eclipse.org</title>
   <link>https://newsroom.eclipse.org/news/announcements/security-incident-review-api-endpoint-exposure-accountseclipseorg</link>
   <description>
@@ -451,25 +481,6 @@
   <pubDate>Tue, 04 Mar 2025 10:00:00 +0000</pubDate>
     <dc:creator>Jacob Harris</dc:creator>
     <guid isPermaLink="false">41665 at https://newsroom.eclipse.org</guid>
-    </item>
-<item>
-  <title>2025 Eclipse Foundation Board Election Results</title>
-  <link>https://newsroom.eclipse.org/news/announcements/2025-eclipse-foundation-board-election-results</link>
-  <description>
-&lt;span&gt;2025 Eclipse Foundation Board Election Results&lt;/span&gt;
-
-&lt;span&gt;&lt;span&gt;Gesine Freund&lt;/span&gt;&lt;/span&gt;
-
-&lt;span&gt;&lt;time datetime="2025-03-03T08:50:57-05:00" title="Monday, March 3, 2025 - 08:50"&gt;Mon, 2025-03-03 08:50&lt;/time&gt;
-&lt;/span&gt;
-
-            &lt;div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"&gt;&lt;p dir="ltr"&gt;The Eclipse Foundation would like to thank everyone who participated in this year’s election process and is pleased to announce the results of the 2025 Eclipse Foundation Contributing Member and Committer Member elections for representatives to the Foundation’s Board. These positions are a vitally important part of the Eclipse Foundation's governance.&lt;/p&gt;
-&lt;p dir="ltr"&gt;Hendrik Ebbers, Johannes Matheis, and Angelo Corsaro will be returning as the Contributing Member representatives. Ed Merks, Matthew Khouzam, and Shelley Lambert will be returning as the Committer Member representatives. Congratulations! We're looking forward to working with them on the Board, effective 1 April 2025.&amp;nbsp;&lt;/p&gt;
-&lt;p dir="ltr"&gt;We thank Thomas Königseder and Carlo Piana for running in this year’s election.&amp;nbsp;&lt;/p&gt;&lt;/div&gt;
-      </description>
-  <pubDate>Mon, 03 Mar 2025 13:50:57 +0000</pubDate>
-    <dc:creator>Gesine Freund</dc:creator>
-    <guid isPermaLink="false">41647 at https://newsroom.eclipse.org</guid>
     </item>
 
   </channel>
