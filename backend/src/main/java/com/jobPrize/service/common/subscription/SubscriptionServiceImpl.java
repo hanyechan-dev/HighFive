@@ -1,4 +1,4 @@
-package com.jobPrize.admin01_service.service;
+package com.jobPrize.service.common.subscription;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,13 +8,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.admin01_service.dto.PaymentRequestDto;
-import com.jobPrize.admin01_service.dto.SubscriptionResponseDto;
+import com.jobPrize.dto.common.payment.PaymentRequestDto;
+import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
 import com.jobPrize.entity.common.Subscription;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
-import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.subscription.SubscriptionRepository;
+import com.jobPrize.repository.common.user.UserRepository;
+import com.jobPrize.service.common.payment.PaymentService;
+import com.jobPrize.util.AssertUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +28,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	private final SubscriptionRepository subscriptionRepository;
 	private final UserRepository userRepository;
 	private final PaymentService paymentService;
+	private final AssertUtil assertUtil;
 	
 	// 구독자 생성
 	@Override
-	public void createSubscription(Long id,UserType userType,PaymentRequestDto paymentRequestDto) {
+	public void createSubscription(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
 		
-		// 유저 타입 권한검사 필요
+		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, "구독");
 		
 		LocalDate now = LocalDate.now();
 		
@@ -58,9 +61,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	// 사용자 유형에 따른 구독자 조회
 	@Override
 	@Transactional(readOnly = true)
-	public List<SubscriptionResponseDto> readSubscriberListByUserType(UserType userType) {
+	public List<SubscriptionResponseDto> readSubscriberListByUserType(UserType userType, UserType targetUserType) {
 		
-		List<Subscription> subscribers = subscriptionRepository.findAllByUserType(userType);
+		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		
+		List<Subscription> subscribers = subscriptionRepository.findAllByUserType(targetUserType);
 		
 		return subscribers.stream()
 			.map(subs -> SubscriptionResponseDto.builder()

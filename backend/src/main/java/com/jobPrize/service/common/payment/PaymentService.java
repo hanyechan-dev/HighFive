@@ -1,11 +1,11 @@
-package com.jobPrize.admin01_service.service;
+package com.jobPrize.service.common.payment;
 
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.jobPrize.admin01_service.dto.PaymentRequestDto;
-import com.jobPrize.admin01_service.dto.PaymentResponseDto;
+import com.jobPrize.dto.common.payment.PaymentRequestDto;
+import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.entity.common.UserType;
 
 public interface PaymentService {

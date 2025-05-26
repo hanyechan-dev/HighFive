@@ -1,4 +1,4 @@
-package com.jobPrize.admin01_service.dto;
+package com.jobPrize.dto.common.subscription;
 
 import java.time.LocalDate;
 

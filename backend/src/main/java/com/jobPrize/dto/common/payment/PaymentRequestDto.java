@@ -1,4 +1,4 @@
-package com.jobPrize.admin01_service.dto;
+package com.jobPrize.dto.common.payment;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

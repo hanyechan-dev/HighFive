@@ -1,4 +1,4 @@
-package com.jobPrize.admin01_service.service;
+package com.jobPrize.service.common.notification;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.admin01_service.dto.NotificationDto;
+import com.jobPrize.dto.common.notification.NotificationDto;
 import com.jobPrize.entity.common.Notification;
 import com.jobPrize.entity.common.NotificationType;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.notification.NotificationRepository;
+import com.jobPrize.repository.common.user.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

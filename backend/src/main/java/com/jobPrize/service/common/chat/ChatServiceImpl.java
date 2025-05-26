@@ -1,4 +1,4 @@
-package com.jobPrize.admin01_service.service;
+package com.jobPrize.service.common.chat;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,15 +6,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.admin01_service.dto.ChatRequestDto;
-import com.jobPrize.admin01_service.dto.ChatResponseDto;
+import com.jobPrize.dto.common.chat.ChatRequestDto;
+import com.jobPrize.dto.common.chat.ChatResponseDto;
 import com.jobPrize.entity.common.ChatContent;
 import com.jobPrize.entity.common.ChatRoom;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
-import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.chatContent.ChatContentRepository;
 import com.jobPrize.repository.common.chatRoom.ChatRoomRepository;
+import com.jobPrize.repository.common.user.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +30,10 @@ public class ChatServiceImpl implements ChatService {
 
     // 메세지 저장
 	@Override
-	public void createMessage(ChatRequestDto chatRequestDto) {
+	public void createMessage(Long id, ChatRequestDto chatRequestDto) {
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRequestDto.getChatRoomId())
 				.orElseThrow(() -> new EntityNotFoundException("ChatRoom not found"));
-		User user = userRepository.findById(chatRequestDto.getId())
+		User user = userRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("User not found"));
 		
 		ChatContent newMessage = ChatContent.builder()

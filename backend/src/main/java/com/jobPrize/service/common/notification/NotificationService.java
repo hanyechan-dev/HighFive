@@ -1,8 +1,8 @@
-package com.jobPrize.admin01_service.service;
+package com.jobPrize.service.common.notification;
 
 import java.util.List;
 
-import com.jobPrize.admin01_service.dto.NotificationDto;
+import com.jobPrize.dto.common.notification.NotificationDto;
 import com.jobPrize.entity.common.Notification;
 import com.jobPrize.entity.common.NotificationType;
 

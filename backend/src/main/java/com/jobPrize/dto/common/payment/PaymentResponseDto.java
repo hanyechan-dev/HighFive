@@ -1,4 +1,4 @@
-package com.jobPrize.admin01_service.dto;
+package com.jobPrize.dto.common.payment;
 
 import java.time.LocalDateTime;
 

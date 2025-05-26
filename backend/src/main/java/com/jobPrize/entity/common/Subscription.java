@@ -2,11 +2,7 @@ package com.jobPrize.entity.common;
 
 import java.time.LocalDate;
 
-<<<<<<< HEAD
-=======
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
->>>>>>> origin/origin/ADMIN01_SERVICE
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

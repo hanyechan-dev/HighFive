@@ -1,6 +1,5 @@
 package com.jobPrize.repository.common.subscription;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.jobPrize.entity.common.QSubscription;
@@ -18,11 +17,8 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 	@Override
 	public List<Subscription> findAll() {
 		QSubscription subscription = QSubscription.subscription;
-<<<<<<< HEAD
-=======
-		QUser user = QUser.user;
-		LocalDate now = LocalDate.now();
->>>>>>> origin/origin/ADMIN01_SERVICE
+
+
 
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)
@@ -38,7 +34,6 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 	@Override
 	public List<Subscription> findAllByUserType(UserType userType){
 		QSubscription subscription = QSubscription.subscription;
-		LocalDate now = LocalDate.now();
 		
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)

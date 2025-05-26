@@ -1,4 +1,4 @@
-package com.jobPrize.admin01_service.service;
+package com.jobPrize.service.common.payment;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,13 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.admin01_service.dto.PaymentRequestDto;
-import com.jobPrize.admin01_service.dto.PaymentResponseDto;
+import com.jobPrize.dto.common.payment.PaymentRequestDto;
+import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.entity.common.Payment;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
-import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.payment.PaymentRepository;
+import com.jobPrize.repository.common.user.UserRepository;
+import com.jobPrize.util.AssertUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +25,14 @@ import lombok.RequiredArgsConstructor;
 public class PaymentServiceImpl implements PaymentService {
 	private final PaymentRepository paymentRepository;
 	private final UserRepository userRepository;
-	private final SubscriptionService subscriptionService;
+	
+	private final AssertUtil assertUtil;
 	
 	@Transactional
 	@Override
 	public void createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
 		
-		// 유저 타입 권한 검사 필요
-		
+		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, "결제");
 		
 		// * 추후, 이 곳에 결제 시스템 구현 필수.
 		// 쇼핑몰처럼 장바구니, 상품, 주문 등 복잡한 로직이 필요없이,
