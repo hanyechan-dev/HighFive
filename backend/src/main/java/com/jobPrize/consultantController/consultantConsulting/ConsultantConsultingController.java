@@ -28,57 +28,50 @@ public class ConsultantConsultingController {
 	
 	private final ConsultantConsultingService consultantConsultingService;
 	
-	@PostMapping("/approve")
-	public ResponseEntity<String> approveConsulting 
-	(@RequestBody Long aiConsultingId) {
-		Long id = SecurityUtil.getId();
-		UserType userType = SecurityUtil.getUserType();
-		consultantConsultingService.approveConsulting(id, userType, aiConsultingId);
-		return ResponseEntity.ok("승인이 완료되었습니다.");
-	}
-	
-	@PutMapping("/update")
-	public ResponseEntity<String> updateConsultantConsulting
-	(@RequestBody ConsultantConsultingUpdateDto consultantConsultingUpdateDto) {
-	
-		Long id = SecurityUtil.getId();
-		consultantConsultingService.updateConsultantConsulting(id,consultantConsultingUpdateDto);
-		return ResponseEntity.ok("컨설팅 내용이 저장되었습니다.");
-	}
-	
-	@PutMapping("/complete")
-	public ResponseEntity<String> completeConsulting
-	(@RequestBody Long consultantConsultingId) {
-		
-		Long id = SecurityUtil.getId();
-		consultantConsultingService.completeConsulting(id, consultantConsultingId);
-		return ResponseEntity.ok("컨설팅이 완료되었습니다.");
-	}
-	
 	@GetMapping("/list")
 	public ResponseEntity<Page<ConsultantConsultingSummaryDto>> readConsultantConsultingPage(Pageable pageable) {
 	    Long id = SecurityUtil.getId();  
 	    Page<ConsultantConsultingSummaryDto> page = 
 	        consultantConsultingService.readConsultantConsultingPage(id, pageable);
-	    return ResponseEntity.ok(page);
+	    return ResponseEntity.status(200).body(page);
 	}
 	
 	@PostMapping("/edit-detail")
-	public ResponseEntity<ConsultantEditDetailResponseDto> readEditDetail
-	(@RequestBody Long consultantConsultingId) {
+	public ResponseEntity<ConsultantEditDetailResponseDto> readEditDetail(@RequestBody Long consultantConsultingId) {
 		Long id = SecurityUtil.getId();
 		ConsultantEditDetailResponseDto consultantEditDetailResponseDto = consultantConsultingService.readEditDetail(id, consultantConsultingId);
-		return ResponseEntity.ok(consultantEditDetailResponseDto);
+		return ResponseEntity.status(200).body(consultantEditDetailResponseDto);
 				
 	}
 	
 	@PostMapping("/feedback-detail")
-	public ResponseEntity<ConsultantFeedBackDetailResponseDto> readFeedBackDetail
-	(@RequestBody Long consultantConsultingId) {
+	public ResponseEntity<ConsultantFeedBackDetailResponseDto> readFeedBackDetail(@RequestBody Long consultantConsultingId) {
 		Long id = SecurityUtil.getId();
 		ConsultantFeedBackDetailResponseDto consultantFeedBackDetailResponseDto = consultantConsultingService.readFeedbackDetail(id, consultantConsultingId);
-		return ResponseEntity.ok(consultantFeedBackDetailResponseDto);
+		return ResponseEntity.status(200).body(consultantFeedBackDetailResponseDto);
 	}
+
+	
+	@PutMapping("/update")
+	public ResponseEntity<Void> updateConsultantConsulting(@RequestBody ConsultantConsultingUpdateDto consultantConsultingUpdateDto) {
+	
+		Long id = SecurityUtil.getId();
+		consultantConsultingService.updateConsultantConsulting(id,consultantConsultingUpdateDto);
+		return ResponseEntity.status(200).build();
+	}
+	
+	@PutMapping("/complete")
+	public ResponseEntity<Void> completeConsulting(@RequestBody Long consultantConsultingId) {
+		
+		Long id = SecurityUtil.getId();
+		consultantConsultingService.completeConsulting(id, consultantConsultingId);
+		return ResponseEntity.status(204).build();
+		
+	}
+	
+
+	
+
 	
 	
 
