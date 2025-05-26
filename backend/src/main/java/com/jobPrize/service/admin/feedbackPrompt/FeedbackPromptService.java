@@ -22,6 +22,8 @@ public interface FeedbackPromptService {
 
 	void unApplyFeedbackPrompt();
 	
-	FeedbackPromptResponseDto readApplyedFeedbackPrompt();
+	FeedbackPromptResponseDto readAppliedFeedbackPrompt();
+	
+	void deleteFeedbackPrompt(Long feedbackPromptId);
 
 }

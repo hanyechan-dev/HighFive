@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,38 +31,54 @@ import lombok.RequiredArgsConstructor;
 public class EditPromptController {
 
 	private final EditPromptService editPromptService;
-
-	@PostMapping("/create")		
-	public ResponseEntity<Void> createEditPrompt(@RequestBody @Valid EditPromptCreateDto dto) {
-		UserType userType = SecurityUtil.getUserType();
-		editPromptService.createEditPrompt(userType, dto);
-		return ResponseEntity
-				.status(HttpStatus.CREATED)
-				.build();
-	}
-
-	@PutMapping("/update")		
-	public String updateEditPrompt(@RequestBody @Valid EditPromptUpdateDto dto) {
-		UserType userType = SecurityUtil.getUserType(); 
-		editPromptService.updateEditPrompt(userType, dto);
-		return "첨삭 프롬프트가 수정되었습니다";
-	}
-
+	
 	@GetMapping("/setting")	
-	public Map<String, Object> readAppliedEditPromptAndList() {
+	public ResponseEntity<Map<String, Object>> readAppliedEditPromptAndList() {
+		
 		EditPromptResponseDto editPromptResponseDto = editPromptService.readAppliedEditPrompt();
+		
 		List<EditPromptSummaryDto> editPromptSummaryDto = editPromptService.readAllList();
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("EditPromptResponseDto", editPromptResponseDto);
 		map.put("EditPromptSummaryDto", editPromptSummaryDto);
-		return map;
+		
+		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}	
-	
 
-	@PutMapping("/apply/{editPromptId}")		
-	public String applyEditPrompt(@PathVariable Long editPromptId) {
+	@PostMapping("/create")		
+	public ResponseEntity<Void> createEditPrompt(@RequestBody @Valid EditPromptCreateDto dto) {
+		
+		UserType userType = SecurityUtil.getUserType();
+		
+		editPromptService.createEditPrompt(userType, dto);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@PutMapping("/update")		
+	public ResponseEntity<Void> updateEditPrompt(@RequestBody @Valid EditPromptUpdateDto dto) {
+		
+		UserType userType = SecurityUtil.getUserType(); 
+		
+		editPromptService.updateEditPrompt(userType, dto);
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@PutMapping("/apply/{editPromptId}")	
+	public ResponseEntity<Void> applyEditPrompt(@PathVariable Long editPromptId) {
+		
 		editPromptService.applyEditPrompt(editPromptId);
-		return "프롬프트가 적용으로 변경되었습니다.";
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<Void> deleteEditPrompt(@RequestBody Long editPromptId) {
+		
+		editPromptService.deleteEditPrompt(editPromptId);
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

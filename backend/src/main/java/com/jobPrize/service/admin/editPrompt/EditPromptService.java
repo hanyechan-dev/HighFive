@@ -22,7 +22,9 @@ public interface EditPromptService {
 	
 	void unApplyEditPrompt();     
 	
-	EditPromptResponseDto readApplyedEditPrompt();
+	EditPromptResponseDto readAppliedEditPrompt();
+	
+	void deleteEditPrompt(Long editPromptId);
 
 
 

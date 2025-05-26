@@ -21,22 +21,28 @@ public class ApproveController {
 	private final ApproveService approveService;
 
 	@PutMapping("/approve")
-	public ResponseEntity<Void> approveUsers(@RequestBody Long id) {
+	public ResponseEntity<Void> approveUsers(@RequestBody List<Long> ids) {
+		
 		UserType userType = SecurityUtil.getUserType(); 
-		approveService.approveUser(userType, id);
-		return ResponseEntity
-				.status(HttpStatus.NO_CONTENT)
-				.build();
+		
+		for(Long id : ids) {
+			approveService.approveUser(userType, id);
+		}
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 				
 		
 	}
 
 	@PutMapping("/reject")
-	public ResponseEntity<Void> unapproveUsers(@RequestBody Long id) {
+	public ResponseEntity<Void> unapproveUsers(@RequestBody List<Long> ids) {
+		
 		UserType userType = SecurityUtil.getUserType();
-		approveService.rejectUser(userType, id);
-		return ResponseEntity
-				.status(HttpStatus.NO_CONTENT)
-				.build();
+		
+		for(Long id : ids) {
+			approveService.rejectUser(userType, id);
+		}
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

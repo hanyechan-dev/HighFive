@@ -2,7 +2,6 @@ package com.jobPrize.service.admin.feedbackPrompt;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -83,11 +82,19 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	}
 	@Override
 	@Transactional(readOnly = true)
-	public FeedbackPromptResponseDto readApplyedFeedbackPrompt(){
+	public FeedbackPromptResponseDto readAppliedFeedbackPrompt(){
 		 FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findAppliedPrompt()
 			        .orElseThrow(() -> new EntityNotFoundException("현재 '적용중'인 프롬프트가 존재하지 않습니다"));
 
 			    return FeedbackPromptResponseDto.from(feedbackPrompt);
 
-}
 	}
+
+	@Override
+	public void deleteFeedbackPrompt(Long feedbackPromptId) {
+		
+		feedbackPromptRepository.deleteById(feedbackPromptId);
+
+	}
+	
+}

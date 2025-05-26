@@ -1,6 +1,6 @@
 package com.jobPrize.entity.admin;
 
-import com.jobPrize.dto.admin.editPrompt.EditPrompCreateDto;
+import com.jobPrize.dto.admin.editPrompt.EditPromptCreateDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,7 +48,7 @@ public class EditPrompt {
 		isApplied=false;			//프롬프트를 미적용 상태를 설정하는 메서드
 	}
 	
-	public static EditPrompt createFrom(EditPrompCreateDto dto) {
+	public static EditPrompt createFrom(EditPromptCreateDto dto) {
 	    return EditPrompt.builder()
 	        .title(dto.getTitle())
 	        .content(dto.getContent())

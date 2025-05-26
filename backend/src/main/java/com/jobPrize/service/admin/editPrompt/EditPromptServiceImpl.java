@@ -84,13 +84,20 @@ public class EditPromptServiceImpl implements EditPromptService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public EditPromptResponseDto readApplyedEditPrompt(){
+	public EditPromptResponseDto readAppliedEditPrompt(){
 		 EditPrompt editPrompt = editPromptRepository.findAppliedPrompt()
 			        .orElseThrow(() -> new EntityNotFoundException("현재 '적용중'인 프롬프트가 존재하지 않습니다"));
 
 			    return EditPromptResponseDto.from(editPrompt);
 
 }
+
+	@Override
+	public void deleteEditPrompt(Long editPromptId) {
+		
+		editPromptRepository.deleteById(editPromptId);
+		
+	}
 
 
 
