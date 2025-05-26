@@ -35,8 +35,10 @@ public class PaymentRepositoryImpl implements PaymentRepositoryCustom{
 		return new PageImpl<Payment>(results,pageable, countPaymentsByMemberId(id));
 	}
 	
+	// (시간 남았을 때 추후 구현)
+	// 지정된 기간 및 사용자 유형에 따른 매출 조회
 	@Override
-	public List<Payment> findAllByUserTypeAndPeriod(LocalDateTime start, LocalDateTime end, UserType userType) { // 지정된 기간 및 사용자 유형에 따른 매출 조회
+	public List<Payment> findAllByUserTypeAndPeriod(LocalDateTime start, LocalDateTime end, UserType userType) {
 		QPayment payment = QPayment.payment;
 		
 		List<Payment> results = queryFactory

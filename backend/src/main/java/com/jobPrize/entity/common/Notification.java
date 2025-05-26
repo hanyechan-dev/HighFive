@@ -37,21 +37,19 @@ public class Notification {
 	@Column(name = "NOTIFICATION_ID", nullable = false)	
 	private Long id;
 	
+	@Column(name = "NOTIFICATION_TYPE", nullable = false)
+	private NotificationType NotificationType;
+	
+	@Column(name = "MESSAGE", nullable = false)
+	private String message;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private User user;
+    @JoinColumn(name = "SENDER_ID", nullable = false)
+    private User sender;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PROPOSAL_ID")
-    private Proposal proposal;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CONSULTANT_CONSULTING_ID")
-    private ConsultantConsulting consultantConsulting;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COMMENT")
-    private Comment comment;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RECEIVER_ID", nullable = false)
+    private User receiver;
 	
 	@CreatedDate
     @Column(name = "CREATED_TIME", nullable = false)
