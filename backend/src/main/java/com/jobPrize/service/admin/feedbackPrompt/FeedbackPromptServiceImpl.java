@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptCreateDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
+import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptSummaryDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptUpdateDto;
 import com.jobPrize.entity.admin.FeedbackPrompt;
 import com.jobPrize.entity.common.UserType;
@@ -50,15 +51,19 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
+<<<<<<< HEAD
 	public List<FeedbackPromptResponseDto> readAllList(UserType userType) {
 
 		assertUtil.assertUserType(userType, UserType.관리자, "조회");
 
+=======
+	public List<FeedbackPromptSummaryDto> readAllList() {
+>>>>>>> origin/ADMIN02_CONTROLLER
 		List<FeedbackPrompt> feedbackPrompts = feedbackPromptRepository.findAll();
-		List<FeedbackPromptResponseDto> results = new ArrayList<>();
+		List<FeedbackPromptSummaryDto> results = new ArrayList<>();
 
 		for (FeedbackPrompt feedbackPrompt : feedbackPrompts) {
-			FeedbackPromptResponseDto dto = FeedbackPromptResponseDto.from(feedbackPrompt);
+			FeedbackPromptSummaryDto dto = FeedbackPromptSummaryDto.from(feedbackPrompt);
 			results.add(dto);
 		}
 		return results;
@@ -66,12 +71,18 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
+<<<<<<< HEAD
 	public FeedbackPromptResponseDto readFeedbackPrompt(UserType userType, Long feedbackPromptId) {
 
 		assertUtil.assertUserType(userType, UserType.관리자, "조회");
 		
 		FeedbackPrompt prompt = feedbackPromptRepository.findById(feedbackPromptId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+=======
+	public FeedbackPromptResponseDto readFeedbackPromptById(Long feedbackPromptId) {
+		FeedbackPrompt prompt = feedbackPromptRepository.findById(feedbackPromptId)
+				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
+>>>>>>> origin/ADMIN02_CONTROLLER
 		return FeedbackPromptResponseDto.from(prompt);
 	}
 
@@ -91,5 +102,21 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 			.ifPresent(feedbackPrompt -> feedbackPrompt.unApply());
 		
 	}
+	@Override
+	@Transactional(readOnly = true)
+	public FeedbackPromptResponseDto readAppliedFeedbackPrompt(){
+		 FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findAppliedPrompt()
+			        .orElseThrow(() -> new EntityNotFoundException("현재 '적용중'인 프롬프트가 존재하지 않습니다"));
 
+			    return FeedbackPromptResponseDto.from(feedbackPrompt);
+
+	}
+
+	@Override
+	public void deleteFeedbackPrompt(Long feedbackPromptId) {
+		
+		feedbackPromptRepository.deleteById(feedbackPromptId);
+
+	}
+	
 }

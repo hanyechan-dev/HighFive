@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class EditPrompCreateDto {
+public class EditPromptCreateDto {
 	
 	@NotBlank(message = "제목은 필수로 입력해야 합니다.")
 	@Size(max = 255, message = "제목은 255자 이하로 입력해야 합니다.")

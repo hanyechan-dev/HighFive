@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptCreateDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
+import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptSummaryDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptUpdateDto;
 import com.jobPrize.entity.common.UserType;
 
@@ -13,10 +14,24 @@ public interface FeedbackPromptService {
 
 	void updateFeedbackPrompt(UserType userType, FeedbackPromptUpdateDto dto );
 
+<<<<<<< HEAD
 	List<FeedbackPromptResponseDto> readAllList(UserType userType);
 
 	FeedbackPromptResponseDto readFeedbackPrompt(UserType userType, Long feedbackPromptId);
 
 	void applyFeedbackPrompt(UserType userType, Long feedbackPromptId);
+=======
+	List<FeedbackPromptSummaryDto> readAllList();
+
+	FeedbackPromptResponseDto readFeedbackPromptById(Long feedbackPromptId);
+
+	void applyFeedbackPrompt(Long feedbackPromptId);
+
+	void unApplyFeedbackPrompt();
+	
+	FeedbackPromptResponseDto readAppliedFeedbackPrompt();
+	
+	void deleteFeedbackPrompt(Long feedbackPromptId);
+>>>>>>> origin/ADMIN02_CONTROLLER
 
 }

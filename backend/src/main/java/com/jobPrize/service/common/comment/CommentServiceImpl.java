@@ -1,14 +1,10 @@
 package com.jobPrize.service.common.comment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.comment.CommentCreateDto;
-import com.jobPrize.dto.common.comment.CommentResponseDto;
 import com.jobPrize.entity.common.Comment;
 import com.jobPrize.entity.common.Post;
 import com.jobPrize.entity.common.User;
@@ -41,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
 		commentRepository.save(comment);
 	}
 
+<<<<<<< HEAD
 	@Override
 	@Transactional(readOnly = true)
 	public List<CommentResponseDto> readCommentsByPostIdList(Long postId) {
@@ -73,5 +70,7 @@ public class CommentServiceImpl implements CommentService {
 		
 		return result;
 	}
+=======
+>>>>>>> origin/ADMIN02_CONTROLLER
 
 }
