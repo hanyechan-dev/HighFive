@@ -37,40 +37,5 @@ public class CommentServiceImpl implements CommentService {
 		commentRepository.save(comment);
 	}
 
-<<<<<<< HEAD
-	@Override
-	@Transactional(readOnly = true)
-	public List<CommentResponseDto> readCommentsByPostIdList(Long postId) {
-		
-		Post post = postRepository.findWithCommentsByPostId(postId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
-
-		List<CommentResponseDto> results = new ArrayList<>();
-
-		for (Comment comment : post.getComments()) {
-			results.add(CommentResponseDto.of(comment,getNicknameOrNameFromComment(comment)));
-		}
-
-		return results;
-	}
-	
-	
-
-	
-	
-	private String getNicknameOrNameFromComment(Comment comment) {
-		String result;
-		
-		if(comment.getUser().getMember()==null) {
-			result = comment.getUser().getName();
-	    }
-	    else {
-	    	result = comment.getUser().getMember().getNickname();
-	    }
-		
-		return result;
-	}
-=======
->>>>>>> origin/ADMIN02_CONTROLLER
 
 }

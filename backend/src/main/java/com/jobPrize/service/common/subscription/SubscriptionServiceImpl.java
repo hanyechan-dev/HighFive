@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
 import com.jobPrize.entity.common.Subscription;
@@ -18,7 +19,6 @@ import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.service.common.payment.PaymentService;
 import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,7 +39,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		LocalDate now = LocalDate.now();
 		
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("No User Found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
 		Subscription subscription = Subscription.builder()
 				.user(user)

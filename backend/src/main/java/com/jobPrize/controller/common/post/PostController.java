@@ -1,9 +1,6 @@
-package com.jobPrize.admin02.controller.post.controller;
+package com.jobPrize.controller.common.post;
 
 
-import java.util.List;
-
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.comment.CommentCreateDto;
-import com.jobPrize.dto.common.comment.CommentResponseDto;
 import com.jobPrize.dto.common.post.PostCreateDto;
 import com.jobPrize.dto.common.post.PostResponseDto;
 import com.jobPrize.dto.common.post.PostSummaryDto;
 import com.jobPrize.dto.common.post.PostUpdateDto;
 import com.jobPrize.service.common.comment.CommentService;
 import com.jobPrize.service.common.post.PostService;
+import com.jobPrize.util.SecurityUtil;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +40,7 @@ public class PostController {
     	
     	Page<PostSummaryDto> page = postService.readPostPage(pageable);
 
-    	return ResponseEntity
-    			.status(HttpStatus.OK)
-    			.body(page);
+    	return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 	
     @PostMapping("/create")
@@ -66,9 +61,7 @@ public class PostController {
     	
     	postService.updatePost(id, dto);
     	
-    	return ResponseEntity
-    			.status(HttpStatus.NO_CONTENT)
-    			.build();
+    	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
     @GetMapping("/detail/{postId}")
@@ -76,9 +69,7 @@ public class PostController {
     	
         PostResponseDto dto = postService.readPost(postId);
         
-       return ResponseEntity
-    		   .status(HttpStatus.OK)
-    		   .body(dto);
+       return ResponseEntity.status(HttpStatus.OK).body(dto);
        
     }
     
@@ -89,9 +80,7 @@ public class PostController {
 		
 		commentService.createComment(id, dto);
 		
-		return ResponseEntity
-				.status(HttpStatus.CREATED)
-				.build();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
     
     @DeleteMapping

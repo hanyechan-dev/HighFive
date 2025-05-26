@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentResponseDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionResponseDto;
@@ -33,7 +33,6 @@ import com.jobPrize.repository.member.coverLetter.CoverLetterRepository;
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.languageTest.LanguageTestRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -47,6 +46,7 @@ public class JsonUtil {
 	private final CoverLetterRepository coverLetterRepository;
 	private final CareerDescriptionRepository careerDescriptionRepository;
 	private final ObjectMapper objectMapper;
+	private final AssertUtil assertUtil;
 
 	public String getResumeJsonByMemberId(Long id) {
 		// 교육, 경력, 자격증, 어학 → DTO → Map → JSON
@@ -104,11 +104,9 @@ public class JsonUtil {
 		// coverLetter 소유자 체크 + contents 포함 → JSON
 		CoverLetter coverLetter = coverLetterRepository
 				.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
-				.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 자기소개서입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
 		
-		if(!coverLetter.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("해당 자기소개서를 선택할 수 없습니다.");
-		}
+		assertUtil.assertId(id, coverLetter, "선택");
 		
 		List<CoverLetterContent> coverLetterContents = coverLetter.getCoverLetterContents();
 		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
@@ -138,9 +136,7 @@ public class JsonUtil {
 				.findWithCareerDescriptionContentsByCareerDescriptionId(careerDescriptionId)
 				.orElseThrow(() -> new IllegalStateException("존재하지 않는 경력기술서입니다."));
 		
-		if(!careerDescription.getMember().getId().equals(id)) {
-			throw new AccessDeniedException("해당 경력기술서를 선택할 수 없습니다.");
-		}
+		assertUtil.assertId(id, careerDescription, "선택");
 		
 		List<CareerDescriptionContent> careerDescriptionContents = careerDescription.getCareerDescriptionContents();
 		List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();

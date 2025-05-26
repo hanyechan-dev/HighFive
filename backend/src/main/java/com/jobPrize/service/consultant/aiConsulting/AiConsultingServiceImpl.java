@@ -25,7 +25,6 @@ import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.service.consultant.aiConsultingContent.AiConsultingContentService;
 import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -114,7 +113,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	@Override
 	public void createAiConsulting(AiConsultingCreateDto aiConsultingCreateDto, Long requestId ) {
 		Request request = requestRepository.findById(requestId)
-				.orElseThrow(()-> new EntityNotFoundException("존재하지 않는 요청입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("요청"));
 		
 		
 		AiConsulting aiConsulting = AiConsulting.builder()

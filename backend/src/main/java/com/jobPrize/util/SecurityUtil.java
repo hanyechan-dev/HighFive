@@ -17,7 +17,7 @@ public class SecurityUtil {
         return getCurrentUser().getId();
     }
     
-    public static UserType getType() {
+    public static UserType getUserType() {
         return getCurrentUser().getUserType();
     }
 }

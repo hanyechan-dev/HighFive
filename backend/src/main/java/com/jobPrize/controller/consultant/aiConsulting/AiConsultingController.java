@@ -1,7 +1,6 @@
-package com.jobPrize.consultantController.aiConsulting;
+package com.jobPrize.controller.consultant.aiConsulting;
 
 
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.consultant.aiConsulting.AiConsultingService;
 import com.jobPrize.service.consultant.consultantConsulting.ConsultantConsultingService;
+import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,27 +45,36 @@ public class AiConsultingController {
    
     @GetMapping("/list")
     public ResponseEntity<Page<AiConsultingSummaryDto>> readAiConsultingPage(Pageable pageable) {
-    	Long id = SecurityUtil.getId();
-        Page<AiConsultingSummaryDto> page = aiConsultingService.readAiConsultingPage(pageable);
+
+    	UserType userType = SecurityUtil.getUserType();
+    			
+        Page<AiConsultingSummaryDto> page = aiConsultingService.readAiConsultingPage(userType,pageable);
+        
         return ResponseEntity.status(200).body(page);
     }
     
 	@PostMapping("/approve")
-	public ResponseEntity<Void> approveConsulting 
-	(@RequestBody Long aiConsultingId) {
+	public ResponseEntity<Void> approveConsulting(@RequestBody Long aiConsultingId) {
+		
 		Long id = SecurityUtil.getId();
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		consultantConsultingService.approveConsulting(id, userType, aiConsultingId);
+		
 		return ResponseEntity.status(201).build();
 	}
 
  
     @PostMapping("/edit-detail")
-    public ResponseEntity<AiEditDetailResponseDto> readEditDetail
-    (@RequestBody Long aiConsultingId) {
+    public ResponseEntity<AiEditDetailResponseDto> readEditDetail(@RequestBody Long aiConsultingId) {
+    	
     	Long id = SecurityUtil.getId();
     	
-        AiEditDetailResponseDto aiEditDetailResponseDto = aiConsultingService.readEditDetail(id, aiConsultingId);
+    	UserType userType = SecurityUtil.getUserType();
+    	
+        AiEditDetailResponseDto aiEditDetailResponseDto = aiConsultingService.readEditDetail(id, userType, aiConsultingId);
+        
         return ResponseEntity.status(200).body(aiEditDetailResponseDto);
     }
 
@@ -73,9 +82,13 @@ public class AiConsultingController {
     @PostMapping("/feedback-detail")
     public ResponseEntity<AiFeedbackDetailResponseDto> readFeedbackDetail
     (@RequestBody Long aiConsultingId) {
+    	
     	Long id = SecurityUtil.getId();
     	
-        AiFeedbackDetailResponseDto aiFeedbackDetailResponseDto = aiConsultingService.readFeedbackDetail(id, aiConsultingId);
+    	UserType userType = SecurityUtil.getUserType();
+    	
+        AiFeedbackDetailResponseDto aiFeedbackDetailResponseDto = aiConsultingService.readFeedbackDetail(id, userType, aiConsultingId);
+        
         return ResponseEntity.status(200).body(aiFeedbackDetailResponseDto);
     }
     

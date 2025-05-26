@@ -14,6 +14,6 @@ public interface UserService {
 	public MyPageResponseDto readUserMyPageInfo(Long id);
 	public void updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto);
 	public void updateUserPassword(Long id, PasswordUpdateDto passwordUpdateDto);
-	public void softDeleteUser(Long id,UserType userType);
+	public void softDeleteUser(Long id, Long targetId , UserType userType);
 		
 }

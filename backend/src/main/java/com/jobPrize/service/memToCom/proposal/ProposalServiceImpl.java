@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.customException.CustomAccessDeniedException;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;

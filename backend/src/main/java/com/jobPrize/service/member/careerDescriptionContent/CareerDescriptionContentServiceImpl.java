@@ -3,13 +3,13 @@ package com.jobPrize.service.member.careerDescriptionContent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentUpdateDto;
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.CareerDescriptionContent;
 import com.jobPrize.repository.member.careerDescriptionContent.CareerDescriptionContentRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,7 +29,7 @@ public class CareerDescriptionContentServiceImpl implements CareerDescriptionCon
 	@Override
 	public void updateCareerDescriptionContent(CareerDescriptionContentUpdateDto careerDescriptionContentUpdateDto) {
 		CareerDescriptionContent careerDescriptionContent = careerDescriptionContentRepository.findById(careerDescriptionContentUpdateDto.getId())
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 경력기술서 내용입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
 		careerDescriptionContent.updateContent(careerDescriptionContentUpdateDto);
 		
 	}
@@ -37,7 +37,7 @@ public class CareerDescriptionContentServiceImpl implements CareerDescriptionCon
 	@Override
 	public void deleteCareerDescriptionContent(Long careerDescriptionContentId) {
 		CareerDescriptionContent careerDescriptionContent = careerDescriptionContentRepository.findById(careerDescriptionContentId)
-			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 경력기술서 내용입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
 		careerDescriptionContentRepository.delete(careerDescriptionContent);
 		
 	}

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.chat.ChatRequestDto;
 import com.jobPrize.dto.common.chat.ChatResponseDto;
 import com.jobPrize.entity.common.ChatContent;
@@ -16,7 +17,6 @@ import com.jobPrize.repository.common.chatContent.ChatContentRepository;
 import com.jobPrize.repository.common.chatRoom.ChatRoomRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,9 +32,9 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public void createMessage(Long id, ChatRequestDto chatRequestDto) {
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRequestDto.getChatRoomId())
-				.orElseThrow(() -> new EntityNotFoundException("ChatRoom not found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("채팅방"));
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("User not found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
 		ChatContent newMessage = ChatContent.builder()
 				.user(user)
@@ -49,9 +49,9 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public void createChatRoom(Long id, Long targetId) {
 		User user1 = userRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("User not found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		User user2 = userRepository.findById(targetId)
-				.orElseThrow(() -> new EntityNotFoundException("User not found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		ChatRoom chatRoom = ChatRoom.builder()
 				.user1(user1)
 				.user2(user2)
@@ -94,7 +94,7 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<ChatResponseDto> readMessagesList(Long roomId) {
         ChatRoom chatRoom = chatRoomRepository.findWithChatContentsByChatRoomId(roomId)
-            .orElseThrow(() -> new EntityNotFoundException("ChatRoom not found with id: " + roomId));
+        		.orElseThrow(() -> new CustomEntityNotFoundException("채팅방"));
 
         return chatRoom.getChatContents().stream()
             .map(chatContent -> ChatResponseDto.builder()

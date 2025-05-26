@@ -1,6 +1,6 @@
-package com.jobPrize.consultantController.consultantConsulting;
+package com.jobPrize.controller.consultant.consultantConsulting;
 
-import org.apache.catalina.security.SecurityUtil;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
@@ -18,6 +17,7 @@ import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResp
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.consultant.consultantConsulting.ConsultantConsultingService;
+import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,24 +30,35 @@ public class ConsultantConsultingController {
 	
 	@GetMapping("/list")
 	public ResponseEntity<Page<ConsultantConsultingSummaryDto>> readConsultantConsultingPage(Pageable pageable) {
+		
 	    Long id = SecurityUtil.getId();  
-	    Page<ConsultantConsultingSummaryDto> page = 
-	        consultantConsultingService.readConsultantConsultingPage(id, pageable);
+	    
+	    Page<ConsultantConsultingSummaryDto> page = consultantConsultingService.readConsultantConsultingPage(id, pageable);
+	    
 	    return ResponseEntity.status(200).body(page);
 	}
 	
 	@PostMapping("/edit-detail")
 	public ResponseEntity<ConsultantEditDetailResponseDto> readEditDetail(@RequestBody Long consultantConsultingId) {
+		
 		Long id = SecurityUtil.getId();
-		ConsultantEditDetailResponseDto consultantEditDetailResponseDto = consultantConsultingService.readEditDetail(id, consultantConsultingId);
+		
+		UserType userType = SecurityUtil.getUserType();
+		
+		ConsultantEditDetailResponseDto consultantEditDetailResponseDto = consultantConsultingService.readEditDetail(id, userType, consultantConsultingId);
+		
 		return ResponseEntity.status(200).body(consultantEditDetailResponseDto);
 				
 	}
 	
 	@PostMapping("/feedback-detail")
 	public ResponseEntity<ConsultantFeedBackDetailResponseDto> readFeedBackDetail(@RequestBody Long consultantConsultingId) {
+		
 		Long id = SecurityUtil.getId();
-		ConsultantFeedBackDetailResponseDto consultantFeedBackDetailResponseDto = consultantConsultingService.readFeedbackDetail(id, consultantConsultingId);
+		
+		UserType userType = SecurityUtil.getUserType();
+		
+		ConsultantFeedBackDetailResponseDto consultantFeedBackDetailResponseDto = consultantConsultingService.readFeedbackDetail(id, userType, consultantConsultingId);
 		return ResponseEntity.status(200).body(consultantFeedBackDetailResponseDto);
 	}
 
@@ -56,7 +67,9 @@ public class ConsultantConsultingController {
 	public ResponseEntity<Void> updateConsultantConsulting(@RequestBody ConsultantConsultingUpdateDto consultantConsultingUpdateDto) {
 	
 		Long id = SecurityUtil.getId();
+		
 		consultantConsultingService.updateConsultantConsulting(id,consultantConsultingUpdateDto);
+		
 		return ResponseEntity.status(200).build();
 	}
 	
@@ -64,7 +77,9 @@ public class ConsultantConsultingController {
 	public ResponseEntity<Void> completeConsulting(@RequestBody Long consultantConsultingId) {
 		
 		Long id = SecurityUtil.getId();
+		
 		consultantConsultingService.completeConsulting(id, consultantConsultingId);
+		
 		return ResponseEntity.status(204).build();
 		
 	}

@@ -115,9 +115,9 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void softDeleteUser(Long id, UserType userType) {
+	public void softDeleteUser(Long id, Long targetId, UserType userType) {
 		
-		User user = userRepository.findByIdAndDeletedDateIsNull(id)
+		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
 		if(!UserType.관리자.equals(userType)) {

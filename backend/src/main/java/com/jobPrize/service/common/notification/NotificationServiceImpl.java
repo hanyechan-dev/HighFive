@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.notification.NotificationDto;
 import com.jobPrize.entity.common.Notification;
 import com.jobPrize.entity.common.NotificationType;
@@ -29,10 +30,10 @@ public class NotificationServiceImpl implements NotificationService {
 	public Notification createNotification(Long id, Long receiverId, NotificationType notificationType) {
 		
 		User sender = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
 		User receiver = userRepository.findByIdAndDeletedDateIsNull(receiverId)
-				.orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
 		Notification notification = Notification.builder()
 				.NotificationType(notificationType)

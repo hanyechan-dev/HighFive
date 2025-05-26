@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.entity.common.Payment;
@@ -17,7 +18,6 @@ import com.jobPrize.repository.common.payment.PaymentRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
 		// 결제 상태에 따라 User의 isSubscribed 데이터를 변경하면 되는 문제로 보임.
 		
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
 			
 		// 결제 정보 저장

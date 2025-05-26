@@ -51,14 +51,10 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
-<<<<<<< HEAD
-	public List<FeedbackPromptResponseDto> readAllList(UserType userType) {
+	public List<FeedbackPromptSummaryDto> readAllList(UserType userType) {
 
 		assertUtil.assertUserType(userType, UserType.관리자, "조회");
 
-=======
-	public List<FeedbackPromptSummaryDto> readAllList() {
->>>>>>> origin/ADMIN02_CONTROLLER
 		List<FeedbackPrompt> feedbackPrompts = feedbackPromptRepository.findAll();
 		List<FeedbackPromptSummaryDto> results = new ArrayList<>();
 
@@ -71,18 +67,13 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
-<<<<<<< HEAD
 	public FeedbackPromptResponseDto readFeedbackPrompt(UserType userType, Long feedbackPromptId) {
 
 		assertUtil.assertUserType(userType, UserType.관리자, "조회");
 		
 		FeedbackPrompt prompt = feedbackPromptRepository.findById(feedbackPromptId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
-=======
-	public FeedbackPromptResponseDto readFeedbackPromptById(Long feedbackPromptId) {
-		FeedbackPrompt prompt = feedbackPromptRepository.findById(feedbackPromptId)
-				.orElseThrow(() -> new EntityNotFoundException("해당 프롬프트가 존재하지 않습니다."));
->>>>>>> origin/ADMIN02_CONTROLLER
+
 		return FeedbackPromptResponseDto.from(prompt);
 	}
 
@@ -97,26 +88,35 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 		feedbackPrompt.apply();
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public FeedbackPromptResponseDto readAppliedFeedbackPrompt(UserType userType){
+		
+		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		
+		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findAppliedPrompt()
+				 .orElseThrow(() -> new CustomEntityNotFoundException("적용된 프롬프트"));
+
+		 return FeedbackPromptResponseDto.from(feedbackPrompt);
+
+	}
+
+	@Override
+	public void deleteFeedbackPrompt(UserType userType, Long feedbackPromptId) {
+		
+		assertUtil.assertUserType(userType, UserType.관리자, "삭제");
+		
+		feedbackPromptRepository.deleteById(feedbackPromptId);
+
+	}
+	
+	
+	
+
 	private void unApplyFeedbackPrompt() {
 		feedbackPromptRepository.findAppliedPrompt()
 			.ifPresent(feedbackPrompt -> feedbackPrompt.unApply());
 		
-	}
-	@Override
-	@Transactional(readOnly = true)
-	public FeedbackPromptResponseDto readAppliedFeedbackPrompt(){
-		 FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findAppliedPrompt()
-			        .orElseThrow(() -> new EntityNotFoundException("현재 '적용중'인 프롬프트가 존재하지 않습니다"));
-
-			    return FeedbackPromptResponseDto.from(feedbackPrompt);
-
-	}
-
-	@Override
-	public void deleteFeedbackPrompt(Long feedbackPromptId) {
-		
-		feedbackPromptRepository.deleteById(feedbackPromptId);
-
 	}
 	
 }

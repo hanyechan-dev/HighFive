@@ -1,7 +1,5 @@
 package com.jobPrize.dto.company.jobPosting;
 
-import java.util.List;
-
 import com.jobPrize.entity.memToCom.EducationLevel;
 
 import jakarta.validation.constraints.Max;

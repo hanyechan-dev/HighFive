@@ -89,6 +89,18 @@ public class PostServiceImpl implements PostService {
 	    return PostResponseDto.of(post,getNicknameOrNameFromPost(post),commentResponseDtos);
 	}
 	
+	@Override
+	public void deletePost(Long id, Long postId) {
+		
+		Post post = postRepository.findById(postId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
+		
+		assertUtil.assertId(id, post, "삭제");
+		
+		postRepository.delete(post);
+		
+	}
+	
 	
 	
 	private String getNicknameOrNameFromPost(Post post) {
@@ -116,5 +128,7 @@ public class PostServiceImpl implements PostService {
 		
 		return result;
 	}
+
+
 
 }

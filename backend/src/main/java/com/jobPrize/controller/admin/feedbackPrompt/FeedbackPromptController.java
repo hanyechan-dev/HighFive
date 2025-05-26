@@ -1,4 +1,4 @@
-package com.jobPrize.admin02.controller.feedbackPrompt.controller;
+package com.jobPrize.controller.admin.feedbackPrompt;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptSummaryDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptUpdateDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.feedbackPrompt.FeedbackPromptService;
+import com.jobPrize.util.SecurityUtil;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,50 +36,56 @@ public class FeedbackPromptController {
 	
 	@PostMapping("/create")		
 	public ResponseEntity<Void> createFeedbackPrompt(@RequestBody @Valid FeedbackPromptCreateDto dto) {
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		feedbackPromptService.createFeedbackPrompt(userType, dto);
-		return ResponseEntity
-				.status(HttpStatus.CREATED)
-				.build();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
 	@PutMapping("/update")		
 	public ResponseEntity<Void> updateFeedbackPrompt(@RequestBody @Valid FeedbackPromptUpdateDto dto) {
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		feedbackPromptService.updateFeedbackPrompt(userType,dto);
-		return ResponseEntity
-				.status(HttpStatus.NO_CONTENT)
-				.build();
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	@GetMapping("/setting")
 	public ResponseEntity<Map<String, Object>> readAppliedFeedbackPromptAndList() {
-		FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.readAppliedFeedbackPrompt();
-		List<FeedbackPromptSummaryDto> feedbackPromptSummaryDtos =feedbackPromptService.readAllList();
+		
+		UserType userType = SecurityUtil.getUserType();
+		
+		FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.readAppliedFeedbackPrompt(userType);
+		List<FeedbackPromptSummaryDto> feedbackPromptSummaryDtos =feedbackPromptService.readAllList(userType);
 		
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("feedbackPromptResponseDto",feedbackPromptResponseDto);
 		map.put("feedbackPromptSummaryDtos",feedbackPromptSummaryDtos);
 		
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(map);
+		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 	
 	@PutMapping("/apply/{feedbackPromptId}")
 	public ResponseEntity<Void> applyFeedbackPrompt(@PathVariable Long feedbackPromptId) {
-		feedbackPromptService.applyFeedbackPrompt(feedbackPromptId);
-		return ResponseEntity
-				.status(HttpStatus.NO_CONTENT)
-				.build();
+		
+		UserType userType = SecurityUtil.getUserType();
+		
+		feedbackPromptService.applyFeedbackPrompt(userType, feedbackPromptId);
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 			
 	}
 	
 	@DeleteMapping
 	public ResponseEntity<Void> deleteFeedbackPrompt(@RequestBody Long feedbackPromptId) {
 		
-		feedbackPromptService.deleteFeedbackPrompt(feedbackPromptId);
+		UserType userType = SecurityUtil.getUserType();
+		
+		feedbackPromptService.deleteFeedbackPrompt(userType, feedbackPromptId);
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

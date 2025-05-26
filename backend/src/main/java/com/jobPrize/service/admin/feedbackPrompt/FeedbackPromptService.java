@@ -14,24 +14,15 @@ public interface FeedbackPromptService {
 
 	void updateFeedbackPrompt(UserType userType, FeedbackPromptUpdateDto dto );
 
-<<<<<<< HEAD
-	List<FeedbackPromptResponseDto> readAllList(UserType userType);
+	List<FeedbackPromptSummaryDto> readAllList(UserType userType);
 
 	FeedbackPromptResponseDto readFeedbackPrompt(UserType userType, Long feedbackPromptId);
 
 	void applyFeedbackPrompt(UserType userType, Long feedbackPromptId);
-=======
-	List<FeedbackPromptSummaryDto> readAllList();
-
-	FeedbackPromptResponseDto readFeedbackPromptById(Long feedbackPromptId);
-
-	void applyFeedbackPrompt(Long feedbackPromptId);
-
-	void unApplyFeedbackPrompt();
 	
-	FeedbackPromptResponseDto readAppliedFeedbackPrompt();
+	FeedbackPromptResponseDto readAppliedFeedbackPrompt(UserType userType);
 	
-	void deleteFeedbackPrompt(Long feedbackPromptId);
->>>>>>> origin/ADMIN02_CONTROLLER
+	void deleteFeedbackPrompt(UserType userType, Long feedbackPromptId);
+
 
 }

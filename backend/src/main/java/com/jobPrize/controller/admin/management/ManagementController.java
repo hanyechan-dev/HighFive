@@ -1,8 +1,7 @@
-package com.jobPrize.admin02.controller.management.controller;
+package com.jobPrize.controller.admin.management;
 
 import java.util.List;
 
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,7 @@ import com.jobPrize.dto.admin.management.member.MemberManagementSummaryDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.userManagement.UserManagementService;
 import com.jobPrize.service.common.user.UserService;
+import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,93 +35,98 @@ public class ManagementController {
 	
 	private final UserService userService;
 	
-	
- 
 	@GetMapping("/members")
 	public ResponseEntity<Page<MemberManagementSummaryDto>> readMemberPage(Pageable pageable) {
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		Page<MemberManagementSummaryDto> page= userManagementService.readMemberManagementPage(userType, pageable);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(page);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 	
 	@GetMapping("/company")
 	public ResponseEntity<Page<CompanyManagementSummaryDto>> readCompanyPage(Pageable pageable){
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		Page<CompanyManagementSummaryDto> page = userManagementService.readCompanyManagementPage(userType, pageable);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(page);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 	
 	@GetMapping("/consultant")
 	public ResponseEntity<Page<ConsultantManagementSummaryDto>> readConsultantPage(Pageable pageable){
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		Page<ConsultantManagementSummaryDto> page = userManagementService.readConsultantManagementPage(userType, pageable);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(page);
-				
+		
+		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 	
 	@GetMapping("/members-detail/{targetId}")
 	public ResponseEntity<MemberManagementDetailDto> readMemberDetail(@PathVariable Long targetId){
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		MemberManagementDetailDto dto = userManagementService.readMemberManagement(userType, targetId);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(dto);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
 	@GetMapping("/company-detail/{targetId}")
 	public ResponseEntity<CompanyManagementDetailDto> readCompanyDetail(@PathVariable Long targetId) {
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		CompanyManagementDetailDto dto =userManagementService.readCompanyManagement(userType, targetId);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(dto);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
 	@GetMapping("/consultant-detail/{targetId}")
 	public  ResponseEntity<ConsultantManagementDetailDto> readConsultantDetail(@PathVariable Long targetId) {
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		ConsultantManagementDetailDto dto = userManagementService.readConsultantManagement(userType , targetId);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(dto);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
 	@GetMapping("/approve-waiting-company")
 	public ResponseEntity<Page<CompanyManagementSummaryDto>> readWaitingCompanyPage(Pageable pageable){
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		Page<CompanyManagementSummaryDto> page= userManagementService.readWatingCompanyManagementPage(userType, pageable);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(page);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 	
 	@GetMapping("/approve-waiting-consultant")
 	public ResponseEntity <Page<ConsultantManagementSummaryDto>> readWaitingConsultantPage(Pageable pageable){
+		
 		UserType userType = SecurityUtil.getUserType();
+		
 		Page<ConsultantManagementSummaryDto> page = userManagementService.readWatingConsultantManagementPage(userType, pageable);
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(page);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 	
 	@DeleteMapping
 	public ResponseEntity<Void> deleteUser(@RequestBody List<Long> ids){
 		
+		Long id = SecurityUtil.getId();
+		
 		UserType userType = SecurityUtil.getUserType();
 		
-		for(Long id : ids) {
-			userService.softDeleteUser(id);
+		for(Long targetId : ids) {
+			userService.softDeleteUser(id, targetId, userType);
 		}
 		
-		return ResponseEntity
-				.status(HttpStatus.NO_CONTENT)
-				.build();
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 

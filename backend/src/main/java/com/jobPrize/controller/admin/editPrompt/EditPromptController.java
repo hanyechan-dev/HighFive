@@ -1,4 +1,4 @@
-package com.jobPrize.admin02.controller.editPrompt.controller;
+package com.jobPrize.controller.admin.editPrompt;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ import com.jobPrize.dto.admin.editPrompt.EditPromptSummaryDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptUpdateDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.editPrompt.EditPromptService;
+import com.jobPrize.util.SecurityUtil;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,11 @@ public class EditPromptController {
 	@GetMapping("/setting")	
 	public ResponseEntity<Map<String, Object>> readAppliedEditPromptAndList() {
 		
-		EditPromptResponseDto editPromptResponseDto = editPromptService.readAppliedEditPrompt();
+		UserType userType = SecurityUtil.getUserType();
 		
-		List<EditPromptSummaryDto> editPromptSummaryDto = editPromptService.readAllList();
+		EditPromptResponseDto editPromptResponseDto = editPromptService.readAppliedEditPrompt(userType);
+		
+		List<EditPromptSummaryDto> editPromptSummaryDto = editPromptService.readAllList(userType);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("EditPromptResponseDto", editPromptResponseDto);
@@ -69,7 +72,9 @@ public class EditPromptController {
 	@PutMapping("/apply/{editPromptId}")	
 	public ResponseEntity<Void> applyEditPrompt(@PathVariable Long editPromptId) {
 		
-		editPromptService.applyEditPrompt(editPromptId);
+		UserType userType = SecurityUtil.getUserType();
+		
+		editPromptService.applyEditPrompt(userType, editPromptId);
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
@@ -77,7 +82,9 @@ public class EditPromptController {
 	@DeleteMapping
 	public ResponseEntity<Void> deleteEditPrompt(@RequestBody Long editPromptId) {
 		
-		editPromptService.deleteEditPrompt(editPromptId);
+		UserType userType = SecurityUtil.getUserType();
+		
+		editPromptService.deleteEditPrompt(userType, editPromptId);
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

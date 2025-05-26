@@ -17,4 +17,6 @@ public interface PostService {
 	Page<PostSummaryDto> readPostPage(Pageable pageable);
 	
 	PostResponseDto readPost(Long postId);
+	
+	void deletePost(Long id, Long postId);
 }

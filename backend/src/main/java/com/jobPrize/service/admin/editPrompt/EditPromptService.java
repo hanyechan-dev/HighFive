@@ -15,24 +15,13 @@ public interface EditPromptService {
 	void updateEditPrompt(UserType userType, EditPromptUpdateDto dto);
 	
 	List<EditPromptSummaryDto> readAllList(UserType userType);
-	
-<<<<<<< HEAD
+
 	EditPromptResponseDto readEditPrompt(UserType userType, Long editPromptId);
 	
-	void applyEditPrompt(UserType userType, Long editPromptId);      
-  
-=======
-	EditPromptResponseDto readEditPromptById(Long editPromptId);
+	void applyEditPrompt(UserType userType, Long editPromptId);
 	
-	void applyEditPrompt(Long editPromptId);      
+	EditPromptResponseDto readAppliedEditPrompt(UserType userType);
 	
-	void unApplyEditPrompt();     
-	
-	EditPromptResponseDto readAppliedEditPrompt();
-	
-	void deleteEditPrompt(Long editPromptId);
+	void deleteEditPrompt(UserType userType, Long editPromptId);
 
-
-
->>>>>>> origin/ADMIN02_CONTROLLER
 }
