@@ -114,7 +114,11 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	// 컨설팅 현황 관리 페이지 
 	 @Override
+<<<<<<< HEAD
 	 public Page<ConsultantConsultingSummaryDto> readConsultantConsultingPage(Long id, Pageable pageable) {
+=======
+	 public Page<ConsultantConsultingSummaryDto> readConsultantConsultingPage(Long consultantId, Pageable pageable) {
+>>>>>>> origin/CONSULTANT_CONTROLLER
 		 Page<ConsultantConsulting> entityPage =
 				    consultantConsultingRepository.findWithAllConsultantConsultingByConsultantId(id, pageable);
 

@@ -43,10 +43,14 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 	@Override
 	@Transactional(readOnly = true)
+<<<<<<< HEAD
 	public Page<AiConsultingSummaryDto> readAiConsultingPageByCondition(UserType userType, Pageable pageable) {
 
 		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
 		
+=======
+	public Page<AiConsultingSummaryDto> readAiConsultingPage(Pageable pageable) {
+>>>>>>> origin/CONSULTANT_CONTROLLER
 	    Page<AiConsulting> entityPage = aiConsultingRepository.findAllByCondition(pageable);
 
 	    List<AiConsultingSummaryDto> dtoList = new ArrayList<>();

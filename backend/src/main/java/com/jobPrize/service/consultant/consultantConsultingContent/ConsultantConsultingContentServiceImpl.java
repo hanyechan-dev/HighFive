@@ -23,8 +23,8 @@ public class ConsultantConsultingContentServiceImpl implements ConsultantConsult
 
         ConsultantConsultingContent consultantConsultingContent = ConsultantConsultingContent.builder()
                 .consultantConsulting(consultantConsulting)
-                .item(null)
-                .content(null)
+                .item("")
+                .content("")
                 .documentType(documentType)
                 .build();
 

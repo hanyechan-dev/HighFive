@@ -74,7 +74,11 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	        .from(aiConsulting)
 	        .leftJoin(aiConsulting.consultantConsulting).fetchJoin()
 	        .where(
+<<<<<<< HEAD
 					aiConsulting.isNotNull(),
+=======
+					aiConsulting.requestedDate.isNotNull(),
+>>>>>>> origin/CONSULTANT_CONTROLLER
 					aiConsulting.consultantConsulting.isNull()
 					)
 	        .fetchOne())
