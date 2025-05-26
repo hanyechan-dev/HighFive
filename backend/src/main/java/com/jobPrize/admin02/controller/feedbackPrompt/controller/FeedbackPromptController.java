@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptCreateDto;
@@ -32,22 +33,26 @@ public class FeedbackPromptController {
 
 	
 	@PostMapping("/create")		
-	public String createFeedbackPrompt(@RequestParam UserType userType,
-			@RequestBody @Valid FeedbackPromptCreateDto dto) {
+	public ResponseEntity<Void> createFeedbackPrompt(@RequestBody @Valid FeedbackPromptCreateDto dto) {
+		UserType userType = SecurityUtil.getUserType();
 		feedbackPromptService.createFeedbackPrompt(userType, dto);
-		return "피드백 프롬프트가 등록되었습니다.";
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.build();
 	}
 	
 	@PutMapping("/update")		
-	public String updateFeedbackPrompt(@RequestParam UserType userType,
-			@RequestBody @Valid FeedbackPromptUpdateDto dto) {
+	public ResponseEntity<Void> updateFeedbackPrompt(@RequestBody @Valid FeedbackPromptUpdateDto dto) {
+		UserType userType = SecurityUtil.getUserType();
 		feedbackPromptService.updateFeedbackPrompt(userType,dto);
-		return "피드백 프롬프트가 수정되었습니다.";
+		return ResponseEntity
+				.status(HttpStatus.NO_CONTENT)
+				.build();
 	}
 	
 	@GetMapping("/setting")
-	public Map<String, Object> readApplyedFeedbackPromptAndList() {
-		FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.readApplyedFeedbackPrompt();
+	public ResponseEntity<Map<String, Object>> readAppliedFeedbackPromptAndList() {
+		FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.readAppliedFeedbackPrompt();
 		List<FeedbackPromptSummaryDto> feedbackPromptSummaryDtos =feedbackPromptService.readAllList();
 		
 		Map<String, Object> map = new HashMap<>();
@@ -55,26 +60,17 @@ public class FeedbackPromptController {
 		map.put("feedbackPromptResponseDto",feedbackPromptResponseDto);
 		map.put("feedbackPromptSummaryDtos",feedbackPromptSummaryDtos);
 		
-		return map;
-	}
-	
-
-	
-	@GetMapping("/list/{feedbackPromptId}")
-	public FeedbackPromptResponseDto getFeedbackPromptById(@PathVariable Long feedbackPromptId) {
-		return feedbackPromptService.readFeedbackPromptById(feedbackPromptId);
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(map);
 	}
 	
 	@PutMapping("/apply/{feedbackPromptId}")
-	public String applyFeedbackPrompt(@PathVariable Long feedbackPromptId) {
+	public ResponseEntity<Void> applyFeedbackPrompt(@PathVariable Long feedbackPromptId) {
 		feedbackPromptService.applyFeedbackPrompt(feedbackPromptId);
-		return "프롬프트가 적용으로 변경되었습니다.";
+		return ResponseEntity
+				.status(HttpStatus.NO_CONTENT)
+				.build();
+			
 	}
-	
-	@PutMapping("unapply")
-	public String unApplyFeedbackPrompt() {
-		feedbackPromptService.unApplyFeedbackPrompt();
-		return "프롬프트 적용이 취소되었습니다.";
-	}
-	
 }
