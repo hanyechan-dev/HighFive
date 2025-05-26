@@ -42,6 +42,7 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 			
 			memberPoolSummaryDtos.add(memberPoolSummaryDto);
 		}
+		
 		return new PageImpl<MemberPoolSummaryDto>(memberPoolSummaryDtos,pageable,similarities.getTotalElements());
 	}
 

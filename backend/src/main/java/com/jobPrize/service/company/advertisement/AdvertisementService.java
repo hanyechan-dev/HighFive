@@ -5,7 +5,9 @@ import com.jobPrize.dto.company.advertisement.AdvertisementResponeDto;
 import com.jobPrize.entity.common.UserType;
 
 public interface AdvertisementService {
-	void createAdvertisement(Long id, UserType usertype, AdvertisementCreateDto advertisementCreateDto);
+
+	void createAdvertisement(Long id, UserType userType, AdvertisementCreateDto advertisementCreateDto);
+	
 	AdvertisementResponeDto readAdvertisement(Long id);
 
 }

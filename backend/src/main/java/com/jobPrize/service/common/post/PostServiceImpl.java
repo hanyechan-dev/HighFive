@@ -30,11 +30,14 @@ import lombok.RequiredArgsConstructor;
 public class PostServiceImpl implements PostService {
 
 	private final PostRepository postRepository;
+
 	private final UserRepository userRepository;
+
 	private final AssertUtil assertUtil;
 
 	@Override
 	public void createPost(Long id, PostCreateDto dto) {
+
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 		            .orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
@@ -44,6 +47,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void updatePost(Long id, PostUpdateDto dto) {
+
 		Post post = postRepository.findById(dto.getId())
 				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
 		
@@ -57,9 +61,12 @@ public class PostServiceImpl implements PostService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<PostSummaryDto> readPostPage(Pageable pageable) {
+
 	    Page<Post> postPage = postRepository.findAll(pageable);
+
 	    List<Post> postList = postPage.getContent();
 	    List<PostSummaryDto> dtoList = new ArrayList<>();
+		
 	    for(Post post : postList) {
 	    	dtoList.add(PostSummaryDto.of(post, getNicknameOrNameFromPost(post)));
 	    }

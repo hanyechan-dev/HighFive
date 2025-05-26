@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.customException.CustomAccessDeniedException;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
@@ -116,7 +115,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Transactional(readOnly = true)
 	public ApplicationResponseDto readApplication(Long id, UserType userType, Long applicationId) {
 		
-		assertUtil.assertUserType(userType,UserType.일반회원,UserType.기업회원,"조회");
+		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, "조회");
 		
 		Application application = applicationRepository.findByApplicationId(applicationId)
 			.orElseThrow(() -> new CustomEntityNotFoundException("지원서"));

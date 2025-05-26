@@ -64,7 +64,9 @@ public class JobPostingServiceImpl implements JobPostingService{
 
 	@Override
 	public Page<JobPostingSummaryDto> readJobPostingPage(Long id, Pageable pageable) {
+
 		Page<JobPosting> jobPostings = jobPostingRepository.findAllByCompanyId(id, pageable);
+
 		List<JobPostingSummaryDto> jobPostingSummaries = new ArrayList<>();
 		for(JobPosting jobPosting : jobPostings) {
 			JobPostingSummaryDto jobPostingSummaryDto = JobPostingSummaryDto.from(jobPosting);
@@ -75,6 +77,7 @@ public class JobPostingServiceImpl implements JobPostingService{
 
 	@Override
 	public JobPostingResponseDto readJobPosting(Long jobPostingId) {
+
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
 			.orElseThrow(() -> new CustomEntityNotFoundException("채용공고"));
 		
@@ -90,6 +93,7 @@ public class JobPostingServiceImpl implements JobPostingService{
 
 	@Override
 	public void updateJobPosting(Long id, JobPostingUpdateDto jobPostingUpdateDto) {
+		
 		Long jobPostingId = jobPostingUpdateDto.getId();
 		
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)

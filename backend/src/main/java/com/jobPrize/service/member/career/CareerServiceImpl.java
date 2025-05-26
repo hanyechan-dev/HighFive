@@ -32,17 +32,17 @@ public class CareerServiceImpl implements CareerService {
 
 	@Override
 	public void createCareer(Long id, UserType userType, CareerCreateDto careerCreateDto) {
+
+		assertUtil.assertUserType(userType, UserType.일반회원, "경력 등록");
 		
 		if(careerCreateDto.getStartDate().isAfter(careerCreateDto.getEndDate())) {
 			throw new IllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
 		}
 
-
 		Member member = memberRepository.findById(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
 
-		
 		Career career = Career.of(member, careerCreateDto);
 		
 		careerRepository.save(career);
@@ -74,10 +74,7 @@ public class CareerServiceImpl implements CareerService {
 		Career career =	careerRepository.findById(careerId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("경력"));
 		
-		
 		assertUtil.assertId(id, career, "수정");
-		
-
 		
 		career.updateCareer(careerUpdateDto);
 		
@@ -89,7 +86,6 @@ public class CareerServiceImpl implements CareerService {
 		Career career =	careerRepository.findById(careerId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("경력"));
 
-		
 		assertUtil.assertId(id, career, "삭제");
 		
 		careerRepository.delete(career);

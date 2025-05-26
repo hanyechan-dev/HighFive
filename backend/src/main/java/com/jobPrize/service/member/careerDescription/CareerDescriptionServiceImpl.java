@@ -72,9 +72,9 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	@Override
 	@Transactional(readOnly = true)
 	public CareerDescriptionResponseDto readCareerDescription(Long id, Long careerDescriptionId) {
+
 		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionId)
 			.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
-		
 		
 		assertUtil.assertId(id, careerDescription, "조회");
 
@@ -91,6 +91,7 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 
 	@Override
 	public void updateCareerDescription(Long id, CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
+
 		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionUpdateDto.getId())
 			.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
 
@@ -106,6 +107,7 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 
 	@Override
 	public void deleteCareerDescription(Long id, Long careerDescriptionId) {
+
 		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionId)
 			.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
 
@@ -115,7 +117,6 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 		for(CareerDescriptionContent careerDescriptionContent : careerDescriptionContents) {
 			careerDescriptionContentService.deleteCareerDescriptionContent(careerDescriptionContent.getId());
 		}
-
 
 		careerDescriptionRepository.delete(careerDescription);
 		

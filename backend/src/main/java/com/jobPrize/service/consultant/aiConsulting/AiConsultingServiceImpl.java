@@ -43,13 +43,16 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<AiConsultingSummaryDto> readAiConsultingPageByCondition(Pageable pageable) {
+	public Page<AiConsultingSummaryDto> readAiConsultingPageByCondition(UserType userType, Pageable pageable) {
+
+		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
+		
 	    Page<AiConsulting> entityPage = aiConsultingRepository.findAllByCondition(pageable);
 
 	    List<AiConsultingSummaryDto> dtoList = new ArrayList<>();
 
 	    for (AiConsulting aiConsulting : entityPage.getContent()) {
-	        AiConsultingSummaryDto aiConsultingSummaryDto = toSummaryDto(aiConsulting);
+	        AiConsultingSummaryDto aiConsultingSummaryDto = AiConsultingSummaryDto.from(aiConsulting);
 	        dtoList.add(aiConsultingSummaryDto);
 	    }
 
@@ -66,7 +69,18 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 	    
-	    return createDetailDto(aiConsulting, AiEditDetailResponseDto.class);
+	    List<AiConsultingContent> aiConsultingContents=aiConsulting.getAiConsultingContents();
+	    
+	    List<AiContentResponseDto> aiContentResponseDtos = new ArrayList<>();
+	    
+	    for(AiConsultingContent aiConsultingContent : aiConsultingContents) {
+	    	AiContentResponseDto aiContentResponseDto = AiContentResponseDto.from(aiConsultingContent);
+	    	aiContentResponseDtos.add(aiContentResponseDto);
+	    }
+	    
+	    AiEditDetailResponseDto aiEditDetailResponseDto = AiEditDetailResponseDto.of(aiConsulting, aiContentResponseDtos);
+	    
+	    return aiEditDetailResponseDto;
 
 	}
 
@@ -78,72 +92,22 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 		
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
+
+		List<AiConsultingContent> aiConsultingContents=aiConsulting.getAiConsultingContents();
+		
+		List<AiContentResponseDto> aiContentResponseDtos = new ArrayList<>();
+		
+		for(AiConsultingContent aiConsultingContent : aiConsultingContents) {
+			AiContentResponseDto aiContentResponseDto = AiContentResponseDto.from(aiConsultingContent);
+			aiContentResponseDtos.add(aiContentResponseDto);
+		}
+		
+		AiFeedbackDetailResponseDto aiFeedbackDetailResponseDto =AiFeedbackDetailResponseDto.of(aiConsulting, aiContentResponseDtos);
+		
 	    
-	    return createDetailDto(aiConsulting, AiFeedbackDetailResponseDto.class);
+	    return aiFeedbackDetailResponseDto;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private AiConsultingSummaryDto toSummaryDto(AiConsulting aiConsulting) {
-		return AiConsultingSummaryDto
-				.builder()
-				.aiConsultingId(aiConsulting.getId())
-				.userName(aiConsulting.getRequest().getMember().getUser().getName())
-				.targetJob(aiConsulting.getRequest().getTargetJob())
-				.targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
-				.requestedDate(aiConsulting.getRequest().getCreatedDate())
-				.consultingType(aiConsulting.getType())
-				.build();
-	}
-
-	// 공통 DTO 생성 메서드
-	private <T> T createDetailDto(AiConsulting aiConsulting, Class<T> type) {
-	    List<AiContentResponseDto> aiContents = new ArrayList<>();
-	    for (AiConsultingContent aiConsultingContent : aiConsulting.getAiConsultingContents()) {
-	        AiContentResponseDto aiCommentResponseDto = AiContentResponseDto
-	        	.builder()
-	            .item(aiConsultingContent.getItem())
-	            .content(aiConsultingContent.getContent())
-	            .build();
-	        aiContents.add(aiCommentResponseDto);
-	    }
-
-	    if (type.equals(AiEditDetailResponseDto.class)) {  //첨삭 요청 상세 모달
-	        return type.cast(AiEditDetailResponseDto
-	        		.builder()
-	                .targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
-	                .targetJob(aiConsulting.getRequest().getTargetJob())
-	                .requestedDate(aiConsulting.getRequest().getCreatedDate())
-	                .resume(aiConsulting.getRequest().getResumeJson())
-	                .careerDescription(aiConsulting.getRequest().getCareerDescriptionJson())
-	                .coverLetter(aiConsulting.getRequest().getCoverLetterJson())
-	                .aiContents(aiContents)
-	                .build());
-	    }
-
-	    if (type.equals(AiFeedbackDetailResponseDto.class)) {  //피드백 요청 상세 모달
-	        return type.cast(AiFeedbackDetailResponseDto
-	        		.builder()
-	                .targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
-	                .targetJob(aiConsulting.getRequest().getTargetJob())
-	                .requestedDate(aiConsulting.getRequest().getCreatedDate())
-	                .resume(aiConsulting.getRequest().getResumeJson())
-	                .careerDescription(aiConsulting.getRequest().getCareerDescriptionJson())
-	                .coverLetter(aiConsulting.getRequest().getCoverLetterJson())
-	                .aiContents(aiContents)
-	                .build());
-	    }
-
-	    throw new IllegalArgumentException("지원하지 않는 DTO 타입입니다.");
-	}
 
 
 	@Override

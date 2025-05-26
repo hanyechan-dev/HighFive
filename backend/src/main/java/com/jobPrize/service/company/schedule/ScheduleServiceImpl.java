@@ -35,6 +35,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	@Override
 	public void createSchedule(Long id, UserType userType, ScheduleCreateDto scheduleCreateDto) {
+		
 		assertUtil.assertUserType(userType, UserType.기업회원, "일정 등록");
 		
 		Company company = companyRepository.findById(id)

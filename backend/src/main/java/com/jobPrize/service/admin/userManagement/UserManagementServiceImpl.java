@@ -26,7 +26,7 @@ import com.jobPrize.util.AssertUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserManagementServiceImpl implements UserManagementService{
 	
@@ -36,6 +36,7 @@ public class UserManagementServiceImpl implements UserManagementService{
 
 	@Override
 	public Page<MemberManagementSummaryDto> readMemberManagementPage(UserType userType, Pageable pageable) {
+
 		assertUtil.assertUserType(userType, UserType.관리자,"조회");
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserType(UserType.일반회원, pageable);
@@ -55,6 +56,7 @@ public class UserManagementServiceImpl implements UserManagementService{
 
 	@Override
 	public Page<CompanyManagementSummaryDto> readCompanyManagementPage(UserType userType, Pageable pageable) {
+
 		assertUtil.assertUserType(userType, UserType.관리자,"조회");
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserType(UserType.기업회원, pageable);
@@ -74,6 +76,7 @@ public class UserManagementServiceImpl implements UserManagementService{
 
 	@Override
 	public Page<ConsultantManagementSummaryDto> readConsultantManagementPage(UserType userType, Pageable pageable) {
+
 		assertUtil.assertUserType(userType, UserType.관리자,"조회");
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserType(UserType.컨설턴트회원, pageable);
@@ -99,32 +102,34 @@ public class UserManagementServiceImpl implements UserManagementService{
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
 				.orElseThrow(()-> new CustomEntityNotFoundException("회원"));
 		
-		
 		return MemberManagementDetailDto.of(user.getMember(), UserManagementDetailDto.from(user));
 	}
 
 	@Override
 	public CompanyManagementDetailDto readCompanyManagement(UserType userType, Long targetId) {
+
 		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
-		
-		
+	
 		return CompanyManagementDetailDto.of(user.getCompany(), UserManagementDetailDto.from(user));
 	}
 
 	@Override
 	public ConsultantManagementDetailDto readConsultantManagement(UserType userType, Long targetId) {
+
 		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
 				.orElseThrow(()-> new CustomEntityNotFoundException("컨설턴트"));
-		
 		
 		return ConsultantManagementDetailDto.of(user.getConsultant(), UserManagementDetailDto.from(user));
 	}
 
 	@Override
 	public Page<CompanyManagementSummaryDto> readWatingCompanyManagementPage(UserType userType, Pageable pageable) {
+
 		assertUtil.assertUserType(userType, UserType.관리자,"조회");
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserTypeAndApprovalStatusIsWaiting(UserType.기업회원, pageable);
@@ -144,6 +149,7 @@ public class UserManagementServiceImpl implements UserManagementService{
 
 	@Override
 	public Page<ConsultantManagementSummaryDto> readWatingConsultantManagementPage(UserType userType, Pageable pageable) {
+
 		assertUtil.assertUserType(userType, UserType.관리자,"조회");
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserTypeAndApprovalStatusIsWaiting(UserType.컨설턴트회원, pageable);

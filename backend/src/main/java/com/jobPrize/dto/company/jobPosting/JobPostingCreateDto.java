@@ -2,8 +2,6 @@ package com.jobPrize.dto.company.jobPosting;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.jobPrize.dto.company.jobPostingImage.JobPostingImageCreateDto;
 import com.jobPrize.entity.memToCom.EducationLevel;
 

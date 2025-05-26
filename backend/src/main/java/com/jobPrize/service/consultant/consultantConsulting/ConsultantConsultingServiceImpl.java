@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.customException.CustomAccessDeniedException;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
@@ -47,9 +46,9 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	
 	@Override
 	public void approveConsulting(Long id, UserType userType, Long aiConsultingId) {
-		if(userType!=UserType.컨설턴트회원) {
-			throw new CustomAccessDeniedException(UserType.컨설턴트회원, "승인");
-		}
+
+		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "승인");
+
 	    AiConsulting aiConsulting = aiConsultingRepository.findById(aiConsultingId)
 	        .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 
@@ -82,7 +81,6 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	public void updateConsultantConsulting(Long id, ConsultantConsultingUpdateDto consultantConsultingUpdateDto) {
 
-	
 		ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingUpdateDto.getConsultantConsultingid())
 				.orElseThrow(()-> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
 		
@@ -124,7 +122,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	        List<ConsultantConsultingSummaryDto> dtoList = new ArrayList<>();
 
 	        for (ConsultantConsulting consultantConsulting : entityPage.getContent()) {
-	            ConsultantConsultingSummaryDto consultantConsultingSummaryDto = toSummaryDto(consultantConsulting);
+	            ConsultantConsultingSummaryDto consultantConsultingSummaryDto = ConsultantConsultingSummaryDto.from(consultantConsulting);
 	            dtoList.add(consultantConsultingSummaryDto);
 	        }
 
@@ -156,7 +154,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	        List<AiContentResponseDto> aiContents = new ArrayList<>();
 	        for (AiConsultingContent aiConsultingContent : aiConsulting.getAiConsultingContents()) {
 	            AiContentResponseDto aiContentResponseDto = AiContentResponseDto
-	            		.builder()
+	            	.builder()
 	                .item(aiConsultingContent.getItem())
 	                .content(aiConsultingContent.getContent())
 	                .build();
@@ -173,19 +171,10 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	                .build();
 	            consultantContents.add(consultantCommentResponseDto);
 	        }
+	        
+	        ConsultantEditDetailResponseDto consultantEditDetailResponseDto = ConsultantEditDetailResponseDto.of(consultantConsulting, aiContents, consultantContents);
 
-	        return ConsultantEditDetailResponseDto
-	        	.builder()
-	            .targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
-	            .targetJob(aiConsulting.getRequest().getTargetJob())
-	            .requestedDate(aiConsulting.getRequest().getCreatedDate())
-	            .createdDate(consultantConsulting.getCreatedDate())
-	            .resume(aiConsulting.getRequest().getResumeJson())
-	            .careerDescription(aiConsulting.getRequest().getCareerDescriptionJson())
-	            .coverLetter(aiConsulting.getRequest().getCoverLetterJson())
-	            .aiContents(aiContents)
-	            .consultantContents(consultantContents)
-	            .build();
+	        return consultantEditDetailResponseDto;
 	    }
 
 	    
@@ -228,36 +217,15 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	                .build();
 	            consultantContents.add(consultantCommentResponseDto);
 	        }
+	        
+	        ConsultantFeedBackDetailResponseDto consultantFeedBackDetailResponseDto = ConsultantFeedBackDetailResponseDto.of(consultantConsulting, aiContents, consultantContents);
 
-	        return ConsultantFeedBackDetailResponseDto
-	            .builder()
-	            .targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
-	            .targetJob(aiConsulting.getRequest().getTargetJob())
-	            .requestedDate(aiConsulting.getRequest().getCreatedDate())
-	            .createdDate(consultantConsulting.getCreatedDate())
-	            .resume(aiConsulting.getRequest().getResumeJson())
-	            .careerDescription(aiConsulting.getRequest().getCareerDescriptionJson())
-	            .coverLetter(aiConsulting.getRequest().getCoverLetterJson())
-	            .aiContents(aiContents)
-	            .consultantContents(consultantContents)
-	            .build();
+	        return consultantFeedBackDetailResponseDto;
 	    }
 	    
 	    
 	    
-	 // 컨설팅 현황 관리 페이지 
-	    private ConsultantConsultingSummaryDto toSummaryDto(ConsultantConsulting consultantConsulting) 	 {
-	        return ConsultantConsultingSummaryDto
-	        		.builder()
-	                .consultantConsultingId(consultantConsulting.getId())
-	                .userName(consultantConsulting.getAiConsulting().getRequest().getMember().getUser().getName())
-	                .targetJob(consultantConsulting.getAiConsulting().getRequest().getTargetJob())
-	                .targetCompanyName(consultantConsulting.getAiConsulting().getRequest().getTargetCompanyName())
-	                .requestedDate(consultantConsulting.getAiConsulting().getRequestedDate())
-	                .consultingType(consultantConsulting.getType())
-	                .completed(consultantConsulting.getCompletedDate() != null)	                
-	                .build();
-	    }
+
 
 	    
 

@@ -14,10 +14,10 @@ public interface EditPromptService {
 	
 	void updateEditPrompt(UserType userType, EditPromptUpdateDto dto);
 	
-	List<EditPromptSummaryDto> readAllList();
+	List<EditPromptSummaryDto> readAllList(UserType userType);
 	
-	EditPromptResponseDto readEditPrompt(Long editPromptId);
+	EditPromptResponseDto readEditPrompt(UserType userType, Long editPromptId);
 	
-	void applyEditPrompt(Long editPromptId);      
+	void applyEditPrompt(UserType userType, Long editPromptId);      
   
 }

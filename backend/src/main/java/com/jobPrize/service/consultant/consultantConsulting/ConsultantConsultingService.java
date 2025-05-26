@@ -16,7 +16,7 @@ public interface ConsultantConsultingService {
 
 	void updateConsultantConsulting(Long id, ConsultantConsultingUpdateDto consultantConsultingUpdateDto);
 
-	void completeConsulting(Long id,Long consultantConsultingId);
+	void completeConsulting(Long id, Long consultantConsultingId);
 
 	Page<ConsultantConsultingSummaryDto> readConsultantConsultingPage(Long id, Pageable pageable);
 

@@ -3,7 +3,6 @@ package com.jobPrize.service.admin.feedbackPrompt;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,6 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.repository.admin.feedbackPrompt.FeedbackPromptRepository;
 import com.jobPrize.util.AssertUtil;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -40,10 +38,11 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	public void updateFeedbackPrompt(UserType userType, FeedbackPromptUpdateDto dto) {
-		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findById(dto.getId())
-				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 		
 		assertUtil.assertUserType(userType, UserType.관리자, "수정");
+		
+		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findById(dto.getId())
+				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 		
 		feedbackPrompt.updateFeedbackPrompt(dto.getTitle(), dto.getContent());
 
@@ -51,7 +50,10 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<FeedbackPromptResponseDto> readAllList() {
+	public List<FeedbackPromptResponseDto> readAllList(UserType userType) {
+
+		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+
 		List<FeedbackPrompt> feedbackPrompts = feedbackPromptRepository.findAll();
 		List<FeedbackPromptResponseDto> results = new ArrayList<>();
 
@@ -64,14 +66,20 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public FeedbackPromptResponseDto readFeedbackPrompt(Long feedbackPromptId) {
+	public FeedbackPromptResponseDto readFeedbackPrompt(UserType userType, Long feedbackPromptId) {
+
+		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		
 		FeedbackPrompt prompt = feedbackPromptRepository.findById(feedbackPromptId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 		return FeedbackPromptResponseDto.from(prompt);
 	}
 
 	@Override
-	public void applyFeedbackPrompt(Long feedbackPromptId) {
+	public void applyFeedbackPrompt(UserType userType, Long feedbackPromptId) {
+		
+		assertUtil.assertUserType(userType, UserType.관리자, "적용");
+		
 		unApplyFeedbackPrompt();
 		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findById(feedbackPromptId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));

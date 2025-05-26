@@ -13,13 +13,12 @@ import com.jobPrize.entity.common.UserType;
 
 public interface AiConsultingService {
 
-	Page<AiConsultingSummaryDto> readAiConsultingPageByCondition(Pageable pageable);
+	Page<AiConsultingSummaryDto> readAiConsultingPageByCondition(UserType userType, Pageable pageable);
 
 	AiEditDetailResponseDto readEditDetail(Long id, UserType userType, Long aiConsultingId);
 
 	AiFeedbackDetailResponseDto readFeedbackDetail(Long id, UserType userType, Long aiConsultingId);
 	
 	void createAiConsulting(AiConsultingCreateDto aiConsultingCreateDto, Long requestId);
-
 	
 }

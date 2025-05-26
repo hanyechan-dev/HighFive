@@ -14,6 +14,7 @@ import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.util.AssertUtil;
 
 import lombok.RequiredArgsConstructor;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,8 +27,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 	private final AssertUtil assertUtil;
 	
 	@Override
-	public void createAdvertisement(Long id, UserType usertype,AdvertisementCreateDto advertisementCreateDto) {
-		assertUtil.assertUserType(usertype, UserType.기업회원, "광고 등록");
+	public void createAdvertisement(Long id, UserType userType,AdvertisementCreateDto advertisementCreateDto) {
+
+		assertUtil.assertUserType(userType, UserType.기업회원, "광고 등록");
+
 		Company company = companyRepository.findById(id)	
 			.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
@@ -40,6 +43,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 	@Override
 	@Transactional(readOnly = true)
 	public AdvertisementResponeDto readAdvertisement(Long id) {
+
 		Advertisement advertisements = advertisementRepository.findLatestByCompanyId(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("광고"));
 

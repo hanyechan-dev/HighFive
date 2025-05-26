@@ -39,17 +39,21 @@ public class EditPromptServiceImpl implements EditPromptService {
 	
 	@Override
 	public void updateEditPrompt(UserType userType, EditPromptUpdateDto dto) {
-		EditPrompt editPrompt = editPromptRepository.findById(dto.getId())
-			    .orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 
 		assertUtil.assertUserType(userType, UserType.관리자, "수정");
+
+		EditPrompt editPrompt = editPromptRepository.findById(dto.getId())
+			    .orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 		
 		editPrompt.updateEditPrompt(dto.getTitle(), dto.getContent());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<EditPromptSummaryDto> readAllList() {
+	public List<EditPromptSummaryDto> readAllList(UserType userType) {
+
+		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+
 		List<EditPrompt> editPrompts = editPromptRepository.findAll();
 		List<EditPromptSummaryDto> results = new ArrayList<>();
 
@@ -63,7 +67,10 @@ public class EditPromptServiceImpl implements EditPromptService {
 	}
 	@Override
 	@Transactional(readOnly = true)
-	public EditPromptResponseDto readEditPrompt(Long editPromptId) {
+	public EditPromptResponseDto readEditPrompt(UserType userType, Long editPromptId) {
+
+		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+
 		EditPrompt prompt = editPromptRepository.findById(editPromptId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
 		return EditPromptResponseDto.from(prompt);
@@ -71,11 +78,15 @@ public class EditPromptServiceImpl implements EditPromptService {
 	}
 	
 	@Override
-	public void applyEditPrompt(Long editPromptId) {
-		 unApplyEditPrompt();
-		 EditPrompt editPrompt = editPromptRepository.findById(editPromptId)
-				 .orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
-		 editPrompt.apply();
+	public void applyEditPrompt(UserType userType, Long editPromptId) {
+
+		assertUtil.assertUserType(userType, UserType.관리자, "적용");
+		
+		unApplyEditPrompt();
+		
+		EditPrompt editPrompt = editPromptRepository.findById(editPromptId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+		editPrompt.apply();
 	}
 
 	private void  unApplyEditPrompt() {

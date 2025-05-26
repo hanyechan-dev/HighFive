@@ -13,10 +13,10 @@ public interface FeedbackPromptService {
 
 	void updateFeedbackPrompt(UserType userType, FeedbackPromptUpdateDto dto );
 
-	List<FeedbackPromptResponseDto> readAllList();
+	List<FeedbackPromptResponseDto> readAllList(UserType userType);
 
-	FeedbackPromptResponseDto readFeedbackPrompt(Long feedbackPromptId);
+	FeedbackPromptResponseDto readFeedbackPrompt(UserType userType, Long feedbackPromptId);
 
-	void applyFeedbackPrompt(Long feedbackPromptId);
+	void applyFeedbackPrompt(UserType userType, Long feedbackPromptId);
 
 }

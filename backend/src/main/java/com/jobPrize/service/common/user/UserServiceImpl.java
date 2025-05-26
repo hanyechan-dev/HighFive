@@ -17,6 +17,7 @@ import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.user.UserRepository;
+import com.jobPrize.util.AssertUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,15 +25,17 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+	
 	private final UserRepository userRepository;
 	
 	private final PasswordEncoder passwordEncoder;
 	
 	private final TokenProvider tokenProvider;
 	
+	private final AssertUtil assertUtil;
+	
 	@Override
 	public TokenDto createUser(UserSignUpDto userSignUpDto) {
-		
 		
 		if(isExistEmail(userSignUpDto.getEmail())) {
 			throw new IllegalStateException("이미 사용 중인 이메일입니다.");
@@ -112,11 +115,16 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void softDeleteUser(Long id) {
+	public void softDeleteUser(Long id, UserType userType) {
+		
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
-		user.deleteUser();
 		
+		if(!UserType.관리자.equals(userType)) {
+			assertUtil.assertId(id, user, "삭제");
+		}
+
+		user.deleteUser();
 		
 	}
 

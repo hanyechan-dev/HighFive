@@ -68,5 +68,4 @@ public class JobPostingImageServiceImpl implements JobPostingImageService {
         }
         jobPostingImageRepository.deleteAll(images);
     }
-
 }

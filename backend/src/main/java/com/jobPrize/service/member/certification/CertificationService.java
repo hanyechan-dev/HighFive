@@ -8,8 +8,12 @@ import com.jobPrize.dto.member.certification.CertificationUpdateDto;
 import com.jobPrize.entity.common.UserType;
 
 public interface CertificationService {
+
     public void createCertification(Long id, UserType userType, CertificationCreateDto certificationCreateDto);
+    
     public List<CertificationResponseDto> readCertificationList(Long id);
+    
     public void updateCertification(Long id, CertificationUpdateDto certificationUpdateDto);
+    
     public void deleteCertification(Long id, Long certificationId);
 }
