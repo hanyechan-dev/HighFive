@@ -8,9 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ChatRequestDto {
 
     @NotBlank(message = "채팅방 ID는 비어 있을 수 없습니다.")

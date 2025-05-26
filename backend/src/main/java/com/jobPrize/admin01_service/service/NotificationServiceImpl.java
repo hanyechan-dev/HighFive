@@ -1,15 +1,19 @@
 package com.jobPrize.admin01_service.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.admin01_service.dto.NotificationDto;
 import com.jobPrize.entity.common.Notification;
 import com.jobPrize.entity.common.NotificationType;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.notification.NotificationRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,8 +23,17 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	private final NotificationRepository notificationRepository;
 	
+	private final UserRepository userRepository;
+	
 	// 알림 생성
-	public Notification createNotification(User sender, User receiver, NotificationType notificationType) {
+	public Notification createNotification(Long id, Long receiverId, NotificationType notificationType) {
+		
+		User sender = userRepository.findByIdAndDeletedDateIsNull(id)
+				.orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+		
+		User receiver = userRepository.findByIdAndDeletedDateIsNull(receiverId)
+				.orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+		
 		Notification notification = Notification.builder()
 				.NotificationType(notificationType)
 				.message(notificationType.getMessageByType(sender, receiver))
@@ -28,19 +41,26 @@ public class NotificationServiceImpl implements NotificationService {
 				.receiver(receiver)
 				.build();
 		
-		notificationRepository.save(notification);
-		return notification;
+		return notificationRepository.save(notification);
 	}
 	
 	// 알림 발송
-	public void sendNotification(User sender, User receiver, NotificationType notificationType) {
-		Notification notification = createNotification(sender, receiver, notificationType);
+	public void sendNotification(Long id, Long receiverId, NotificationType notificationType) {
+		Notification notification = createNotification(id, receiverId, notificationType);
 		// WebSocket 통신 시 추후 구현
 	}
 	
 	// 알림 조회
-	public List<Notification> readNotification(Long id){
+	public List<NotificationDto> readNotification(Long id){
 		List<Notification> notification = notificationRepository.findAllForOneMonthByUserId(id);
-		return notification;
+		
+		return notification.stream()
+				.map(noti -> NotificationDto.builder()
+						.id(id)
+						.message(noti.getMessage())
+						.createdTime(noti.getCreatedTime())
+						.build()
+						)
+				.collect(Collectors.toList());
 	}
 }

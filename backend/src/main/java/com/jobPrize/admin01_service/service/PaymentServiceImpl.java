@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.admin01_service.dto.PaymentRequestDto;
 import com.jobPrize.admin01_service.dto.PaymentResponseDto;
-import com.jobPrize.admin01_service.dto.SubscriptionRequestDto;
 import com.jobPrize.entity.common.Payment;
+import com.jobPrize.entity.common.User;
+import com.jobPrize.entity.common.UserType;
 import com.jobPrize.repository.common.UserRepository;
 import com.jobPrize.repository.common.payment.PaymentRepository;
 
@@ -27,37 +28,34 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Transactional
 	@Override
-	public void createPayment(PaymentRequestDto paymentRequestDto) throws Exception {
+	public void createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
+		
+		// 유저 타입 권한 검사 필요
+		
 		
 		// * 추후, 이 곳에 결제 시스템 구현 필수.
 		// 쇼핑몰처럼 장바구니, 상품, 주문 등 복잡한 로직이 필요없이,
 		// 결제 상태에 따라 User의 isSubscribed 데이터를 변경하면 되는 문제로 보임.
 		
-		
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+
+			
 		// 결제 정보 저장
 		Payment payment = Payment.builder()
-				.user(userRepository.findById(paymentRequestDto.getId())
-						.orElseThrow(() -> new EntityNotFoundException("User Not Found")))
+				.user(user)
 				.paymentAmount(paymentRequestDto.getPaymentAmount())
 				.content(paymentRequestDto.getContent())
 				.method(paymentRequestDto.getMethod())
 				.build();
 		
 		paymentRepository.save(payment);
-		
-		// 구독 상태 변경
-		Long userId = paymentRequestDto.getId();
-		
-		SubscriptionRequestDto subscriptionRequestDto = SubscriptionRequestDto.builder()
-				.id(userId)
-				.build();
-		
-		subscriptionService.createSubscription(subscriptionRequestDto);
+
 	}
 	
-	// 결제 내역 리스트 조회
+	// ID별 결제 내역 리스트 조회
 	@Override
-	public List<PaymentResponseDto> readPaymentList(Long id, Pageable pageable) throws Exception {
+	public List<PaymentResponseDto> readPaymentListById(Long id, Pageable pageable) {
 		Page<Payment> paymentPage = paymentRepository.findAllByUserId(id, pageable);
 		List<Payment> paymentList = paymentPage.getContent();
 		
@@ -66,25 +64,31 @@ public class PaymentServiceImpl implements PaymentService {
 				.paymentId(payment.getId())
 				.paymentAmount(payment.getPaymentAmount())
 				.createdTime(payment.getCreatedTime())
+				.content(payment.getContent())
+				.method(payment.getMethod())
 				.build()
 				)
+			
 			.collect(Collectors.toList());
 	}
 	
-	// 결제 내용 조회
+	// 전체 결제 내역 리스트 조회
 	@Override
-	public PaymentResponseDto readPayment(Long paymentId) throws Exception {
-		Payment payment = paymentRepository.findById(paymentId)
-				.orElseThrow(() -> new EntityNotFoundException("Payment Not Found"));
+	public List<PaymentResponseDto> readPaymentList() {
+		List<Payment> paymentList = paymentRepository.findAll();
 		
-		PaymentResponseDto paymentResponseDto = PaymentResponseDto.builder()
+		return paymentList.stream()
+			.map(payment -> PaymentResponseDto.builder()
 				.paymentId(payment.getId())
 				.id(payment.getUser().getId())
 				.paymentAmount(payment.getPaymentAmount())
+				.content(payment.getContent())
 				.createdTime(payment.getCreatedTime())
-				.build();
-		
-		return paymentResponseDto;
+				.method(payment.getMethod())
+				.build()
+				)
+			
+			.collect(Collectors.toList());
 	}
 	
 }

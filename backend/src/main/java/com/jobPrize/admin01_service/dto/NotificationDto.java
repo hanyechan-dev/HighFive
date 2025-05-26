@@ -2,10 +2,8 @@ package com.jobPrize.admin01_service.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 // 우선적으로 뭘 정해야 하냐면...
 // 알림을 눌렀을 때 link 기능을 추가할 것인가..
@@ -16,11 +14,9 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class NotificationDto {
     private Long notificationId;
     private Long id;
-    private String content; // 알림 내용
+    private String message; // 알림 내용
     private LocalDateTime createdTime;
 }

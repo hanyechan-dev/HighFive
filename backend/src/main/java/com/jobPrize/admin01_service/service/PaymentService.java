@@ -6,15 +6,16 @@ import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.admin01_service.dto.PaymentRequestDto;
 import com.jobPrize.admin01_service.dto.PaymentResponseDto;
+import com.jobPrize.entity.common.UserType;
 
 public interface PaymentService {
 	
 	// 결제 기능
-	void createPayment(PaymentRequestDto paymentRequestDto) throws Exception;
+	void createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto);
 	
-	// 결제 내역 리스트 조회
-	List<PaymentResponseDto> readPaymentList(Long id, Pageable pageable) throws Exception;
+	// ID별 결제 내역 리스트 조회
+	List<PaymentResponseDto> readPaymentListById(Long id, Pageable pageable);
 	
-	// 결제 내용 조회
-	PaymentResponseDto readPayment(Long paymentId) throws Exception;
+	// 전체 결제 내역 리스트 조회
+	List<PaymentResponseDto> readPaymentList();
 }

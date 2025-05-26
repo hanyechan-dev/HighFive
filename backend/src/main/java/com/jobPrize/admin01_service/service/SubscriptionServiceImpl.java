@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.admin01_service.dto.SubscriptionRequestDto;
+import com.jobPrize.admin01_service.dto.PaymentRequestDto;
 import com.jobPrize.admin01_service.dto.SubscriptionResponseDto;
 import com.jobPrize.entity.common.Subscription;
 import com.jobPrize.entity.common.User;
@@ -25,32 +25,40 @@ import lombok.RequiredArgsConstructor;
 public class SubscriptionServiceImpl implements SubscriptionService {
 	private final SubscriptionRepository subscriptionRepository;
 	private final UserRepository userRepository;
+	private final PaymentService paymentService;
 	
 	// 구독자 생성
 	@Override
-	public void createSubscription(SubscriptionRequestDto subscriptionRequestDto) throws Exception {
+	public void createSubscription(Long id,UserType userType,PaymentRequestDto paymentRequestDto) {
+		
+		// 유저 타입 권한검사 필요
+		
 		LocalDate now = LocalDate.now();
 		
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("No User Found"));
+		
 		Subscription subscription = Subscription.builder()
-				.user(userRepository.findById(subscriptionRequestDto.getId())
-						.orElseThrow(() -> new EntityNotFoundException("No Subscription Found")))
+				.user(user)
 				.startDate(now)
 				.endDate(now.plusMonths(1))
 				.build();
 		
 		subscriptionRepository.save(subscription);
 		
-		User user = userRepository.findById(subscriptionRequestDto.getId())
-				.orElseThrow(() -> new EntityNotFoundException("No User Found"));
-		
 		user.subscribe();	// 구독 중인 회원으로 상태 변경
 		
 		userRepository.save(user);
+		
+		paymentService.createPayment(id, userType, paymentRequestDto);
+		
+		
 	}
 	
 	// 사용자 유형에 따른 구독자 조회
 	@Override
-	public List<SubscriptionResponseDto> readSubscriberByUserTypeList(UserType userType) throws Exception {
+	@Transactional(readOnly = true)
+	public List<SubscriptionResponseDto> readSubscriberListByUserType(UserType userType) {
 		
 		List<Subscription> subscribers = subscriptionRepository.findAllByUserType(userType);
 		

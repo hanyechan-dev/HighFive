@@ -1,26 +1,12 @@
 package com.jobPrize.admin01_service.dto;
 
-import com.jobPrize.entity.common.UserType;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class PaymentRequestDto {
-    @NotBlank(message = "유저 ID는 필수입니다.")
-    private Long id;
-    
-    @NotNull
-    private UserType userType;
 
     @NotBlank(message = "결제 금액은 필수입니다.")
     @Positive(message = "결제 금액은 0보다 커야 합니다.")
