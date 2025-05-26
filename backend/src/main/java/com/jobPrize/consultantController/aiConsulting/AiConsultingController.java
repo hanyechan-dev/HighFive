@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.consultant.aiConuslting.AiConsultingSummaryDto;
@@ -17,6 +16,7 @@ import com.jobPrize.dto.consultant.aiConuslting.AiEditDetailResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.service.consultant.aiConsulting.AiConsultingService;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +41,7 @@ public class AiConsultingController {
    
     @GetMapping("/list")
     public ResponseEntity<Page<AiConsultingSummaryDto>> readAiConsultingPage(Pageable pageable) {
+    	Long id = SecurityUtil.getId();
         Page<AiConsultingSummaryDto> page = aiConsultingService.readAiConsultingPage(pageable);
         return ResponseEntity.ok(page);
     }

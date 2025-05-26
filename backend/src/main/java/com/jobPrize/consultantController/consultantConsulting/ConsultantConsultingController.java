@@ -48,7 +48,7 @@ public class ConsultantConsultingController {
 	
 	@PutMapping("/complete")
 	public ResponseEntity<String> completeConsulting
-	(@RequestParam("consultantConsultingId") Long consultantConsultingId) {
+	(@RequestBody Long consultantConsultingId) {
 		
 		Long id = SecurityUtil.getId();
 		consultantConsultingService.completeConsulting(id, consultantConsultingId);
