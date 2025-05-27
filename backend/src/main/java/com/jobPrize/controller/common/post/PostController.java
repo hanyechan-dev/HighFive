@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +26,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -35,7 +34,7 @@ public class PostController {
     
     private final CommentService commentService;
     
-    @GetMapping("/page")
+    @GetMapping
     public ResponseEntity<Page<PostSummaryDto>> readPostPage(Pageable pageable){
     	
     	Page<PostSummaryDto> page = postService.readPostPage(pageable);
@@ -43,7 +42,7 @@ public class PostController {
     	return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 	
-    @PostMapping("/create")
+    @PostMapping
 	public ResponseEntity<Void> createPost(@RequestBody @Valid PostCreateDto dto) {
     	
     	Long id = SecurityUtil.getId();
@@ -54,7 +53,7 @@ public class PostController {
 		
 	}
     
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Void> updatePost(@RequestBody @Valid PostUpdateDto dto) {
     	
     	Long id = SecurityUtil.getId();
@@ -64,8 +63,8 @@ public class PostController {
     	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
-    @GetMapping("/detail/{postId}")
-    public ResponseEntity<PostResponseDto> readPostDetail(@PathVariable Long postId) {
+    @PostMapping("/detail")
+    public ResponseEntity<PostResponseDto> readPostDetail(@RequestBody Long postId) {
     	
         PostResponseDto dto = postService.readPost(postId);
         
@@ -73,10 +72,10 @@ public class PostController {
        
     }
     
-	@PostMapping("/detail/create-comment")
+	@PostMapping("/comment")
 	public ResponseEntity<Void> createComment(@RequestBody @Valid CommentCreateDto dto) {
 		
-		Long id = SecurityUtil.getId();
+		Long id = SecurityUtil.getId();	
 		
 		commentService.createComment(id, dto);
 		
@@ -92,10 +91,5 @@ public class PostController {
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
-
-    
-    
-    
-	
 
 }

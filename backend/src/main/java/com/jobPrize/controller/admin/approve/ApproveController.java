@@ -17,13 +17,13 @@ import com.jobPrize.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/admin/approve")
+@RequestMapping("members")
 @RequiredArgsConstructor
 public class ApproveController {
 	
 	private final ApproveService approveService;
 
-	@PutMapping("/approve")
+	@PutMapping("/approval")
 	public ResponseEntity<Void> approveUsers(@RequestBody List<Long> ids) {
 		
 		UserType userType = SecurityUtil.getUserType(); 
@@ -34,10 +34,9 @@ public class ApproveController {
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 				
-		
 	}
 
-	@PutMapping("/reject")
+	@PutMapping("/rejection")
 	public ResponseEntity<Void> unapproveUsers(@RequestBody List<Long> ids) {
 		
 		UserType userType = SecurityUtil.getUserType();
