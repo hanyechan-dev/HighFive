@@ -112,10 +112,15 @@ public class RequestServiceImpl implements RequestService {
 		assertUtil.assertId(id, request, "조회");
 		
 		AiConsulting aiConsulting = request.getAiConsulting();
+		
 		List<AiConsultingContent> aiConsultingContents = aiConsulting.getAiConsultingContents();
+		
 		RequestResponseDto requestResponseDto = RequestResponseDto.from(request);
+		
 		AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.from(aiConsulting);
+		
 		List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos = new ArrayList<>();
+		
 		for(AiConsultingContent aiConsultingContent : aiConsultingContents ) {
 			AiConsultingContentResponseDto aiConsultingContentResponseDto = AiConsultingContentResponseDto.from(aiConsultingContent);
 			aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);

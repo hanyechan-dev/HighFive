@@ -58,6 +58,7 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 				.orderBy(aiConsulting.requestedDate.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
+				.distinct()
 				.fetch();
 		
 		return new PageImpl<>(results, pageable, countAiConsultingsByCondition());

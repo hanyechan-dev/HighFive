@@ -123,7 +123,7 @@ public class ManagementController {
 		UserType userType = SecurityUtil.getUserType();
 		
 		for(Long targetId : ids) {
-			userService.softDeleteUser(id, targetId, userType);
+			userService.softDeleteUser(id, userType, targetId);
 		}
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
