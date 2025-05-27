@@ -60,6 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	@Override
 	public ScheduleResponseDto readSchedule(Long id, Long scheduleId) {
+		
 		Schedule schedule = scheduleRepository.findById(scheduleId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("일정"));
 		

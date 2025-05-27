@@ -60,6 +60,7 @@ public class JobPostingImageServiceImpl implements JobPostingImageService {
         }
     }
 
+
     private void deleteImagesByJobPostingId(Long jobPostingId) {
         List<JobPostingImage> images = jobPostingImageRepository.findAllByJobPostingId(jobPostingId);
         for (JobPostingImage image : images) {

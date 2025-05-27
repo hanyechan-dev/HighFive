@@ -45,6 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	@Transactional(readOnly = true)
 	public CompanyResponseDto readCompanyInfo(Long id) {
+		
 		Company company = companyRepository.findById(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
@@ -53,10 +54,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public void updateCompanyInfo(Long id, CompanyUpdateDto companyUpdateDto) {
+		
 		Company company = companyRepository.findById(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
-
-		assertUtil.assertId(id, company, "수정");
 		
 		company.updateCompanyInfo(companyUpdateDto);
 		

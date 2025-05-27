@@ -12,6 +12,8 @@ import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.Schedule;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
+import com.jobPrize.entity.memToCom.Application;
+import com.jobPrize.entity.memToCom.Pass;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.CareerDescription;
@@ -65,6 +67,7 @@ public class AssertUtil {
 			if (obj instanceof LanguageTest languageTest) return languageTest.getMember().getId();
 			if (obj instanceof CoverLetter coverLetter) return coverLetter.getMember().getId();
 	        if (obj instanceof CareerDescription careerDescription) return careerDescription.getMember().getId();
+	        if (obj instanceof Application application) return application.getJobPosting().getCompany().getId();
 
 	        throw new IllegalArgumentException("지원하지 않는 타입입니다");
 	   }

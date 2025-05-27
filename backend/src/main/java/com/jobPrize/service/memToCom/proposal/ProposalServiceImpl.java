@@ -78,6 +78,7 @@ public class ProposalServiceImpl implements ProposalService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<ProposalSummaryForCompanyDto> readProposalForCompanyPage(Long id, Pageable pageable) {
+		
 		Page<Proposal> proposals = proposalRepository.findAllByCompanyId(id, pageable);
 
 		List<ProposalSummaryForCompanyDto> proposalSummaryDtos = new ArrayList<>();
