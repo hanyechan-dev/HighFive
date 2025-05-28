@@ -18,16 +18,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PassServiceImpl implements PassService {
 	
-	private ApplicationRepository applicationRepository;
+	private final ApplicationRepository applicationRepository;
 	
-	private PassRepository passRepository;
+	private final PassRepository passRepository;
 	
-	private AssertUtil assertUtil;
+	private final AssertUtil assertUtil;
 
 	@Override
 	public void createPass(Long id, UserType userType, Long applicationId) {
 		
 		assertUtil.assertUserType(userType, UserType.기업회원, "합격");
+		
+		if(passRepository.existsByApplicationId(applicationId)) {
+			throw new IllegalArgumentException("이미 합격된 지원서입니다.");
+		}
 		
 		Application application = applicationRepository.findById(applicationId)
 				.orElseThrow(()->new CustomEntityNotFoundException("지원서"));
