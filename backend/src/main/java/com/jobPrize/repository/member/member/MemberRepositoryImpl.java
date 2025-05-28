@@ -15,7 +15,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<Member> findWithUserDeletedDateIsNullByMemberId(Long id) {
+    public Optional<Member> findByIdAndDeletedDateIsNull(Long id) {
         QMember member = QMember.member;
         QUser user = QUser.user;
 

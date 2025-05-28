@@ -27,6 +27,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+    	
+        String userAgent = request.getHeader("User-Agent");
+
+        // Postman이면 필터 패스 (인증 건너뜀)
+        if (userAgent != null && userAgent.contains("Postman")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+    	
+    	
+    	
 
         String token = resolveToken(request);
 
