@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.notification.NotificationDto;
 import com.jobPrize.service.common.notification.NotificationService;
+import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,13 +17,15 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/notificaiton")
 @RequiredArgsConstructor
 public class NotificationController {
-	private final NotificationService notificationService;
-	
-	// 알림 조회
-	@GetMapping
-	public ResponseEntity<List<NotificationDto>> getNotification(Long id){
-		List<NotificationDto> notification = notificationService.readNotification(id);
-		return ResponseEntity.ok(notification);
-	}
-	
+    private final NotificationService notificationService;
+    
+    // 알림 조회
+    @GetMapping
+    public ResponseEntity<List<NotificationDto>> getNotification(){
+    	Long id = SecurityUtil.getId();
+    	
+        List<NotificationDto> notification = notificationService.readNotification(id);
+        return ResponseEntity.ok(notification);
+    }
+    
 }

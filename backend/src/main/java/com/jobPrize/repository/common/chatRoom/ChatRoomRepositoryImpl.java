@@ -58,4 +58,24 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		
 		return Optional.ofNullable(result);
 	}
+	
+	@Override
+	public Boolean checkMemberInChatRoom(Long id, Long roomId) {	// 채팅방 소속 여부 확인
+		QChatRoom chatRoom = QChatRoom.chatRoom;
+		
+		ChatRoom result = queryFactory
+				.selectFrom(chatRoom)
+				.leftJoin(chatRoom.user1).fetchJoin()
+				.leftJoin(chatRoom.user2).fetchJoin()
+				.where(
+					chatRoom.id.eq(roomId)
+					.and(
+						chatRoom.user1.id.eq(id)
+						.or(chatRoom.user2.id.eq(id))
+					)
+				)
+				.fetchOne();
+		
+		return result != null;
+	}
 }

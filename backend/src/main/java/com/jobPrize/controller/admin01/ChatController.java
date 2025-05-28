@@ -1,5 +1,6 @@
 package com.jobPrize.controller.admin01;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.chat.ChatResponseDto;
 import com.jobPrize.service.common.chat.ChatService;
+import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +25,8 @@ public class ChatController {
 	
 	// 채팅방 리스트 조회
 	@GetMapping
-	public ResponseEntity<List<ChatResponseDto>> getChatRooms(@RequestParam Long id){
-		// 쿼리스트링 변환으로 인한 불법적 채팅방 조회 방지 코드 필요함
-		
+	public ResponseEntity<List<ChatResponseDto>> getChatRooms(){
+		Long id = SecurityUtil.getId();
 		List<ChatResponseDto> chatRooms = chatService.readChatRoomList(id);
 		return ResponseEntity.ok(chatRooms);
 	}
@@ -33,13 +34,19 @@ public class ChatController {
 	// 채팅 메세지 조회
 	@GetMapping("/{roomId}")
 	public ResponseEntity<List<ChatResponseDto>> getMessages(@RequestParam Long roomId){
-		List<ChatResponseDto> chatMessages = chatService.readMessagesList(roomId);
-		return ResponseEntity.ok(chatMessages);
+		Long id = SecurityUtil.getId();
+		Boolean check = chatService.checkUser(id, roomId);
+		
+		if(check == true) {
+			List<ChatResponseDto> chatMessages = chatService.readMessagesList(roomId);
+			return ResponseEntity.ok(chatMessages);
+		} else { return ResponseEntity.badRequest().body(Collections.emptyList()); }
 	}
 	
 	// 채팅방 생성
 	@PostMapping("/room")
-	public ResponseEntity<Void> createChatRoom(@RequestBody Long id, Long targetId) {
+	public ResponseEntity<Void> createChatRoom(@RequestBody Long targetId) {
+		Long id = SecurityUtil.getId();
 		chatService.createChatRoom(id, targetId);
 		return ResponseEntity.ok().build();
 	}
