@@ -107,5 +107,12 @@ public class ChatServiceImpl implements ChatService {
             )
             .collect(Collectors.toList());
 	}
+    
+    @Override
+    // 채팅방 소속 여부 확인
+    public Boolean checkUser(Long id, Long roomId) {
+    	Boolean check = chatRoomRepository.checkMemberInChatRoom(id, roomId);
+    	return check != null;
+    }
 
 }
