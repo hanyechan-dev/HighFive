@@ -1,4 +1,4 @@
-package com.jobPrize.controller.admin01;
+package com.jobPrize.controller.common.chat;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.chat.ChatResponseDto;
+import com.jobPrize.dto.common.read.ReadIdDto;
 import com.jobPrize.service.common.chat.ChatService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -35,10 +36,10 @@ public class ChatController {
 	@PostMapping("/detail")
 	public ResponseEntity<List<ChatResponseDto>> getMessages(@RequestBody ReadIdDto readIdDto){
 		Long id = SecurityUtil.getId();
-		Boolean check = chatService.checkUser(id, readIdDto.getID());
+		Boolean check = chatService.checkUser(id, readIdDto.getId());
 		
 		if(check == true) {
-			List<ChatResponseDto> chatMessages = chatService.readMessagesList(readIdDto.getID());
+			List<ChatResponseDto> chatMessages = chatService.readMessagesList(readIdDto.getId());
 			return ResponseEntity.status(HttpStatus.OK).body(chatMessages);
 		} else { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList()); }
 	}

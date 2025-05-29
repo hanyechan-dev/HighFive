@@ -1,4 +1,4 @@
-package com.jobPrize.controller.admin01;
+package com.jobPrize.controller.common.payment;
 
 
 import java.util.Collections;

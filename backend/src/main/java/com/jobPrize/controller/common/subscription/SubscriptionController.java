@@ -1,4 +1,4 @@
-package com.jobPrize.controller.admin01;
+package com.jobPrize.controller.common.subscription;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
