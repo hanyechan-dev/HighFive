@@ -58,6 +58,8 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 				.orderBy(aiConsulting.requestedDate.desc())
 				.offset(pageable.getOffset()) //몇 번째부터 시작할지
 				.limit(pageable.getPageSize()) //몇 개 가져올지
+				.distinct()
+
 				.fetch();
 		
 		return new PageImpl<>(results, pageable, countAiConsultingsByCondition());
@@ -73,7 +75,6 @@ public class AiConsultingRepositoryImpl implements AiConsultingRepositoryCustom 
 	        .select(aiConsulting.count())
 	        .from(aiConsulting)
 	        .leftJoin(aiConsulting.consultantConsulting)
-//	        .fetchJoin()
 	        .where(
 					aiConsulting.requestedDate.isNotNull(),
 					aiConsulting.consultantConsulting.isNull()

@@ -17,6 +17,7 @@ import com.jobPrize.dto.admin.management.company.CompanyManagementSummaryDto;
 import com.jobPrize.dto.admin.management.consultant.ConsultantManagementSummaryDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.approve.ApproveService;
+import com.jobPrize.service.admin.userManagement.UserManagementService;
 import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class ApproveController {
 	
 	private final ApproveService approveService;
+	
+	private final UserManagementService userManagementService;
+	
 
 	
 	@GetMapping("/companies")
