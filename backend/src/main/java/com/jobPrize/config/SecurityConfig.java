@@ -42,24 +42,25 @@ public class SecurityConfig {
 		http
 			.cors(withDefaults()) // 기본 설정에 따르겠다는 의미.
 			// 밑에서 CorsConfigurationSource 설정 값을 @Bean으로 등록했으니 그것이 사용됨
-			.csrf(csrf -> {
-					CookieCsrfTokenRepository repo = new CookieCsrfTokenRepository();// CsrfToken 쿠키 저장소 생성 (기본 HttpOnly=true, 필요시 커스터마이징 가능)
-					repo.setCookieCustomizer(builder ->
-						builder
-							.secure(false)  // HTTPS 연결일때만 브라우저가 서버 전송 가능, 현재는 로컬 개발이니 false로 설정, 실 배포시 true로 변경해야함
-							.sameSite("Strict") // 다른 사이트의 요청에선 쿠키를 보내지 않게 브라우저에게 명령
-					);
-					csrf.csrfTokenRepository(repo).ignoringRequestMatchers( 
-							// 밑의 URL의 해당 메소드로 들어온 요청은 CSRF 토큰 검사 제외(프로젝트시 수정 필요)
-							new AntPathRequestMatcher("/member/login", "POST"),
-							new AntPathRequestMatcher("/member/logout", "POST"));
+			.csrf(csrf -> { csrf.disable();
+//					CookieCsrfTokenRepository repo = new CookieCsrfTokenRepository();// CsrfToken 쿠키 저장소 생성 (기본 HttpOnly=true, 필요시 커스터마이징 가능)
+//					repo.setCookieCustomizer(builder ->
+//						builder
+//							.secure(false)  // HTTPS 연결일때만 브라우저가 서버 전송 가능, 현재는 로컬 개발이니 false로 설정, 실 배포시 true로 변경해야함
+//							.sameSite("Strict") // 다른 사이트의 요청에선 쿠키를 보내지 않게 브라우저에게 명령
+//					);
+//					csrf.csrfTokenRepository(repo).ignoringRequestMatchers( 
+//							// 밑의 URL의 해당 메소드로 들어온 요청은 CSRF 토큰 검사 제외(프로젝트시 수정 필요)
+//							new AntPathRequestMatcher("/member/login", "POST"),
+//							new AntPathRequestMatcher("/member/logout", "POST"));
 				})
 			.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 안쓸거라 세션 안쓴다고 명시함
 			.authorizeHttpRequests(
-					auth -> auth.requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() 
+					auth -> auth.anyRequest().permitAll()
+//					auth -> auth.requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() 
 					// 안에 들어있는 URL로 들어온 요청에 대해선 인증검사안함(프로젝트시	수정필요) 
 					// 여기서 수행하는 인증 절차는 스프링이 제공하는 각 filter 및 아래에 명시한 jwtAuthenticationFilter등이 포함됨
-								.anyRequest().authenticated()
+//								.anyRequest().authenticated()
 								 // 위에 명시된 URL을 제외한 어떠한 요청도 인증검사 수행
 				)
 				.exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint)

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
 import com.jobPrize.dto.memToCon.request.RequestCreateDto;
 import com.jobPrize.dto.memToCon.request.RequestDetailDto;
@@ -25,8 +26,10 @@ import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.service.consultant.aiConsulting.AiConsultingService;
 import com.jobPrize.util.AssertUtil;
 import com.jobPrize.util.JsonUtil;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,12 +42,16 @@ public class RequestServiceImpl implements RequestService {
 	
 	private final RequestRepository requestRepository;
 	
+	private final AiConsultingService aiConsultingService;
+	
 	private final JsonUtil jsonUtil;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
 
 	@Override
-	public Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
+	public void createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
 
 		assertUtil.assertUserType(userType, UserType.일반회원, "컨설팅 요청");
 		
@@ -62,7 +69,8 @@ public class RequestServiceImpl implements RequestService {
 
 		requestRepository.save(request);
 		
-		return request.getId();
+		postRequestToPython(request);
+
 		
 	}
 	
@@ -129,10 +137,16 @@ public class RequestServiceImpl implements RequestService {
 	
 		return RequestDetailDto.of(requestResponseDto, aiConsultingResponseDto, aiConsultingContentResponseDtos);
 	}
-
-
 	
-	
+	private void postRequestToPython(Request request) {
+		
+		RequestResponseDto requestResponseDto = RequestResponseDto.from(request);
+		
+		AiConsultingCreateDto aiConsultingCreateDto = webClientUtil.postRequestToPython(requestResponseDto);
+    	
+		aiConsultingService.createAiConsulting(aiConsultingCreateDto, requestResponseDto.getId());
+		
+	}
 	
 	private LocalDate getPriorityDate(Request request) {
 		LocalDate date = null;
@@ -160,6 +174,8 @@ public class RequestServiceImpl implements RequestService {
 		
 		return date;
 	}
+
+
 	
 
 }
