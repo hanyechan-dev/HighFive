@@ -1,6 +1,7 @@
 package com.jobPrize.dto.company.memberPool;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.certification.CertificationResponseDto;
@@ -34,15 +35,21 @@ public class MemberPoolDetailDto {
 	
 	private CareerResponseDto  careerResponseDto;
 	
-	private CertificationResponseDto certificationResponseDto;
+	private List<CertificationResponseDto> certificationResponseDto;
 	
-	private LanguageTestResponseDto languageTestResponseDto;
+	private List<LanguageTestResponseDto> languageTestResponseDto;
 	
 	private boolean isInterested;
 
-	public static MemberPoolDetailDto of(User user, boolean hasCareer, String job, EducationResponseDto educationResponseDto,
-				CareerResponseDto  careerResponseDto,CertificationResponseDto certificationResponseDto,
-				LanguageTestResponseDto languageTestResponseDto, boolean isInterested) {
+	public static MemberPoolDetailDto of(
+			User user, 
+			boolean hasCareer, 
+			String job, 
+			EducationResponseDto educationResponseDto,
+			CareerResponseDto  careerResponseDto,
+			List<CertificationResponseDto> certificationResponseDto,
+			List<LanguageTestResponseDto> languageTestResponseDto, 
+			boolean isInterested) {
 		
 		return MemberPoolDetailDto.builder()
 			.name(user.getName())

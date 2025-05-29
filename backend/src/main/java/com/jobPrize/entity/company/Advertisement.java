@@ -39,7 +39,7 @@ public class Advertisement {
 	private Company company;
 
 	@Column(name = "image_url", nullable = false)
-	private String imageUrl;
+	private String imageName;
 
 	@Column(name = "start_date")
 	private LocalDate startDate;
@@ -50,13 +50,13 @@ public class Advertisement {
 	public boolean isActivated() {
 		return LocalDate.now().isAfter(startDate) && LocalDate.now().isBefore(endDate);
 	}
-	public static Advertisement of(Company company, AdvertisementCreateDto advertisementCreateDto) {
-		return Advertisement.builder()
-			.company(company)
-			.imageUrl(advertisementCreateDto.getImageUrl())
-			.startDate(LocalDate.now())
-			.endDate(LocalDate.now().plusMonths(1))
-			.build();
-	}
+//	public static Advertisement of(Company company, AdvertisementCreateDto advertisementCreateDto) {
+//		return Advertisement.builder()
+//			.company(company)
+//			.imageUrl(advertisementCreateDto.getImageUrl())
+//			.startDate(LocalDate.now())
+//			.endDate(LocalDate.now().plusMonths(1))
+//			.build();
+//	}
 
 }

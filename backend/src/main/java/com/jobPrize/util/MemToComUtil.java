@@ -50,6 +50,7 @@ public class MemToComUtil {
         if (obj instanceof Application app) return app.getMember();
         if (obj instanceof Proposal proposal) return proposal.getMember();
         if (obj instanceof Similarity sim) return sim.getMember();
+        if (obj instanceof Member member) return member;
         throw new IllegalArgumentException("지원하지 않는 타입입니다");
     }
 

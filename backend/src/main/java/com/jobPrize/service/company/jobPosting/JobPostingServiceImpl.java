@@ -54,8 +54,12 @@ public class JobPostingServiceImpl implements JobPostingService{
 		jobPostingRepository.save(jobPosting);
 		
 		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingCreateDto.getJobPostingImageCreateDtos();
-		
-		createJobPostingImages(jobPosting, jobPostingImageCreateDtos);
+		List<MultipartFile> multipartFiles = new ArrayList<>();
+		for(JobPostingImageCreateDto jobPostingImageCreateDto : jobPostingImageCreateDtos) {
+			MultipartFile multipartFile= jobPostingImageCreateDto.getImage();
+			multipartFiles.add(multipartFile);
+		}
+		jobPostingImageService.createImages(jobPosting, multipartFiles);
 	}
 
 	@Override
@@ -98,11 +102,6 @@ public class JobPostingServiceImpl implements JobPostingService{
 		assertUtil.assertId(id, jobPosting, "수정");
 		
 		jobPosting.updateJobPostingInfo(jobPostingUpdateDto);
-		
-		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingUpdateDto.getJobPostingImageCreateDtos();
-		
-		createJobPostingImages(jobPosting, jobPostingImageCreateDtos);
-		
 	}
 
 	@Override
@@ -113,17 +112,6 @@ public class JobPostingServiceImpl implements JobPostingService{
 		assertUtil.assertId(id, jobPosting, "삭제");
 		
 		jobPostingRepository.delete(jobPosting);
-	}
-	
-	
-	private void createJobPostingImages(JobPosting jobPosting, List<JobPostingImageCreateDto> jobPostingImageCreateDtos) {
-		List<MultipartFile> multipartFiles = new ArrayList<>();
-		for(JobPostingImageCreateDto jobPostingImageCreateDto : jobPostingImageCreateDtos) {
-			MultipartFile multipartFile= jobPostingImageCreateDto.getImage();
-			multipartFiles.add(multipartFile);
-		}
-		jobPostingImageService.createImages(jobPosting, multipartFiles);
-		
 	}
 
 }

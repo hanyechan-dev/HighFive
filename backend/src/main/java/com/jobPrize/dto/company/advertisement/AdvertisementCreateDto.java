@@ -1,9 +1,12 @@
 package com.jobPrize.dto.company.advertisement;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class AdvertisementCreateDto {
-	// 생각
-	private String imageUrl;
+	@NotNull(message = "이미지를 선택해주세요")
+	private MultipartFile image;
 }

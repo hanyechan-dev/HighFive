@@ -12,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.JobPostingImage;
+import com.jobPrize.enumerate.ImageType;
 import com.jobPrize.repository.company.jobPostingImage.JobPostingImageRepository;
+import com.jobPrize.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +25,12 @@ import lombok.RequiredArgsConstructor;
 public class JobPostingImageServiceImpl implements JobPostingImageService {
 	
     private final JobPostingImageRepository jobPostingImageRepository;
+    
+    private final FileUtil fileUtil;
 
-    @Value("${file.upload-dir}")
+    @Value("${file.upload-jobposting-image-dir}")
     private String uploadDir;
+    
 
     @Override
     public void createImages(JobPosting jobPosting, List<MultipartFile> newFiles) {
@@ -33,23 +38,12 @@ public class JobPostingImageServiceImpl implements JobPostingImageService {
         deleteImagesByJobPostingId(jobPosting.getId());
 
         for (MultipartFile file : newFiles) {
-            if (file.isEmpty()) {
-            	continue;
-            } 
-
-            String extension = "";
-            String uuidName = "";
-            int dotIndex = file.getOriginalFilename().lastIndexOf(".");
-            if (dotIndex != -1) {
-                extension = file.getOriginalFilename().substring(dotIndex);
-            }
-            uuidName = UUID.randomUUID() + extension;
-
-            try {
-                file.transferTo(new File(uploadDir + uuidName));
-            } catch (IOException e) {
-                throw new RuntimeException("파일 저장 실패", e);
-            }
+        	
+    		String uuidName = fileUtil.saveImageAndGetUUIDName(file,ImageType.JOBPOSTING_IMAGE);
+    		
+    		if(uuidName==null) {
+    			throw new IllegalArgumentException("채용 공고 이미지가 없습니다.");
+    		}
 
             JobPostingImage jobPostingImage = JobPostingImage.builder()
                 .imageName(uuidName)
