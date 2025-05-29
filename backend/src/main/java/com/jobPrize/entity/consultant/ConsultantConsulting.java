@@ -54,11 +54,11 @@ public class ConsultantConsulting {
     @JoinColumn(name = "user_id", nullable = false)
     private Consultant consultant;
     
-    @CreatedDate
+    @CreatedDate  //컨설턴트 컨설팅 승인 일자 
     @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @Column(name = "completed_date")
+    @Column(name = "completed_date")  //컨설턴트 컨설팅 완료 일자
     private LocalDate completedDate;
 
     @OneToMany(mappedBy = "consultantConsulting", cascade = CascadeType.ALL, orphanRemoval = true)

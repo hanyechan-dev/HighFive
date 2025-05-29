@@ -19,7 +19,7 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Optional<ConsultantConsulting> findWithConsultantConsultingContentsByConsultantConsultingId(Long id) {
+	public Optional<ConsultantConsulting> findWithConsultantConsultingContentsByConsultantConsultingId(Long id) { //상세 모달
 
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 
@@ -34,7 +34,7 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 	}
 	
 	@Override
-	public Page<ConsultantConsulting> findWithAllConsultantConsultingByConsultantId(Long id, Pageable pageable) {
+	public Page<ConsultantConsulting> findWithAllConsultantConsultingByConsultantId(Long id, Pageable pageable) { //컨설팅 현황 관리 페이지
 		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
 
 		List<ConsultantConsulting> results = queryFactory
