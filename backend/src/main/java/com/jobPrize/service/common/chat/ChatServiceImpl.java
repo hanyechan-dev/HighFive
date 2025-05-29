@@ -17,7 +17,6 @@ import com.jobPrize.repository.common.chatContent.ChatContentRepository;
 import com.jobPrize.repository.common.chatRoom.ChatRoomRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
