@@ -17,6 +17,7 @@ import com.jobPrize.repository.common.chatContent.ChatContentRepository;
 import com.jobPrize.repository.common.chatRoom.ChatRoomRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -107,5 +108,12 @@ public class ChatServiceImpl implements ChatService {
             )
             .collect(Collectors.toList());
 	}
+    
+    @Override
+    // 채팅방 소속 여부 확인
+    public Boolean checkUser(Long id, Long roomId) {
+    	Boolean check = chatRoomRepository.checkMemberInChatRoom(id, roomId);
+    	return check != null;
+    }
 
 }
