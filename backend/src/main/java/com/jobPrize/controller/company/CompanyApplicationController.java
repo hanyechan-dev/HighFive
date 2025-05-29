@@ -5,8 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
@@ -18,9 +19,10 @@ import com.jobPrize.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("company/applications")
+@RequestMapping("companies/applications")
 @RequiredArgsConstructor
 public class CompanyApplicationController {
+	
 	private final ApplicationService applicationService;
 
 	@GetMapping
@@ -33,17 +35,18 @@ public class CompanyApplicationController {
 		return ResponseEntity.status(HttpStatus.OK).body(applicationSummaryForCompanyDtos);
 	}
 	
-	@GetMapping
-	public ResponseEntity<ApplicationResponseDto> readDetailApplication(@RequestParam Long memberId){
+	@PostMapping("/detail")
+	public ResponseEntity<ApplicationResponseDto> readDetailApplication(@RequestBody Long applicationId){
 
-		Long companyId = SecurityUtil.getId();
+		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(companyId, userType, memberId);
+		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(id, userType, applicationId);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseDto);
 		
 	}
+
 	
 }

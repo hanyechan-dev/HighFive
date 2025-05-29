@@ -101,8 +101,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 			boolean hasCareer = memToComUtil.hasCareer(application);
 			EducationLevel latestEducationLevel = memToComUtil.latestEducationLevel(application);
 			boolean isInterested = memToComUtil.isInterested(application);
-
-			ApplicationSummaryForCompanyDto applicationSummaryForCompanyDto = ApplicationSummaryForCompanyDto.of(application, hasCareer, latestEducationLevel, isInterested);
+			boolean isPassed = application.isPassed();
+			
+			ApplicationSummaryForCompanyDto applicationSummaryForCompanyDto = ApplicationSummaryForCompanyDto.of(application, hasCareer, latestEducationLevel, isInterested, isPassed);
 
 			
 			applicationSummaryForCompanyDtos.add(applicationSummaryForCompanyDto);

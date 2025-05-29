@@ -1,0 +1,85 @@
+package com.jobPrize.controller.company;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jobPrize.dto.common.DeleteIdDto;
+import com.jobPrize.dto.company.schedule.ScheduleCreateDto;
+import com.jobPrize.dto.company.schedule.ScheduleResponseDto;
+import com.jobPrize.dto.company.schedule.ScheduleSummaryDto;
+import com.jobPrize.dto.company.schedule.ScheduleUpdateDto;
+import com.jobPrize.entity.common.UserType;
+import com.jobPrize.service.company.schedule.ScheduleService;
+import com.jobPrize.util.SecurityUtil;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("schedules")
+@RequiredArgsConstructor
+public class ScheduleController {
+
+	private final ScheduleService scheduleService;
+
+	@GetMapping
+	public ResponseEntity<List<ScheduleSummaryDto>> readMySchedules() {
+
+		Long id = SecurityUtil.getId();
+
+		List<ScheduleSummaryDto> scheduleSummaryDtos = scheduleService.readScheduleList(id);
+
+		return ResponseEntity.status(HttpStatus.OK).body(scheduleSummaryDtos);
+	}
+
+	@PostMapping("/detail")
+	public ResponseEntity<ScheduleResponseDto> readMyJobPosting(@RequestBody Long scheduleId) {
+
+		Long id = SecurityUtil.getId();
+
+		ScheduleResponseDto scheduleResponseDto = scheduleService.readSchedule(id, scheduleId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(scheduleResponseDto);
+	}
+
+	@PostMapping
+	public ResponseEntity<Void> createMySchedule(@RequestBody @Valid ScheduleCreateDto scheduleCreateDto) {
+
+		Long id = SecurityUtil.getId();
+
+		UserType userType = SecurityUtil.getUserType();
+
+		scheduleService.createSchedule(id, userType, scheduleCreateDto);
+
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+
+	}
+
+	@PutMapping
+	public ResponseEntity<Void> updateMyJobPosting(@RequestBody @Valid ScheduleUpdateDto scheduleUpdateDto) {
+
+		Long id = SecurityUtil.getId();
+
+		scheduleService.updateSchedule(id, scheduleUpdateDto);
+
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@PostMapping("/deletion")
+	public ResponseEntity<Void> deletMyJobPosting(@RequestBody DeleteIdDto deleteIdDto) {
+
+		Long id = SecurityUtil.getId();
+
+		scheduleService.deleteSchedule(id, deleteIdDto.getId());
+
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+}

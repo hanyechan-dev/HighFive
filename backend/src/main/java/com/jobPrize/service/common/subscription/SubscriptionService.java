@@ -16,5 +16,8 @@ public interface SubscriptionService {
 	
 	// 구독 만료 시, 구독 상태 자동 업데이트
 	void updateStatus();
+	
+	// 자기자신 구독 조회
+	SubscriptionResponseDto readMySubscription(Long id);
 
 }

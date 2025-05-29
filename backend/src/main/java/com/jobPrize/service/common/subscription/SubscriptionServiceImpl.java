@@ -2,6 +2,7 @@ package com.jobPrize.service.common.subscription;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -98,7 +99,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 			
 			userRepository.save(user);
 		}
-
+		
 	}
+	@Override
+	@Transactional(readOnly = true)
+	public SubscriptionResponseDto readMySubscription(Long id) { 
+
+		Subscription subscription = subscriptionRepository.findByUserId(id) 
+		        .orElseThrow(() -> new NoSuchElementException("구독 정보가 없습니다.")); 
+		    
+		assertUtil.assertId(id, subscription, "구독 정보 조회");
+
+		return SubscriptionResponseDto.builder()
+				.id(subscription.getUser().getId())
+		        .name(subscription.getUser().getName())
+		        .userType(subscription.getUser().getType())
+		        .startDate(subscription.getStartDate())
+	            .endDate(subscription.getEndDate())
+	            .build();
+
+		}
 	
 }

@@ -61,6 +61,10 @@ public class Application {
 
 	@OneToOne(mappedBy = "application", fetch = FetchType.LAZY)
 	private Pass pass;
+	
+	public boolean isPassed() {
+		return pass != null && pass.isPassed();
+	}
 
 	public static Application of(Member member, JobPosting jobPosting, String resumeJson, String careerDescriptionJson, String coverLetterJson) {
 		return Application.builder()

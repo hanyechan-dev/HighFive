@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
+import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.memToCom.proposal.ProposalService;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RestController
-@RequestMapping("company/proposlas")
+@RequestMapping("companies/proposals")
 @RequiredArgsConstructor
 public class ProposalController {
 
@@ -37,9 +38,22 @@ public class ProposalController {
 		return ResponseEntity.status(HttpStatus.OK).body(proposalSummaryForCompanyDtos);
 	}
 	
+	 @PostMapping("/detail")
+	 public ResponseEntity<ProposalResponseDto> readMyProposal(@RequestBody Long proposalId) {
+		 
+		 Long id = SecurityUtil.getId();
+	        
+		 UserType userType = SecurityUtil.getUserType();
+
+		 ProposalResponseDto proposalResponseDto = proposalService.readProposal(id, userType, proposalId);
+
+		 return ResponseEntity.status(HttpStatus.OK).body(proposalResponseDto);
+		 
+	 }
+	
 	
 	@PostMapping
-	public ResponseEntity<Void>createProposal (@RequestBody ProposalCreateDto proposalCreateDto){
+	public ResponseEntity<Void> createProposal (@RequestBody ProposalCreateDto proposalCreateDto){
 		
 		Long id = SecurityUtil.getId();
 		
