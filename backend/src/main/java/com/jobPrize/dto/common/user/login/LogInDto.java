@@ -14,6 +14,6 @@ public class LogInDto {
 	@Size(max=30, message = "이메일은 30자 이하로 입력해야합니다.")
 	private String email;
 
-	@Password
+//	@Password
 	private String password;
 }
