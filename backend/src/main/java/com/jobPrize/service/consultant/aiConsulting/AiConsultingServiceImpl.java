@@ -47,16 +47,16 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
 		
-	    Page<AiConsulting> entityPage = aiConsultingRepository.findAllByCondition(pageable);
+	    Page<AiConsulting> AiConsultingPage = aiConsultingRepository.findAllByCondition(pageable); //컨설팅 요청 페이지
 
-	    List<AiConsultingSummaryDto> dtoList = new ArrayList<>();
+	    List<AiConsultingSummaryDto> aiConsultingSummaryDtos = new ArrayList<>();
 
-	    for (AiConsulting aiConsulting : entityPage.getContent()) {
+	    for (AiConsulting aiConsulting : AiConsultingPage.getContent()) {
 	        AiConsultingSummaryDto aiConsultingSummaryDto = AiConsultingSummaryDto.from(aiConsulting);
-	        dtoList.add(aiConsultingSummaryDto);
+	        aiConsultingSummaryDtos.add(aiConsultingSummaryDto);
 	    }
 
-	    return new PageImpl<>(dtoList, pageable, entityPage.getTotalElements()); //전체 데이터 개수 유지해서 프론트에 알려줌
+	    return new PageImpl<>(aiConsultingSummaryDtos, pageable, AiConsultingPage.getTotalElements()); //전체 데이터 개수 유지해서 프론트에 알려줌
 	}
 	
 	
@@ -66,7 +66,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 		
 		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
 		
-	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
+	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId) //상세 모달 정보
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 	    
 	    List<AiConsultingContent> aiConsultingContents=aiConsulting.getAiConsultingContents();

@@ -22,13 +22,13 @@ import com.jobPrize.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/consultant/consultant-consulting")
+@RequestMapping("consultant-consultings")
 @RequiredArgsConstructor
 public class ConsultantConsultingController {
 	
 	private final ConsultantConsultingService consultantConsultingService;
 	
-	@GetMapping("/list")
+	@GetMapping
 	public ResponseEntity<Page<ConsultantConsultingSummaryDto>> readConsultantConsultingPage(Pageable pageable) {
 		
 	    Long id = SecurityUtil.getId();  
@@ -38,8 +38,8 @@ public class ConsultantConsultingController {
 	    return ResponseEntity.status(200).body(page);
 	}
 	
-	@PostMapping("/edit-detail")
-	public ResponseEntity<ConsultantEditDetailResponseDto> readEditDetail(@RequestBody Long consultantConsultingId) {
+	@PostMapping("/edits/detail")
+	public ResponseEntity<ConsultantEditDetailResponseDto> readMyEditDetail(@RequestBody Long consultantConsultingId) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -51,8 +51,8 @@ public class ConsultantConsultingController {
 				
 	}
 	
-	@PostMapping("/feedback-detail")
-	public ResponseEntity<ConsultantFeedBackDetailResponseDto> readFeedBackDetail(@RequestBody Long consultantConsultingId) {
+	@PostMapping("/feedbacks/detail")
+	public ResponseEntity<ConsultantFeedBackDetailResponseDto> readMyFeedBackDetail(@RequestBody Long consultantConsultingId) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -63,7 +63,7 @@ public class ConsultantConsultingController {
 	}
 
 	
-	@PutMapping("/update")
+	@PutMapping
 	public ResponseEntity<Void> updateConsultantConsulting(@RequestBody ConsultantConsultingUpdateDto consultantConsultingUpdateDto) {
 	
 		Long id = SecurityUtil.getId();
@@ -73,7 +73,7 @@ public class ConsultantConsultingController {
 		return ResponseEntity.status(200).build();
 	}
 	
-	@PutMapping("/complete")
+	@PutMapping("/completion")
 	public ResponseEntity<Void> completeConsulting(@RequestBody Long consultantConsultingId) {
 		
 		Long id = SecurityUtil.getId();

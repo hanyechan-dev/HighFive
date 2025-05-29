@@ -45,7 +45,7 @@ public class AiConsulting {
     @Column(nullable = false)
     private CommonEnum.ConsultingType type;
     
-    @Column(name = "request_date", nullable = false)
+    @Column(name = "request_date", nullable = false) //컨설턴트 컨설팅 요청 일자 
     private LocalDate requestedDate;
     
     @OneToOne(mappedBy = "aiConsulting", fetch = FetchType.LAZY)

@@ -21,7 +21,7 @@ import com.jobPrize.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/consultant/ai-consulting") 
+@RequestMapping("ai-consultings") 
 @RequiredArgsConstructor
 public class AiConsultingController {
 
@@ -43,17 +43,17 @@ public class AiConsultingController {
 //    }
 
    
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<Page<AiConsultingSummaryDto>> readAiConsultingPage(Pageable pageable) {
 
     	UserType userType = SecurityUtil.getUserType();
-    			
+		
         Page<AiConsultingSummaryDto> page = aiConsultingService.readAiConsultingPage(userType,pageable);
         
         return ResponseEntity.status(200).body(page);
     }
     
-	@PostMapping("/approve")
+	@PostMapping("/approval")
 	public ResponseEntity<Void> approveConsulting(@RequestBody Long aiConsultingId) {
 		
 		Long id = SecurityUtil.getId();
@@ -66,8 +66,8 @@ public class AiConsultingController {
 	}
 
  
-    @PostMapping("/edit-detail")
-    public ResponseEntity<AiEditDetailResponseDto> readEditDetail(@RequestBody Long aiConsultingId) {
+    @PostMapping("/edits/detail")
+    public ResponseEntity<AiEditDetailResponseDto> readMyEditDetail(@RequestBody Long aiConsultingId) {
     	
     	Long id = SecurityUtil.getId();
     	
@@ -79,8 +79,8 @@ public class AiConsultingController {
     }
 
  
-    @PostMapping("/feedback-detail")
-    public ResponseEntity<AiFeedbackDetailResponseDto> readFeedbackDetail
+    @PostMapping("/feedbacks/detail")
+    public ResponseEntity<AiFeedbackDetailResponseDto> readMyFeedbackDetail
     (@RequestBody Long aiConsultingId) {
     	
     	Long id = SecurityUtil.getId();
