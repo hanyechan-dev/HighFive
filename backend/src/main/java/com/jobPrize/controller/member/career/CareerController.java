@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.delete.DeleteIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.member.career.CareerCreateDto;
 import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.career.CareerUpdateDto;
@@ -19,6 +19,7 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.member.career.CareerService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,7 +42,7 @@ public class CareerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createCareer(@RequestBody CareerCreateDto careerCreateDto) {
+	public ResponseEntity<Void> createCareer(@RequestBody @Valid CareerCreateDto careerCreateDto) {
 
 		Long id = SecurityUtil.getId();
 
@@ -53,7 +54,7 @@ public class CareerController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyCareer(@RequestBody CareerUpdateDto careerUpdateDto) {
+	public ResponseEntity<Void> updateMyCareer(@RequestBody @Valid CareerUpdateDto careerUpdateDto) {
 
 		Long id = SecurityUtil.getId();
 
@@ -63,11 +64,11 @@ public class CareerController {
 	}
 
 	@PostMapping("/delete")
-	public ResponseEntity<Void> deleteMyCareer(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deleteMyCareer(@RequestBody @Valid IdDto idDto) {
 
 		Long id = SecurityUtil.getId();
 
-		careerService.deleteCareer(id, deleteIdDto.getId());
+		careerService.deleteCareer(id, idDto.getId());
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

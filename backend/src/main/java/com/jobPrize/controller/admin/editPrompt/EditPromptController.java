@@ -16,6 +16,7 @@ import com.jobPrize.dto.admin.editPrompt.EditPromptResponseDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptSummaryDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptUpdateDto;
 import com.jobPrize.dto.admin.setting.EditPromptSettingResponseDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.editPrompt.EditPromptService;
 import com.jobPrize.util.SecurityUtil;
@@ -68,21 +69,21 @@ public class EditPromptController {
 	}
 
 	@PutMapping("/application")	
-	public ResponseEntity<Void> applyEditPrompt(@RequestBody Long editPromptId) {
+	public ResponseEntity<Void> applyEditPrompt(@RequestBody @Valid IdDto editPromptId) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		editPromptService.applyEditPrompt(userType, editPromptId);
+		editPromptService.applyEditPrompt(userType, editPromptId.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	@PostMapping("/deletion")
-	public ResponseEntity<Void> deleteEditPrompt(@RequestBody Long editPromptId) {
+	public ResponseEntity<Void> deleteEditPrompt(@RequestBody @Valid IdDto editPromptId) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		editPromptService.deleteEditPrompt(userType, editPromptId);
+		editPromptService.deleteEditPrompt(userType, editPromptId.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

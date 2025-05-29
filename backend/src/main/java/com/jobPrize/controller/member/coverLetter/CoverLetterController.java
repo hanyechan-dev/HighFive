@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.delete.DeleteIdDto;
-import com.jobPrize.dto.common.read.ReadIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterResponseDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterSummaryDto;
@@ -21,6 +20,7 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.member.coverLetter.CoverLetterService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,17 +41,17 @@ public class CoverLetterController {
 	}
 	
 	@PostMapping("/detail")
-	public ResponseEntity<CoverLetterResponseDto> readMyCoverLetter(@RequestBody ReadIdDto readIdDto) {
+	public ResponseEntity<CoverLetterResponseDto> readMyCoverLetter(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		CoverLetterResponseDto coverLetterResponseDto =coverLetterService.readCoverLetter(id, readIdDto.getId());
+		CoverLetterResponseDto coverLetterResponseDto =coverLetterService.readCoverLetter(id, idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(coverLetterResponseDto);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createCoverLetter(@RequestBody CoverLetterCreateDto coverLetterCreateDto) {
+	public ResponseEntity<Void> createCoverLetter(@RequestBody @Valid CoverLetterCreateDto coverLetterCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -63,7 +63,7 @@ public class CoverLetterController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Void> updateMyCoverLetter(@RequestBody CoverLetterUpdateDto coverLetterUpdateDto) {
+	public ResponseEntity<Void> updateMyCoverLetter(@RequestBody @Valid CoverLetterUpdateDto coverLetterUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -73,11 +73,11 @@ public class CoverLetterController {
 	}
 	
 	@PostMapping("/delete")
-	public ResponseEntity<Void> deleteMyCoverLetter(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deleteMyCoverLetter(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		coverLetterService.deleteCoverLetter(id, deleteIdDto.getId());
+		coverLetterService.deleteCoverLetter(id, idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

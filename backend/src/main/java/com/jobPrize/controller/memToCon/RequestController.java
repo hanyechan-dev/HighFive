@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.read.ReadIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.memToCon.request.RequestCreateDto;
 import com.jobPrize.dto.memToCon.request.RequestDetailDto;
 import com.jobPrize.dto.memToCon.request.RequestSummaryDto;
@@ -63,13 +63,13 @@ public class RequestController {
     }
     
     @PostMapping("/detail")
-    public ResponseEntity<RequestDetailDto> readRequest(@RequestBody @Valid ReadIdDto readIdDto) {
+    public ResponseEntity<RequestDetailDto> readRequest(@RequestBody @Valid IdDto idDto) {
     	
     	Long id = SecurityUtil.getId();
     	
     	UserType userType = SecurityUtil.getUserType();
     	
-    	RequestDetailDto requestDetailDto = requestService.readRequestDetail(id, userType, readIdDto.getId());
+    	RequestDetailDto requestDetailDto = requestService.readRequestDetail(id, userType, idDto.getId());
     	
     	return ResponseEntity.status(HttpStatus.OK).body(requestDetailDto);
     	

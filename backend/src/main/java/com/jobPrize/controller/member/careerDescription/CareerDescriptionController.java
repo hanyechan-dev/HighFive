@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.delete.DeleteIdDto;
-import com.jobPrize.dto.common.read.ReadIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionResponseDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionSummaryDto;
@@ -21,6 +20,7 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.member.careerDescription.CareerDescriptionService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,17 +41,17 @@ public class CareerDescriptionController {
 	}
 	
 	@PostMapping("/detail")
-	public ResponseEntity<CareerDescriptionResponseDto> readMyCareerDescription(@RequestBody ReadIdDto readIdDto) {
+	public ResponseEntity<CareerDescriptionResponseDto> readMyCareerDescription(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		CareerDescriptionResponseDto careerDescriptionResponseDto = careerDescriptionService.readCareerDescription(id, readIdDto.getId());
+		CareerDescriptionResponseDto careerDescriptionResponseDto = careerDescriptionService.readCareerDescription(id, idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(careerDescriptionResponseDto);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createCareerDescription(@RequestBody CareerDescriptionCreateDto careerDescriptionCreateDto) {
+	public ResponseEntity<Void> createCareerDescription(@RequestBody @Valid CareerDescriptionCreateDto careerDescriptionCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -63,7 +63,7 @@ public class CareerDescriptionController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Void> updateMyCareerDescription(@RequestBody CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
+	public ResponseEntity<Void> updateMyCareerDescription(@RequestBody @Valid CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -73,11 +73,11 @@ public class CareerDescriptionController {
 	}
 	
 	@PostMapping("/deletion")
-	public ResponseEntity<Void> deleteMyCareerDescription(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deleteMyCareerDescription(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		careerDescriptionService.deleteCareerDescription(id, deleteIdDto.getId());
+		careerDescriptionService.deleteCareerDescription(id, idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

@@ -18,11 +18,13 @@ import com.jobPrize.dto.admin.management.consultant.ConsultantManagementDetailDt
 import com.jobPrize.dto.admin.management.consultant.ConsultantManagementSummaryDto;
 import com.jobPrize.dto.admin.management.member.MemberManagementDetailDto;
 import com.jobPrize.dto.admin.management.member.MemberManagementSummaryDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.userManagement.UserManagementService;
 import com.jobPrize.service.common.user.UserService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -65,45 +67,45 @@ public class ManagementController {
 	}
 	
 	@PostMapping("/members/detail")
-	public ResponseEntity<MemberManagementDetailDto> readMemberDetail(@RequestBody Long targetId){
+	public ResponseEntity<MemberManagementDetailDto> readMemberDetail(@RequestBody @Valid IdDto targetId){
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		MemberManagementDetailDto dto = userManagementService.readMemberManagement(userType, targetId);
+		MemberManagementDetailDto dto = userManagementService.readMemberManagement(userType, targetId.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
 	@PostMapping("/companies/detail")
-	public ResponseEntity<CompanyManagementDetailDto> readCompanyDetail(@RequestBody Long targetId) {
+	public ResponseEntity<CompanyManagementDetailDto> readCompanyDetail(@RequestBody @Valid IdDto targetId) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		CompanyManagementDetailDto dto =userManagementService.readCompanyManagement(userType, targetId);
+		CompanyManagementDetailDto dto =userManagementService.readCompanyManagement(userType, targetId.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
 	@PostMapping("/consultants/detail")
-	public  ResponseEntity<ConsultantManagementDetailDto> readConsultantDetail(@RequestBody Long targetId) {
+	public  ResponseEntity<ConsultantManagementDetailDto> readConsultantDetail(@RequestBody @Valid IdDto targetId) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		ConsultantManagementDetailDto dto = userManagementService.readConsultantManagement(userType , targetId);
+		ConsultantManagementDetailDto dto = userManagementService.readConsultantManagement(userType , targetId.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
 	
 	@PostMapping("/deletion")
-	public ResponseEntity<Void> deleteUser(@RequestBody List<Long> ids){
+	public ResponseEntity<Void> deleteUser(@RequestBody @Valid List<IdDto> ids){
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		for(Long targetId : ids) {
-			userService.softDeleteUser(id, userType, targetId);
+		for(IdDto targetId : ids) {
+			userService.softDeleteUser(id, userType, targetId.getId());
 		}
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

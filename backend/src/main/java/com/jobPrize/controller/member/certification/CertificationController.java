@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.delete.DeleteIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.member.certification.CertificationCreateDto;
 import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.certification.CertificationUpdateDto;
@@ -19,6 +19,7 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.member.certification.CertificationService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,7 +40,7 @@ public class CertificationController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createCertification(@RequestBody CertificationCreateDto certificationCreateDto) {
+	public ResponseEntity<Void> createCertification(@RequestBody @Valid CertificationCreateDto certificationCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -51,7 +52,7 @@ public class CertificationController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyCertification(@RequestBody CertificationUpdateDto certificationUpdateDto) {
+	public ResponseEntity<Void> updateMyCertification(@RequestBody @Valid CertificationUpdateDto certificationUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -61,11 +62,11 @@ public class CertificationController {
 	}
 
 	@PostMapping("/delete")
-	public ResponseEntity<Void> deleteMyCertification(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deleteMyCertification(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		certificationService.deleteCertification(id, deleteIdDto.getId());
+		certificationService.deleteCertification(id, idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

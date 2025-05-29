@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,8 +18,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -55,13 +54,13 @@ public class SecurityConfig {
 //							new AntPathRequestMatcher("/member/logout", "POST"));
 				})
 			.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 안쓸거라 세션 안쓴다고 명시함
-			.authorizeHttpRequests(
-					auth -> auth.anyRequest().permitAll()
-//					auth -> auth.requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() 
-					// 안에 들어있는 URL로 들어온 요청에 대해선 인증검사안함(프로젝트시	수정필요) 
+			.authorizeHttpRequests(auth -> auth
+					.requestMatchers("/auth/**", "/users").permitAll() 
+					.requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
+					 //안에 들어있는 URL로 들어온 요청에 대해선 인증검사안함(프로젝트시	수정필요) 
 					// 여기서 수행하는 인증 절차는 스프링이 제공하는 각 filter 및 아래에 명시한 jwtAuthenticationFilter등이 포함됨
-//								.anyRequest().authenticated()
-								 // 위에 명시된 URL을 제외한 어떠한 요청도 인증검사 수행
+					.anyRequest().authenticated()
+					//위에 명시된 URL을 제외한 어떠한 요청도 인증검사 수행
 				)
 				.exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint)
 						.accessDeniedHandler(customAccessDeniedHandler))
@@ -74,7 +73,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowedOrigins(List.of("http://localhost:3000")); // 허용할 프론트 주소, 실 배포중에는 실제 도메인 작성 (프로젝트시 수정 필요)
-		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 이 메소드만 허용
+		config.setAllowedMethods(List.of("GET", "POST", "PUT")); // 이 메소드만 허용
 		config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 헤더 정보 중, Content-Type(요청 데이터 형식)과 Authorization(JWT 토큰) 헤더만 허용
 		// 이 모든 허용은 모두 and로 3가지 조건 모두 만족 시 허용
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

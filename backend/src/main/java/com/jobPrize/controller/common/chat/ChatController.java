@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.chat.ChatResponseDto;
-import com.jobPrize.dto.common.read.ReadIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.service.common.chat.ChatService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,21 +35,21 @@ public class ChatController {
 	
 	// 채팅 메세지 조회
 	@PostMapping("/detail")
-	public ResponseEntity<List<ChatResponseDto>> getMessages(@RequestBody ReadIdDto readIdDto){
+	public ResponseEntity<List<ChatResponseDto>> getMessages(@RequestBody @Valid IdDto idDto){
 		Long id = SecurityUtil.getId();
-		Boolean check = chatService.checkUser(id, readIdDto.getId());
+		Boolean check = chatService.checkUser(id, idDto.getId());
 		
 		if(check == true) {
-			List<ChatResponseDto> chatMessages = chatService.readMessagesList(readIdDto.getId());
+			List<ChatResponseDto> chatMessages = chatService.readMessagesList(idDto.getId());
 			return ResponseEntity.status(HttpStatus.OK).body(chatMessages);
 		} else { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList()); }
 	}
 	
 	// 채팅방 생성
 	@PostMapping
-	public ResponseEntity<Void> createChatRoom(@RequestBody Long targetId) {
+	public ResponseEntity<Void> createChatRoom(@RequestBody @Valid IdDto idDto) {
 		Long id = SecurityUtil.getId();
-		chatService.createChatRoom(id, targetId);
+		chatService.createChatRoom(id, idDto.getId());
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	

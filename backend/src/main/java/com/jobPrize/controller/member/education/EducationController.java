@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.delete.DeleteIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.member.education.EducationCreateDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
@@ -19,6 +19,7 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.member.education.EducationService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -40,7 +41,7 @@ public class EducationController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createEducation(@RequestBody EducationCreateDto educationCreateDto) {
+	public ResponseEntity<Void> createEducation(@RequestBody @Valid EducationCreateDto educationCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 
@@ -52,7 +53,7 @@ public class EducationController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateEducation(@RequestBody EducationUpdateDto educationUpdateDto) {
+	public ResponseEntity<Void> updateEducation(@RequestBody @Valid EducationUpdateDto educationUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -63,11 +64,11 @@ public class EducationController {
 	
 
 	@PostMapping("/delete")
-	public ResponseEntity<Void> deleteEducation(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deleteEducation(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		educationService.deleteEducation(id, deleteIdDto.getId());
+		educationService.deleteEducation(id, idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

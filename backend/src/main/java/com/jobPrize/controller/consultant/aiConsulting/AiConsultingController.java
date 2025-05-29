@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiConsultingSummaryDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiEditDetailResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
@@ -18,6 +19,7 @@ import com.jobPrize.service.consultant.aiConsulting.AiConsultingService;
 import com.jobPrize.service.consultant.consultantConsulting.ConsultantConsultingService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,20 +31,7 @@ public class AiConsultingController {
     
     private final ConsultantConsultingService consultantConsultingService;
     
-    
 
-   
-//    @PostMapping("/create")
-//    public ResponseEntity<Void> createAiConsulting
-//    (@RequestBody AiConsultingCreateDto aiConsultingCreateDto){
-//    	
-//    	Long id = SecurityUtil.getId();
-//        
-//        aiConsultingService.createAiConsulting(id, aiConsultingCreateDto);
-//        return ResponseEntity.status(201).build();
-//    }
-
-   
     @GetMapping
     public ResponseEntity<Page<AiConsultingSummaryDto>> readAiConsultingPage(Pageable pageable) {
 
@@ -54,40 +43,39 @@ public class AiConsultingController {
     }
     
 	@PostMapping("/approval")
-	public ResponseEntity<Void> approveConsulting(@RequestBody Long aiConsultingId) {
+	public ResponseEntity<Void> approveConsulting(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		consultantConsultingService.approveConsulting(id, userType, aiConsultingId);
+		consultantConsultingService.approveConsulting(id, userType, idDto.getId());
 		
 		return ResponseEntity.status(201).build();
 	}
 
  
     @PostMapping("/edits/detail")
-    public ResponseEntity<AiEditDetailResponseDto> readMyEditDetail(@RequestBody Long aiConsultingId) {
+    public ResponseEntity<AiEditDetailResponseDto> readMyEditDetail(@RequestBody @Valid IdDto idDto) {
     	
     	Long id = SecurityUtil.getId();
     	
     	UserType userType = SecurityUtil.getUserType();
     	
-        AiEditDetailResponseDto aiEditDetailResponseDto = aiConsultingService.readEditDetail(id, userType, aiConsultingId);
+        AiEditDetailResponseDto aiEditDetailResponseDto = aiConsultingService.readEditDetail(id, userType, idDto.getId());
         
         return ResponseEntity.status(200).body(aiEditDetailResponseDto);
     }
 
  
     @PostMapping("/feedbacks/detail")
-    public ResponseEntity<AiFeedbackDetailResponseDto> readMyFeedbackDetail
-    (@RequestBody Long aiConsultingId) {
+    public ResponseEntity<AiFeedbackDetailResponseDto> readMyFeedbackDetail(@RequestBody @Valid IdDto idDto) {
     	
     	Long id = SecurityUtil.getId();
     	
     	UserType userType = SecurityUtil.getUserType();
     	
-        AiFeedbackDetailResponseDto aiFeedbackDetailResponseDto = aiConsultingService.readFeedbackDetail(id, userType, aiConsultingId);
+        AiFeedbackDetailResponseDto aiFeedbackDetailResponseDto = aiConsultingService.readFeedbackDetail(id, userType, idDto.getId());
         
         return ResponseEntity.status(200).body(aiFeedbackDetailResponseDto);
     }

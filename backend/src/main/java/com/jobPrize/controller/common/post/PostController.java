@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import com.jobPrize.dto.common.post.PostCreateDto;
 import com.jobPrize.dto.common.post.PostResponseDto;
 import com.jobPrize.dto.common.post.PostSummaryDto;
 import com.jobPrize.dto.common.post.PostUpdateDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.service.common.comment.CommentService;
 import com.jobPrize.service.common.post.PostService;
 import com.jobPrize.util.SecurityUtil;
@@ -62,10 +64,10 @@ public class PostController {
     	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
-    @PostMapping("/detail")
-    public ResponseEntity<PostResponseDto> readPostDetail(@RequestBody Long postId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponseDto> readPostDetail(@PathVariable Long id) {
     	
-        PostResponseDto dto = postService.readPost(postId);
+        PostResponseDto dto = postService.readPost(id);
         
        return ResponseEntity.status(HttpStatus.OK).body(dto);
        
@@ -82,11 +84,11 @@ public class PostController {
 	}
     
     @PostMapping("/deletion")
-	public ResponseEntity<Void> deletePost(@RequestBody Long postId) {
+	public ResponseEntity<Void> deletePost(@RequestBody @Valid IdDto postId) {
     	
     	Long id = SecurityUtil.getId();
 		
-		postService.deletePost(id, postId);
+		postService.deletePost(id, postId.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.admin.management.company.CompanyManagementSummaryDto;
 import com.jobPrize.dto.admin.management.consultant.ConsultantManagementSummaryDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.approve.ApproveService;
 import com.jobPrize.service.admin.userManagement.UserManagementService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -55,12 +57,13 @@ public class ApproveController {
 	
 	
 	@PutMapping("/approval")
-	public ResponseEntity<Void> approveUsers(@RequestBody List<Long> ids) {
+	public ResponseEntity<Void> approveUsers(@RequestBody @Valid List<IdDto> ids) {
 		
 		UserType userType = SecurityUtil.getUserType(); 
+
 		
-		for(Long id : ids) {
-			approveService.approveUser(userType, id);
+		for(IdDto id : ids) {
+			approveService.approveUser(userType, id.getId());
 		}
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -68,12 +71,12 @@ public class ApproveController {
 	}
 
 	@PutMapping("/rejection")
-	public ResponseEntity<Void> unapproveUsers(@RequestBody List<Long> ids) {
+	public ResponseEntity<Void> unapproveUsers(@RequestBody @Valid List<IdDto> ids) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		for(Long id : ids) {
-			approveService.rejectUser(userType, id);
+		for(IdDto id : ids) {
+			approveService.rejectUser(userType, id.getId());
 		}
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

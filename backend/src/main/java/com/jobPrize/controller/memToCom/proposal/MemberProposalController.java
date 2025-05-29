@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.read.ReadIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.memToCom.proposal.ProposalService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,13 +38,13 @@ public class MemberProposalController {
     }
 
     @PostMapping("/detail")
-    public ResponseEntity<ProposalResponseDto> readMyProposal(@RequestBody ReadIdDto readIdDto) {
+    public ResponseEntity<ProposalResponseDto> readMyProposal(@RequestBody @Valid IdDto idDto) {
 
         Long id = SecurityUtil.getId();
         
         UserType userType = SecurityUtil.getUserType();
 
-        ProposalResponseDto proposalResponseDto = proposalService.readProposal(id, userType, readIdDto.getId());
+        ProposalResponseDto proposalResponseDto = proposalService.readProposal(id, userType, idDto.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(proposalResponseDto);
     }

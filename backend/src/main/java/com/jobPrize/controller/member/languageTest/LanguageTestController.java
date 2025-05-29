@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.delete.DeleteIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestCreateDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
@@ -19,6 +19,7 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.member.languageTest.LanguageTestService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,7 +40,7 @@ public class LanguageTestController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createLanguageTest(@RequestBody LanguageTestCreateDto languageTestCreateDto) {
+	public ResponseEntity<Void> createLanguageTest(@RequestBody @Valid LanguageTestCreateDto languageTestCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -51,7 +52,7 @@ public class LanguageTestController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyLanguageTest(@RequestBody LanguageTestUpdateDto languageTestUpdateDto) {
+	public ResponseEntity<Void> updateMyLanguageTest(@RequestBody @Valid LanguageTestUpdateDto languageTestUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
@@ -61,11 +62,11 @@ public class LanguageTestController {
 	}
 
 	@PostMapping("/delete")
-	public ResponseEntity<Void> deleteMyLanguageTest(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deleteMyLanguageTest(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		languageTestService.deleteLanguageTest(id, deleteIdDto.getId());
+		languageTestService.deleteLanguageTest(id, idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

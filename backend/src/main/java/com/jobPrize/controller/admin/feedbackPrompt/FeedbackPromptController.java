@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +16,7 @@ import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptSummaryDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptUpdateDto;
 import com.jobPrize.dto.admin.setting.FeedbackPromptSettingResponseDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.feedbackPrompt.FeedbackPromptService;
 import com.jobPrize.util.SecurityUtil;
@@ -71,22 +71,22 @@ public ResponseEntity<FeedbackPromptSettingResponseDto> readFeedbackPromptSettin
 
 	
 	@PutMapping("/application")
-	public ResponseEntity<Void> applyFeedbackPrompt(@RequestBody Long feedbackPromptId) {
+	public ResponseEntity<Void> applyFeedbackPrompt(@RequestBody @Valid IdDto feedbackPromptId) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		feedbackPromptService.applyFeedbackPrompt(userType, feedbackPromptId);
+		feedbackPromptService.applyFeedbackPrompt(userType, feedbackPromptId.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 			
 	}
 	
 	@PostMapping("/deletion")
-	public ResponseEntity<Void> deleteFeedbackPrompt(@RequestBody Long feedbackPromptId) {
+	public ResponseEntity<Void> deleteFeedbackPrompt(@RequestBody @Valid IdDto feedbackPromptId) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		feedbackPromptService.deleteFeedbackPrompt(userType, feedbackPromptId);
+		feedbackPromptService.deleteFeedbackPrompt(userType, feedbackPromptId.getId());
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

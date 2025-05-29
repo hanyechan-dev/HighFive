@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.read.ReadIdDto;
+import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForMemberDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.memToCom.application.ApplicationService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,13 +38,13 @@ public class MemberApplicationController {
 	}
 
 	@PostMapping("/detail")
-	public ResponseEntity<ApplicationResponseDto> readMyApplication(@RequestBody ReadIdDto readIdDto) {
+	public ResponseEntity<ApplicationResponseDto> readMyApplication(@RequestBody @Valid IdDto idDto) {
 
 		Long id = SecurityUtil.getId();
 
 		UserType userType = SecurityUtil.getUserType();
 
-		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(id, userType,readIdDto.getId());
+		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(id, userType,idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseDto);
 	}
