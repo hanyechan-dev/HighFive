@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.chat.ChatResponseDto;
-import com.jobPrize.dto.common.read.IdDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.service.common.chat.ChatService;
 import com.jobPrize.util.SecurityUtil;
 

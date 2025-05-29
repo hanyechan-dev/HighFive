@@ -25,7 +25,7 @@ public class SubcriptionController {
 		
 		Long id = SecurityUtil.getId();
 
-		SubscriptionResponseDto subscriptionResponseDto = subscriptionService.readMySubscription(id);
+		SubscriptionResponseDto subscriptionResponseDto = subscriptionService.readSubscription(id);
 
 		return ResponseEntity.status(HttpStatus.OK).body(subscriptionResponseDto);
 	}

@@ -10,13 +10,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
+import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.company.jobPosting.JobPostingService;
-import com.jobPrize.service.memToCom.pass.PassService;
+import com.jobPrize.service.memToCom.application.ApplicationService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PassController {
 
-	private final PassService passService;
+	private final ApplicationService applicationService;
 	
 	private final JobPostingService jobPostingService;
 	
@@ -39,24 +42,26 @@ public class PassController {
 	}
 	
 	@GetMapping("/applications")
-	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readPassedApplications(Long jobPostingId, Pageable pageable){
+	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readPassedApplications(@Valid IdDto IdDto, Pageable pageable){
 		
-		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = passService.readPassedApplication(jobPostingId, pageable);
+		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = applicationService.readPassedApplicationPage(IdDto.getId(), pageable);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(applicationSummaryForCompanyDtos);
+	}
+	
+	@PostMapping("/applications/detail")
+	public ResponseEntity<ApplicationResponseDto> readMyApplication(@RequestBody @Valid IdDto idDto) {
+
+		Long id = SecurityUtil.getId();
+
+		UserType userType = SecurityUtil.getUserType();
+
+		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(id, userType,idDto.getId());
+		
+		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseDto);
 	}
 
 	
 
-	@PostMapping
-	public ResponseEntity<Void> approveApplication(@RequestBody Long applicationId) {
-		
-		Long companyId = SecurityUtil.getId();
-		
-		UserType userType = SecurityUtil.getUserType();
 
-		passService.createPass(companyId, userType, applicationId);
-
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
 }

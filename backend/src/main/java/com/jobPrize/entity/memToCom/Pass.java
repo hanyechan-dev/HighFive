@@ -38,11 +38,5 @@ public class Pass {
 	@CreatedDate
 	@Column(name = "created_date", nullable = false)
 	private LocalDate createdDate;
-	
-	private boolean passed; 
-
-    public boolean isPassed() { 
-        return passed;
-    }
 
 }

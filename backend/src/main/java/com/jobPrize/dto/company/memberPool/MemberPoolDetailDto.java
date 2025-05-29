@@ -38,8 +38,6 @@ public class MemberPoolDetailDto {
 	private List<CertificationResponseDto> certificationResponseDto;
 	
 	private List<LanguageTestResponseDto> languageTestResponseDto;
-	
-	private boolean isInterested;
 
 	public static MemberPoolDetailDto of(
 			User user, 
@@ -48,8 +46,7 @@ public class MemberPoolDetailDto {
 			EducationResponseDto educationResponseDto,
 			CareerResponseDto  careerResponseDto,
 			List<CertificationResponseDto> certificationResponseDto,
-			List<LanguageTestResponseDto> languageTestResponseDto, 
-			boolean isInterested) {
+			List<LanguageTestResponseDto> languageTestResponseDto) {
 		
 		return MemberPoolDetailDto.builder()
 			.name(user.getName())
@@ -63,7 +60,6 @@ public class MemberPoolDetailDto {
 			.careerResponseDto(careerResponseDto)
 			.certificationResponseDto(certificationResponseDto)
 			.languageTestResponseDto(languageTestResponseDto)
-			.isInterested(isInterested)
 			.build();
 	}
 }

@@ -56,7 +56,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom{
 
 	@Override
 	public Page<Application> findAllByJobPostingId(Long id, Pageable pageable) {
-	QApplication application = QApplication.application;
+		QApplication application = QApplication.application;
 		
 		List<Application> results = queryFactory
 				.selectFrom(application)
@@ -72,8 +72,29 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom{
 
 	}
 	
+	@Override
+	public Page<Application> findPassedByJobPostingId(Long id, Pageable pageable) {
+		QApplication application = QApplication.application;
+		
+		List<Application> results = queryFactory
+				.selectFrom(application)
+				.join(application.jobPosting).fetchJoin()
+				.where(
+						application.jobPosting.id.eq(id),
+						application.pass.isNotNull()
+						)
+				
+				.orderBy(application.createdDate.desc())
+				.offset(pageable.getOffset())
+				.limit(pageable.getPageSize())
+			    .fetch();
+		
+		
+		return new PageImpl<Application>(results,pageable, countPassedApplicationsByjobPostingId(id));
+	}
 	
-	public long countApplicationsByMemberId(Long id) {
+	
+	private long countApplicationsByMemberId(Long id) {
 		QApplication application = QApplication.application;
 
 	    return Optional.ofNullable(
@@ -86,7 +107,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom{
 	}
 	
 	
-	public long countApplicationsByjobPostingId(Long id) {
+	private long countApplicationsByjobPostingId(Long id) {
 		QApplication application = QApplication.application;
 
 	    return Optional.ofNullable(
@@ -97,6 +118,25 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom{
 	        .fetchOne())
 		    .orElse(0L);
 	}
+	
+	private long countPassedApplicationsByjobPostingId(Long id) {
+		QApplication application = QApplication.application;
+
+	    return Optional.ofNullable(
+	    	queryFactory
+	        .select(application.count())
+	        .from(application)
+	        .where(
+	        		application.jobPosting.id.eq(id),
+	        		application.pass.isNotNull()
+	        		)
+	        .fetchOne())
+		    .orElse(0L);
+	}
+	
+	
+
+
 
 }
 

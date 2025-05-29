@@ -10,5 +10,6 @@ import com.jobPrize.entity.memToCom.Application;
 public interface ApplicationRepositoryCustom {
 	Page<Application> findAllByMemberId(Long id, Pageable pageable);
 	Page<Application> findAllByJobPostingId(Long id, Pageable pageable);
+	Page<Application> findPassedByJobPostingId(Long id, Pageable pageable);
 	Optional<Application> findByApplicationId(Long id);
 }

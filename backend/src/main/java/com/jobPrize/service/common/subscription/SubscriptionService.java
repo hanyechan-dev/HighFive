@@ -18,6 +18,6 @@ public interface SubscriptionService {
 	void updateStatus();
 	
 	// 자기자신 구독 조회
-	SubscriptionResponseDto readMySubscription(Long id);
+	SubscriptionResponseDto readSubscription(Long id);
 
 }

@@ -76,14 +76,6 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	private long countSimilaritiesByMemberIdAndCondition(Long id, JobPostingFilterCondition condition) {
 	    QSimilarity similarity = QSimilarity.similarity;
 	    

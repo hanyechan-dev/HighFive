@@ -16,7 +16,7 @@ import com.jobPrize.dto.admin.editPrompt.EditPromptResponseDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptSummaryDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptUpdateDto;
 import com.jobPrize.dto.admin.setting.EditPromptSettingResponseDto;
-import com.jobPrize.dto.common.read.IdDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.editPrompt.EditPromptService;
 import com.jobPrize.util.SecurityUtil;

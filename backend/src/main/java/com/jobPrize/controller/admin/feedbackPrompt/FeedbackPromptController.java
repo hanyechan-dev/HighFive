@@ -16,7 +16,7 @@ import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptSummaryDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptUpdateDto;
 import com.jobPrize.dto.admin.setting.FeedbackPromptSettingResponseDto;
-import com.jobPrize.dto.common.read.IdDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.feedbackPrompt.FeedbackPromptService;
 import com.jobPrize.util.SecurityUtil;

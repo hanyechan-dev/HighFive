@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.DeleteIdDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.schedule.ScheduleCreateDto;
 import com.jobPrize.dto.company.schedule.ScheduleResponseDto;
 import com.jobPrize.dto.company.schedule.ScheduleSummaryDto;
@@ -41,11 +41,11 @@ public class ScheduleController {
 	}
 
 	@PostMapping("/detail")
-	public ResponseEntity<ScheduleResponseDto> readMyJobPosting(@RequestBody Long scheduleId) {
+	public ResponseEntity<ScheduleResponseDto> readMyJobPosting(@RequestBody @Valid IdDto IdDto) {
 
 		Long id = SecurityUtil.getId();
 
-		ScheduleResponseDto scheduleResponseDto = scheduleService.readSchedule(id, scheduleId);
+		ScheduleResponseDto scheduleResponseDto = scheduleService.readSchedule(id, IdDto.getId());
 
 		return ResponseEntity.status(HttpStatus.OK).body(scheduleResponseDto);
 	}
@@ -74,11 +74,11 @@ public class ScheduleController {
 	}
 
 	@PostMapping("/deletion")
-	public ResponseEntity<Void> deletMyJobPosting(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deletMyJobPosting(@RequestBody @Valid IdDto IdDto) {
 
 		Long id = SecurityUtil.getId();
 
-		scheduleService.deleteSchedule(id, deleteIdDto.getId());
+		scheduleService.deleteSchedule(id, IdDto.getId());
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

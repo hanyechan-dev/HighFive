@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.comment.CommentCreateDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.common.post.PostCreateDto;
 import com.jobPrize.dto.common.post.PostResponseDto;
 import com.jobPrize.dto.common.post.PostSummaryDto;
 import com.jobPrize.dto.common.post.PostUpdateDto;
-import com.jobPrize.dto.common.read.IdDto;
 import com.jobPrize.service.common.comment.CommentService;
 import com.jobPrize.service.common.post.PostService;
 import com.jobPrize.util.SecurityUtil;

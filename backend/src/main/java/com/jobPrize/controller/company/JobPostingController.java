@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.common.DeleteIdDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingCreateDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingResponseDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
@@ -20,6 +20,7 @@ import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.company.jobPosting.JobPostingService;
 import com.jobPrize.util.SecurityUtil;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,9 +41,9 @@ public class JobPostingController {
 	}
 	
 	@PostMapping("/detail")
-	public ResponseEntity<JobPostingResponseDto> readMyJobPosting(@RequestBody Long jobPostingId){
+	public ResponseEntity<JobPostingResponseDto> readMyJobPosting(@RequestBody @Valid IdDto IdDto){
 		
-		JobPostingResponseDto jobPostingResponseDto = jobPostingService.readJobPosting(jobPostingId);
+		JobPostingResponseDto jobPostingResponseDto = jobPostingService.readJobPosting(IdDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(jobPostingResponseDto);
 	}
@@ -50,7 +51,7 @@ public class JobPostingController {
 	
 	
 	@PostMapping
-	public ResponseEntity<Void> createMyJopPosting(@RequestBody JobPostingCreateDto jobPostingCreateDto) {
+	public ResponseEntity<Void> createMyJopPosting(@RequestBody @Valid JobPostingCreateDto jobPostingCreateDto) {
 
 		Long id = SecurityUtil.getId();
 
@@ -63,7 +64,7 @@ public class JobPostingController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyJobPosting(@RequestBody JobPostingUpdateDto jobPostingUpdateDto) {
+	public ResponseEntity<Void> updateMyJobPosting(@RequestBody @Valid JobPostingUpdateDto jobPostingUpdateDto) {
 
 		Long id = SecurityUtil.getId();
 
@@ -74,11 +75,11 @@ public class JobPostingController {
 
 
 	@PostMapping("/deletion")
-	public ResponseEntity<Void> deletMyJobPosting(@RequestBody DeleteIdDto deleteIdDto) {
+	public ResponseEntity<Void> deletMyJobPosting(@RequestBody @Valid IdDto IdDto) {
 
 		Long id = SecurityUtil.getId();
 
-		jobPostingService.deleteJobPosting(id, deleteIdDto.getId());
+		jobPostingService.deleteJobPosting(id, IdDto.getId());
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

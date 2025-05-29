@@ -31,11 +31,9 @@ public class ApplicationSummaryForCompanyDto {
 	
 	private LocalDate createdDate;
 	
-	private boolean isInterested;
-	
 	private boolean isPassed;
 
-	public static ApplicationSummaryForCompanyDto of(Application application, boolean hasCareer, EducationLevel educationLevel, boolean isInterested, boolean isPassed) {
+	public static ApplicationSummaryForCompanyDto of(Application application, boolean hasCareer, EducationLevel educationLevel, boolean isPassed) {
 		return ApplicationSummaryForCompanyDto.builder()
 			.id(application.getId())
 			.jobPostingTitle(application.getJobPosting().getTitle())
@@ -46,7 +44,6 @@ public class ApplicationSummaryForCompanyDto {
 			.job(application.getJobPosting().getJob())
 			.educationLevel(educationLevel)
 			.createdDate(application.getCreatedDate())
-			.isInterested(isInterested)
 			.isPassed(isPassed)
 			.build();
 	}

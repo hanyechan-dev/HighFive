@@ -9,7 +9,6 @@ import java.util.List;
 import com.jobPrize.dto.company.company.CompanyCreateDto;
 import com.jobPrize.dto.company.company.CompanyUpdateDto;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.memToCom.Interest;
 import com.jobPrize.entity.memToCom.Proposal;
 
 import jakarta.persistence.Column;
@@ -81,16 +80,11 @@ public class Company {
 	private List<Schedule> schedules = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "company")
-	private List<Advertisement> advertisements = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "company")
 	private List<JobPosting> jobPostings = new ArrayList<>();
 
 	@OneToMany(mappedBy = "company")
 	private List<Proposal> proposals = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "company")
-	private List<Interest> interests = new ArrayList<>();
+
 	
 	public void updateCompanyInfo(CompanyUpdateDto companyUpdateDto) {
 		this.companyName = companyUpdateDto.getCompanyName();

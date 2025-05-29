@@ -18,7 +18,7 @@ import com.jobPrize.dto.admin.management.consultant.ConsultantManagementDetailDt
 import com.jobPrize.dto.admin.management.consultant.ConsultantManagementSummaryDto;
 import com.jobPrize.dto.admin.management.member.MemberManagementDetailDto;
 import com.jobPrize.dto.admin.management.member.MemberManagementSummaryDto;
-import com.jobPrize.dto.common.read.IdDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.userManagement.UserManagementService;
 import com.jobPrize.service.common.user.UserService;

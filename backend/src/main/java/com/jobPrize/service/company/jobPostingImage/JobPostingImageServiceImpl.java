@@ -1,9 +1,7 @@
 package com.jobPrize.service.company.jobPostingImage;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

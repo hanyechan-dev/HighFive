@@ -10,5 +10,5 @@ import com.jobPrize.dto.company.memberPool.MemberPoolSummaryDto;
 public interface MemberPoolService {
 	
     Page<MemberPoolSummaryDto> readMemberPoolPageByCondition(Long id, MemberFilterCondition memberFilterCondition, Pageable pageable);
-    MemberPoolDetailDto readMemberPoolDetail(Long memberId, Long companyId);
+    MemberPoolDetailDto readMemberPoolDetail(Long memberId);
 }

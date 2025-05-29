@@ -1,6 +1,7 @@
 package com.jobPrize.repository.common.subscription;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.jobPrize.entity.common.QSubscription;
 import com.jobPrize.entity.common.Subscription;
@@ -45,5 +46,20 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 				.fetch();
 		
 		return results;
+	}
+
+	@Override
+	public Optional<Subscription> findLatestByUserId(Long id) {
+		QSubscription subscription = QSubscription.subscription;
+		
+		
+		Subscription result = queryFactory
+				.selectFrom(subscription)
+				.join(subscription.user).fetchJoin()
+				.where(subscription.user.id.eq(id))
+				.orderBy(subscription.startDate.desc())
+				.fetchFirst();
+		
+		 return Optional.ofNullable(result);
 	}
 }

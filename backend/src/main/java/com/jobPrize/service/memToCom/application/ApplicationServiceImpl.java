@@ -22,6 +22,7 @@ import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.repository.company.jobPosting.JobPostingRepository;
 import com.jobPrize.repository.memToCom.application.ApplicationRepository;
+import com.jobPrize.repository.memToCom.pass.PassRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
 import com.jobPrize.util.JsonUtil;
@@ -39,6 +40,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private final ApplicationRepository applicationRepository;
 
 	private final JobPostingRepository jobPostingRepository;
+	
+	private final PassRepository passRepository;
 	
 	private final JsonUtil jsonUtil;
 	
@@ -91,25 +94,44 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long jobPostingId, Pageable pageable) {
-		Page<Application> applications = applicationRepository.findAllByJobPostingId(jobPostingId, pageable);
 
 		
+		Page<Application> applications = applicationRepository.findAllByJobPostingId(jobPostingId, pageable);
+
 		List<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = new ArrayList<>();
 		
 		for(Application application : applications) {
 
 			boolean hasCareer = memToComUtil.hasCareer(application);
 			EducationLevel latestEducationLevel = memToComUtil.latestEducationLevel(application);
-			boolean isInterested = memToComUtil.isInterested(application);
-			boolean isPassed = application.isPassed();
+			boolean isPassed = passRepository.existsByApplicationId(application.getId());
 			
-			ApplicationSummaryForCompanyDto applicationSummaryForCompanyDto = ApplicationSummaryForCompanyDto.of(application, hasCareer, latestEducationLevel, isInterested, isPassed);
+			ApplicationSummaryForCompanyDto applicationSummaryForCompanyDto = ApplicationSummaryForCompanyDto.of(application, hasCareer, latestEducationLevel, isPassed);
 
 			
 			applicationSummaryForCompanyDtos.add(applicationSummaryForCompanyDto);
 		}
 		
 		return new PageImpl<ApplicationSummaryForCompanyDto>(applicationSummaryForCompanyDtos, pageable, applications.getTotalElements() );
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Page<ApplicationSummaryForCompanyDto> readPassedApplicationPage(Long jobPostingId, Pageable pageable) { 
+	    Page<Application> applications = applicationRepository.findPassedByJobPostingId(jobPostingId, pageable); 
+
+	    List<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = new ArrayList<>();
+
+	    for (Application application : applications) {
+	        boolean hasCareer = memToComUtil.hasCareer(application);
+	        EducationLevel latestEducationLevel = memToComUtil.latestEducationLevel(application);
+
+	        ApplicationSummaryForCompanyDto applicationSummaryForCompanyDto = ApplicationSummaryForCompanyDto.of(application, hasCareer, latestEducationLevel, true);
+	        applicationSummaryForCompanyDtos.add(applicationSummaryForCompanyDto);
+
+	    }
+
+	    return new PageImpl<>(applicationSummaryForCompanyDtos, pageable, applications.getTotalElements());
 	}
 
 	@Override

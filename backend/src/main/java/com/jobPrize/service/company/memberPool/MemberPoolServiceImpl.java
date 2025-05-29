@@ -21,7 +21,6 @@ import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
-import com.jobPrize.repository.memToCom.interest.InterestRepository;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.MemToComUtil;
@@ -51,10 +50,9 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 			boolean hasCareer = memToComUtil.hasCareer(similarity);
 			String job = memToComUtil.job(similarity);
 			EducationLevel latestEducationLevel = memToComUtil.latestEducationLevel(similarity);
-			boolean isInterested = memToComUtil.isInterested(similarity);
 
 			MemberPoolSummaryDto memberPoolSummaryDto = MemberPoolSummaryDto.of(similarity, hasCareer, job,
-					latestEducationLevel, isInterested);
+					latestEducationLevel);
 
 			memberPoolSummaryDtos.add(memberPoolSummaryDto);
 		}
@@ -64,12 +62,10 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public MemberPoolDetailDto readMemberPoolDetail(Long memberId, Long companyId) {
+	public MemberPoolDetailDto readMemberPoolDetail(Long memberId) {
 
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
-
-		boolean isInterested = memToComUtil.isInterested(member);
 
 		boolean hasCareer = memToComUtil.hasCareer(member);
 
@@ -101,6 +97,6 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 		}
 
 		return MemberPoolDetailDto.of(member.getUser(), hasCareer, job, educationResponseDto, careerResponseDto,
-				certificationResponseDtos, languageTestResponseDtos, isInterested);
+				certificationResponseDtos, languageTestResponseDtos);
 	}
 }

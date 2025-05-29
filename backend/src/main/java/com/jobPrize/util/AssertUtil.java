@@ -13,7 +13,6 @@ import com.jobPrize.entity.company.Schedule;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.entity.memToCom.Application;
-import com.jobPrize.entity.memToCom.Pass;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.CareerDescription;

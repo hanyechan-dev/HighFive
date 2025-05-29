@@ -13,6 +13,7 @@ public interface ApplicationService {
 	void createApplication(Long id, UserType userType, ApplicationCreateDto applicationCreateDto);
 	Page<ApplicationSummaryForMemberDto> readApplicationForMemberPage(Long id, Pageable pageable);
 	Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long jobPostingId, Pageable pageable);
+	Page<ApplicationSummaryForCompanyDto> readPassedApplicationPage(Long jobPostingId, Pageable pageable);
 	ApplicationResponseDto readApplication(Long id, UserType userType, Long applicationId);
 	
 }

@@ -15,20 +15,14 @@ public class FileUtil {
 	
 	@Value("${file.upload-jobposting-image-dir}")
 	private String uploadJobPostingImageDir;
-	
-	@Value("${file.upload-advertisement-image-dir}")
-	private String uploadAdvertisementImageDir;
+
 	
 	
 	public String saveImageAndGetUUIDName(MultipartFile file, ImageType imageType) {
 		
 		String uploadDir="";
 		
-		
-		if(ImageType.ADVERTISEMENT_IMAGE.equals(imageType)) {
-			uploadDir=uploadAdvertisementImageDir;
-		}
-		else if(ImageType.JOBPOSTING_IMAGE.equals(imageType)) {
+		if(ImageType.JOBPOSTING_IMAGE.equals(imageType)) {
 			uploadDir=uploadJobPostingImageDir;
 		}
 		else {

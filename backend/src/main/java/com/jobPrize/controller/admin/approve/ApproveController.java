@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.admin.management.company.CompanyManagementSummaryDto;
 import com.jobPrize.dto.admin.management.consultant.ConsultantManagementSummaryDto;
-import com.jobPrize.dto.common.read.IdDto;
+import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.entity.common.UserType;
 import com.jobPrize.service.admin.approve.ApproveService;
 import com.jobPrize.service.admin.userManagement.UserManagementService;
