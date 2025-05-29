@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,7 +64,7 @@ public class ManagementController {
 		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 	
-	@PostMapping("/member/detail")
+	@PostMapping("/members/detail")
 	public ResponseEntity<MemberManagementDetailDto> readMemberDetail(@RequestBody Long targetId){
 		
 		UserType userType = SecurityUtil.getUserType();
@@ -75,7 +74,7 @@ public class ManagementController {
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
-	@PostMapping("/company/detail")
+	@PostMapping("/companies/detail")
 	public ResponseEntity<CompanyManagementDetailDto> readCompanyDetail(@RequestBody Long targetId) {
 		
 		UserType userType = SecurityUtil.getUserType();
@@ -85,7 +84,7 @@ public class ManagementController {
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
-	@PostMapping("/consultant/detail")
+	@PostMapping("/consultants/detail")
 	public  ResponseEntity<ConsultantManagementDetailDto> readConsultantDetail(@RequestBody Long targetId) {
 		
 		UserType userType = SecurityUtil.getUserType();
@@ -95,27 +94,8 @@ public class ManagementController {
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 	
-	@GetMapping("/approve-waiting-company")
-	public ResponseEntity<Page<CompanyManagementSummaryDto>> readWaitingCompanyPage(Pageable pageable){
-		
-		UserType userType = SecurityUtil.getUserType();
-		
-		Page<CompanyManagementSummaryDto> page= userManagementService.readWatingCompanyManagementPage(userType, pageable);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(page);
-	}
 	
-	@GetMapping("/approve-waiting-consultant")
-	public ResponseEntity <Page<ConsultantManagementSummaryDto>> readWaitingConsultantPage(Pageable pageable){
-		
-		UserType userType = SecurityUtil.getUserType();
-		
-		Page<ConsultantManagementSummaryDto> page = userManagementService.readWatingConsultantManagementPage(userType, pageable);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(page);
-	}
-	
-	@DeleteMapping
+	@PostMapping("/deletion")
 	public ResponseEntity<Void> deleteUser(@RequestBody List<Long> ids){
 		
 		Long id = SecurityUtil.getId();

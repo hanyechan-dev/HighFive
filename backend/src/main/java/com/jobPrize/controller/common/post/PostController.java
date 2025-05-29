@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -72,7 +71,7 @@ public class PostController {
        
     }
     
-	@PostMapping("/comment")
+	@PostMapping("/comments")
 	public ResponseEntity<Void> createComment(@RequestBody @Valid CommentCreateDto dto) {
 		
 		Long id = SecurityUtil.getId();	
@@ -82,7 +81,7 @@ public class PostController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
     
-    @DeleteMapping
+    @PostMapping("/deletion")
 	public ResponseEntity<Void> deletePost(@RequestBody Long postId) {
     	
     	Long id = SecurityUtil.getId();

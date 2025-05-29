@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -78,7 +77,7 @@ public class EditPromptController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
-	@DeleteMapping
+	@PostMapping("/deletion")
 	public ResponseEntity<Void> deleteEditPrompt(@RequestBody Long editPromptId) {
 		
 		UserType userType = SecurityUtil.getUserType();

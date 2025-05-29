@@ -81,7 +81,7 @@ public ResponseEntity<FeedbackPromptSettingResponseDto> readFeedbackPromptSettin
 			
 	}
 	
-	@DeleteMapping
+	@PostMapping("/deletion")
 	public ResponseEntity<Void> deleteFeedbackPrompt(@RequestBody Long feedbackPromptId) {
 		
 		UserType userType = SecurityUtil.getUserType();
