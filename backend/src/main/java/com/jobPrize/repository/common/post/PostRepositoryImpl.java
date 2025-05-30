@@ -86,6 +86,19 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 		return Optional.ofNullable(result);
 	}
 
+    @Override
+    public Optional<Long> findUserIdByPostId(Long id) {
+        QPost post = QPost.post;
+
+        Long result = queryFactory
+                .select(post.user.id)
+                .from(post)
+                .where(post.id.eq(id))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
+    }
+
     public long countPosts() {
         QPost post = QPost.post;
 

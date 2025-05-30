@@ -1,7 +1,5 @@
 package com.jobPrize.controller.common;
 
-
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -21,34 +19,32 @@ import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequestMapping("/payments")
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentService paymentService;
-    
-    // 결제
-    @PostMapping
-    public ResponseEntity<Void> createPayment(@RequestBody PaymentRequestDto paymentRequestDto){
-        Long id = SecurityUtil.getId();
-        UserType userType = SecurityUtil.getUserType();
-        
-        paymentService.createPayment(id, userType, paymentRequestDto);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-    
-    // ID별 결제 내역 리스트 조회
-    @GetMapping
-    public ResponseEntity<List<PaymentResponseDto>> getPaymentList(Pageable pageable) {
-    	Long id = SecurityUtil.getId();
-    	UserType userType = SecurityUtil.getUserType();
-    	
-    	if(userType == UserType.관리자) {
-            List<PaymentResponseDto> paymentListById = paymentService.readPaymentListById(id, pageable);
-            return ResponseEntity.status(HttpStatus.OK).body(paymentListById);
-    	} else { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList()); }
-    }
+	private final PaymentService paymentService;
+
+	// 결제
+	@PostMapping
+	public ResponseEntity<Void> createPayment(@RequestBody PaymentRequestDto paymentRequestDto) {
+		Long id = SecurityUtil.getId();
+		UserType userType = SecurityUtil.getUserType();
+
+		paymentService.createPayment(id, userType, paymentRequestDto);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	// ID별 결제 내역 리스트 조회
+	@GetMapping
+	public ResponseEntity<List<PaymentResponseDto>> getPaymentList(Pageable pageable) {
+		
+		Long id = SecurityUtil.getId();
+		
+		List<PaymentResponseDto> paymentListById = paymentService.readPaymentListById(id, pageable);
+		return ResponseEntity.status(HttpStatus.OK).body(paymentListById);
+
+	}
 
 }

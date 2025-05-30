@@ -34,6 +34,8 @@ public class PostServiceImpl implements PostService {
 	private final UserRepository userRepository;
 
 	private final AssertUtil assertUtil;
+	
+	private static final String TARGET_ENTITY_NAME = "게시글";
 
 	@Override
 	public void createPost(Long id, PostCreateDto dto) {
@@ -47,11 +49,16 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void updatePost(Long id, PostUpdateDto dto) {
+		
+		String action = "수정";
 
 		Post post = postRepository.findById(dto.getId())
-				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
 		
-		assertUtil.assertId(id, post, "수정");
+		Long ownerId = postRepository.findUserIdByPostId(dto.getId())
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+		
+		assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
 	
 		post.updatePost(dto.getTitle(), dto.getContent());
 
@@ -78,7 +85,7 @@ public class PostServiceImpl implements PostService {
 	public PostResponseDto readPost(Long postId) {
 		
 	    Post post = postRepository.findWithCommentsByPostId(postId)
-	        .orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
+	        .orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
 	    
 	    List<Comment> comments = post.getComments();
 	    List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
@@ -92,10 +99,15 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void deletePost(Long id, Long postId) {
 		
-		Post post = postRepository.findById(postId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));
+		String action = "삭제";
 		
-		assertUtil.assertId(id, post, "삭제");
+		Post post = postRepository.findById(postId)
+				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+		
+		Long ownerId = postRepository.findUserIdByPostId(postId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+		
+		assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
 		
 		postRepository.delete(post);
 		

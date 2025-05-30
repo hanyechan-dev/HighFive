@@ -62,4 +62,17 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 		
 		 return Optional.ofNullable(result);
 	}
+
+	@Override
+	public Optional<Long> findUserIdBySubscriptionId(Long id) {
+		QSubscription subscription = QSubscription.subscription;
+		
+		Long result = queryFactory
+				.select(subscription.user.id)
+				.from(subscription)
+				.where(subscription.id.eq(id))
+				.fetchOne();
+		
+		 return Optional.ofNullable(result);
+	}
 }

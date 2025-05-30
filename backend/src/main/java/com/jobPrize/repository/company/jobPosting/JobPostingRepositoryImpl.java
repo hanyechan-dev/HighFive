@@ -44,10 +44,24 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 				.where(jobPosting.id.eq(id))
 				.distinct()
 				.fetchOne();
+				
 				return Optional.ofNullable(result);
 	}
-	
-	public long countJobPostingsByCompanyId(Long id) {
+
+	@Override
+	public Optional<Long> findCompanyIdByJobPostingId(Long id) {
+		QJobPosting jobPosting = QJobPosting.jobPosting;
+		
+		Long result = queryFactory
+			.select(jobPosting.company.id)
+			.from(jobPosting)
+			.where(jobPosting.id.eq(id))
+			.fetchOne();
+		
+			return Optional.ofNullable(result);
+	}
+
+	private long countJobPostingsByCompanyId(Long id) {
 		QJobPosting jobPosting = QJobPosting.jobPosting;
 
 		return Optional.ofNullable(
@@ -58,4 +72,5 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 				.fetchOne())
 				.orElse(0L);
 	}
+
 }

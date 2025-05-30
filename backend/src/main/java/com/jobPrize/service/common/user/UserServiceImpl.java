@@ -36,6 +36,8 @@ public class UserServiceImpl implements UserService {
 	private final TokenProvider tokenProvider;
 	
 	private final AssertUtil assertUtil;
+
+	private static final String TARGET_ENTITY_NAME = "회원";
 	
 	@Override
 	public TokenDto createUser(UserSignUpDto userSignUpDto) {
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
 		
 		User user = User.of(userSignUpDto, encodedPassword);
 		
-		if(userSignUpDto.getType()==UserType.일반회원) {
+		if(UserType.일반회원.equals(userSignUpDto.getType())) {
 			user.approve();
 		}
 		
@@ -68,7 +70,7 @@ public class UserServiceImpl implements UserService {
 	public TokenDto logIn(LogInDto logInDto) {
 		String email = logInDto.getEmail();
 		User user = userRepository.findByEmailAndDeletedDateIsNull(email)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
 		
 		if(!passwordEncoder.matches(logInDto.getPassword(),user.getPassword())) {
 			throw new IllegalStateException("이메일 또는 비밀번호가 일치하지 않습니다.");
@@ -85,7 +87,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public MyPageResponseDto readUserMyPageInfo(Long id) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
 		return MyPageResponseDto.from(user);
 	}
 
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
 		user.updateAddress(myPageUpdateDto.getAddress());
 		user.updatePhone(myPageUpdateDto.getPhone());
 		
@@ -103,7 +105,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUserPassword(Long id, PasswordUpdateDto passwordUpdateDto) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
 		if(!passwordEncoder.matches(passwordUpdateDto.getPassword(),user.getPassword())) {
 			throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
 		}
@@ -121,12 +123,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void softDeleteUser(Long id, UserType userType, Long targetId) {
+
+		String action = "삭제";
 		
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+
+		Long ownerId = user.getId();
 		
 		if(!UserType.관리자.equals(userType)) {
-			assertUtil.assertId(id, user, "삭제");
+			assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
 		}
 
 		user.deleteUser();
