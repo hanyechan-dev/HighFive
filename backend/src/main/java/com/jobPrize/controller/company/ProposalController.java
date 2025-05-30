@@ -14,7 +14,8 @@ import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.memToCom.proposal.ProposalService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -58,10 +59,14 @@ public class ProposalController {
 	public ResponseEntity<Void> createProposal (@RequestBody @Valid ProposalCreateDto proposalCreateDto){
 		
 		Long id = SecurityUtil.getId();
-		
+
 		UserType userType = SecurityUtil.getUserType();
 		
-		proposalService.createProposal(id, userType, proposalCreateDto);
+		ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
+
+		boolean isSubscribed = SecurityUtil.isSubscribed();
+		
+		proposalService.createProposal(id, userType, approvalStatus, isSubscribed, proposalCreateDto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}

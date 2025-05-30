@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.jobPrize.entity.common.QSubscription;
 import com.jobPrize.entity.common.Subscription;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;

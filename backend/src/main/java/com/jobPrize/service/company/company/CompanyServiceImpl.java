@@ -8,8 +8,8 @@ import com.jobPrize.dto.company.company.CompanyCreateDto;
 import com.jobPrize.dto.company.company.CompanyResponseDto;
 import com.jobPrize.dto.company.company.CompanyUpdateDto;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.Company;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.util.AssertUtil;
@@ -46,7 +46,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional(readOnly = true)
 	public CompanyResponseDto readCompanyInfo(Long id) {
 		
-		Company company = companyRepository.findById(id)
+		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
 		return CompanyResponseDto.from(company);
@@ -55,7 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public void updateCompanyInfo(Long id, CompanyUpdateDto companyUpdateDto) {
 		
-		Company company = companyRepository.findById(id)
+		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
 		company.updateCompanyInfo(companyUpdateDto);

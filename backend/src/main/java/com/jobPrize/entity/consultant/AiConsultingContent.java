@@ -1,5 +1,7 @@
 package com.jobPrize.entity.consultant;
 
+import com.jobPrize.enumerate.DocumentType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,7 +37,7 @@ public class AiConsultingContent {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "document_type", nullable = false)
-    private CommonEnum.DocumentType documentType;
+    private DocumentType documentType;
 
     @Column(nullable = false)
     private String item;

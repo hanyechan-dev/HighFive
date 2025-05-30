@@ -9,7 +9,7 @@ import com.jobPrize.dto.admin.management.consultant.ConsultantManagementDetailDt
 import com.jobPrize.dto.admin.management.consultant.ConsultantManagementSummaryDto;
 import com.jobPrize.dto.admin.management.member.MemberManagementDetailDto;
 import com.jobPrize.dto.admin.management.member.MemberManagementSummaryDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface UserManagementService {
 	

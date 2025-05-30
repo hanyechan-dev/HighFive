@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
-import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.entity.consultant.ConsultantConsultingContent;
+import com.jobPrize.enumerate.DocumentType;
 import com.jobPrize.repository.consultant.consultantConsultingContent.ConsultantConsultingContentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class ConsultantConsultingContentServiceImpl implements ConsultantConsult
     private final ConsultantConsultingContentRepository consultantConsultingContentRepository;
 
     @Override
-    public void createConsultantConsultingContent(ConsultantConsulting consultantConsulting, CommonEnum.DocumentType documentType) {
+    public void createConsultantConsultingContent(ConsultantConsulting consultantConsulting, DocumentType documentType) {
 
         ConsultantConsultingContent consultantConsultingContent = ConsultantConsultingContent.builder()
                 .consultantConsulting(consultantConsulting)

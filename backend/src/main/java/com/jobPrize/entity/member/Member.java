@@ -9,6 +9,7 @@ import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.memToCon.Request;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,33 +44,32 @@ public class Member {
 	@Column(nullable = false)
 	private String nickname;
 	
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Education> educations = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Career> careers = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Certification> certifications = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<LanguageTest> languageTests = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<CoverLetter> coverLetters = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<CareerDescription> careerDescriptions = new ArrayList<>();
 	
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Application> applications = new ArrayList<>();
     
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Similarity> similarities = new ArrayList<>();
     
-
 	@OneToMany(mappedBy = "member")
 	private List<Proposal> proposals = new ArrayList<>();
 	

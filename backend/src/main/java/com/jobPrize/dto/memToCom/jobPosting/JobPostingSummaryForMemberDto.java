@@ -2,10 +2,10 @@ package com.jobPrize.dto.memToCom.jobPosting;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.company.CompanyType;
 import com.jobPrize.entity.company.JobPosting;
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Similarity;
+import com.jobPrize.enumerate.CompanyType;
+import com.jobPrize.enumerate.EducationLevel;
 
 import lombok.Builder;
 import lombok.Getter;

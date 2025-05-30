@@ -2,8 +2,8 @@ package com.jobPrize.dto.admin.management.user;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.GenderType;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.enumerate.GenderType;
 
 import lombok.Builder;
 import lombok.Getter;

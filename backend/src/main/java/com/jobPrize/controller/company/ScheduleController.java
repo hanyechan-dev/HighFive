@@ -16,7 +16,8 @@ import com.jobPrize.dto.company.schedule.ScheduleCreateDto;
 import com.jobPrize.dto.company.schedule.ScheduleResponseDto;
 import com.jobPrize.dto.company.schedule.ScheduleSummaryDto;
 import com.jobPrize.dto.company.schedule.ScheduleUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.company.schedule.ScheduleService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -56,8 +57,12 @@ public class ScheduleController {
 		Long id = SecurityUtil.getId();
 
 		UserType userType = SecurityUtil.getUserType();
+		
+		ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
 
-		scheduleService.createSchedule(id, userType, scheduleCreateDto);
+		boolean isSubscribed = SecurityUtil.isSubscribed();
+
+		scheduleService.createSchedule(id, userType, approvalStatus, isSubscribed, scheduleCreateDto);
 
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 
@@ -68,7 +73,13 @@ public class ScheduleController {
 
 		Long id = SecurityUtil.getId();
 
-		scheduleService.updateSchedule(id, scheduleUpdateDto);
+		UserType userType = SecurityUtil.getUserType();
+		
+		ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
+
+		boolean isSubscribed = SecurityUtil.isSubscribed();
+
+		scheduleService.updateSchedule(id, userType, approvalStatus, isSubscribed, scheduleUpdateDto);
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

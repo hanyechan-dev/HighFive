@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.enumerate.ConsultingType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,7 +50,7 @@ public class ConsultantConsulting {
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CommonEnum.ConsultingType type;
+    private ConsultingType type;
    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

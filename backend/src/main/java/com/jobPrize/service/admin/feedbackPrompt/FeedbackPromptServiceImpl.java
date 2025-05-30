@@ -12,7 +12,7 @@ import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptSummaryDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptUpdateDto;
 import com.jobPrize.entity.admin.FeedbackPrompt;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.admin.feedbackPrompt.FeedbackPromptRepository;
 import com.jobPrize.util.AssertUtil;
 

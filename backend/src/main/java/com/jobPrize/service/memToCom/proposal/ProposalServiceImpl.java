@@ -15,11 +15,12 @@ import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.Company;
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.memToCom.proposal.ProposalRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
@@ -44,11 +45,11 @@ public class ProposalServiceImpl implements ProposalService {
 	private final AssertUtil assertUtil;
 	
 	@Override
-	public void createProposal(Long id, UserType userType, ProposalCreateDto proposalCreateDto) {
+	public void createProposal(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, ProposalCreateDto proposalCreateDto) {
 
-		assertUtil.assertUserType(userType, UserType.기업회원, "제안 등록");
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "채용 제안 발송");
 		
-		Company company = companyRepository.findById(id)
+		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(proposalCreateDto.getMemberId())

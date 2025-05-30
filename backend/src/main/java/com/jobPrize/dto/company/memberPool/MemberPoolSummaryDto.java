@@ -1,8 +1,8 @@
 package com.jobPrize.dto.company.memberPool;
 
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EducationLevel;
 
 import lombok.Builder;
 import lombok.Getter;

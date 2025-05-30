@@ -3,8 +3,7 @@ package com.jobPrize.dto.company.company;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.company.Company;
-import com.jobPrize.entity.company.CompanyType;
-import com.jobPrize.entity.company.Industry;
+import com.jobPrize.enumerate.CompanyType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,7 @@ public class CompanyResponseDto {
 
 	private String companyName;
 
-	private Industry industry;
+	private String industry;
 
 	private String representativeName;
 

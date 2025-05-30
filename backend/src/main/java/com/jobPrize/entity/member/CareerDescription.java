@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionUpdateDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -51,7 +52,7 @@ public class CareerDescription {
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
 	
-	@OneToMany(mappedBy = "careerDescription")
+	@OneToMany(mappedBy = "careerDescription", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<CareerDescriptionContent> careerDescriptionContents = new ArrayList<>();
 	
 	public void updateCareerDescription(CareerDescriptionUpdateDto careerDescriptionUpdateDto) {

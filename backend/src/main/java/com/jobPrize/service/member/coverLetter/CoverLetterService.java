@@ -6,7 +6,7 @@ import com.jobPrize.dto.member.coverLetter.CoverLetterCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterResponseDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterSummaryDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface CoverLetterService {
 

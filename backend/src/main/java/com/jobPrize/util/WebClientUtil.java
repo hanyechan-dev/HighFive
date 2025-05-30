@@ -5,8 +5,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.dto.memToCon.request.RequestResponseDto;
-import com.jobPrize.entity.consultant.CommonEnum;
-import com.jobPrize.entity.consultant.CommonEnum.ConsultingType;
+import com.jobPrize.enumerate.ConsultingType;
 
 @Component
 public class WebClientUtil {
@@ -19,7 +18,7 @@ public class WebClientUtil {
 
 	public AiConsultingCreateDto postRequestToPython(RequestResponseDto requestResponseDto) {
 		
-		CommonEnum.ConsultingType type = requestResponseDto.getType();
+		ConsultingType type = requestResponseDto.getType();
 
 		String path = type == ConsultingType.첨삭 ? "/guide/edit" : "/guide/feedback";
 		

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.jobPrize.dto.member.coverLetter.CoverLetterCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterUpdateDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -51,7 +52,7 @@ public class CoverLetter {
 	@Column(nullable = false, name="CREATED_DATE")
 	private LocalDate createdDate;
 	
-	@OneToMany(mappedBy = "coverLetter")
+	@OneToMany(mappedBy = "coverLetter", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<CoverLetterContent> coverLetterContents = new ArrayList<>();
 	
 	public void updateCoverLetter(CoverLetterUpdateDto coverLetterUpdateDto) {

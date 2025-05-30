@@ -10,9 +10,9 @@ import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.certification.CertificationCreateDto;
 import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.certification.CertificationUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.certification.CertificationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
@@ -35,7 +35,7 @@ public class CertificationServiceImpl implements CertificationService {
         
 		assertUtil.assertUserType(userType, UserType.일반회원, "자격증 등록");
 
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
 		Certification certification = Certification.of(member, certificationCreateDto);

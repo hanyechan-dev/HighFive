@@ -1,6 +1,6 @@
 package com.jobPrize.service.admin.approve;
 
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface ApproveService {
 

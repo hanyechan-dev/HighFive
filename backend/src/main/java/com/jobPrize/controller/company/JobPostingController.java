@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,9 @@ import com.jobPrize.dto.company.jobPosting.JobPostingCreateDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingResponseDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.dto.company.jobPostingImage.JobPostingImageCreateListDto;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.company.jobPosting.JobPostingService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -51,24 +54,36 @@ public class JobPostingController {
 	
 	
 	@PostMapping
-	public ResponseEntity<Void> createMyJopPosting(@RequestBody @Valid JobPostingCreateDto jobPostingCreateDto) {
+	public ResponseEntity<Void> createMyJopPosting(@ModelAttribute @Valid JobPostingCreateDto jobPostingCreateDto,
+	        @ModelAttribute @Valid JobPostingImageCreateListDto jobPostingImageCreateListDto) {
 
 		Long id = SecurityUtil.getId();
 
 		UserType userType = SecurityUtil.getUserType();
+		
+		ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
 
-		jobPostingService.createJobPosting(id, userType, jobPostingCreateDto);
+		boolean isSubscribed = SecurityUtil.isSubscribed();
+
+		jobPostingService.createJobPosting(id, userType, approvalStatus, isSubscribed, jobPostingCreateDto, jobPostingImageCreateListDto);
 
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyJobPosting(@RequestBody @Valid JobPostingUpdateDto jobPostingUpdateDto) {
+	public ResponseEntity<Void> updateMyJobPosting(@ModelAttribute @Valid JobPostingUpdateDto jobPostingUpdateDto,
+	        @ModelAttribute @Valid JobPostingImageCreateListDto jobPostingImageCreateListDto) {
 
 		Long id = SecurityUtil.getId();
+		
+		UserType userType = SecurityUtil.getUserType();
+		
+		ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
 
-		jobPostingService.updateJobPosting(id, jobPostingUpdateDto);
+		boolean isSubscribed = SecurityUtil.isSubscribed();
+
+		jobPostingService.updateJobPosting(id, userType, approvalStatus, isSubscribed, jobPostingUpdateDto, jobPostingImageCreateListDto);
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

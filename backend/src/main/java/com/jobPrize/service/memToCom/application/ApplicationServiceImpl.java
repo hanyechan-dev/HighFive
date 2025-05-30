@@ -15,11 +15,11 @@ import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForMemberDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.Application;
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.company.jobPosting.JobPostingRepository;
 import com.jobPrize.repository.memToCom.application.ApplicationRepository;
 import com.jobPrize.repository.memToCom.pass.PassRepository;
@@ -93,15 +93,21 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long jobPostingId, Pageable pageable) {
+	public Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long id, Long jobPostingId, Pageable pageable) {
 
 		
 		Page<Application> applications = applicationRepository.findAllByJobPostingId(jobPostingId, pageable);
+		
+	    List<Application> applicationList = applications.getContent();
+
+	    if (!applicationList.isEmpty()) {
+	        assertUtil.assertId(id, applicationList.get(0), "지원서 조회");
+	    }
 
 		List<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = new ArrayList<>();
-		
-		for(Application application : applications) {
 
+		for(Application application : applications) {
+			
 			boolean hasCareer = memToComUtil.hasCareer(application);
 			EducationLevel latestEducationLevel = memToComUtil.latestEducationLevel(application);
 			boolean isPassed = passRepository.existsByApplicationId(application.getId());
@@ -117,8 +123,15 @@ public class ApplicationServiceImpl implements ApplicationService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Page<ApplicationSummaryForCompanyDto> readPassedApplicationPage(Long jobPostingId, Pageable pageable) { 
+	public Page<ApplicationSummaryForCompanyDto> readPassedApplicationPage(Long id, Long jobPostingId, Pageable pageable) { 
+		
 	    Page<Application> applications = applicationRepository.findPassedByJobPostingId(jobPostingId, pageable); 
+	    
+	    List<Application> applicationList = applications.getContent();
+
+	    if (!applicationList.isEmpty()) {
+	        assertUtil.assertId(id, applicationList.get(0), "지원서 조회");
+	    }
 
 	    List<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = new ArrayList<>();
 

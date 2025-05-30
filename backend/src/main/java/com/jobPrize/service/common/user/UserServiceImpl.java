@@ -2,6 +2,9 @@ package com.jobPrize.service.common.user;
 
 
 
+import java.util.List;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +17,7 @@ import com.jobPrize.dto.common.token.TokenDto;
 import com.jobPrize.dto.common.user.login.LogInDto;
 import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.util.AssertUtil;
@@ -37,7 +40,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public TokenDto createUser(UserSignUpDto userSignUpDto) {
 		
-		if(isExistEmail(userSignUpDto.getEmail())) {
+		boolean isExistEmail = userRepository.existsByEmail(userSignUpDto.getEmail());
+		
+		if(isExistEmail) {
 			throw new IllegalStateException("이미 사용 중인 이메일입니다.");
 		}
 		
@@ -51,8 +56,8 @@ public class UserServiceImpl implements UserService {
 		
 		userRepository.save(user);
 
-		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType());
-		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType());
+		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(),user.getApprovalStatus(), user.isSubscribed());
+		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType(),user.getApprovalStatus(), user.isSubscribed());
 		
 		return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();	
 		
@@ -68,8 +73,8 @@ public class UserServiceImpl implements UserService {
 		if(!passwordEncoder.matches(logInDto.getPassword(),user.getPassword())) {
 			throw new IllegalStateException("이메일 또는 비밀번호가 일치하지 않습니다.");
 		}
-		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType());
-		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType());
+		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(),user.getApprovalStatus(), user.isSubscribed());
+		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType(),user.getApprovalStatus(), user.isSubscribed());
 		
 		return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();	
 	}
@@ -127,18 +132,13 @@ public class UserServiceImpl implements UserService {
 		user.deleteUser();
 		
 	}
-
 	
-	private boolean isExistEmail(String email) {
-		return userRepository.findByEmailAndDeletedDateIsNull(email).isPresent();
+	
+	@Scheduled(cron = "0 0 0 * * *")
+	public void hardDeleteUsers() {
+		List<User> users = userRepository.findAllForDelete();
+		
+		userRepository.deleteAll(users);
 	}
-
-
-
-
-
-
-
-
 
 }

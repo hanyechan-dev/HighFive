@@ -18,12 +18,12 @@ import com.jobPrize.dto.memToCon.request.RequestCreateDto;
 import com.jobPrize.dto.memToCon.request.RequestDetailDto;
 import com.jobPrize.dto.memToCon.request.RequestResponseDto;
 import com.jobPrize.dto.memToCon.request.RequestSummaryDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
-import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.ConsultingType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.consultant.aiConsulting.AiConsultingService;
@@ -77,7 +77,7 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<RequestSummaryDto> readFeedbackRequestPage(Long id, Pageable pageable) {
-		Page<Request> requests = requestRepository.findAllByMemberIdAndType(id,CommonEnum.ConsultingType.피드백 ,pageable);
+		Page<Request> requests = requestRepository.findAllByMemberIdAndType(id, ConsultingType.피드백 ,pageable);
 		
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
 		for(Request request : requests) {
@@ -95,7 +95,7 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<RequestSummaryDto> readEditRequestPage(Long id, Pageable pageable) {
-		Page<Request> requests = requestRepository.findAllByMemberIdAndType(id,CommonEnum.ConsultingType.첨삭 ,pageable);
+		Page<Request> requests = requestRepository.findAllByMemberIdAndType(id,ConsultingType.첨삭 ,pageable);
 		
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
 		for(Request request : requests) {
@@ -138,6 +138,18 @@ public class RequestServiceImpl implements RequestService {
 		return RequestDetailDto.of(requestResponseDto, aiConsultingResponseDto, aiConsultingContentResponseDtos);
 	}
 	
+	@Override
+	public void createRequestToConsultant(Long id, boolean isSubscribed, Long requestId) {
+		
+		assertUtil.assertSubscription(UserType.일반회원, isSubscribed, "컨설턴트 컨설팅 요청");
+		
+		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("컨설팅 요청"));
+		
+		request.getAiConsulting().RequestToConsultant();
+		
+	}
+	
 	private void postRequestToPython(Request request) {
 		
 		RequestResponseDto requestResponseDto = RequestResponseDto.from(request);
@@ -147,6 +159,7 @@ public class RequestServiceImpl implements RequestService {
 		aiConsultingService.createAiConsulting(aiConsultingCreateDto, requestResponseDto.getId());
 		
 	}
+
 	
 	private LocalDate getPriorityDate(Request request) {
 		LocalDate date = null;
@@ -174,6 +187,8 @@ public class RequestServiceImpl implements RequestService {
 		
 		return date;
 	}
+
+
 
 
 	

@@ -5,7 +5,7 @@ import java.util.List;
 import com.jobPrize.dto.member.education.EducationCreateDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface EducationService {
     public void createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto);

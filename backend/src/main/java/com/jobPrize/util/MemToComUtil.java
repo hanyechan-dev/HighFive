@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.jobPrize.entity.memToCom.Application;
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EducationLevel;
 
 import lombok.RequiredArgsConstructor;
 

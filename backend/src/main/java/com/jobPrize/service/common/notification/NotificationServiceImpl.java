@@ -9,12 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.notification.NotificationDto;
 import com.jobPrize.entity.common.Notification;
-import com.jobPrize.entity.common.NotificationType;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.enumerate.NotificationType;
 import com.jobPrize.repository.common.notification.NotificationRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service

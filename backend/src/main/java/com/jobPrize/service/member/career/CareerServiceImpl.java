@@ -10,9 +10,9 @@ import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.career.CareerCreateDto;
 import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.career.CareerUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.career.CareerRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
@@ -39,7 +39,7 @@ public class CareerServiceImpl implements CareerService {
 			throw new IllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
 		}
 
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
 

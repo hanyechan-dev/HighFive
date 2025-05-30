@@ -6,7 +6,7 @@ import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionResponseDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionSummaryDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface CareerDescriptionService {
 

@@ -14,7 +14,7 @@ import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.company.jobPosting.JobPostingService;
 import com.jobPrize.service.memToCom.application.ApplicationService;
 import com.jobPrize.util.SecurityUtil;
@@ -44,7 +44,9 @@ public class PassController {
 	@GetMapping("/applications")
 	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readPassedApplications(@Valid IdDto IdDto, Pageable pageable){
 		
-		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = applicationService.readPassedApplicationPage(IdDto.getId(), pageable);
+		Long id = SecurityUtil.getId();
+		
+		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = applicationService.readPassedApplicationPage(id,IdDto.getId(), pageable);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(applicationSummaryForCompanyDtos);
 	}

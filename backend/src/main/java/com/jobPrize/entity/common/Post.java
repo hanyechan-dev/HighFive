@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.jobPrize.dto.common.post.PostCreateDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -53,7 +54,7 @@ public class Post {
 	@Column(name = "CREATED_TIME", nullable = false)
 	private LocalDateTime createdTime; // 작성 시간
 
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
 
 	public void updatePost(String title, String content) {

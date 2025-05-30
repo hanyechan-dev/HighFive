@@ -19,12 +19,13 @@ import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResp
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentResponseDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.consultant.Consultant;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.entity.consultant.ConsultantConsultingContent;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
 import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
@@ -45,14 +46,14 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	private final AssertUtil assertUtil;
 	
 	@Override
-	public void approveConsulting(Long id, UserType userType, Long aiConsultingId) {
+	public void approveConsulting(Long id, UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 
-		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "승인");
+		assertUtil.assertForConsultant(userType, approvalStatus, "승인");
 
 	    AiConsulting aiConsulting = aiConsultingRepository.findById(aiConsultingId)
 	        .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 
-	    Consultant consultant = consultantRepository.findById(id)
+	    Consultant consultant = consultantRepository.findByIdAndDeletedDateIsNull(id)
 	        .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트"));
 
 

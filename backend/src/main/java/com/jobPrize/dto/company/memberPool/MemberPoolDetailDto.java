@@ -7,8 +7,8 @@ import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
-import com.jobPrize.entity.common.GenderType;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.enumerate.GenderType;
 
 import lombok.Builder;
 import lombok.Getter;

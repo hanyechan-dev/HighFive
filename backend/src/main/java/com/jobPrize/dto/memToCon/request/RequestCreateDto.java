@@ -1,6 +1,6 @@
 package com.jobPrize.dto.memToCon.request;
 
-import com.jobPrize.entity.consultant.CommonEnum;
+import com.jobPrize.enumerate.ConsultingType;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,7 +17,7 @@ public class RequestCreateDto {
     @Size(max = 20, message = "희망 기업은 20자 이하로 입력해야합니다.")
     private String targetCompanyName;
     
-    private CommonEnum.ConsultingType type;
+    private ConsultingType type;
     
     @NotNull(message = "자기소개서는 필수로 선택해야합니다.")
     private Long coverLetterId;

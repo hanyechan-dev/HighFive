@@ -11,9 +11,10 @@ import com.jobPrize.dto.company.schedule.ScheduleCreateDto;
 import com.jobPrize.dto.company.schedule.ScheduleResponseDto;
 import com.jobPrize.dto.company.schedule.ScheduleSummaryDto;
 import com.jobPrize.dto.company.schedule.ScheduleUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.company.Schedule;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.company.schedule.ScheduleRepository;
 import com.jobPrize.util.AssertUtil;
@@ -34,11 +35,11 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 
 	@Override
-	public void createSchedule(Long id, UserType userType, ScheduleCreateDto scheduleCreateDto) {
+	public void createSchedule(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, ScheduleCreateDto scheduleCreateDto) {
 		
-		assertUtil.assertUserType(userType, UserType.기업회원, "일정 등록");
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "일정 등록");
 		
-		Company company = companyRepository.findById(id)
+		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
 		
 		Schedule schedule = Schedule.of(company, scheduleCreateDto);
@@ -70,7 +71,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	@Override
-	public void updateSchedule(Long id, ScheduleUpdateDto scheduleUpdateDto) {
+	public void updateSchedule(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, ScheduleUpdateDto scheduleUpdateDto) {
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "일정 수정");
+		
 		Schedule schedule = scheduleRepository.findById(scheduleUpdateDto.getId())
 				.orElseThrow(() -> new CustomEntityNotFoundException("일정"));
 		

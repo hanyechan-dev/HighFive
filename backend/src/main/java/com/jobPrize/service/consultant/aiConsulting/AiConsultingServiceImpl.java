@@ -16,10 +16,11 @@ import com.jobPrize.dto.consultant.aiConuslting.AiEditDetailResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentCreateDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.memToCon.Request;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.service.consultant.aiConsultingContent.AiConsultingContentService;
@@ -43,9 +44,9 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	@Override
 	@Transactional(readOnly = true)
 
-	public Page<AiConsultingSummaryDto> readAiConsultingPage(UserType userType, Pageable pageable) {
+	public Page<AiConsultingSummaryDto> readAiConsultingPage(UserType userType, ApprovalStatus approvalStatus, Pageable pageable) {
 
-		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
+		assertUtil.assertForConsultant(userType, approvalStatus, "조회");
 		
 	    Page<AiConsulting> AiConsultingPage = aiConsultingRepository.findAllByCondition(pageable); //컨설팅 요청 페이지
 
@@ -62,9 +63,9 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public AiEditDetailResponseDto readEditDetail(Long id, UserType userType, Long aiConsultingId) {
+	public AiEditDetailResponseDto readEditDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 		
-		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
+		assertUtil.assertForConsultant(userType, approvalStatus, "조회");
 		
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId) //상세 모달 정보
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
@@ -86,9 +87,9 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public AiFeedbackDetailResponseDto readFeedbackDetail(Long id, UserType userType, Long aiConsultingId) {
+	public AiFeedbackDetailResponseDto readFeedbackDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 		
-		assertUtil.assertUserType(userType, UserType.컨설턴트회원, "조회");
+		assertUtil.assertForConsultant(userType, approvalStatus, "조회");
 		
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));

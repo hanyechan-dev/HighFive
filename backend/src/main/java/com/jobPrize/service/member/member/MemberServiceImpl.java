@@ -8,8 +8,8 @@ import com.jobPrize.dto.member.member.MemberCreateDto;
 import com.jobPrize.dto.member.member.MemberResponseDto;
 import com.jobPrize.dto.member.member.MemberUpdateDto;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void updateMemberInfo(Long id, MemberUpdateDto memberUpdateDto) {
 
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
 		assertUtil.assertId(id, member, "회원 정보 수정");
@@ -57,7 +57,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	@Transactional(readOnly = true)
 	public MemberResponseDto readMemberInfo(Long id) {
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		String nickname = member.getNickname();
 		return MemberResponseDto.builder().nickname(nickname).build();

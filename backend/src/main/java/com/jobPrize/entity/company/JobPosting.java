@@ -7,9 +7,10 @@ import java.util.List;
 import com.jobPrize.dto.company.jobPosting.JobPostingCreateDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingUpdateDto;
 import com.jobPrize.entity.memToCom.Application;
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Similarity;
+import com.jobPrize.enumerate.EducationLevel;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -76,13 +77,13 @@ public class JobPosting {
 	@Column(name = "expired_date", nullable = false)
 	private LocalDate expiredDate;
 
-	@OneToMany(mappedBy = "jobPosting")
+	@OneToMany(mappedBy = "jobPosting" , cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<JobPostingImage> jobPostingImages = new ArrayList<>();
 
 	@OneToMany(mappedBy = "jobPosting")
 	private List<Application> applications = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "jobPosting")
+	@OneToMany(mappedBy = "jobPosting" , cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Similarity> similarities = new ArrayList<>();
 
 

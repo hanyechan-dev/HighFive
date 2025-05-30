@@ -6,7 +6,7 @@ import com.jobPrize.dto.admin.editPrompt.EditPromptCreateDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptResponseDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptSummaryDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface EditPromptService {
 	

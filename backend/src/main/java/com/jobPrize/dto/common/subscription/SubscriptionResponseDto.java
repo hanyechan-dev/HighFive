@@ -2,7 +2,7 @@ package com.jobPrize.dto.common.subscription;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 import lombok.Builder;
 import lombok.Getter;

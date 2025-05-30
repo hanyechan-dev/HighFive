@@ -2,8 +2,8 @@ package com.jobPrize.dto.memToCon.request;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.memToCon.Request;
+import com.jobPrize.enumerate.ConsultingType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class RequestResponseDto {
 
     private String targetCompanyName;
 
-    private CommonEnum.ConsultingType type;
+    private ConsultingType type;
 
     private LocalDate createdDate;
     

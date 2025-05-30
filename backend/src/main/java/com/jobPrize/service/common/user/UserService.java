@@ -6,7 +6,7 @@ import com.jobPrize.dto.common.myPage.PasswordUpdateDto;
 import com.jobPrize.dto.common.token.TokenDto;
 import com.jobPrize.dto.common.user.login.LogInDto;
 import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface UserService {
 	public TokenDto createUser(UserSignUpDto userSignUpDto);

@@ -10,7 +10,9 @@ import com.jobPrize.dto.company.company.CompanyCreateDto;
 import com.jobPrize.dto.company.company.CompanyUpdateDto;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.entity.memToCom.Proposal;
+import com.jobPrize.enumerate.CompanyType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -46,7 +48,7 @@ public class Company {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
-	private Industry industry;
+	private String industry;
 
 	@Column(name = "company_name", nullable = false)
 	private String companyName;
@@ -76,7 +78,7 @@ public class Company {
 	@Column(name = "established_date", nullable = false)
 	private LocalDate establishedDate;
 
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Schedule> schedules = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "company")

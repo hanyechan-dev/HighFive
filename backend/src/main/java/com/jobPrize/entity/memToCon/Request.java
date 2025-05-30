@@ -7,8 +7,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.jobPrize.dto.memToCon.request.RequestCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
-import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.ConsultingType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,7 +54,7 @@ public class Request {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "CONSULTING_TYPE", nullable = false)
-	private CommonEnum.ConsultingType type;
+	private ConsultingType type;
 
 	@Column(name = "resume_json", columnDefinition = "TEXT", nullable = false)
 	private String resumeJson;

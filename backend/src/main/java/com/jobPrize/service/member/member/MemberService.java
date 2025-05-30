@@ -3,7 +3,7 @@ package com.jobPrize.service.member.member;
 import com.jobPrize.dto.member.member.MemberCreateDto;
 import com.jobPrize.dto.member.member.MemberResponseDto;
 import com.jobPrize.dto.member.member.MemberUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface MemberService {
 	public void createMemberInfo(Long id, UserType userType, MemberCreateDto memberCreateDto);

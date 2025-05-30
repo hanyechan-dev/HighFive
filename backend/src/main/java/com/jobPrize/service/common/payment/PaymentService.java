@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface PaymentService {
 	

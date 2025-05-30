@@ -14,10 +14,10 @@ import com.jobPrize.dto.member.coverLetter.CoverLetterCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterResponseDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterSummaryDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.CoverLetter;
 import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.coverLetter.CoverLetterRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.coverLetterContent.CoverLetterContentService;
@@ -43,7 +43,7 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		
 		assertUtil.assertUserType(userType, UserType.일반회원, "자기소개서 등록");
 		
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
 		CoverLetter coverLetter = CoverLetter.of(member, coverLetterCreateDto);

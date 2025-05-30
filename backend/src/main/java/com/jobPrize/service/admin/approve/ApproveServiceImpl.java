@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.util.AssertUtil;
 
@@ -26,7 +26,7 @@ public class ApproveServiceImpl implements ApproveService {
 
 		assertUtil.assertUserType(userType,UserType.관리자,"승인");
 		
-		User user = userRepository.findById(targetUserId)
+		User user = userRepository.findByIdAndDeletedDateIsNull(targetUserId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
 		if (user.getType() == UserType.일반회원 || user.getType() == UserType.관리자) {
@@ -45,7 +45,7 @@ public class ApproveServiceImpl implements ApproveService {
 
 		assertUtil.assertUserType(userType,UserType.관리자,"거절");
 
-		User user = userRepository.findById(targetUserId)
+		User user = userRepository.findByIdAndDeletedDateIsNull(targetUserId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
 		if (user.getType() == UserType.일반회원 || user.getType() == UserType.관리자 ) {

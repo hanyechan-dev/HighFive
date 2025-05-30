@@ -1,7 +1,7 @@
 package com.jobPrize.dto.memToCon.aiConsulting;
 
 import com.jobPrize.entity.consultant.AiConsultingContent;
-import com.jobPrize.entity.consultant.CommonEnum;
+import com.jobPrize.enumerate.DocumentType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ public class AiConsultingContentResponseDto {
 
 	private Long id;
 
-	private CommonEnum.DocumentType type;
+	private DocumentType type;
     
 	private String item;
 	

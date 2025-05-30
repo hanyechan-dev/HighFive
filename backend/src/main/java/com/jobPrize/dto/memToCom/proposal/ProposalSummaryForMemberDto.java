@@ -3,7 +3,7 @@ package com.jobPrize.dto.memToCom.proposal;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.memToCom.Proposal;
-import com.jobPrize.entity.memToCom.ProposalStatus;
+import com.jobPrize.enumerate.ProposalStatus;
 
 import lombok.Builder;
 import lombok.Getter;

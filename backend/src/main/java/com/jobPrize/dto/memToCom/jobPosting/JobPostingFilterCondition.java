@@ -1,6 +1,6 @@
 package com.jobPrize.dto.memToCom.jobPosting;
 
-import com.jobPrize.entity.memToCom.EducationLevel;
+import com.jobPrize.enumerate.EducationLevel;
 
 import jakarta.validation.constraints.Min;
 import lombok.Getter;

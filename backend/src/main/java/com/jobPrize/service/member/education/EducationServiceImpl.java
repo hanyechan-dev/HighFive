@@ -10,9 +10,9 @@ import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.education.EducationCreateDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
@@ -35,7 +35,7 @@ public class EducationServiceImpl implements EducationService {
 
 		assertUtil.assertUserType(userType, UserType.일반회원, "학력 등록");
 
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
         if(educationCreateDto.getEnterDate().isAfter(educationCreateDto.getGraduateDate())) {

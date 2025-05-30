@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface SubscriptionService {
 	

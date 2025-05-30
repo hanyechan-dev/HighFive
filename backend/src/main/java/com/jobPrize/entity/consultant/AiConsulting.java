@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jobPrize.entity.memToCon.Request;
+import com.jobPrize.enumerate.ConsultingType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,7 +44,7 @@ public class AiConsulting {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CommonEnum.ConsultingType type;
+    private ConsultingType type;
     
     @Column(name = "request_date", nullable = false) //컨설턴트 컨설팅 요청 일자 
     private LocalDate requestedDate;
@@ -54,6 +55,8 @@ public class AiConsulting {
 	@OneToMany(mappedBy = "aiConsulting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AiConsultingContent> aiConsultingContents = new ArrayList<>();
 
-
+	public void RequestToConsultant() {
+		this.requestedDate = LocalDate.now();
+	}
  
 }

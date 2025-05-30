@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import com.jobPrize.dto.member.education.EducationCreateDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
-import com.jobPrize.entity.memToCom.EducationLevel;
+import com.jobPrize.enumerate.EducationLevel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

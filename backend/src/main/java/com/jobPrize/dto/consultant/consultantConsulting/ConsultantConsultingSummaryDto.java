@@ -2,8 +2,8 @@ package com.jobPrize.dto.consultant.consultantConsulting;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.consultant.CommonEnum.ConsultingType;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
+import com.jobPrize.enumerate.ConsultingType;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -16,10 +16,12 @@ import com.jobPrize.dto.company.jobPosting.JobPostingResponseDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingUpdateDto;
 import com.jobPrize.dto.company.jobPostingImage.JobPostingImageCreateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.dto.company.jobPostingImage.JobPostingImageCreateListDto;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.JobPostingImage;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.company.jobPosting.JobPostingRepository;
 import com.jobPrize.service.company.jobPostingImage.JobPostingImageService;
@@ -42,18 +44,18 @@ public class JobPostingServiceImpl implements JobPostingService{
 	private final AssertUtil assertUtil;
 
 	@Override
-	public void createJobPosting(Long id, UserType userType, JobPostingCreateDto jobPostingCreateDto) {
+	public void createJobPosting(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, JobPostingCreateDto jobPostingCreateDto, JobPostingImageCreateListDto jobPostingImageCreateListDto) {
 		
-		assertUtil.assertUserType(userType, UserType.기업회원, "채용공고 등록");
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "채용공고 등록");
 		
-		Company company = companyRepository.findById(id)
+		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("기업"));
 		
 		JobPosting jobPosting = JobPosting.of(company,jobPostingCreateDto);
 		
 		jobPostingRepository.save(jobPosting);
 		
-		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingCreateDto.getJobPostingImageCreateDtos();
+		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingImageCreateListDto.getJobPostingImageCreateDtos();
 		List<MultipartFile> multipartFiles = new ArrayList<>();
 		for(JobPostingImageCreateDto jobPostingImageCreateDto : jobPostingImageCreateDtos) {
 			MultipartFile multipartFile= jobPostingImageCreateDto.getImage();
@@ -92,7 +94,10 @@ public class JobPostingServiceImpl implements JobPostingService{
 	}
 
 	@Override
-	public void updateJobPosting(Long id, JobPostingUpdateDto jobPostingUpdateDto) {
+	public void updateJobPosting(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed,JobPostingUpdateDto jobPostingUpdateDto, JobPostingImageCreateListDto jobPostingImageCreateListDto) {
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "채용공고 수정");
+		
 		
 		Long jobPostingId = jobPostingUpdateDto.getId();
 		
@@ -102,6 +107,14 @@ public class JobPostingServiceImpl implements JobPostingService{
 		assertUtil.assertId(id, jobPosting, "수정");
 		
 		jobPosting.updateJobPostingInfo(jobPostingUpdateDto);
+		
+		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingImageCreateListDto.getJobPostingImageCreateDtos();
+		List<MultipartFile> multipartFiles = new ArrayList<>();
+		for(JobPostingImageCreateDto jobPostingImageCreateDto : jobPostingImageCreateDtos) {
+			MultipartFile multipartFile= jobPostingImageCreateDto.getImage();
+			multipartFiles.add(multipartFile);
+		}
+		jobPostingImageService.createImages(jobPosting, multipartFiles);
 	}
 
 	@Override

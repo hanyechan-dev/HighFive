@@ -1,5 +1,6 @@
 package com.jobPrize.repository.common.user;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.jobPrize.entity.common.ApprovalStatus;
 import com.jobPrize.entity.common.QUser;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -92,6 +93,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return new PageImpl<User> (results, pageable, countUserByUserTypeAndApprovalStatusIsWaiting(userType));
 	}
 	
+	@Override
+	public List<User> findAllForDelete() {
+		QUser user = QUser.user;
+		
+		List<User> results = queryFactory
+				.selectFrom(user)
+				.where(
+						user.deletedDate.isNotNull(),
+						user.deletedDate.before(LocalDate.now().minusYears(2))
+						)
+			    .fetch();
+	
+		return results;
+	}
+	
 	
 	
 	
@@ -118,6 +134,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 				.fetchOne()
 				).orElse(0L);
 	}
+
+
 
 
 

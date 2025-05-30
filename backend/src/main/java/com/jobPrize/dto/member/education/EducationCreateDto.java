@@ -4,7 +4,7 @@ package com.jobPrize.dto.member.education;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.jobPrize.entity.memToCom.EducationLevel;
+import com.jobPrize.enumerate.EducationLevel;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;

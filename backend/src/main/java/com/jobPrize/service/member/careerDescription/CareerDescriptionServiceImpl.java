@@ -14,10 +14,10 @@ import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionResponseDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionSummaryDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.CareerDescriptionContent;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.careerDescription.CareerDescriptionRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.careerDescriptionContent.CareerDescriptionContentService;
@@ -43,7 +43,7 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 		
 		assertUtil.assertUserType(userType, UserType.일반회원, "경력기술서 등록");
 		
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
 		CareerDescription careerDescription = CareerDescription.of(member, careerDescriptionCreateDto);

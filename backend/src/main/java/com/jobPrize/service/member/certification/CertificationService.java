@@ -5,7 +5,7 @@ import java.util.List;
 import com.jobPrize.dto.member.certification.CertificationCreateDto;
 import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.certification.CertificationUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface CertificationService {
 

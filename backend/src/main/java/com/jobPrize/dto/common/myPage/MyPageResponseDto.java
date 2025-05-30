@@ -2,9 +2,9 @@ package com.jobPrize.dto.common.myPage;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.GenderType;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.GenderType;
+import com.jobPrize.enumerate.UserType;
 
 import lombok.Builder;
 import lombok.Getter;

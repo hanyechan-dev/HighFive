@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.memToCon.request.RequestCreateDto;
 import com.jobPrize.dto.memToCon.request.RequestDetailDto;
 import com.jobPrize.dto.memToCon.request.RequestSummaryDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.memToCon.request.RequestService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -73,6 +74,18 @@ public class RequestController {
     	
     	return ResponseEntity.status(HttpStatus.OK).body(requestDetailDto);
     	
+    }
+    
+    @PutMapping
+    public ResponseEntity<Void> requestToConsultant(@RequestBody @Valid IdDto idDto){
+    	
+    	Long id = SecurityUtil.getId();
+    	
+    	boolean isSubscribed = SecurityUtil.isSubscribed();
+    	
+    	requestService.createRequestToConsultant(id, isSubscribed, idDto.getId());
+    	
+    	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

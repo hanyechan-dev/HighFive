@@ -3,7 +3,7 @@ package com.jobPrize.service.company.company;
 import com.jobPrize.dto.company.company.CompanyCreateDto;
 import com.jobPrize.dto.company.company.CompanyResponseDto;
 import com.jobPrize.dto.company.company.CompanyUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface CompanyService {
 	void createCompanyInfo(Long id, UserType usertype, CompanyCreateDto companyCreateDto);

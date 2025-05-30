@@ -1,7 +1,7 @@
 package com.jobPrize.dto.consultant.consultantConsultingContent;
 
 
-import com.jobPrize.entity.consultant.CommonEnum.DocumentType;
+import com.jobPrize.enumerate.DocumentType;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -7,12 +7,13 @@ import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSumm
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 
 public interface ConsultantConsultingService {
 
 	
-	void approveConsulting(Long id, UserType userType, Long aiConsultingId);
+	void approveConsulting(Long id, UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId);
 
 	void updateConsultantConsulting(Long id, ConsultantConsultingUpdateDto consultantConsultingUpdateDto);
 

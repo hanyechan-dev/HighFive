@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.jobPrize.dto.common.notification.NotificationDto;
 import com.jobPrize.entity.common.Notification;
-import com.jobPrize.entity.common.NotificationType;
+import com.jobPrize.enumerate.NotificationType;
 
 public interface NotificationService {
 	

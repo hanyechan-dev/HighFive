@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.jobPrize.entity.consultant.Consultant;
 
-public interface ConsultantRepository extends JpaRepository<Consultant, Long> {
+public interface ConsultantRepository extends JpaRepository<Consultant, Long>, ConsultantRepositoryCustom {
 
 }

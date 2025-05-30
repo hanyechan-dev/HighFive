@@ -8,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.jobPrize.entity.consultant.CommonEnum;
 import com.jobPrize.entity.consultant.QAiConsulting;
 import com.jobPrize.entity.memToCon.QRequest;
 import com.jobPrize.entity.memToCon.Request;
+import com.jobPrize.enumerate.ConsultingType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Request> findAllByMemberIdAndType(Long id, CommonEnum.ConsultingType type, Pageable pageable) {
+	public Page<Request> findAllByMemberIdAndType(Long id, ConsultingType type, Pageable pageable) {
 		QRequest request = QRequest.request;
 		
 		List<Request> results = queryFactory

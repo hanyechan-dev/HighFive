@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jobPrize.entity.common.Subscription;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface SubscriptionRepositoryCustom {
 	

@@ -13,7 +13,7 @@ import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
 import com.jobPrize.entity.common.Subscription;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.common.subscription.SubscriptionRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.service.common.payment.PaymentService;
@@ -38,7 +38,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		
 		LocalDate now = LocalDate.now();
 		
-		User user = userRepository.findById(id)
+		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
 		Subscription subscription = Subscription.builder()

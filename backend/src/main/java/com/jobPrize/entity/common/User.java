@@ -12,6 +12,9 @@ import com.jobPrize.entity.admin.Admin;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.consultant.Consultant;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.GenderType;
+import com.jobPrize.enumerate.UserType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -77,7 +80,7 @@ public class User {
 
 	@Builder.Default
 	@Column(nullable = false, name = "IS_SUBSCRIBED")
-	private boolean isSubscribed = false;
+	private boolean subscribed = false;
 
 	@CreatedDate
 	@Column(nullable = false, name = "CREATED_DATE")
@@ -132,11 +135,11 @@ public class User {
 	}
 
 	public void subscribe() {
-		this.isSubscribed = true;
+		this.subscribed = true;
 	}
 
 	public void unSubscribe() {
-		this.isSubscribed = false;
+		this.subscribed = false;
 	}
 	
 	public void approve() {

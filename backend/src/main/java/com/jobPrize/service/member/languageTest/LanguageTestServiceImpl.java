@@ -10,9 +10,9 @@ import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.languageTest.LanguageTestCreateDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
-import com.jobPrize.entity.common.UserType;
 import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.languageTest.LanguageTestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
@@ -34,7 +34,7 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 	@Override
 	public void createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto) {
 		assertUtil.assertUserType(userType, UserType.일반회원, "어학시험 등록");
-		Member member = memberRepository.findById(id)
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
 		LanguageTest languageTest = LanguageTest.of(member, languageTestCreateDto);

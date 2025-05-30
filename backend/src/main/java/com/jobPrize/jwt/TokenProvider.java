@@ -6,7 +6,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,23 +25,27 @@ public class TokenProvider {
 		this.key = Keys.hmacShaKeyFor(secret.getBytes());
 	}
 
-	public String createAccessToken(Long id, UserType userType) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
+	public String createAccessToken(Long id, UserType userType,ApprovalStatus approvalStatus, boolean isSubscribed) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
 		Date now = new Date();
 		Date expiry = new Date(now.getTime()+1000*60*60*2);
 
 		return Jwts.builder()
 				.setSubject(String.valueOf(id)) // subject를 id로
-				.claim("userType", userType.name()) // claim에 유저타입 추가
+				.claim("userType", userType.name())	// claim에 유저타입 추가
+				.claim("approvalState", approvalStatus.name()) // claim에 승인여부 추가
+				.claim("isSubscribe", isSubscribed) // claim에 구독여부 추가
 				.setIssuedAt(now).setExpiration(expiry).signWith(key, SignatureAlgorithm.HS256).compact();
 	}
 	
-	public String createRefreshToken(Long id, UserType userType) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
+	public String createRefreshToken(Long id, UserType userType,ApprovalStatus approvalStatus, boolean isSubscribed) { // 고유 식별자, 권한, 만료시간(프로젝트때 수정)
 		Date now = new Date();
 		Date expiry = new Date(now.getTime()+1000*60*60*24*14);
 
 		return Jwts.builder()
 				.setSubject(String.valueOf(id)) // subject를 id로
-				.claim("userType", userType.name()) // claim에 유저타입 추가
+				.claim("userType", userType.name())	// claim에 유저타입 추가
+				.claim("approvalState", approvalStatus.name()) // claim에 승인여부 추가
+				.claim("isSubscribe", isSubscribed) // claim에 구독여부 추가
 				.setIssuedAt(now).setExpiration(expiry).signWith(key, SignatureAlgorithm.HS256).compact();
 	}
 

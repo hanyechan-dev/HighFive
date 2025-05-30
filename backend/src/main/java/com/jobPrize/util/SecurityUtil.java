@@ -4,7 +4,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.jobPrize.entity.common.SecurityUser;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 
 public class SecurityUtil {
 
@@ -19,5 +20,13 @@ public class SecurityUtil {
     
     public static UserType getUserType() {
         return getCurrentUser().getUserType();
+    }
+    
+    public static ApprovalStatus getApprovalStatus() {
+        return getCurrentUser().getApprovalStatus();
+    }
+    
+    public static boolean isSubscribed() {
+        return getCurrentUser().isSubscribed();
     }
 }

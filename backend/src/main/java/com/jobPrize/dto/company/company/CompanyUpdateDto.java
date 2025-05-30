@@ -2,8 +2,7 @@ package com.jobPrize.dto.company.company;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.company.CompanyType;
-import com.jobPrize.entity.company.Industry;
+import com.jobPrize.enumerate.CompanyType;
 import com.jobPrize.validation.businessNumber.BusinessNumber;
 import com.jobPrize.validation.phone.Phone;
 
@@ -23,7 +22,7 @@ public class CompanyUpdateDto {
 	private String companyName;
 
 	@NotNull
-	private Industry industry;
+	private String industry;
 	
 	@NotBlank(message = "대표자명은 필수로 입력해야합니다")
 	@Size(max=10, message = "대표자명은 10자 이하로 입력해야합니다.")

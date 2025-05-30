@@ -9,10 +9,11 @@ import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 
 public interface ProposalService {
-	void createProposal(Long id, UserType userType, ProposalCreateDto proposalCreateDto);
+	void createProposal(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, ProposalCreateDto proposalCreateDto);
 	Page<ProposalSummaryForMemberDto> readProposalForMemberPage(Long id, Pageable pageable);
 	Page<ProposalSummaryForCompanyDto> readProposalForCompanyPage(Long id, Pageable pageable);
 	ProposalResponseDto readProposal(Long id, UserType userType, Long proposalId);

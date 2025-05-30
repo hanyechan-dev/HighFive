@@ -2,9 +2,8 @@ package com.jobPrize.dto.common.user.signUp;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.GenderType;
-import com.jobPrize.entity.common.UserType;
-import com.jobPrize.validation.password.Password;
+import com.jobPrize.enumerate.GenderType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.validation.phone.Phone;
 
 import jakarta.validation.constraints.Email;

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.ProposalStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

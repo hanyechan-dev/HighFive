@@ -5,7 +5,7 @@ import java.util.List;
 import com.jobPrize.dto.member.languageTest.LanguageTestCreateDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface LanguageTestService {
     public void createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto);

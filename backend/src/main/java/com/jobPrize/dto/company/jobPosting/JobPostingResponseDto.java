@@ -2,9 +2,9 @@ package com.jobPrize.dto.company.jobPosting;
 
 import java.util.List;
 
-import com.jobPrize.entity.company.CompanyType;
 import com.jobPrize.entity.company.JobPosting;
-import com.jobPrize.entity.memToCom.EducationLevel;
+import com.jobPrize.enumerate.CompanyType;
+import com.jobPrize.enumerate.EducationLevel;
 
 import lombok.Builder;
 import lombok.Getter;

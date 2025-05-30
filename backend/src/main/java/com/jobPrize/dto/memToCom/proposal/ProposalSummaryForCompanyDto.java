@@ -2,11 +2,11 @@ package com.jobPrize.dto.memToCom.proposal;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.GenderType;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Proposal;
-import com.jobPrize.entity.memToCom.ProposalStatus;
+import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.GenderType;
+import com.jobPrize.enumerate.ProposalStatus;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -15,7 +15,8 @@ import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.company.jobPosting.JobPostingService;
 import com.jobPrize.service.memToCom.application.ApplicationService;
 import com.jobPrize.service.memToCom.pass.PassService;
@@ -47,8 +48,10 @@ public class CompanyApplicationController {
 
 	@PostMapping("/applications")
 	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readApplications(@RequestBody @Valid IdDto idDto,Pageable pageable) {
+		
+		Long id = SecurityUtil.getId();
 
-		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = applicationService.readApplicationForCompanyPage(idDto.getId(), pageable);
+		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = applicationService.readApplicationForCompanyPage(id,idDto.getId(), pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(applicationSummaryForCompanyDtos);
 	}
@@ -74,7 +77,11 @@ public class CompanyApplicationController {
 		
 		UserType userType = SecurityUtil.getUserType();
 
-		passService.createPass(id, userType, idDto.getId());
+		ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
+
+		boolean isSubscribed = SecurityUtil.isSubscribed();
+
+		passService.createPass(id, userType, approvalStatus, isSubscribed, idDto.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}

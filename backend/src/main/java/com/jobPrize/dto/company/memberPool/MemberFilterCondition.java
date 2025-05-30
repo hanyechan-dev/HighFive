@@ -2,8 +2,8 @@ package com.jobPrize.dto.company.memberPool;
 
 import java.time.LocalDate;
 
-import com.jobPrize.entity.common.GenderType;
-import com.jobPrize.entity.memToCom.EducationLevel;
+import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.GenderType;
 
 import lombok.Getter;
 

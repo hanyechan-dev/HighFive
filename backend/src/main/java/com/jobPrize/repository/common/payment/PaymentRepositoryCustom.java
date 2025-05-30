@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.common.Payment;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 
 public interface PaymentRepositoryCustom {
 	Page<Payment> findAllByUserId(Long id, Pageable pageable);

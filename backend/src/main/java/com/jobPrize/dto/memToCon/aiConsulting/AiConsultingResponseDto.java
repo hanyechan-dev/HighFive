@@ -1,7 +1,7 @@
 package com.jobPrize.dto.memToCon.aiConsulting;
 
 import com.jobPrize.entity.consultant.AiConsulting;
-import com.jobPrize.entity.consultant.CommonEnum;
+import com.jobPrize.enumerate.ConsultingType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Getter;
 @Builder
 public class AiConsultingResponseDto {
 
-    private CommonEnum.ConsultingType type;
+    private ConsultingType type;
     
     public static AiConsultingResponseDto from(AiConsulting aiConsulting) {
         return AiConsultingResponseDto.builder()

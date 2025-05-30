@@ -9,5 +9,6 @@ import com.jobPrize.entity.common.User;
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
 	Optional<User> findByIdAndDeletedDateIsNull(Long id);
 	Optional<User> findByEmailAndDeletedDateIsNull(String email);
+	boolean existsByEmail(String email);
 
 }

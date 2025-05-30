@@ -7,6 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.UserType;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -62,5 +65,13 @@ public class SecurityUser implements UserDetails {
 
 	    return UserType.valueOf(role.replace("ROLE_", ""));
 	}
+	
+    public ApprovalStatus getApprovalStatus() {
+        return user.getApprovalStatus();
+    }
+    
+    public boolean isSubscribed() {
+        return user.isSubscribed();
+    }
 
 }

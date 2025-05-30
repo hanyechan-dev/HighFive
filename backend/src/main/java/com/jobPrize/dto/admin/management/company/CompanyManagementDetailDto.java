@@ -4,8 +4,7 @@ import java.time.LocalDate;
 
 import com.jobPrize.dto.admin.management.user.UserManagementDetailDto;
 import com.jobPrize.entity.company.Company;
-import com.jobPrize.entity.company.CompanyType;
-import com.jobPrize.entity.company.Industry;
+import com.jobPrize.enumerate.CompanyType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class CompanyManagementDetailDto {
 	
 	private UserManagementDetailDto userManagementDetailDto;
 
-	private Industry industry;
+	private String industry;
 
 	private String companyName;
 

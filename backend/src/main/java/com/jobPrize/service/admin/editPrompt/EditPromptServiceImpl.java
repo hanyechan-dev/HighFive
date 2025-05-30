@@ -12,7 +12,7 @@ import com.jobPrize.dto.admin.editPrompt.EditPromptResponseDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptSummaryDto;
 import com.jobPrize.dto.admin.editPrompt.EditPromptUpdateDto;
 import com.jobPrize.entity.admin.EditPrompt;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.admin.editPrompt.EditPromptRepository;
 import com.jobPrize.util.AssertUtil;
 

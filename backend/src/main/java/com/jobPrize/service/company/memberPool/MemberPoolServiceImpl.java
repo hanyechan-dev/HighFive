@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.company.memberPool.MemberFilterCondition;
 import com.jobPrize.dto.company.memberPool.MemberPoolDetailDto;
 import com.jobPrize.dto.company.memberPool.MemberPoolSummaryDto;
@@ -16,13 +17,16 @@ import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
-import com.jobPrize.entity.memToCom.EducationLevel;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.util.AssertUtil;
 import com.jobPrize.util.MemToComUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -37,11 +41,17 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 	private final MemToComUtil memToComUtil;
 
 	private final MemberRepository memberRepository;
+	
+	private final AssertUtil assertUtil;
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<MemberPoolSummaryDto> readMemberPoolPageByCondition(Long id,
+	public Page<MemberPoolSummaryDto> readMemberPoolPageByCondition(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed,
 			MemberFilterCondition memberFilterCondition, Pageable pageable) {
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "인재 조회");
+		
+		
 		Page<Similarity> similarities = similarityRepository.findAllWithMemberByCompanyIdAndCondition(id,
 				memberFilterCondition, pageable);
 		List<MemberPoolSummaryDto> memberPoolSummaryDtos = new ArrayList<>();
@@ -62,10 +72,12 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public MemberPoolDetailDto readMemberPoolDetail(Long memberId) {
+	public MemberPoolDetailDto readMemberPoolDetail(UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, Long memberId) {
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "인재 조회");
 
-		Member member = memberRepository.findById(memberId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
+		Member member = memberRepository.findByIdAndDeletedDateIsNull(memberId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
 		boolean hasCareer = memToComUtil.hasCareer(member);
 

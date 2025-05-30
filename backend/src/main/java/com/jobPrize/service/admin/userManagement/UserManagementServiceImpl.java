@@ -19,7 +19,7 @@ import com.jobPrize.dto.admin.management.member.MemberManagementSummaryDto;
 import com.jobPrize.dto.admin.management.user.UserManagementDetailDto;
 import com.jobPrize.dto.admin.management.user.UserManagementSummaryDto;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.util.AssertUtil;
 

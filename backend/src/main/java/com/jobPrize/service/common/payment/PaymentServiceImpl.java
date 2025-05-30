@@ -13,7 +13,7 @@ import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.entity.common.Payment;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.entity.common.UserType;
+import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.common.payment.PaymentRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.util.AssertUtil;
@@ -38,7 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
 		// 쇼핑몰처럼 장바구니, 상품, 주문 등 복잡한 로직이 필요없이,
 		// 결제 상태에 따라 User의 isSubscribed 데이터를 변경하면 되는 문제로 보임.
 		
-		User user = userRepository.findById(id)
+		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
 			
