@@ -35,13 +35,13 @@ public class PostServiceImpl implements PostService {
 
 	private final AssertUtil assertUtil;
 	
-	private static final String TARGET_ENTITY_NAME = "게시글";
+	private static final String ENTITY_NAME = "게시글";
 
 	@Override
 	public void createPost(Long id, PostCreateDto dto) {
 
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-		            .orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+		            .orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
 		Post post = Post.of(user,dto);
 		postRepository.save(post);
@@ -53,12 +53,12 @@ public class PostServiceImpl implements PostService {
 		String action = "수정";
 
 		Post post = postRepository.findById(dto.getId())
-				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		Long ownerId = postRepository.findUserIdByPostId(dto.getId())
 				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		
-		assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 	
 		post.updatePost(dto.getTitle(), dto.getContent());
 
@@ -85,7 +85,7 @@ public class PostServiceImpl implements PostService {
 	public PostResponseDto readPost(Long postId) {
 		
 	    Post post = postRepository.findWithCommentsByPostId(postId)
-	        .orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+	        .orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 	    
 	    List<Comment> comments = post.getComments();
 	    List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
@@ -102,12 +102,12 @@ public class PostServiceImpl implements PostService {
 		String action = "삭제";
 		
 		Post post = postRepository.findById(postId)
-				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		Long ownerId = postRepository.findUserIdByPostId(postId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		
-		assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		postRepository.delete(post);
 		

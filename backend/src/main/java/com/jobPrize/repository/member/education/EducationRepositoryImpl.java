@@ -1,6 +1,7 @@
 package com.jobPrize.repository.member.education;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.QEducation;
@@ -24,5 +25,18 @@ public class EducationRepositoryImpl implements EducationRepositoryCostom{
 				.fetch();
 		
 		return results;
+	}
+	
+	@Override
+	public Optional<Long> findMemberIdByEducationId(Long id) {
+		QEducation education = QEducation.education;
+
+		Long result = queryFactory
+			.select(education.member.id)
+			.from(education)
+			.where(education.id.eq(id))
+			.fetchOne();
+
+		return Optional.ofNullable(result);
 	}
 }

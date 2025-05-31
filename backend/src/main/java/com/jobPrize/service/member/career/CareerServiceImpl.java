@@ -30,10 +30,18 @@ public class CareerServiceImpl implements CareerService {
 
 	private final AssertUtil assertUtil;
 
+	private final static String ENTITY_NAME = "경력";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
+
+
+
 	@Override
 	public void createCareer(Long id, UserType userType, CareerCreateDto careerCreateDto) {
 
-		assertUtil.assertUserType(userType, UserType.일반회원, "경력 등록");
+		String action = "등록";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		if(careerCreateDto.getStartDate().isAfter(careerCreateDto.getEndDate())) {
 			throw new IllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
@@ -65,6 +73,8 @@ public class CareerServiceImpl implements CareerService {
 
 	@Override
 	public void updateCareer(Long id, CareerUpdateDto careerUpdateDto) {
+
+		String action = "수정";
 		
 		if(careerUpdateDto.getStartDate().isAfter(careerUpdateDto.getEndDate())) {
 			throw new IllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
@@ -72,9 +82,12 @@ public class CareerServiceImpl implements CareerService {
 		
 		Long careerId = careerUpdateDto.getId();
 		Career career =	careerRepository.findById(careerId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("경력"));
-		
-		assertUtil.assertId(id, career, "수정");
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = careerRepository.findMemberIdByCareerId(careerId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		career.updateCareer(careerUpdateDto);
 		
@@ -83,10 +96,16 @@ public class CareerServiceImpl implements CareerService {
 
 	@Override
 	public void deleteCareer(Long id, Long careerId) {
-		Career career =	careerRepository.findById(careerId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("경력"));
 
-		assertUtil.assertId(id, career, "삭제");
+		String action = "삭제";
+		
+		Career career =	careerRepository.findById(careerId)
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = careerRepository.findMemberIdByCareerId(careerId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		careerRepository.delete(career);
 	}

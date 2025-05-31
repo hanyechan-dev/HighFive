@@ -1,6 +1,7 @@
 package com.jobPrize.repository.member.career;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.QCareer;
@@ -24,5 +25,17 @@ public class CareerRepositoryImpl implements CareerRepositoryCustom{
 				.fetch();
 		
 		return results;
+	}
+
+	@Override
+	public Optional<Long> findMemberIdByCareerId(Long id) {
+		QCareer career = QCareer.career;
+
+		Long result = queryFactory.select(career.member.id)
+				.from(career)
+				.where(career.id.eq(id))
+				.fetchOne();
+		
+		return Optional.ofNullable(result);
 	}
 }

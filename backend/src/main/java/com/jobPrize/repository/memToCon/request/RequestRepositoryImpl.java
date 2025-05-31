@@ -59,8 +59,21 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 				
 		return Optional.ofNullable(result);
 	}
+
+	@Override
+	public Optional<Long> findMemberIdByRequestId(Long id) {
+		QRequest request = QRequest.request;
+		
+		Long result = queryFactory
+				.select(request.member.id)
+				.from(request)
+				.where(request.id.eq(id))
+				.fetchOne();
+				
+		return Optional.ofNullable(result);
+	}
 	
-	public long countRequestsByMemberId(Long id) {
+	private long countRequestsByMemberId(Long id) {
 		QRequest request = QRequest.request;
 
 	    return Optional.ofNullable(

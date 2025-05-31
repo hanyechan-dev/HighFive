@@ -27,10 +27,16 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	
 	private final AssertUtil assertUtil;
 
+	private final String ENTITY_NAME = "피드백 프롬프트";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.관리자;
+
 	@Override
 	public void createFeedbackPrompt(UserType userType, FeedbackPromptCreateDto dto) {
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "작성");
+		String action = "작성";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 	
 		FeedbackPrompt prompt = FeedbackPrompt.createFrom(dto);
 	
@@ -40,10 +46,12 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	@Override
 	public void updateFeedbackPrompt(UserType userType, FeedbackPromptUpdateDto dto) {
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "수정");
+		String action = "수정";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findById(dto.getId())
-				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		feedbackPrompt.updateFeedbackPrompt(dto.getTitle(), dto.getContent());
 
@@ -53,7 +61,9 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	@Transactional(readOnly = true)
 	public List<FeedbackPromptSummaryDto> readAllList(UserType userType) {
 
-		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		List<FeedbackPrompt> feedbackPrompts = feedbackPromptRepository.findAll();
 		List<FeedbackPromptSummaryDto> results = new ArrayList<>();
@@ -69,10 +79,12 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	@Transactional(readOnly = true)
 	public FeedbackPromptResponseDto readFeedbackPrompt(UserType userType, Long feedbackPromptId) {
 
-		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		FeedbackPrompt prompt = feedbackPromptRepository.findById(feedbackPromptId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
 		return FeedbackPromptResponseDto.from(prompt);
 	}
@@ -80,11 +92,13 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	@Override
 	public void applyFeedbackPrompt(UserType userType, Long feedbackPromptId) {
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "적용");
+		String action = "적용";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		unApplyFeedbackPrompt();
 		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findById(feedbackPromptId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		feedbackPrompt.apply();
 	}
 
@@ -92,10 +106,12 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	@Transactional(readOnly = true)
 	public FeedbackPromptResponseDto readAppliedFeedbackPrompt(UserType userType){
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findAppliedPrompt()
-				 .orElseThrow(() -> new CustomEntityNotFoundException("적용된 프롬프트"));
+				 .orElseThrow(() -> new CustomEntityNotFoundException("적용된 " + ENTITY_NAME));
 
 		 return FeedbackPromptResponseDto.from(feedbackPrompt);
 
@@ -104,7 +120,9 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	@Override
 	public void deleteFeedbackPrompt(UserType userType, Long feedbackPromptId) {
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "삭제");
+		String action = "삭제";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		feedbackPromptRepository.deleteById(feedbackPromptId);
 

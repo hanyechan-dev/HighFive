@@ -33,11 +33,15 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	private final AssertUtil assertUtil;
 
+	private static final String ENTITY_NAME = "일정";
+
 
 	@Override
 	public void createSchedule(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, ScheduleCreateDto scheduleCreateDto) {
 		
-		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "일정 등록");
+		String action = "등록";
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 		
 		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
@@ -61,11 +65,16 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	@Override
 	public ScheduleResponseDto readSchedule(Long id, Long scheduleId) {
+
+		String action = "조회";
 		
 		Schedule schedule = scheduleRepository.findById(scheduleId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("일정"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = scheduleRepository.findCompanyIdByScheduleId(scheduleId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		
-		assertUtil.assertId(id, schedule, "조회");
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		return ScheduleResponseDto.from(schedule);
 	}
@@ -73,22 +82,33 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public void updateSchedule(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, ScheduleUpdateDto scheduleUpdateDto) {
 		
-		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "일정 수정");
+		String action = "수정";
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 		
 		Schedule schedule = scheduleRepository.findById(scheduleUpdateDto.getId())
-				.orElseThrow(() -> new CustomEntityNotFoundException("일정"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = scheduleRepository.findCompanyIdByScheduleId(scheduleUpdateDto.getId())
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		
-		assertUtil.assertId(id, schedule, "수정");
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		schedule.updateSchedule(scheduleUpdateDto);
 	}
 
 	@Override
 	public void deleteSchedule(Long id, Long scheduleId) {
-		Schedule schedule = scheduleRepository.findById(scheduleId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("일정"));
+
+		String action = "삭제";
 		
-		assertUtil.assertId(id, schedule, "삭제");
+		Schedule schedule = scheduleRepository.findById(scheduleId)
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = scheduleRepository.findCompanyIdByScheduleId(scheduleId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+		
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		scheduleRepository.delete(schedule);
 	}

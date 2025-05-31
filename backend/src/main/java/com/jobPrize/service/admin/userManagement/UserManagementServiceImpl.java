@@ -34,10 +34,16 @@ public class UserManagementServiceImpl implements UserManagementService{
 	
 	private final AssertUtil assertUtil;
 
+	private final String ENTITY_NAME = "유저";
+
+	private final UserType ALLOWED_USER_TYPE = UserType.관리자;
+
 	@Override
 	public Page<MemberManagementSummaryDto> readMemberManagementPage(UserType userType, Pageable pageable) {
 
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserType(UserType.일반회원, pageable);
 		List<MemberManagementSummaryDto> memberManagementSummaryDtos = new ArrayList<>();
@@ -57,7 +63,9 @@ public class UserManagementServiceImpl implements UserManagementService{
 	@Override
 	public Page<CompanyManagementSummaryDto> readCompanyManagementPage(UserType userType, Pageable pageable) {
 
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserType(UserType.기업회원, pageable);
 		List<CompanyManagementSummaryDto> companyManagementSummaryDtos = new ArrayList<>();
@@ -77,7 +85,9 @@ public class UserManagementServiceImpl implements UserManagementService{
 	@Override
 	public Page<ConsultantManagementSummaryDto> readConsultantManagementPage(UserType userType, Pageable pageable) {
 
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserType(UserType.컨설턴트회원, pageable);
 		List<ConsultantManagementSummaryDto> consultantManagementSummaryDtos = new ArrayList<>();
@@ -97,7 +107,9 @@ public class UserManagementServiceImpl implements UserManagementService{
 	@Override
 	public MemberManagementDetailDto readMemberManagement(UserType userType, Long targetId) {
 		
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
 				.orElseThrow(()-> new CustomEntityNotFoundException("회원"));
@@ -108,7 +120,9 @@ public class UserManagementServiceImpl implements UserManagementService{
 	@Override
 	public CompanyManagementDetailDto readCompanyManagement(UserType userType, Long targetId) {
 
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
@@ -119,7 +133,9 @@ public class UserManagementServiceImpl implements UserManagementService{
 	@Override
 	public ConsultantManagementDetailDto readConsultantManagement(UserType userType, Long targetId) {
 
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetId)
 				.orElseThrow(()-> new CustomEntityNotFoundException("컨설턴트"));
@@ -130,7 +146,9 @@ public class UserManagementServiceImpl implements UserManagementService{
 	@Override
 	public Page<CompanyManagementSummaryDto> readWatingCompanyManagementPage(UserType userType, Pageable pageable) {
 
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserTypeAndApprovalStatusIsWaiting(UserType.기업회원, pageable);
 		List<CompanyManagementSummaryDto> companyManagementSummaryDtos = new ArrayList<>();
@@ -150,7 +168,9 @@ public class UserManagementServiceImpl implements UserManagementService{
 	@Override
 	public Page<ConsultantManagementSummaryDto> readWatingConsultantManagementPage(UserType userType, Pageable pageable) {
 
-		assertUtil.assertUserType(userType, UserType.관리자,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Page<User> users = userRepository.findAllWithSubEntityByUserTypeAndApprovalStatusIsWaiting(UserType.컨설턴트회원, pageable);
 		List<ConsultantManagementSummaryDto> consultantManagementSummaryDtos = new ArrayList<>();

@@ -43,14 +43,14 @@ public class JobPostingServiceImpl implements JobPostingService{
 
 	private final AssertUtil assertUtil;
 
-	private final static String TARGET_ENTITY_NAME = "채용공고";
+	private final static String ENTITY_NAME = "채용 공고";
 
 	@Override
 	public void createJobPosting(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, JobPostingCreateDto jobPostingCreateDto, JobPostingImageCreateListDto jobPostingImageCreateListDto) {
 		
 		String action = "등록";
 
-		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, action);
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 		
 		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("기업"));
@@ -85,7 +85,7 @@ public class JobPostingServiceImpl implements JobPostingService{
 	public JobPostingResponseDto readJobPosting(Long jobPostingId) {
 
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
-			.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		List<JobPostingImage> jobPostingImages = jobPosting.getJobPostingImages();
 		List<String> jobPostingImageUrls = new ArrayList<>();
@@ -100,19 +100,19 @@ public class JobPostingServiceImpl implements JobPostingService{
 	@Override
 	public void updateJobPosting(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed,JobPostingUpdateDto jobPostingUpdateDto, JobPostingImageCreateListDto jobPostingImageCreateListDto) {
 		
-		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "채용공고 수정");
-		
 		String action = "수정";
+
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 
 		Long jobPostingId = jobPostingUpdateDto.getId();
 		
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
-			.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
 		Long ownerId = jobPostingRepository.findCompanyIdByJobPostingId(jobPostingId)
 			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 
-		assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		jobPosting.updateJobPostingInfo(jobPostingUpdateDto);
 		
@@ -131,12 +131,12 @@ public class JobPostingServiceImpl implements JobPostingService{
 		String action = "삭제";
 
 		JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
-			.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
 		Long ownerId = jobPostingRepository.findCompanyIdByJobPostingId(jobPostingId)
 			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		
-		assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		jobPostingRepository.delete(jobPosting);
 	}

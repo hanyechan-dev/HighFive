@@ -8,4 +8,5 @@ import com.jobPrize.entity.company.Schedule;
 public interface ScheduleRepositoryCustom {
 	List<Schedule> findAllByCompanyId(Long id);
 	Optional<Schedule> findByScheduleId(Long id);
+	Optional<Long> findCompanyIdByScheduleId(Long id);
 }

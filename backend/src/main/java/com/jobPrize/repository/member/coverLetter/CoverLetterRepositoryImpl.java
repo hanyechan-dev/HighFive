@@ -40,6 +40,18 @@ public class CoverLetterRepositoryImpl implements CoverLetterRepositoryCustom {
 		return results;
 	}
 
+	@Override
+	public Optional<Long> findMemberIdByCoverLetterId(Long id) {
+		QCoverLetter coverLetter = QCoverLetter.coverLetter;
+		
+		Long result = queryFactory.select(coverLetter.member.id)
+				.from(coverLetter)
+				.where(coverLetter.id.eq(id))
+				.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
+
 
 
 }

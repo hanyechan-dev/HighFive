@@ -29,11 +29,17 @@ public class EducationServiceImpl implements EducationService {
 	private final MemberRepository memberRepository;
 
 	private final AssertUtil assertUtil;
+
+	private final static String ENTITY_NAME = "학력";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
 	
 	@Override
 	public void createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto) {
 
-		assertUtil.assertUserType(userType, UserType.일반회원, "학력 등록");
+		String action = "등록";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
@@ -63,11 +69,18 @@ public class EducationServiceImpl implements EducationService {
 
 	@Override
 	public void updateEducation(Long id, EducationUpdateDto educationUpdateDto) {
-		Long educationId = educationUpdateDto.getId();
-		Education education = educationRepository.findById(educationId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("학력"));
 
-		assertUtil.assertId(id, education, "수정");
+		String action = "수정";
+
+		Long educationId = educationUpdateDto.getId();
+
+		Education education = educationRepository.findById(educationId)
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = educationRepository.findMemberIdByEducationId(educationId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
 		if (educationUpdateDto.getEnterDate().isAfter(educationUpdateDto.getGraduateDate())) {
 			throw new IllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
@@ -79,10 +92,16 @@ public class EducationServiceImpl implements EducationService {
 
 	@Override
 	public void deleteEducation(Long id, Long educationId) {
-        Education education = educationRepository.findById(educationId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("학력"));
 
-        assertUtil.assertId(id, education, "삭제");
+		String action = "삭제";
+
+        Education education = educationRepository.findById(educationId)
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+        Long ownerId = educationRepository.findMemberIdByEducationId(educationId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+        assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
         educationRepository.delete(education);
 		

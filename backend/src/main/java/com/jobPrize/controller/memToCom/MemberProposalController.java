@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
+import com.jobPrize.dto.memToCom.proposal.ProposalUpdateDto;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.memToCom.proposal.ProposalService;
 import com.jobPrize.util.SecurityUtil;
@@ -47,6 +49,18 @@ public class MemberProposalController {
         ProposalResponseDto proposalResponseDto = proposalService.readProposal(id, userType, idDto.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(proposalResponseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> updateProposal(@RequestBody @Valid ProposalUpdateDto proposalUpdateDto) {
+
+        Long id = SecurityUtil.getId();
+        
+        UserType userType = SecurityUtil.getUserType();
+
+        proposalService.updateProposal(id, userType, proposalUpdateDto);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

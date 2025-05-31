@@ -31,9 +31,16 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 
 	private final AssertUtil assertUtil;
 
+	private final static String ENTITY_NAME = "어학시험";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
+
 	@Override
 	public void createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto) {
-		assertUtil.assertUserType(userType, UserType.일반회원, "어학시험 등록");
+
+		String action = "등록";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
@@ -58,11 +65,18 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 
 	@Override
 	public void updateLanguageTest(Long id, LanguageTestUpdateDto languageTestUpdateDto) {
+
+		String action = "수정";
+
 		Long languageTestId = languageTestUpdateDto.getId();
+
 		LanguageTest languageTest = languageTestRepository.findById(languageTestId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("어학시험"));
-		
-		assertUtil.assertId(id, languageTest, "수정");
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = languageTestRepository.findMemberIdByLanguageTestId(languageTestId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		languageTest.updateLanguageTest(languageTestUpdateDto);
 		
@@ -70,11 +84,16 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 
 	@Override
 	public void deleteLanguageTest(Long id, Long languageTestId) {
+
+		String action = "삭제";
 		
 		LanguageTest languageTest = languageTestRepository.findById(languageTestId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("어학시험"));
-		
-		assertUtil.assertId(id, languageTest, "삭제");
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = languageTestRepository.findMemberIdByLanguageTestId(languageTestId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		languageTestRepository.delete(languageTest);
 		

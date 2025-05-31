@@ -62,4 +62,28 @@ public class ConsultantConsultingRepositoryImpl implements ConsultantConsultingR
 	    	.orElse(0L);
 	}
 
+	@Override
+	public Optional<Long> findConsultantIdByConsultantConsultingId(Long id) {
+		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
+
+		return Optional.ofNullable(
+			queryFactory
+			.select(consultantConsulting.consultant.id)
+			.from(consultantConsulting)
+			.where(consultantConsulting.id.eq(id))
+			.fetchOne());
+	}
+
+	@Override
+	public Optional<Long> findMemberIdByConsultantConsultingId(Long id) {
+		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
+
+		return Optional.ofNullable(
+			queryFactory
+			.select(consultantConsulting.aiConsulting.request.member.id)
+			.from(consultantConsulting)
+			.where(consultantConsulting.id.eq(id))
+			.fetchOne());
+	}
+
 }

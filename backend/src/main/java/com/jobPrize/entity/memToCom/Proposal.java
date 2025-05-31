@@ -66,8 +66,9 @@ public class Proposal {
 	private LocalDate proposalDate;
 
 	@Enumerated(EnumType.STRING)
+	@Builder.Default
 	@Column(name = "proposal_status", nullable = false)
-	private ProposalStatus proposalStatus;
+	private ProposalStatus proposalStatus=ProposalStatus.대기;
 
 	public void changeStatus(ProposalStatus status) {
 		this.proposalStatus = status;

@@ -34,13 +34,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	private final AssertUtil assertUtil;
 
-	private static final String TARGET_ENTITY_NAME = "구독";
+	private static final String ENTITY_NAME = "구독";
 	
 	// 구독자 생성
 	@Override
 	public void createSubscription(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
+
+		String action = "수행";
 		
-		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, TARGET_ENTITY_NAME);
+		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, ENTITY_NAME, action);
 		
 		LocalDate now = LocalDate.now();
 		
@@ -69,9 +71,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Transactional(readOnly = true)
 	public List<SubscriptionResponseDto> readSubscriberListByUserType(UserType userType, UserType targetUserType) {
 
-		String action = "구독 정보 조회";
+		String action = "조회";
 		
-		assertUtil.assertUserType(userType, UserType.관리자, action);
+		assertUtil.assertUserType(userType, UserType.관리자, ENTITY_NAME, action);
 		
 		List<Subscription> subscribers = subscriptionRepository.findAllByUserType(targetUserType);
 		
@@ -112,15 +114,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Transactional(readOnly = true)
 	public SubscriptionResponseDto readSubscription(Long id) { 
 
-		String action = "구독 정보 조회";
+		String action = "조회";
 
 		Subscription subscription = subscriptionRepository.findLatestByUserId(id) 
-				.orElseThrow(() -> new CustomEntityNotFoundException(TARGET_ENTITY_NAME));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
 		Long ownerId = subscriptionRepository.findUserIdBySubscriptionId(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		    
-		assertUtil.assertId(id, ownerId, TARGET_ENTITY_NAME, action);
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
 		return SubscriptionResponseDto.builder()
 				.id(subscription.getUser().getId())

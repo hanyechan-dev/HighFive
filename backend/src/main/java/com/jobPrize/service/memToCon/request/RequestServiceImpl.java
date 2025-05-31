@@ -50,10 +50,16 @@ public class RequestServiceImpl implements RequestService {
 	
 	private final WebClientUtil webClientUtil;
 
+	private final static String ENTITY_NAME = "컨설팅 요청";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
+
 	@Override
 	public void createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
 
-		assertUtil.assertUserType(userType, UserType.일반회원, "컨설팅 요청");
+		String action = "수행";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
@@ -113,11 +119,16 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	@Transactional(readOnly = true)
 	public RequestDetailDto readRequestDetail(Long id, UserType userType, Long requestId) {
+
+		String action = "조회";
 		
 		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("컨설팅 요청"));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = requestRepository.findMemberIdByRequestId(requestId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		
-		assertUtil.assertId(id, request, "조회");
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		AiConsulting aiConsulting = request.getAiConsulting();
 		
@@ -140,11 +151,13 @@ public class RequestServiceImpl implements RequestService {
 	
 	@Override
 	public void createRequestToConsultant(Long id, boolean isSubscribed, Long requestId) {
+
+		String action = "수행";
 		
-		assertUtil.assertSubscription(UserType.일반회원, isSubscribed, "컨설턴트 컨설팅 요청");
+		assertUtil.assertSubscription(ALLOWED_USER_TYPE, isSubscribed, ENTITY_NAME, action);
 		
 		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("컨설팅 요청"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		request.getAiConsulting().RequestToConsultant();
 		

@@ -28,13 +28,26 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
     }
 
     @Override
-    public Optional<Schedule> findByScheduleId(Long Id) {  
+    public Optional<Schedule> findByScheduleId(Long id) {  
         QSchedule schedule = QSchedule.schedule;
 
         return Optional.ofNullable(
                 queryFactory
                 .selectFrom(schedule)
-                .where(schedule.id.eq(Id))
+                .where(schedule.id.eq(id))
+                .fetchOne()
+        );
+    }
+
+    @Override
+    public Optional<Long> findCompanyIdByScheduleId(Long id) {
+        QSchedule schedule = QSchedule.schedule;
+
+        return Optional.ofNullable(
+                queryFactory
+                .select(schedule.company.id)
+                .from(schedule)
+                .where(schedule.id.eq(id))
                 .fetchOne()
         );
     }

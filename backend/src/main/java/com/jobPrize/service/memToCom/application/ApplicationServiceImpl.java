@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
-import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
@@ -49,10 +48,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	private final AssertUtil assertUtil;
 
+	private final static String ENTITY_NAME = "지원서";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
+
+
+
+
+
 	@Override
 	public void createApplication(Long id, UserType userType, ApplicationCreateDto applicationCreateDto) {
+
+		String action = "등록";
 		
-		assertUtil.assertUserType(userType, UserType.일반회원, "지원서 등록");
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
@@ -95,13 +104,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Transactional(readOnly = true)
 	public Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long id, Long jobPostingId, Pageable pageable) {
 
-		
+		String action = "조회";
+
 		Page<Application> applications = applicationRepository.findAllByJobPostingId(jobPostingId, pageable);
 		
 	    List<Application> applicationList = applications.getContent();
 
 	    if (!applicationList.isEmpty()) {
-	        assertUtil.assertId(id, applicationList.get(0), "지원서 조회");
+
+			Long applicationId = applicationList.get(0).getId();
+
+			Long ownerId = applicationRepository.findCompanyIdByApplicationId(applicationId)
+					.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+			assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 	    }
 
 		List<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = new ArrayList<>();
@@ -125,12 +141,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Transactional(readOnly = true)
 	public Page<ApplicationSummaryForCompanyDto> readPassedApplicationPage(Long id, Long jobPostingId, Pageable pageable) { 
 		
+		String action = "조회";
+
 	    Page<Application> applications = applicationRepository.findPassedByJobPostingId(jobPostingId, pageable); 
 	    
 	    List<Application> applicationList = applications.getContent();
 
 	    if (!applicationList.isEmpty()) {
-	        assertUtil.assertId(id, applicationList.get(0), "지원서 조회");
+
+			Long applicationId = applicationList.get(0).getId();
+
+			Long ownerId = applicationRepository.findCompanyIdByApplicationId(applicationId)
+					.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+	        assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 	    }
 
 	    List<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = new ArrayList<>();
@@ -151,21 +175,30 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Transactional(readOnly = true)
 	public ApplicationResponseDto readApplication(Long id, UserType userType, Long applicationId) {
 		
-		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, "조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, ENTITY_NAME, action);
 		
 		Application application = applicationRepository.findByApplicationId(applicationId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("지원서"));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
 		
 		if(UserType.기업회원.equals(userType)) {
-        	if(!application.getJobPosting().getCompany().getId().equals(id)) {
-        		throw new CustomOwnerMismatchException("Application", "조회");
-        	}
+
+			Long ownerId = applicationRepository.findCompanyIdByApplicationId(applicationId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+			assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+
+
         }
         else if(UserType.일반회원.equals(userType)) {
-        	if(!application.getMember().getId().equals(id)) {
-        		throw new CustomOwnerMismatchException("Application", "조회");
-        	}
+
+			Long ownerId = applicationRepository.findMemberIdByApplicationId(applicationId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+			assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+
         }
 		
 		return ApplicationResponseDto.from(application);

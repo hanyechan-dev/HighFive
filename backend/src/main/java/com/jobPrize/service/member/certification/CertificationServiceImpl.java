@@ -30,10 +30,17 @@ public class CertificationServiceImpl implements CertificationService {
 
 	private final AssertUtil assertUtil;
 
+	private final static String ENTITY_NAME = "자격증";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
+
+
 	@Override
 	public void createCertification(Long id, UserType userType, CertificationCreateDto certificationCreateDto) {
+
+		String action = "등록";
         
-		assertUtil.assertUserType(userType, UserType.일반회원, "자격증 등록");
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
@@ -58,12 +65,18 @@ public class CertificationServiceImpl implements CertificationService {
 
 	@Override
 	public void updateCertification(Long id, CertificationUpdateDto certificationUpdateDto) {
+
+		String action = "수정";
+
         Long certificationId = certificationUpdateDto.getId();
 
 		Certification certification = certificationRepository.findById(certificationId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("자격증"));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
-		assertUtil.assertId(id, certification, "수정");
+		Long ownerId = certificationRepository.findMemberIdByCertificationId(certificationId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
         
 		certification.updateCertification(certificationUpdateDto);
 
@@ -71,11 +84,16 @@ public class CertificationServiceImpl implements CertificationService {
 
 	@Override
 	public void deleteCertification(Long id, Long certificationId) {
+
+		String action = "삭제";
         
         Certification certification = certificationRepository.findById(certificationId)
-            .orElseThrow(() -> new CustomEntityNotFoundException("자격증"));
+            .orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
-        assertUtil.assertId(id, certification, "삭제");
+		Long ownerId = certificationRepository.findMemberIdByCertificationId(certificationId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+        assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
         certificationRepository.delete(certification);
 		

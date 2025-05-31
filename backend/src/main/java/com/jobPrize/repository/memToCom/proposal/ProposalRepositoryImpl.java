@@ -52,8 +52,39 @@ public class ProposalRepositoryImpl implements ProposalRepositoryCustom{
 		
 		return new PageImpl<Proposal>(results, pageable, countProposalsByMemberId(id));
 	}
+
+	@Override
+	public Optional<Long> findMemberIdByProposalId(Long id) {
+		QProposal proposal = QProposal.proposal;
+
+		Long result = queryFactory
+			.select(proposal.member.id)
+			.from(proposal)
+			.where(proposal.id.eq(id))
+			.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
 	
-	public long countProposalsByCompanyId(Long id) {
+	@Override
+	public Optional<Long> findCompanyIdByProposalId(Long id) {
+		QProposal proposal = QProposal.proposal;
+
+		Long result = queryFactory
+			.select(proposal.company.id)
+			.from(proposal)
+			.where(proposal.id.eq(id))
+			.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
+	
+
+
+
+
+	
+	private long countProposalsByCompanyId(Long id) {
 		QProposal proposal = QProposal.proposal;
 
 	    return Optional.ofNullable(
@@ -64,7 +95,7 @@ public class ProposalRepositoryImpl implements ProposalRepositoryCustom{
 	        .fetchOne())
 	    	.orElse(0L);
 	}
-	public long countProposalsByMemberId(Long id) {
+	private long countProposalsByMemberId(Long id) {
 		QProposal proposal = QProposal.proposal;
 
 	    return Optional.ofNullable(

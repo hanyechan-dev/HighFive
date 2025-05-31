@@ -37,11 +37,17 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	private final CoverLetterContentService coverLetterContentService;
 
 	private final AssertUtil assertUtil;
+
+	private final static String ENTITY_NAME = "자기소개서";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
 	
 	@Override
 	public void createCoverLetter(Long id, UserType userType, CoverLetterCreateDto coverLetterCreateDto) {
+
+		String action = "등록";
 		
-		assertUtil.assertUserType(userType, UserType.일반회원, "자기소개서 등록");
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
@@ -75,10 +81,16 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	@Override
 	@Transactional(readOnly = true)
 	public CoverLetterResponseDto readCoverLetter(Long id, Long coverLetterId) {
-		CoverLetter coverLetter =coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
+
+		String action = "조회";
 		
-		assertUtil.assertId(id, coverLetter, "조회");
+		CoverLetter coverLetter =coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long memberId = coverLetterRepository.findMemberIdByCoverLetterId(coverLetterId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+		
+		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 		
 		List<CoverLetterContent> coverLetterContents = coverLetter.getCoverLetterContents();
 		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
@@ -93,10 +105,15 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	@Override
 	public void updateCoverLetter(Long id, CoverLetterUpdateDto coverLetterUpdateDto) {
 
+		String action = "수정";
+
 		CoverLetter coverLetter = coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterUpdateDto.getId())
-			.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long memberId = coverLetterRepository.findMemberIdByCoverLetterId(coverLetterUpdateDto.getId())
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
-		assertUtil.assertId(id, coverLetter, "수정");
+		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 		
 		coverLetter.updateCoverLetter(coverLetterUpdateDto);
 		List<CoverLetterContentUpdateDto> coverLetterContentUpdateDtos = coverLetterUpdateDto.getContents();
@@ -110,16 +127,15 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	@Override
 	public void deleteCoverLetter(Long id, Long coverLetterId) {
 
+		String action = "삭제";
+
 		CoverLetter coverLetter = coverLetterRepository.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
-		assertUtil.assertId(id, coverLetter, "삭제");
+		Long memberId = coverLetterRepository.findMemberIdByCoverLetterId(coverLetterId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
-		List<CoverLetterContent> coverLetterContents = coverLetter.getCoverLetterContents();
-		for(CoverLetterContent coverLetterContent : coverLetterContents ) {
-			coverLetterContentService.deleteCoverLetterContent(coverLetterContent.getId());
-		}
-		
+		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 
 		coverLetterRepository.delete(coverLetter);
 		

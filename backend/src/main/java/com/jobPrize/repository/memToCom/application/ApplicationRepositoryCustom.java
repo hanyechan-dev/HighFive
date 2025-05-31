@@ -12,4 +12,6 @@ public interface ApplicationRepositoryCustom {
 	Page<Application> findAllByJobPostingId(Long id, Pageable pageable);
 	Page<Application> findPassedByJobPostingId(Long id, Pageable pageable);
 	Optional<Application> findByApplicationId(Long id);
+	Optional<Long> findCompanyIdByApplicationId(Long id);
+	Optional<Long> findMemberIdByApplicationId(Long id);
 }

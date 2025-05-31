@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
-import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.memToCom.proposal.ProposalCreateDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalResponseDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.proposal.ProposalSummaryForMemberDto;
+import com.jobPrize.dto.memToCom.proposal.ProposalUpdateDto;
 import com.jobPrize.entity.company.Company;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.member.Member;
@@ -43,11 +43,15 @@ public class ProposalServiceImpl implements ProposalService {
 	private final MemToComUtil memToComUtil;
 
 	private final AssertUtil assertUtil;
+
+	private final static String ENTITY_NAME = "채용 제안";
 	
 	@Override
 	public void createProposal(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, ProposalCreateDto proposalCreateDto) {
 
-		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "채용 제안 발송");
+		String action = "발송";
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 		
 		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("기업"));
@@ -100,24 +104,51 @@ public class ProposalServiceImpl implements ProposalService {
 	@Transactional(readOnly = true)
 	public ProposalResponseDto readProposal(Long id, UserType userType, Long proposalId) {
 		
-		assertUtil.assertUserType(userType,UserType.일반회원,UserType.기업회원,"조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, ENTITY_NAME, action);
 		
 		Proposal proposal = proposalRepository.findById(proposalId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("제안"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		if(UserType.기업회원.equals(userType)) {
-        	if(!proposal.getCompany().getId().equals(id)) {
-        		throw new CustomOwnerMismatchException("proposal", "조회");
-        	}
+
+			Long companyId = proposalRepository.findCompanyIdByProposalId(proposalId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+			assertUtil.assertId(id, companyId, ENTITY_NAME, action);
         }
         else if(UserType.일반회원.equals(userType)) {
-        	if(!proposal.getMember().getId().equals(id)) {
-        		throw new CustomOwnerMismatchException("proposal", "조회");
-        	}
+
+			Long memberId = proposalRepository.findMemberIdByProposalId(proposalId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+			assertUtil.assertId(id, memberId, ENTITY_NAME, action);
         }
 		
 		
 		return ProposalResponseDto.from(proposal);
+	}
+
+	@Override
+	public void updateProposal(Long id, UserType userType, ProposalUpdateDto proposalUpdateDto) {
+		
+		String action = proposalUpdateDto.getProposalStatus().name();
+		
+		assertUtil.assertUserType(userType, UserType.일반회원, ENTITY_NAME, action);
+
+		Long proposalId = proposalUpdateDto.getId();
+		
+		Proposal proposal = proposalRepository.findById(proposalId)
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+		
+		Long ownerId = proposalRepository.findMemberIdByProposalId(proposalId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+		
+		proposal.changeStatus(proposalUpdateDto.getProposalStatus());
+		
 	}
 	
 

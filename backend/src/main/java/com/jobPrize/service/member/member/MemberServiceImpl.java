@@ -27,14 +27,20 @@ public class MemberServiceImpl implements MemberService{
 
 	private final AssertUtil assertUtil;
 
+	private final static String ENTITY_NAME = "회원";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
+
 	
 	@Override
 	public void createMemberInfo(Long id, UserType userType, MemberCreateDto memberCreateDto) {
 
-		assertUtil.assertUserType(userType, UserType.일반회원, "회원 정보 등록");
+		String action = "등록";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		Member member = Member.builder().user(user).nickname(memberCreateDto.getNickname()).build();
 		memberRepository.save(member);
 		
@@ -45,9 +51,7 @@ public class MemberServiceImpl implements MemberService{
 	public void updateMemberInfo(Long id, MemberUpdateDto memberUpdateDto) {
 
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
-
-		assertUtil.assertId(id, member, "회원 정보 수정");
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		member.updateNickname(memberUpdateDto.getNickname());
 		
@@ -58,7 +62,7 @@ public class MemberServiceImpl implements MemberService{
 	@Transactional(readOnly = true)
 	public MemberResponseDto readMemberInfo(Long id) {
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		String nickname = member.getNickname();
 		return MemberResponseDto.builder().nickname(nickname).build();
 		

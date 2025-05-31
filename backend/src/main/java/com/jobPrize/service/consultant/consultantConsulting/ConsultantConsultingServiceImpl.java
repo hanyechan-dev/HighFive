@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
-import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
@@ -40,15 +39,23 @@ import lombok.RequiredArgsConstructor;
 public class ConsultantConsultingServiceImpl implements ConsultantConsultingService {
 	
 	private final ConsultantConsultingRepository consultantConsultingRepository;
+
 	private final AiConsultingRepository aiConsultingRepository;
+
 	private final ConsultantRepository consultantRepository;
+
 	private final ConsultantConsultingContentService consultantConsultingContentService;
+
 	private final AssertUtil assertUtil;
+
+	private final String ENTITY_NAME = "컨설턴트 컨설팅";
 	
 	@Override
 	public void approveConsulting(Long id, UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 
-		assertUtil.assertForConsultant(userType, approvalStatus, "승인");
+		String action = "승인";
+		
+		assertUtil.assertForConsultant(userType, approvalStatus, ENTITY_NAME, action);
 
 	    AiConsulting aiConsulting = aiConsultingRepository.findById(aiConsultingId)
 	        .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
@@ -82,10 +89,13 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	public void updateConsultantConsulting(Long id, ConsultantConsultingUpdateDto consultantConsultingUpdateDto) {
 
-		ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingUpdateDto.getConsultantConsultingid())
-				.orElseThrow(()-> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
+		String action = "수정";
 		
-		assertUtil.assertId(id, consultantConsulting, "수정");
+
+		Long ownerId = consultantConsultingRepository.findConsultantIdByConsultantConsultingId(consultantConsultingUpdateDto.getConsultantConsultingid())
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+		
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		List<ConsultantContentUpdateDto> consultantContentUpdateDtos = consultantConsultingUpdateDto.getConsultantContentUpdateDtos();
 		
@@ -99,10 +109,16 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	
 	@Override
 	public void completeConsulting(Long id, Long consultantConsultingId) {
-	    ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingId)
-	        .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
+		
+		String action = "완료";
+		
+		ConsultantConsulting consultantConsulting = consultantConsultingRepository.findById(consultantConsultingId)
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = consultantConsultingRepository.findConsultantIdByConsultantConsultingId(consultantConsultingId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 	    
-	    assertUtil.assertId(id, consultantConsulting, "완료");
+	    assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
 	    if (consultantConsulting.getCompletedDate() != null) {
 	        throw new IllegalStateException("이미 완료된 컨설팅입니다.");
@@ -136,18 +152,25 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    
 	    @Override
 	    public ConsultantEditDetailResponseDto readEditDetail(Long id, UserType userType, Long consultantConsultingId) {
+			
+			String action = "조회";
+			
 	        ConsultantConsulting consultantConsulting = consultantConsultingRepository.findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
-	            .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
+	            .orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 	        
 	        if(UserType.컨설턴트회원.equals(userType)) {
-	        	if(!consultantConsulting.getConsultant().getId().equals(id)) {
-	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
-	        	}
+
+				Long ownerId = consultantConsultingRepository.findConsultantIdByConsultantConsultingId(consultantConsultingId)
+					.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+	        	assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 	        }
 	        else if(UserType.일반회원.equals(userType)) {
-	        	if(!consultantConsulting.getAiConsulting().getRequest().getMember().getId().equals(id)) {
-	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
-	        	}
+
+				Long ownerId = consultantConsultingRepository.findMemberIdByConsultantConsultingId(consultantConsultingId)
+					.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+	        	assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 	        }
 	        
 
@@ -182,19 +205,28 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    
 	    @Override
 	    public ConsultantFeedBackDetailResponseDto readFeedbackDetail(Long id, UserType userType, Long consultantConsultingId) {
-	        ConsultantConsulting consultantConsulting = consultantConsultingRepository
-	            .findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
-	            .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트 컨설팅"));
 	        
+			String action = "조회";
+			
+			ConsultantConsulting consultantConsulting = consultantConsultingRepository
+	            .findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
+	            .orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+	        
+			
+			
 	        if(UserType.컨설턴트회원.equals(userType)) {
-	        	if(!consultantConsulting.getConsultant().getId().equals(id)) {
-	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
-	        	}
+
+				Long ownerId = consultantConsultingRepository.findConsultantIdByConsultantConsultingId(consultantConsultingId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+	        	assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 	        }
 	        else if(UserType.일반회원.equals(userType)) {
-	        	if(!consultantConsulting.getAiConsulting().getRequest().getMember().getId().equals(id)) {
-	        		throw new CustomOwnerMismatchException("ConsultantConsulting", "조회");
-	        	}
+
+				Long ownerId = consultantConsultingRepository.findMemberIdByConsultantConsultingId(consultantConsultingId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+				
+	        	assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 	        }
 
 	        AiConsulting aiConsulting = consultantConsulting.getAiConsulting();

@@ -37,11 +37,17 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	private final CareerDescriptionContentService careerDescriptionContentService;
 
 	private final AssertUtil assertUtil;
+
+	private final static String ENTITY_NAME = "경력기술서";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
 	
 	@Override
 	public void createCareerDescription(Long id, UserType userType, CareerDescriptionCreateDto careerDescriptionCreateDto) {
 		
-		assertUtil.assertUserType(userType, UserType.일반회원, "경력기술서 등록");
+		String action = "등록";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
@@ -73,10 +79,15 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	@Transactional(readOnly = true)
 	public CareerDescriptionResponseDto readCareerDescription(Long id, Long careerDescriptionId) {
 
+		String action = "조회";
+
 		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long memberId = careerDescriptionRepository.findMemberIdByCareerDescriptionId(careerDescriptionId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
-		assertUtil.assertId(id, careerDescription, "조회");
+		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 
 		List<CareerDescriptionContent> careerDescriptionContents = careerDescription.getCareerDescriptionContents();
 		List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();
@@ -92,10 +103,15 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	@Override
 	public void updateCareerDescription(Long id, CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
 
-		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionUpdateDto.getId())
-			.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
+		String action = "수정";
 
-		assertUtil.assertId(id, careerDescription, "수정");
+		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionUpdateDto.getId())
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long memberId = careerDescriptionRepository.findMemberIdByCareerDescriptionId(careerDescriptionUpdateDto.getId())
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+		
+		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 
 		careerDescription.updateCareerDescription(careerDescriptionUpdateDto);
 		List<CareerDescriptionContentUpdateDto> careerDescriptionContentUpdateDtos = careerDescriptionUpdateDto.getContents();
@@ -108,15 +124,15 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	@Override
 	public void deleteCareerDescription(Long id, Long careerDescriptionId) {
 
+		String action = "삭제";
+
 		CareerDescription careerDescription = careerDescriptionRepository.findById(careerDescriptionId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
-		assertUtil.assertId(id, careerDescription, "삭제");
-
-		List<CareerDescriptionContent> careerDescriptionContents = careerDescription.getCareerDescriptionContents();
-		for(CareerDescriptionContent careerDescriptionContent : careerDescriptionContents) {
-			careerDescriptionContentService.deleteCareerDescriptionContent(careerDescriptionContent.getId());
-		}
+		Long memberId = careerDescriptionRepository.findMemberIdByCareerDescriptionId(careerDescriptionId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+		
+		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 
 		careerDescriptionRepository.delete(careerDescription);
 		

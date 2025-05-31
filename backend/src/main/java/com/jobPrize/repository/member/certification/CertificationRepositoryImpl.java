@@ -1,6 +1,7 @@
 package com.jobPrize.repository.member.certification;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.QCertification;
@@ -24,5 +25,18 @@ public class CertificationRepositoryImpl implements CertificationRepositoryCusto
 				.fetch();
 		
 		return results;
+	}
+
+	@Override
+	public Optional<Long> findMemberIdByCertificationId(Long id) {
+		QCertification certification = QCertification.certification;
+
+		Long result = queryFactory
+			.select(certification.member.id)
+			.from(certification)
+			.where(certification.id.eq(id))
+			.fetchOne();
+
+		return Optional.ofNullable(result);
 	}
 }

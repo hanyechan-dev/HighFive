@@ -27,11 +27,17 @@ public class EditPromptServiceImpl implements EditPromptService {
 	
 	private final AssertUtil assertUtil;
 
+	private final static String ENTITY_NAME = "첨삭 프롬프트";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.관리자;
+
 	@Override
 
 	public void createEditPrompt(UserType userType, EditPromptCreateDto dto) {
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "작성");
+		String action = "작성";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		EditPrompt prompt = EditPrompt.createFrom(dto);
 		
@@ -41,10 +47,11 @@ public class EditPromptServiceImpl implements EditPromptService {
 	@Override
 	public void updateEditPrompt(UserType userType, EditPromptUpdateDto dto) {
 
-		assertUtil.assertUserType(userType, UserType.관리자, "수정");
+		String action = "수정";
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		EditPrompt editPrompt = editPromptRepository.findById(dto.getId())
-			    .orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+			    .orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		editPrompt.updateEditPrompt(dto.getTitle(), dto.getContent());
 	}
@@ -53,7 +60,9 @@ public class EditPromptServiceImpl implements EditPromptService {
 	@Transactional(readOnly = true)
 	public List<EditPromptSummaryDto> readAllList(UserType userType) {
 
-		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		List<EditPrompt> editPrompts = editPromptRepository.findAll();
 		List<EditPromptSummaryDto> results = new ArrayList<>();
@@ -71,10 +80,12 @@ public class EditPromptServiceImpl implements EditPromptService {
 
 	public EditPromptResponseDto readEditPrompt(UserType userType, Long editPromptId) {
 
-		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		String action = "조회";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		EditPrompt prompt = editPromptRepository.findById(editPromptId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
 		return EditPromptResponseDto.from(prompt);
 	
@@ -83,12 +94,14 @@ public class EditPromptServiceImpl implements EditPromptService {
 	@Override
 	public void applyEditPrompt(UserType userType, Long editPromptId) {
 
-		assertUtil.assertUserType(userType, UserType.관리자, "적용");
+		String action = "적용";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		unApplyEditPrompt();
 		
 		EditPrompt editPrompt = editPromptRepository.findById(editPromptId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("프롬프트"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		editPrompt.apply();
 	}
 
@@ -97,10 +110,12 @@ public class EditPromptServiceImpl implements EditPromptService {
 	@Transactional(readOnly = true)
 	public EditPromptResponseDto readAppliedEditPrompt(UserType userType){
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "조회");
+		String action = "조회";
+
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		EditPrompt editPrompt = editPromptRepository.findAppliedPrompt()
-			       .orElseThrow(() -> new CustomEntityNotFoundException("적용된 프롬프트"));
+			       .orElseThrow(() -> new CustomEntityNotFoundException("적용된 " + ENTITY_NAME));
 
 		return EditPromptResponseDto.from(editPrompt);
 
@@ -109,7 +124,9 @@ public class EditPromptServiceImpl implements EditPromptService {
 	@Override
 	public void deleteEditPrompt(UserType userType, Long editPromptId) {
 		
-		assertUtil.assertUserType(userType, UserType.관리자, "삭제");
+		String action = "삭제";
+		
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		editPromptRepository.deleteById(editPromptId);
 		

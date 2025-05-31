@@ -8,4 +8,5 @@ import com.jobPrize.entity.member.CareerDescription;
 public interface CareerDescriptionRepositoryCustom {
 	Optional<CareerDescription> findWithCareerDescriptionContentsByCareerDescriptionId(Long id);
 	List<CareerDescription> findAllByMemberId(Long id);
+	Optional<Long> findMemberIdByCareerDescriptionId(Long id);
 }

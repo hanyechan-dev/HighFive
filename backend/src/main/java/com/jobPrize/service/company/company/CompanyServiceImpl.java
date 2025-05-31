@@ -28,10 +28,14 @@ public class CompanyServiceImpl implements CompanyService {
 
 	private final AssertUtil assertUtil;
 
+	private static final String ENTITY_NAME = "기업";
+
 	@Override
 	public void createCompanyInfo(Long id , UserType usertype, CompanyCreateDto companyCreateDto) {
 
-		assertUtil.assertUserType(usertype, UserType.기업회원, "기업정보 등록");
+		String action = "등록";
+
+		assertUtil.assertUserType(usertype, UserType.기업회원, ENTITY_NAME, action);
 
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(()-> new CustomEntityNotFoundException("유저"));

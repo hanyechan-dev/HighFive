@@ -92,6 +92,33 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom{
 		
 		return new PageImpl<Application>(results,pageable, countPassedApplicationsByjobPostingId(id));
 	}
+
+
+	@Override
+	public Optional<Long> findCompanyIdByApplicationId(Long id) {
+		QApplication application = QApplication.application;
+
+		Long result = queryFactory
+			.select(application.jobPosting.company.id)
+			.from(application)
+			.where(application.id.eq(id))
+			.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
+
+	@Override
+	public Optional<Long> findMemberIdByApplicationId(Long id) {
+		QApplication application = QApplication.application;
+
+		Long result = queryFactory
+			.select(application.member.id)
+			.from(application)
+			.where(application.id.eq(id))
+			.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
 	
 	
 	private long countApplicationsByMemberId(Long id) {

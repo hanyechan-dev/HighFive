@@ -39,5 +39,15 @@ public class CareerDescriptionRepositoryImpl implements CareerDescriptionReposit
 		return results;
 	}
 	
+	@Override
+	public Optional<Long> findMemberIdByCareerDescriptionId(Long id) {
+		QCareerDescription careerDescription = QCareerDescription.careerDescription;
 
+		Long result = queryFactory.select(careerDescription.member.id)
+				.from(careerDescription)
+				.where(careerDescription.id.eq(id))
+				.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
 }

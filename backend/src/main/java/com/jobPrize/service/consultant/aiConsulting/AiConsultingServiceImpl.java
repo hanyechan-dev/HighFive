@@ -41,12 +41,16 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 	private final AssertUtil assertUtil;
 
+	private final String ENTITY_NAME = "Ai 컨설팅";
+
 	@Override
 	@Transactional(readOnly = true)
 
 	public Page<AiConsultingSummaryDto> readAiConsultingPage(UserType userType, ApprovalStatus approvalStatus, Pageable pageable) {
 
-		assertUtil.assertForConsultant(userType, approvalStatus, "조회");
+		String action = "조회";
+
+		assertUtil.assertForConsultant(userType, approvalStatus, ENTITY_NAME, action);
 		
 	    Page<AiConsulting> AiConsultingPage = aiConsultingRepository.findAllByCondition(pageable); //컨설팅 요청 페이지
 
@@ -65,7 +69,9 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	@Transactional(readOnly = true)
 	public AiEditDetailResponseDto readEditDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 		
-		assertUtil.assertForConsultant(userType, approvalStatus, "조회");
+		String action = "조회";
+		
+		assertUtil.assertForConsultant(userType, approvalStatus, ENTITY_NAME, action);
 		
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId) //상세 모달 정보
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
@@ -89,7 +95,9 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	@Transactional(readOnly = true)
 	public AiFeedbackDetailResponseDto readFeedbackDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 		
-		assertUtil.assertForConsultant(userType, approvalStatus, "조회");
+		String action = "조회";
+		
+		assertUtil.assertForConsultant(userType, approvalStatus, ENTITY_NAME, action);
 		
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId)
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));

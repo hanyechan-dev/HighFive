@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
 	public void createComment(Long id, CommentCreateDto dto) {
 
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
 		Post post = postRepository.findById(dto.getPostId())
 				.orElseThrow(() -> new CustomEntityNotFoundException("게시글"));

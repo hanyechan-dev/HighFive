@@ -25,14 +25,17 @@ import lombok.RequiredArgsConstructor;
 public class ChatServiceImpl implements ChatService {
 
     private final ChatContentRepository chatContentRepository;
+
     private final ChatRoomRepository chatRoomRepository;
+
     private final UserRepository userRepository;
 
+	private final static String ENTITY_NAME = "채팅방";
     // 메세지 저장
 	@Override
 	public void createMessage(Long id, ChatRequestDto chatRequestDto) {
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRequestDto.getChatRoomId())
-				.orElseThrow(() -> new CustomEntityNotFoundException("채팅방"));
+				.orElseThrow(() -> new CustomEntityNotFoundException("ENTITY_NAME"));
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
@@ -94,7 +97,7 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<ChatResponseDto> readMessagesList(Long roomId) {
         ChatRoom chatRoom = chatRoomRepository.findWithChatContentsByChatRoomId(roomId)
-        		.orElseThrow(() -> new CustomEntityNotFoundException("채팅방"));
+        		.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
         return chatRoom.getChatContents().stream()
             .map(chatContent -> ChatResponseDto.builder()

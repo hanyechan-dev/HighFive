@@ -23,16 +23,22 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
+
 	private final PaymentRepository paymentRepository;
+
 	private final UserRepository userRepository;
 	
 	private final AssertUtil assertUtil;
+
+	private final static String ENTITY_NAME = "결제";
 	
 	@Transactional
 	@Override
 	public void createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
 		
-		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, "결제");
+		String action = "수행";
+		
+		assertUtil.assertUserType(userType, UserType.일반회원, UserType.기업회원, ENTITY_NAME, action);
 		
 		// * 추후, 이 곳에 결제 시스템 구현 필수.
 		// 쇼핑몰처럼 장바구니, 상품, 주문 등 복잡한 로직이 필요없이,

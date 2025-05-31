@@ -4,6 +4,7 @@ package com.jobPrize.service.common.user;
 
 import java.util.List;
 
+import com.jobPrize.enumerate.UserType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import com.jobPrize.dto.common.token.TokenDto;
 import com.jobPrize.dto.common.user.login.LogInDto;
 import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.enumerate.UserType;
 import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.util.AssertUtil;

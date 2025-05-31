@@ -101,12 +101,18 @@ public class JsonUtil {
 	}
 
 	public String getCoverLetterJsonByCoverLetterId(Long id, Long coverLetterId) {
+
+		String entityName = "자기소개서";
+		String actiom = "선택";
 		// coverLetter 소유자 체크 + contents 포함 → JSON
 		CoverLetter coverLetter = coverLetterRepository
 				.findWithCoverLetterContentsByCoverLetterId(coverLetterId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서"));
+				.orElseThrow(() -> new CustomEntityNotFoundException(entityName));
 		
-		assertUtil.assertId(id, coverLetter, "선택");
+		Long ownerId = coverLetterRepository.findMemberIdByCoverLetterId(coverLetterId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, entityName, actiom);
 		
 		List<CoverLetterContent> coverLetterContents = coverLetter.getCoverLetterContents();
 		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
@@ -131,12 +137,17 @@ public class JsonUtil {
 	}
 
 	public String getCareerDescriptionJsonByCareerDescriptionId(Long id, Long careerDescriptionId) {
+		String entityName = "경력기술서";
+		String action = "선택";
 		// careerDescription 소유자 체크 + contents 포함 → JSON
 		CareerDescription careerDescription = careerDescriptionRepository
 				.findWithCareerDescriptionContentsByCareerDescriptionId(careerDescriptionId)
-				.orElseThrow(() -> new IllegalStateException("존재하지 않는 경력기술서입니다."));
+				.orElseThrow(() -> new CustomEntityNotFoundException(entityName));
 		
-		assertUtil.assertId(id, careerDescription, "선택");
+		Long ownerId = careerDescriptionRepository.findMemberIdByCareerDescriptionId(careerDescriptionId)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+
+		assertUtil.assertId(id, ownerId, entityName, action);
 		
 		List<CareerDescriptionContent> careerDescriptionContents = careerDescription.getCareerDescriptionContents();
 		List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();

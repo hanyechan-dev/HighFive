@@ -44,12 +44,16 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 	
 	private final AssertUtil assertUtil;
 
+	private static final String ENTITY_NAME = "인재";
+
 	@Override
 	@Transactional(readOnly = true)
 	public Page<MemberPoolSummaryDto> readMemberPoolPageByCondition(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed,
 			MemberFilterCondition memberFilterCondition, Pageable pageable) {
+
+		String action = "조회";
 		
-		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "인재 조회");
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 		
 		
 		Page<Similarity> similarities = similarityRepository.findAllWithMemberByCompanyIdAndCondition(id,
@@ -74,7 +78,9 @@ public class MemberPoolServiceImpl implements MemberPoolService {
 	@Transactional(readOnly = true)
 	public MemberPoolDetailDto readMemberPoolDetail(UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed, Long memberId) {
 		
-		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, "인재 조회");
+		String action = "조회";
+		
+		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(memberId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("회원"));

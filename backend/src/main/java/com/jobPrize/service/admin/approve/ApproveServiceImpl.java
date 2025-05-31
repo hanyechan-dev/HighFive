@@ -19,17 +19,23 @@ public class ApproveServiceImpl implements ApproveService {
 	private final UserRepository userRepository;
 	
 	private final AssertUtil assertUtil;
+
+	private final static String ENTITY_NAME = "유저";
+
+	private final static UserType ALLOWED_USER_TYPE = UserType.관리자;
 	
 
 	@Override
 	public void approveUser(UserType userType, Long targetUserId) {
 
-		assertUtil.assertUserType(userType,UserType.관리자,"승인");
+		String action = "승인";
+
+		assertUtil.assertUserType(userType,ALLOWED_USER_TYPE,ENTITY_NAME,action);
 		
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetUserId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
-		if (user.getType() == UserType.일반회원 || user.getType() == UserType.관리자) {
+		if (UserType.일반회원.equals(user.getType()) || UserType.관리자.equals(user.getType())) {
 			throw new IllegalArgumentException("승인 할 수 없는 회원입니다");
 			
 		}
@@ -43,12 +49,14 @@ public class ApproveServiceImpl implements ApproveService {
 	@Override
 	public void rejectUser(UserType userType, Long targetUserId) {
 
-		assertUtil.assertUserType(userType,UserType.관리자,"거절");
+		String action = "거절";
+
+		assertUtil.assertUserType(userType,ALLOWED_USER_TYPE,ENTITY_NAME,action);
 
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetUserId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
-		if (user.getType() == UserType.일반회원 || user.getType() == UserType.관리자 ) {
+		if (UserType.일반회원.equals(user.getType()) || UserType.관리자.equals(user.getType())) {
 			throw new IllegalArgumentException("거절 할 수 없는 회원입니다");
 		}
 		
