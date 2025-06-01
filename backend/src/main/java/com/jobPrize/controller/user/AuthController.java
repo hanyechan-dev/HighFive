@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.token.TokenDto;
+import com.jobPrize.dto.common.user.kakao.KakaoCodeDto;
 import com.jobPrize.dto.common.user.login.LogInDto;
 import com.jobPrize.service.common.user.UserService;
 
@@ -18,16 +19,33 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-	
+
 	private final UserService userService;
-	
+
 	@PostMapping("/token")
 	public ResponseEntity<TokenDto> logIn(@RequestBody @Valid LogInDto logInDto) {
-		
+
 		TokenDto tokenDto = userService.logIn(logInDto);
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
+
+	}
+
+	@PostMapping("/kakao")
+	public ResponseEntity<?> loginKakao(@RequestBody KakaoCodeDto kakaoCodeDto) {
+		String code = kakaoCodeDto.getCode();
 		
+		String email = userService.getEmailFromKakaoCode(code);
+		
+		if(userService.isExsitEmail(email)) {
+			TokenDto tokenDto = userService.logInForKakao(email);
+			return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
+		}
+
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(email);
+		
+
 	}
 
 }

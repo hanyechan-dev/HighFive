@@ -34,5 +34,6 @@ public class WebClientUtil {
 		    throw new RuntimeException("Python 서버 통신 실패", e);
 		}
 	}
+	
 
 }

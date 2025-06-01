@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.jobPrize.dto.common.user.kakao.KakaoUserSignUpDto;
 import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
 import com.jobPrize.entity.admin.Admin;
 import com.jobPrize.entity.company.Company;
@@ -161,6 +162,19 @@ public class User {
 			.address(userSignUpDto.getAddress())
 			.type(userSignUpDto.getType())
 			.build();
+	}
+	
+	public static User from(KakaoUserSignUpDto kakaoUserSignUpDto) {
+		return User.builder()
+				.email(kakaoUserSignUpDto.getEmail())
+				.name(kakaoUserSignUpDto.getName())
+				.birthDate(kakaoUserSignUpDto.getBirthDate())
+				.genderType(kakaoUserSignUpDto.getGenderType())
+				.phone(kakaoUserSignUpDto.getPhone())
+				.address(kakaoUserSignUpDto.getAddress())
+				.type(kakaoUserSignUpDto.getType())
+				.build();
+		
 	}
 
 }

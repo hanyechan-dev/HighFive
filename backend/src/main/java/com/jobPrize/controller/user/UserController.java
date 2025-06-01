@@ -12,6 +12,7 @@ import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.common.myPage.MyPageUpdateDto;
 import com.jobPrize.dto.common.myPage.PasswordUpdateDto;
 import com.jobPrize.dto.common.token.TokenDto;
+import com.jobPrize.dto.common.user.kakao.KakaoUserSignUpDto;
 import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.common.user.UserService;
@@ -35,6 +36,16 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tokenDto);
 		
 	}
+	
+	@PostMapping("/kakao")
+	public ResponseEntity<TokenDto> signUpForKakao(@RequestBody @Valid KakaoUserSignUpDto kakaoUserSignUpDto) {
+		
+		TokenDto tokenDto = userService.createUserForKakao(kakaoUserSignUpDto);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(tokenDto);
+		
+	}
+	
 	
 	@PutMapping("/me")
 	public ResponseEntity<Void> updateMyPage(@RequestBody @Valid MyPageUpdateDto myPageUpdateDto){
