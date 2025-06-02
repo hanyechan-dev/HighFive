@@ -46,7 +46,6 @@ public class Company {
 	@JoinColumn(name="USER_ID", nullable = false)
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
 	private String industry;
 
