@@ -17,7 +17,7 @@ public interface UserService {
 	public void updateUserPassword(Long id, PasswordUpdateDto passwordUpdateDto);
 	public void softDeleteUser(Long id, UserType userType, Long targetId);
 	
-	public boolean isExsitEmail(String email);
+	public boolean isExistEmail(String email);
 	
 	public TokenDto createUserForKakao(KakaoUserSignUpDto kakaoUserSignUpDto);
 	public TokenDto logInForKakao(String email);

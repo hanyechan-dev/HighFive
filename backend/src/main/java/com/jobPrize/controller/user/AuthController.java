@@ -37,7 +37,7 @@ public class AuthController {
 		
 		String email = userService.getEmailFromKakaoCode(code);
 		
-		if(userService.isExsitEmail(email)) {
+		if(userService.isExistEmail(email)) {
 			TokenDto tokenDto = userService.logInForKakao(email);
 			return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
 		}

@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
+
 	
 	@PostMapping
 	public ResponseEntity<TokenDto> signUp(@RequestBody @Valid UserSignUpDto userSignUpDto) {
