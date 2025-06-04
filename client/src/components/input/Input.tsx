@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface InputProps {
     label : string;
     placeholder : string;
@@ -7,12 +5,12 @@ interface InputProps {
     disabled : boolean;
     type : 'text' | 'password' | 'email';
     value : string;
-    onChange : (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setValue: (value: string) => void
 }
 
 const sizeClass = {
     s: 'w-[130px] h-[42px]',
-    m: 'w-[300px] h-[42px]',
+    m: 'w-[390px] h-[42px]',
     l: 'w-[720px] h-[42px]',
 };
 
@@ -23,18 +21,22 @@ function Input({
     disabled,
     type,
     value,
-    onChange,
+    setValue,
 }: InputProps) {
 
-    const defaultSetting = 'text-base font-roboto font-semibold rounded-lg border border-gray-300'
-
-    const [value, setValue] = useState('');
-
+    const defaultSetting = 'text-base font-roboto rounded-lg border border-gray-300 mb-6 px-3'
+    const labelSetting = 'font-roboto text-base mb-2 inline-block'
 
     return (
         <div>
-            <label>{label}</label>
-            <input className={`${sizeClass[size]} ${defaultSetting}`} placeholder={placeholder} disabled={disabled} type = {type} value ={value} onChange={(e) => setValue(e.target.value)} />
+            <label className={labelSetting}>{label}</label>
+            <br />
+            <input className={`${sizeClass[size]} ${defaultSetting}`} 
+            placeholder={placeholder} 
+            disabled={disabled} 
+            type = {type} 
+            value ={value} 
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)} />
         </div>
     );
 }

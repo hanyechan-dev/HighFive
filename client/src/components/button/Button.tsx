@@ -5,8 +5,8 @@ interface ButtonProps {
   size : 's' | 'm' | 'l';
   disabled : boolean;
   text : string;
-  onClick : () => void;   // 필요한 기능만 열어줌
-  type : 'button' | 'submit'; // form 제출도 가능하게
+  onClick : () => void;
+  type : 'button' | 'submit';
 }
 
 const colorClass = {
@@ -24,7 +24,7 @@ const disabledColorClass = {
 const sizeClass = {
   s: 'w-[95px] h-[42px]',
   m: 'w-[125px] h-[42px]',
-  l: 'w-[400px] h-[42px]',
+  l: 'w-[390px] h-[42px]',
 };
 
 
@@ -39,7 +39,7 @@ function Button({
 }: ButtonProps) {
 
   const colorStyle = disabled ? disabledColorClass[color] : colorClass[color];
-  const defaultSetting = 'text-base font-roboto font-semibold rounded-lg';
+  const defaultSetting = 'text-base font-roboto rounded-lg';
 
   return (
     <button
