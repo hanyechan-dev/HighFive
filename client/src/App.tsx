@@ -16,19 +16,24 @@ function App() {
     const [checked, setChecked] = useState(false);
 
     const mockData = {
-        id : 1,
-        기업명 : '삼성전자',
-        기업형태 : '대기업',
-        공고명 : '백엔드 개발자 공개채용',
-        모집부문 : '백엔드',
-        근무지 : '서울',
-        경력 : '신입',
-        학력 : '대졸',
-        등록일 : '2025-05-05'};
-
+    id: 1,
+    title: '백엔드 개발자 공개채용 삼성에서 인재를 모십니다 많은 지원 바랍니다.',
+    companyName: '삼성전자',
+    companyType: '대기업',
+    job: '백엔드',
+    workLocation: '서울 관악구',
+    careerType: '경력 3년차 이상상',
+    educationLevel: '전문학사',
+    similarityScore: 87,
+    createdDate: '2025-05-05'
+};
 
     const userType = ['일반회원', '기업회원', '컨설턴트회원'];
     const [checkedText, setcheckedText] = useState(userType[0]);
+
+    const onClick = (id: number) => {
+        console.log(id);
+    };
 
 
     return (
@@ -48,10 +53,8 @@ function App() {
 
             <Checkbox checked={checked} setChecked={setChecked} />
 
-            <ContentOfList {...mockData}/>
-            <ContentOfList id={0} />
-            <ContentOfList id={0} />
-            <ContentOfList id={0} />
+            <ContentOfList {...mockData} onClick={onClick}/>
+
 
 
         </>

@@ -1,15 +1,26 @@
 interface ContentProps {
-    id: number;
-    title : string;
-    companyName : string;
+    id:number;
+    title: string;
+    companyName: string;
     companyType: string;
-    job : string;
-    workLocation : string;
-    careerType : string;
-    educationLevel : string; 
-    similarityScore : number;
-    createdDate : string; 
+    job: string;
+    workLocation: string;
+    careerType: string;
+    educationLevel: string;
+    similarityScore: number | null;
+    createdDate: string;
+    onClick: (id:number) => void;
 }
+
+const defaultSetting =
+    'w-[1500px] h-[50px] text-base font-roboto border-t border-gray-300 px-3 py-[13px] flex items-center hover:bg-semi_theme';
+const itemSetting = 'shrink-0 text-left mr-5';
+const similarityScoreSetting = 'w-[50px] h-[30px] bg-theme text-white border border-theme rounded-lg px-2 text-center';
+const sizeClass = {
+    s: 'w-[100px]',
+    m: 'w-[150px]',
+    l: 'w-[500px]',
+};
 
 function ContentOfList({
     id,
@@ -21,22 +32,30 @@ function ContentOfList({
     careerType,
     educationLevel,
     similarityScore,
-    createdDate
+    createdDate,
+    onClick
 }: ContentProps) {
 
-    const defaultSetting = 'w-[1500px] h-[50px] text-base font-roboto border-t border-gray-300 px-3 grid grid-cols-8 items-center'
+    let scoreText = '';
+    if (similarityScore != null) {
+        scoreText = similarityScore + '%';
+    }
 
     return (
-        <div className={defaultSetting} key={id}>
-            <span className="w-[200px] text-center">{companyName}</span>
-            <span className="w-[150px] text-center">{companyType}</span>
-            <span className="w-[300px] text-center">{title}</span>
-            <span className="w-[150px] text-center">{job}</span>
-            <span className="w-[150px] text-center">{workLocation}</span>
-            <span className="w-[100px] text-center">{careerType}</span>
-            <span className="w-[100px] text-center">{educationLevel}</span>
-            <span className="w-[150px] text-center">{createdDate}</span>
-            <span className="w-[150px] text-center">{similarityScore}</span>
+        <div className={defaultSetting} onClick={()=>onClick(id)}>
+            <span className={`${sizeClass.s} ${itemSetting}`}>{companyName}</span>
+            <span className={`${sizeClass.s} ${itemSetting}`}>{companyType}</span>
+            <span className={`${sizeClass.l} ${itemSetting}`}>{title}</span>
+            <span className={`${sizeClass.s} ${itemSetting}`}>{job}</span>
+            <span className={`${sizeClass.s} ${itemSetting}`}>{workLocation}</span>
+            <span className={`${sizeClass.m} ${itemSetting}`}>{careerType}</span>
+            <span className={`${sizeClass.s} ${itemSetting}`}>{educationLevel}</span>
+            <span className={`${sizeClass.s} ${itemSetting}`}>{createdDate}</span>
+            {similarityScore !== null && (
+                <span className={`${sizeClass.s} ${itemSetting} ${similarityScoreSetting}`}>
+                    {scoreText}
+                </span>
+            )}
         </div>
     );
 }

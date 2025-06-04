@@ -26,7 +26,6 @@ node_modules/
 .cache/
 .yarn/
 .pnp.*
-.yarnrc.yml
 
 # Editor settings
 .vscode/*
