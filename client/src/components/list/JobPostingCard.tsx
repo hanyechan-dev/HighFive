@@ -1,4 +1,4 @@
-interface ContentProps {
+interface JobPostingSummaryProps {
     id:number;
     title: string;
     companyName: string;
@@ -22,7 +22,7 @@ const sizeClass = {
     l: 'w-[500px]',
 };
 
-function ContentOfList({
+function JobPostingSummary({
     id,
     title,
     companyName,
@@ -34,7 +34,7 @@ function ContentOfList({
     similarityScore,
     createdDate,
     onClick
-}: ContentProps) {
+}: JobPostingSummaryProps) {
 
     let scoreText = '';
     if (similarityScore != null) {
@@ -60,4 +60,4 @@ function ContentOfList({
     );
 }
 
-export default ContentOfList;
+export default JobPostingSummary;

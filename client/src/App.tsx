@@ -6,7 +6,7 @@ import { useState } from 'react'
 import ModalTitle from './components/title/ModalTitle';
 import TextArea from './components/input/TextArea';
 import Checkbox from './components/checkBox/CheckBox';
-import ContentOfList from './components/list/ContentOfList';
+import ContentOfList from './components/list/JobPostingSummary';
 
 function App() {
 
@@ -17,15 +17,28 @@ function App() {
 
     const mockData = {
     id: 1,
-    title: '백엔드 개발자 공개채용 삼성에서 인재를 모십니다 많은 지원 바랍니다.',
+    title: '백엔드 개발자 공개채용 삼성에서 인재를 모십니다 많은 지원 바랍니다. ',
     companyName: '삼성전자',
     companyType: '대기업',
     job: '백엔드',
     workLocation: '서울 관악구',
-    careerType: '경력 3년차 이상상',
+    careerType: '경력 3년차 이상',
     educationLevel: '전문학사',
     similarityScore: 87,
     createdDate: '2025-05-05'
+};
+
+    const mockData1 = {
+    id: 1,
+    title: '공고명',
+    companyName: '기업',
+    companyType: '기업분류',
+    job: '모집부문',
+    workLocation: '근무 위치',
+    careerType: '경력 구분',
+    educationLevel: '학력',
+    similarityScore: '유사도',
+    createdDate: '작성일'
 };
 
     const userType = ['일반회원', '기업회원', '컨설턴트회원'];
@@ -53,6 +66,9 @@ function App() {
 
             <Checkbox checked={checked} setChecked={setChecked} />
 
+            <ContentOfList {...mockData1} onClick={onClick}/>
+            <ContentOfList {...mockData} onClick={onClick}/>
+            <ContentOfList {...mockData} onClick={onClick}/>
             <ContentOfList {...mockData} onClick={onClick}/>
 
 
