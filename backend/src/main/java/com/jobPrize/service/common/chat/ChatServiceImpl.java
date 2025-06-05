@@ -50,7 +50,15 @@ public class ChatServiceImpl implements ChatService {
 	
 	// 채팅방 생성
 	@Override
-	public void createChatRoom(Long id, Long targetId) {
+	public Long createChatRoom(Long id, Long targetId) {
+		
+		// 채팅방 중복 생성 방지
+		ChatRoom testChatRoom = chatRoomRepository.findChatRoomWithTwoUsers(id, targetId);
+		if( testChatRoom != null ) {
+			Long chatRoomId = testChatRoom.getId();
+			return chatRoomId;
+		}
+		
 		User user1 = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		User user2 = userRepository.findByIdAndDeletedDateIsNull(targetId)
@@ -61,6 +69,12 @@ public class ChatServiceImpl implements ChatService {
 				.build();
 		
 		chatRoomRepository.save(chatRoom);
+		
+		// ChatRoomId 반환
+		ChatRoom newChatRoom = chatRoomRepository.findChatRoomWithTwoUsers(id, targetId);
+		Long chatRoomId = newChatRoom.getId();
+		
+		return chatRoomId;
 	}
 	
 	// 채팅 알림 기능, 추후 구현.

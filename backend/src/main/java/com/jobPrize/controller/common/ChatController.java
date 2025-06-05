@@ -35,9 +35,9 @@ public class ChatController {
 	
 	// 채팅 메세지 조회
 	@PostMapping("/detail")
-	public ResponseEntity<List<ChatResponseDto>> getMessages(@RequestBody @Valid IdDto idDto){
+	public ResponseEntity<List<ChatResponseDto>> getMessages(@RequestBody @Valid IdDto idDto){ // IdDto는 ChatRoomId
 		Long id = SecurityUtil.getId();
-		Boolean check = chatService.checkUser(id, idDto.getId());
+		Boolean check = chatService.checkUser(id, idDto.getId()); // 채팅방 소속 여부 확인
 		
 		if(check == true) {
 			List<ChatResponseDto> chatMessages = chatService.readMessagesList(idDto.getId());
@@ -47,10 +47,10 @@ public class ChatController {
 	
 	// 채팅방 생성
 	@PostMapping
-	public ResponseEntity<Void> createChatRoom(@RequestBody @Valid IdDto idDto) {
+	public ResponseEntity<Long> createChatRoom(@RequestBody @Valid IdDto idDto) {	// IdDto는 UserId
 		Long id = SecurityUtil.getId();
-		chatService.createChatRoom(id, idDto.getId());
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		Long chatRoomId = chatService.createChatRoom(id, idDto.getId());
+		return ResponseEntity.status(HttpStatus.OK).body(chatRoomId);
 	}
 	
 }

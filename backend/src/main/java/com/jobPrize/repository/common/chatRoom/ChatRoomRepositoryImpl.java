@@ -17,8 +17,9 @@ import lombok.RequiredArgsConstructor;
 public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 	
+	// 채팅방 리스트 조회(가장 최근 메시지의 시간을 기준으로 내림차순 정렬)
 	@Override
-	public List<ChatRoom> findAllByUserId(Long id){	// 채팅방 리스트 조회(가장 최근 메시지의 시간을 기준으로 내림차순 정렬)
+	public List<ChatRoom> findAllByUserId(Long id){	
 		QChatRoom chatRoom = QChatRoom.chatRoom;
 		QChatContent chatContent = QChatContent.chatContent;
 		
@@ -44,8 +45,9 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		return results;
 	}
 	
+	// 채팅방 번호를 통해 채팅 내용과 연결
 	@Override
-	public Optional<ChatRoom> findWithChatContentsByChatRoomId(Long id){	// 채팅방 번호를 통해 채팅 내용과 연결
+	public Optional<ChatRoom> findWithChatContentsByChatRoomId(Long id){
 		QChatRoom chatRoom = QChatRoom.chatRoom;
 		QChatContent chatContent = QChatContent.chatContent;
 		
@@ -59,8 +61,9 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		return Optional.ofNullable(result);
 	}
 	
+	// 채팅방 소속 여부 확인
 	@Override
-	public Boolean checkMemberInChatRoom(Long id, Long roomId) {	// 채팅방 소속 여부 확인
+	public Boolean checkMemberInChatRoom(Long id, Long roomId) {	
 		QChatRoom chatRoom = QChatRoom.chatRoom;
 		
 		ChatRoom result = queryFactory
@@ -77,5 +80,23 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 				.fetchOne();
 		
 		return result != null;
+	}
+	
+	// 두 사용자가 속한 채팅방 검색
+	@Override
+	public ChatRoom findChatRoomWithTwoUsers(Long id, Long targetId) {
+		QChatRoom chatRoom = QChatRoom.chatRoom;
+		
+		ChatRoom result = queryFactory
+				.selectFrom(chatRoom)
+				.leftJoin(chatRoom.user1).fetchJoin()
+				.leftJoin(chatRoom.user2).fetchJoin()
+				.where(
+					chatRoom.user1.id.eq(id)
+					.and(chatRoom.user2.id.eq(targetId))
+					)
+				.fetchOne();
+		
+		return result;
 	}
 }
