@@ -13,7 +13,7 @@ interface JobPostingSummaryProps {
 }
 
 const defaultSetting =
-    'w-[1500px] h-[75px] text-base font-roboto border-t border-b border-gray-300 px-3 py-[13px] flex items-center hover:bg-semi_theme hover:cursor-pointer truncate';
+    'm-5 w-[1500px] h-[75px] text-base font-roboto border-t border-b border-gray-300 px-3 py-[13px] flex items-center hover:bg-semi_theme hover:cursor-pointer truncate';
 const itemSetting = 'shrink-0 text-left mr-5';
 const similarityScoreSetting = 'text-theme text-center';
 const sizeClass = {

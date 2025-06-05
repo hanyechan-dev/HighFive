@@ -3,10 +3,10 @@ interface CheckboxProps {
     setChecked: (value: boolean) => void
 }
 
-function Checkbox({
+const Checkbox =({
     checked,
     setChecked }
-    : CheckboxProps) {
+    : CheckboxProps)  => {
 
     const defaultSetting ="w-5 h-5 appearance-none rounded border border-theme checked:bg-theme"
 

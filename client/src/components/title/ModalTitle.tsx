@@ -1,17 +1,18 @@
 import type { ReactNode } from "react";
 
-
 interface ModalTitleProps {
     icon?: ReactNode;
     title: string;
 }
 
-function ModalTitle({
+const defaultSetting = 'font-semibold font-roboto text-2xl';
+
+const ModalTitle = ({
     icon,
     title
-}: ModalTitleProps) {
+}: ModalTitleProps) => {
 
-    const defaultSetting = 'font-semibold font-roboto text-2xl';
+
 
     return (
         <>

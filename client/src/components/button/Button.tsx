@@ -7,7 +7,7 @@ interface ButtonProps {
   text : string;
   onClick : () => void;
   type : 'button' | 'submit';
-}
+};
 
 const colorClass = {
   theme: 'bg-theme text-white hover:brightness-90',
@@ -19,7 +19,7 @@ const disabledColorClass = {
   theme: 'bg-theme text-white hover:none cursor-not-allowed brightness-50',
   kakao: 'bg-kakao text-black hover:none cursor-not-allowed brightness-50',
   action: 'bg-action text-white hover:none cursor-not-allowed brightness-50',
-}
+};
 
 const sizeClass = {
   s: 'w-[95px] h-[42px]',
@@ -27,19 +27,21 @@ const sizeClass = {
   l: 'w-[390px] h-[42px]',
 };
 
+const defaultSetting = 'text-base font-roboto rounded-lg';
 
 
-function Button({
+
+const Button = ({
   color,
   size,
   text,
   disabled,
   onClick,
   type,
-}: ButtonProps) {
+}: ButtonProps) => {
 
   const colorStyle = disabled ? disabledColorClass[color] : colorClass[color];
-  const defaultSetting = 'text-base font-roboto rounded-lg';
+
 
   return (
     <button
@@ -51,6 +53,6 @@ function Button({
       {text}
     </button>
   );
-}
+};
 
 export default Button;

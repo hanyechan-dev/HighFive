@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import Checkbox from "../checkBox/CheckBox";
 
 interface Content {
     id: number;

@@ -1,0 +1,121 @@
+import BuildingIcon from "../../icons/BuildingIcon";
+import CompanyTypeIcon from "../../icons/CompanyTypeIcon";
+import JobIcon from "../../icons/JobIcon";
+import MapPinIcon from "../../icons/MapPinIcon";
+import Badge from "../badge/Badge";
+import GraduationCapIcon from "../../icons/GraduationCapIcon";
+
+
+interface JobPostingMainCardProps {
+    id: number;
+    title: string;
+    companyName: string;
+    companyType: string;
+    job: string;
+    workLocation: string;
+    careerType: string;
+    educationLevel: string;
+    similarityScore: number | null;
+    createdDate: string;
+    imageUrl : string;
+    onClick: (id: number) => void;
+}
+const JobPostingMainCard = ({
+    id,
+    title,
+    companyName,
+    companyType,
+    job,
+    workLocation,
+    careerType,
+    educationLevel,
+    similarityScore,
+    createdDate,
+    imageUrl,
+    onClick
+}: JobPostingMainCardProps) => {
+
+    let scoreText = '';
+    if (typeof similarityScore === 'number') {
+        scoreText = similarityScore + '%';
+    }
+
+    return (
+        <div
+            className="rounded-lg bg-transparent group w-[320px] h-[490px] cursor-pointer hover:shadow-[0_6px_20px_rgba(238,87,205,0.3)] hover:scale-[1.03] transition-all m-1"
+            onClick={() => onClick(id)}
+        >
+            {/* 헤더 */}
+            <div className="relative h-[270px] overflow-hidden rounded-t-lg border">
+                {/* 로고 */}
+                <div className="absolute inset-0">
+                    {/* 흐릿한 배경용 로고 */}
+                    <img
+                        src={imageUrl}
+                        className="w-full h-full object-contain blur-2xl scale-125 opacity-100"
+                    />
+
+                    {/* 선명한 실제 로고 */}
+                    <img
+                        src={imageUrl}
+                        className="absolute inset-0 w-full h-full object-contain p-4 opacity-100"
+                    />
+                </div>
+
+
+
+            </div>
+            {/* 끼워지는 정보 */}
+            <div
+                className="border-x absolute bottom-50 left-0 w-[320px] px-4 py-2 text-center text-theme text-base font-roboto
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 bg-theme bg-opacity-10"
+            >
+                <div className="truncate">{title}</div>
+                <div className="flex justify-center items-center mt-1">
+                    <BuildingIcon className="mr-2" />
+                    <span className="font-medium">{companyName}</span>
+                </div>
+            </div>
+
+            {/* 바디 */}
+            <div className="transition-transform duration-300 group-hover:translate-y-[60px] bg-white">
+                <div className="text-black text-base font-roboto border border-t-0 border-gray-300 rounded-b-lg w-[320px] flex flex-col space-y-1.5 p-6 p-4">
+                    <div className="grid grid-cols-1 gap-2 text-sm">
+                        <div className="flex items-center">
+                            <CompanyTypeIcon className="mr-3" />
+                            <span className="min-w-[70px] font-medium">기업분류:</span>
+                            <span>{companyType}</span>
+                        </div>
+
+                        <div className="flex items-center">
+                            <JobIcon className="mr-3" />
+                            <span className="min-w-[70px] font-medium">모집부문:</span>
+                            <span>{job}</span>
+                        </div>
+
+                        <div className="flex items-center mb-2">
+                            <MapPinIcon className="mr-3" />
+                            <span className="min-w-[70px] font-medium">근무지:</span>
+                            <span>{workLocation}</span>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                            <Badge text={careerType} />
+                            <Badge icon={<GraduationCapIcon />} text={educationLevel} />
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default JobPostingMainCard;
+
+
+
+
+
