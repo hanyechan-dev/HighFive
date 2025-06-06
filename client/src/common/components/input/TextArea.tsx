@@ -8,9 +8,9 @@ interface TextAreaProps {
     setValue: (value: string) => void
 };
 
-const defaultSetting = 'w-[720px] min-h-[100px] text-base font-roboto rounded-lg border border-gray-300 mb-6 px-3 py-2 break-words resize-none';
+const defaultSetting = 'w-[952px] min-h-[100px] text-base font-roboto rounded-lg border border-gray-300 ml-[24px] mb-6 px-3 py-2 break-words resize-none';
 
-const labelSetting = 'font-roboto text-base mb-2 inline-block';
+const labelSetting = 'font-roboto text-base mb-2 inline-block ml-[24px]';
 
 
 

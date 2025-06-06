@@ -4,6 +4,7 @@ import JobIcon from "../../icons/JobIcon";
 import MapPinIcon from "../../icons/MapPinIcon";
 import Badge from "../badge/Badge";
 import GraduationCapIcon from "../../icons/GraduationCapIcon";
+import CalenderIcon from "../../icons/CalenderIcon";
 
 
 interface JobPostingMainCardProps {
@@ -42,11 +43,11 @@ const JobPostingMainCard = ({
 
     return (
         <div
-            className="rounded-lg bg-transparent group w-[320px] h-[490px] cursor-pointer hover:shadow-[0_6px_20px_rgba(238,87,205,0.3)] hover:scale-[1.03] transition-all m-1"
+            className="rounded-lg bg-transparent group w-[345px] h-[520px] cursor-pointer hover:shadow-[0_6px_20px_rgba(238,87,205,0.3)] hover:scale-[1.03] transition-all ml-[24px] mb-5"
             onClick={() => onClick(id)}
         >
             {/* 헤더 */}
-            <div className="relative h-[270px] overflow-hidden rounded-t-lg border">
+            <div className="relative h-[270px] overflow-hidden rounded-t-lg border border-b-0 border-gray-300">
                 {/* 로고 */}
                 <div className="absolute inset-0">
                     {/* 흐릿한 배경용 로고 */}
@@ -67,7 +68,7 @@ const JobPostingMainCard = ({
             </div>
             {/* 끼워지는 정보 */}
             <div
-                className="border-x absolute bottom-50 left-0 w-[320px] px-4 py-2 text-center text-theme text-base font-roboto
+                className="border-x border-gray-300 absolute bottom-50 left-0 w-[345px] h-[60px] px-4 py-2 text-center text-theme text-base font-roboto
                  opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 bg-theme bg-opacity-10"
             >
                 <div className="truncate">{title}</div>
@@ -78,9 +79,10 @@ const JobPostingMainCard = ({
             </div>
 
             {/* 바디 */}
-            <div className="transition-transform duration-300 group-hover:translate-y-[60px] bg-white">
-                <div className="text-black text-base font-roboto border border-t-0 border-gray-300 rounded-b-lg w-[320px] flex flex-col space-y-1.5 p-6 p-4">
+            <div className="transition-transform duration-300 group-hover:translate-y-[60px] bg-white border border-t-0 border-gray-300 rounded-b-lg">
+                <div className="text-black text-base font-roboto  w-[345px] flex flex-col space-y-1.5 p-6 p-4">
                     <div className="grid grid-cols-1 gap-2 text-sm">
+                        
                         <div className="flex items-center">
                             <CompanyTypeIcon className="mr-3" />
                             <span className="min-w-[70px] font-medium">기업분류:</span>
@@ -93,16 +95,22 @@ const JobPostingMainCard = ({
                             <span>{job}</span>
                         </div>
 
-                        <div className="flex items-center mb-2">
+                        <div className="flex items-center">
                             <MapPinIcon className="mr-3" />
                             <span className="min-w-[70px] font-medium">근무지:</span>
                             <span>{workLocation}</span>
+                        </div>
+                        <div className="flex items-center mb-2">
+                            <CalenderIcon className="mr-3" />
+                            <span className="min-w-[70px] font-medium">등록일:</span>
+                            <span>{createdDate}</span>
                         </div>
 
                         <div className="flex items-center space-x-2">
                             <Badge text={careerType} />
                             <Badge icon={<GraduationCapIcon />} text={educationLevel} />
                         </div>
+                        
 
 
                     </div>

@@ -3,7 +3,7 @@ interface BadgeProps {
     text: string;
 }
 
-const defaultSetting = 'w-[100px] flex items-center rounded-full border pl-2.5 py-1 text-xs font-semibold bg-[#EE57CD]/10 text-[#666666] border-[#EE57CD]/30';
+const defaultSetting = 'w-[100px] h-[26px] flex items-center rounded-full border pl-2.5 py-1 text-xs font-semibold bg-[#EE57CD]/10 text-[#666666] border-[#EE57CD]/30';
 
 const Badge = ({
     icon,

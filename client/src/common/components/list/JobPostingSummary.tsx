@@ -13,16 +13,15 @@ interface JobPostingSummaryProps {
 }
 
 const defaultSetting =
-    'm-5 w-[1500px] h-[75px] text-base font-roboto border-t border-b border-gray-300 px-3 py-[13px] flex items-center hover:bg-semi_theme hover:cursor-pointer truncate';
+    'w-[1452px] h-[75px] text-base font-roboto border border-gray-300 px-3 py-[13px] flex items-center hover:bg-semi_theme hover:cursor-pointer truncate mx-[24px]';
 const itemSetting = 'shrink-0 text-left mr-5';
-const similarityScoreSetting = 'text-theme text-center';
+const similarityScoreSetting = 'text-theme';
 const sizeClass = {
     s: 'w-[100px]',
     m: 'w-[150px]',
-    l: 'w-[500px]',
+    l: 'w-[450px]',
 };
-
-function JobPostingSummary({
+const JobPostingSummary = ({
     id,
     title,
     companyName,
@@ -34,7 +33,7 @@ function JobPostingSummary({
     similarityScore,
     createdDate,
     onClick
-}: JobPostingSummaryProps) {
+}: JobPostingSummaryProps) => {
 
     let scoreText = '';
     if (similarityScore != null) {

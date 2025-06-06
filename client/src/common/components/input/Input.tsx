@@ -3,20 +3,20 @@ interface InputProps {
     placeholder: string;
     size: 's' | 'm' | 'l';
     disabled: boolean;
-    type: 'text' | 'password' | 'email';
+    type: 'text' | 'password' | 'email' | 'date';
     value: string;
     setValue: (value: string) => void
 }
 
 const sizeClass = {
-    s: 'w-[130px] h-[42px]',
-    m: 'w-[390px] h-[42px]',
-    l: 'w-[720px] h-[42px]',
+    s: 'w-[220px] h-[42px]',
+    m: 'w-[464px] h-[42px]',
+    l: 'w-[952px] h-[42px]',
 };
 
-const defaultSetting = 'text-base font-roboto rounded-lg border border-gray-300 mb-6 px-3';
+const defaultSetting = 'text-base font-roboto rounded-lg border border-gray-300 mb-6 ml-[24px] px-3';
 
-const labelSetting = 'font-roboto text-base mb-2 inline-block';
+const labelSetting = 'font-roboto text-base mb-2 inline-block ml-[24px]';
 
 const Input = ({
     label,
@@ -26,7 +26,6 @@ const Input = ({
     type, 
     value, 
     setValue }: InputProps) => {
-
 
 
     return (

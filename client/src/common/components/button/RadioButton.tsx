@@ -9,9 +9,9 @@ const colorClass = 'text-black';
 
 const checkedColorClass = 'bg-semi_theme text-theme';
 
-const defaultSetting = 'w-[130px] h-[42px] text-base font-roboto rounded-lg';
+const defaultSetting = 'w-[154px] h-[42px] text-base font-roboto rounded-lg mb-6';
 
-const labelSetting = 'font-roboto text-base mb-2 inline-block';
+const labelSetting = 'font-roboto text-base mb-2 inline-block ml-[24px]';
 
 
 const RadioButton = ({
@@ -26,8 +26,8 @@ const RadioButton = ({
     return (<>
         <div className={labelSetting}>{name}</div>
         <br />
-        {textList.map(text => <button
-            className={`${checkedText == text ? checkedColorClass : colorClass} ${defaultSetting}`} value={text} name={name}
+        {textList.map((text, index) => <button
+            className={`${checkedText == text ? checkedColorClass : colorClass} ${defaultSetting} ${index === 0 ? 'ml-[24px]' : ''}`} value={text} name={name}
             onClick={() => setCheckedText(text)}
             type={'button'}
         >

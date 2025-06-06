@@ -5,7 +5,7 @@ interface ButtonProps {
   size : 's' | 'm' | 'l';
   disabled : boolean;
   text : string;
-  onClick : () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   type : 'button' | 'submit';
 };
 
@@ -24,10 +24,10 @@ const disabledColorClass = {
 const sizeClass = {
   s: 'w-[95px] h-[42px]',
   m: 'w-[125px] h-[42px]',
-  l: 'w-[390px] h-[42px]',
+  l: 'w-[464px] h-[42px]',
 };
 
-const defaultSetting = 'text-base font-roboto rounded-lg';
+const defaultSetting = 'text-base font-roboto rounded-lg ml-[24px] mb-6';
 
 
 

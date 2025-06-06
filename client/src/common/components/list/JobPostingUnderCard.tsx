@@ -5,6 +5,8 @@ import JobIcon from "../../icons/JobIcon";
 import MapPinIcon from "../../icons/MapPinIcon";
 import Badge from "../badge/Badge";
 import GraduationCapIcon from "../../icons/GraduationCapIcon";
+import CalenderIcon from "../../icons/CalenderIcon";
+
 
 interface JobPostingUnderCardProps {
     id: number;
@@ -40,8 +42,8 @@ const JobPostingUnderCard = ({
 
     return (
 
-        <div className="w-[320px] cursor-pointer transition-all hover:shadow-lg hover:scale-[1.03] m-1" onClick={() => onClick(id)}>
-            <div className="text-base font-roboto border border-b-0 border-gray-300 rounded-t-lg w-[320px] flex flex-col space-y-1.5 p-6 py-4 bg-gradient-to-r from-[#EE57CD]/40 to-transparent">
+        <div className="w-[345px]  cursor-pointer transition-all hover:shadow-[0_6px_20px_rgba(238,87,205,0.3)] hover:scale-[1.03] ml-[24px] mb-[24px]" onClick={() => onClick(id)}>
+            <div className="text-base font-roboto border border-b-0 border-gray-300 rounded-t-lg w-[345px] h-[87px] flex flex-col space-y-1.5 p-6 py-4 bg-gradient-to-r from-[#EE57CD]/40 to-transparent">
                 <div>
                     <span className="font-semibold truncate w-60 block">{title}</span>
                 </div>
@@ -51,7 +53,7 @@ const JobPostingUnderCard = ({
                 </div>
             </div>
 
-            <div className="text-base font-roboto border border-t-0 border-gray-300 rounded-b-lg w-[320px] flex flex-col space-y-1.5 p-6 p-4">
+            <div className="text-base font-roboto border border-t-0 border-gray-300 rounded-b-lg w-[345px] flex flex-col space-y-1.5 p-6 p-4">
                 <div className="grid grid-cols-1 gap-2 text-sm text-[#666666]">
                     <div className="flex items-center">
                         <CompanyTypeIcon className="mr-3" />
@@ -65,10 +67,16 @@ const JobPostingUnderCard = ({
                         <span>{job}</span>
                     </div>
 
-                    <div className="flex items-center mb-2">
+                    <div className="flex items-center">
                         <MapPinIcon className="mr-3" />
                         <span className="min-w-[70px] font-medium">근무지:</span>
                         <span>{workLocation}</span>
+                    </div>
+
+                    <div className="flex items-center mb-2">
+                        <CalenderIcon className="mr-3" />
+                        <span className="min-w-[70px] font-medium">등록일:</span>
+                        <span>{createdDate}</span>
                     </div>
 
                     <div className="flex items-center space-x-2">
