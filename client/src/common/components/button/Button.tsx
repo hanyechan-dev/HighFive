@@ -23,7 +23,7 @@ const disabledColorClass = {
 
 const sizeClass = {
   s: 'w-[95px] h-[42px]',
-  m: 'w-[125px] h-[42px]',
+  m: 'w-[220px] h-[42px]',
   l: 'w-[464px] h-[42px]',
 };
 

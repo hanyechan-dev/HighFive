@@ -21,10 +21,11 @@ const LoginModal = () => {
         try {
             const res = await loginApi(email, password);
             const { accessToken, refreshToken } = res.data;
-            console.log("리덕스");
-            console.log(accessToken);
+
             dispatch(setToken({ accessToken, refreshToken }));
-            console.log("팍 시발");
+
+            onClose();
+
         } catch (err) {
             console.error('로그인 실패:', err);
         }

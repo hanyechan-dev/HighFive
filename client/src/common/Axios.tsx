@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { store } from '../app/store';
+import { store } from './store/store';
+
 
 const baseURL = 'http://localhost:8090';
 

@@ -1,6 +1,6 @@
 interface RadioButtonProps {
     name: string;
-    textList: string[];
+    textList: {label: string; value: string}[];
     checkedText: string;
     setCheckedText: (value: string) => void
 };
@@ -27,11 +27,11 @@ const RadioButton = ({
         <div className={labelSetting}>{name}</div>
         <br />
         {textList.map((text, index) => <button
-            className={`${checkedText == text ? checkedColorClass : colorClass} ${defaultSetting} ${index === 0 ? 'ml-[24px]' : ''}`} value={text} name={name}
-            onClick={() => setCheckedText(text)}
+            className={`${checkedText == text.value ? checkedColorClass : colorClass} ${defaultSetting} ${index === 0 ? 'ml-[24px]' : ''}`} value={text.value} name={name}
+            onClick={() => setCheckedText(text.value)}
             type={'button'}
         >
-            {text}
+            {text.label}
         </button>)}
     </>
     );

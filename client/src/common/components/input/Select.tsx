@@ -1,6 +1,6 @@
 interface SelectProps {
     label: string;
-    options: string[];
+    options: {label: string; value: string}[];
     size: 's' | 'm' | 'l';
     disabled: boolean;
     value: string;
@@ -37,8 +37,8 @@ const Select = ({
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setValue(e.target.value)}>
                 <option value="" disabled>{label}을 선택해주세요</option>
                 {options.map((opt) => (
-                    <option key={opt} value={opt}>
-                        {opt}
+                    <option key={opt.value} value={opt.value}>
+                        {opt.label}
                     </option>
                 ))}
             </select>
