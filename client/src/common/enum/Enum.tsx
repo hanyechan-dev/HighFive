@@ -42,7 +42,7 @@ export const userTypeEnum = [
 
 export const genderTypeEnum = [
   {label: '남자', value: '남자'},
-  {label: '여자', value: '여자'}
+  {label: '여자', value: '여자'},
 ];
 
 export const salaryEnum = [

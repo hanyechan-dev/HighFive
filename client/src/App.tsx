@@ -7,6 +7,8 @@ import CommonPage from "./common/pages/CommonPage"
 import Pagination from "./common/components/pagination/Pagination";
 import { getLastPage, getLastPageBlockIndex } from "./common/utils/PaginationUtil";
 import { usePagination } from "./common/coustomHooks/usePagination";
+import SignUpModal from "./features/auth/SignUpModal";
+import JobPostingFilterModal from "./features/jobPostingForMember/JobPostingFilterModal";
 
 
 
@@ -18,7 +20,7 @@ function App() {
 
     const pagesPerBlock = 10;
     const elementsPerPage = 10;
-    const totalElements = 1553;
+    const totalElements = 1545;
 
 
 
@@ -42,10 +44,13 @@ function App() {
 
 
     return (
-        <>
+        <>  
+        <JobPostingFilterModal />
+
+            {/* <SignUpModal /> */}
 
 
-            <Pagination currentPageBlockIndex={pageBlockIndex}
+            {/* <Pagination currentPageBlockIndex={pageBlockIndex}
                 lastPageBlockIndex={lastPageBlockIndex}
                 pagesPerBlock={pagesPerBlock}
                 lastPage={lastPage}
@@ -54,7 +59,7 @@ function App() {
                 onClickPrev={onClickPrev}
                 onClickNext={onClickNext}
                 onClickLast={onClickLast}
-                onClickPage={setClickedPage} />
+                onClickPage={setClickedPage} /> */}
 
             {/* <CommonPage>
                 <div className="flex">

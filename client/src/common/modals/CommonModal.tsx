@@ -1,3 +1,5 @@
+import CloseIcon from "../icons/CloseIcon";
+
 interface CommonModalProps {
     size: 's' | 'm' | 'l';
     children: React.ReactNode
@@ -11,20 +13,22 @@ const sizeClass = {
 };
 
 
-const CommonModal = ({ size, onClose, children}: CommonModalProps) => {
+const CommonModal = ({ size, onClose, children }: CommonModalProps) => {
+
+    const raw = sizeClass[size].match(/\d+/)?.[0] ?? "0";
+    const ml = parseInt(raw, 10) - 30;
     return (
-      <div
-        className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
-        onClick={onClose}
-      >
         <div
-          className={`bg-white rounded-lg border border-gray-300 ${sizeClass[size]}`}
-          onClick={(e) => e.stopPropagation()} // 모달 내부 클릭은 닫힘 방지
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
         >
-          {children}
+            <div
+                className={`bg-white rounded-lg border border-gray-300 ${sizeClass[size]}`}
+            >
+                <CloseIcon onClick={onClose} className='cursor-pointer mt-[10px] mb-0' style={{ marginLeft: ml }}/>
+                {children}
+            </div>
         </div>
-      </div>
     );
-  };
+};
 
 export default CommonModal;

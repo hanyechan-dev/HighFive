@@ -5,7 +5,7 @@ interface ModalTitleProps {
     title: string;
 }
 
-const defaultSetting = 'font-semibold font-roboto text-2xl m-[24px]';
+const defaultSetting = 'font-semibold font-roboto text-2xl ml-[24px] mb-[24px]';
 
 const ModalTitle = ({
     icon,
