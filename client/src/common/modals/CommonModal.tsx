@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import CloseIcon from "../icons/CloseIcon";
 
 interface CommonModalProps {
@@ -15,16 +16,34 @@ const sizeClass = {
 
 const CommonModal = ({ size, onClose, children }: CommonModalProps) => {
 
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [extraWidth, setExtraWidth] = useState(0);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        // 스크롤이 필요한지, 스크롤바 너비
+        const hasVScroll = el.scrollHeight > el.clientHeight;
+        if (hasVScroll) {
+            const scrollbarWidth = el.offsetWidth - el.clientWidth;
+            setExtraWidth(scrollbarWidth);
+        }
+    }, [children]);
+
     const raw = sizeClass[size].match(/\d+/)?.[0] ?? "0";
-    const ml = parseInt(raw, 10) - 30;
+
+    const newSize = `w-[${raw+extraWidth}px]`;
     return (
         <div
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
         >
             <div
-                className={`bg-white rounded-lg border border-gray-300 ${sizeClass[size]}`}
+                className={`max-h-[800px] overflow-auto bg-white rounded-lg border border-gray-300 ${newSize}`}
+                ref={containerRef}
             >
-                <CloseIcon onClick={onClose} className='cursor-pointer mt-[10px] mb-0' style={{ marginLeft: ml }}/>
+                <div className="flex justify-end">
+                <CloseIcon onClick={onClose} className='cursor-pointer mt-[10px] mb-0 mr-[10px]' />
+                </div>
                 {children}
             </div>
         </div>

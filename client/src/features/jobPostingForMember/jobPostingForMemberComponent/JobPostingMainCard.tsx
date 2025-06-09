@@ -1,10 +1,10 @@
-import BuildingIcon from "../../icons/BuildingIcon";
-import CompanyTypeIcon from "../../icons/CompanyTypeIcon";
-import JobIcon from "../../icons/JobIcon";
-import MapPinIcon from "../../icons/MapPinIcon";
-import Badge from "../badge/Badge";
-import GraduationCapIcon from "../../icons/GraduationCapIcon";
-import CalenderIcon from "../../icons/CalenderIcon";
+import Badge from "../../../common/components/badge/Badge";
+import BuildingIcon from "../../../common/icons/BuildingIcon";
+import CalenderIcon from "../../../common/icons/CalenderIcon";
+import CompanyTypeIcon from "../../../common/icons/CompanyTypeIcon";
+import GraduationCapIcon from "../../../common/icons/GraduationCapIcon";
+import JobIcon from "../../../common/icons/JobIcon";
+import MapPinIcon from "../../../common/icons/MapPinIcon";
 
 
 interface JobPostingMainCardProps {

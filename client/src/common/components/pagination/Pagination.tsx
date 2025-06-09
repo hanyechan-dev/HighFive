@@ -57,10 +57,10 @@ const Pagination = ({
                 </div>)}
 
             {/* 페이지 숫자들 */}
-            {pageNumbers.filter((page) => page <= lastPage).map((page) => (
+            {pageNumbers.map((page) => (
                 <div
                     key={page}
-                    className={`${defaultSetting} ${page === clickedPage ? clickedPageSetting : unclickedPageSetting}`}
+                    className={`${defaultSetting} ${page === clickedPage ? clickedPageSetting : unclickedPageSetting} ${page>lastPage? 'invisible': ' '}`}
                     onClick={() => onClickPage(page)}
                 >
                     <div className="relative top-[-2px]">
