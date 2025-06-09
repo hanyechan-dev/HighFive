@@ -15,6 +15,9 @@ public class FileUtil {
 	
 	@Value("${file.upload-jobposting-image-dir}")
 	private String uploadJobPostingImageDir;
+	
+	@Value("${file.upload-company-logo-dir}")
+	private String uploadLogoImageDir;
 
 	
 	
@@ -24,6 +27,9 @@ public class FileUtil {
 		
 		if(ImageType.JOBPOSTING_IMAGE.equals(imageType)) {
 			uploadDir=uploadJobPostingImageDir;
+		}
+		else if(ImageType.LOGO_IMAGE.equals(imageType)) {
+			uploadDir=uploadLogoImageDir;
 		}
 		else {
 			throw new IllegalArgumentException("지원하지 않는 객체입니다.");
