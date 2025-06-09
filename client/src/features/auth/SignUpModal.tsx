@@ -13,6 +13,7 @@ import RadioButton from "../../common/components/button/RadioButton.tsx";
 import Select from "../../common/components/input/Select.tsx";
 import { genderTypeEnum, userTypeEnum } from "../../common/enum/Enum.tsx";
 import NicknameInputModal from "../member/NicknameInputMoal.tsx";
+import CompanyInfoInputModal from "../../강우석/CompanyInfoInputModal.tsx";
 
 const SignUpModal = () => {
 
@@ -31,6 +32,7 @@ const SignUpModal = () => {
     const [selectedGenderType, setSelectedGenderType] = useState(genderTypeEnum[0].value)
 
     const [showNicknameModal, setShowNicknameModal] = useState(false);
+    const [showCompanyInfoModal, setShowCompanyInfoModal] = useState(false);
 
     const signUp = async (
         email: string,
@@ -50,6 +52,12 @@ const SignUpModal = () => {
                 setShowNicknameModal(true);
             }
 
+            if (type == '기업회원') {
+                setShowCompanyInfoModal(true);
+            }
+
+
+
             onClose();
 
 
@@ -59,7 +67,7 @@ const SignUpModal = () => {
         }
     };
 
-    if (!showModal && !showNicknameModal) return null
+    if (!showModal && !showNicknameModal && !showCompanyInfoModal) return null
 
     return (
         <>
@@ -78,6 +86,7 @@ const SignUpModal = () => {
             )}
 
             {showNicknameModal && <NicknameInputModal />}
+            {showCompanyInfoModal && <CompanyInfoInputModal />}
         </>
     );
 

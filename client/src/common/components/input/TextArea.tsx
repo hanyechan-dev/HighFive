@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 
 interface TextAreaProps {
+    size : 'm' | 'l';
     label: string;
     placeholder: string;
     disabled: boolean;
@@ -8,13 +9,19 @@ interface TextAreaProps {
     setValue: (value: string) => void
 };
 
-const defaultSetting = 'w-[952px] min-h-[100px] text-base font-roboto rounded-lg border border-gray-300 ml-[24px] mb-6 px-3 py-2 break-words resize-none';
+const sizeClass = {
+    m: 'w-[464px]',
+    l: 'w-[952px]'
+}
+
+const defaultSetting = 'min-h-[100px] text-base font-roboto rounded-lg border border-gray-300 ml-[24px] mb-6 px-3 py-2 break-words resize-none';
 
 const labelSetting = 'font-roboto text-base mb-2 inline-block ml-[24px]';
 
 
 
 const TextArea = ({
+    size,
     label,
     placeholder,
     disabled,
@@ -40,7 +47,7 @@ const TextArea = ({
             <br />
             <textarea
                 ref={textareaRef}
-                className={`${defaultSetting}`}
+                className={`${sizeClass[size]} ${defaultSetting}`}
                 placeholder={placeholder}
                 disabled={disabled}
                 value={value}
