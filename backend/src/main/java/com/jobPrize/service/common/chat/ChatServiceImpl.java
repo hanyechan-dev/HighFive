@@ -31,10 +31,15 @@ public class ChatServiceImpl implements ChatService {
     private final UserRepository userRepository;
 
 	private final static String ENTITY_NAME = "채팅방";
+	
     // 메세지 저장
 	@Override
-	public void createMessage(Long id, ChatRequestDto chatRequestDto) {
-		ChatRoom chatRoom = chatRoomRepository.findById(chatRequestDto.getChatRoomId())
+	public ChatResponseDto createMessage(ChatRequestDto chatRequestDto) {
+		Long id = chatRequestDto.getSenderId();
+		Long chatRoomId = chatRequestDto.getChatRoomId();
+		String content = chatRequestDto.getContent();
+		
+		ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("ENTITY_NAME"));
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
@@ -42,10 +47,20 @@ public class ChatServiceImpl implements ChatService {
 		ChatContent newMessage = ChatContent.builder()
 				.user(user)
 				.chatRoom(chatRoom)
-				.content(chatRequestDto.getContent())
+				.content(content)
 				.build();
 		
-		chatContentRepository.save(newMessage);
+		ChatContent chatContent = chatContentRepository.save(newMessage);
+		
+		ChatResponseDto chatResponseDto = ChatResponseDto.builder()
+				.chatRoomId(chatRequestDto.getChatRoomId())
+				.senderId(chatRequestDto.getSenderId())
+				.name(chatContent.getUser().getName())
+				.content(chatRequestDto.getContent())
+				.createdAt(chatContent.getCreatedTime())
+				.build();
+		
+		return chatResponseDto;
     }
 	
 	// 채팅방 생성
@@ -116,7 +131,7 @@ public class ChatServiceImpl implements ChatService {
         return chatRoom.getChatContents().stream()
             .map(chatContent -> ChatResponseDto.builder()
                 .chatRoomId(roomId)
-                .id(chatContent.getUser().getId())
+                .senderId(chatContent.getUser().getId())
                 .name(chatContent.getUser().getName())
                 .content(chatContent.getContent())
                 .createdAt(chatContent.getCreatedTime())

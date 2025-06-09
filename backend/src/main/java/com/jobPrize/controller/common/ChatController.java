@@ -5,14 +5,19 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jobPrize.dto.common.chat.ChatRequestDto;
 import com.jobPrize.dto.common.chat.ChatResponseDto;
+import com.jobPrize.dto.common.chat.InviteTargetDto;
 import com.jobPrize.dto.common.id.IdDto;
+import com.jobPrize.entity.common.ChatContent;
 import com.jobPrize.service.common.chat.ChatService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -24,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatController {
 	private final ChatService chatService;
+	private final SimpMessagingTemplate simpMessagingTemplate;
 	
 	// 채팅방 리스트 조회
 	@GetMapping
@@ -51,6 +57,24 @@ public class ChatController {
 		Long id = SecurityUtil.getId();
 		Long chatRoomId = chatService.createChatRoom(id, idDto.getId());
 		return ResponseEntity.status(HttpStatus.OK).body(chatRoomId);
+	}
+	
+	// 채팅 메세지 발송
+	@MessageMapping("app/chat/send")
+	public void sendMessage(@RequestBody ChatRequestDto chatRequestDto) {
+		String destination = "/topic/" + chatRequestDto.getChatRoomId();
+		ChatResponseDto chatResponseDto = chatService.createMessage(chatRequestDto);
+		simpMessagingTemplate.convertAndSend(destination, chatResponseDto);
+	}
+	
+	// 채팅방 자동 구독
+	@MessageMapping("app/chat/subscribe")
+	public void inviteTarget(@RequestBody InviteTargetDto payload) {
+		String targetIdString = String.valueOf(payload.getTargetId());
+		
+		simpMessagingTemplate.convertAndSendToUser(
+				targetIdString, "/user/queue/chat", payload.getChatRoomId()
+		);
 	}
 	
 }
