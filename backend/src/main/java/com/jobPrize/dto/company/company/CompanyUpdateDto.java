@@ -2,6 +2,8 @@ package com.jobPrize.dto.company.company;
 
 import java.time.LocalDate;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.jobPrize.enumerate.CompanyType;
 import com.jobPrize.validation.businessNumber.BusinessNumber;
 import com.jobPrize.validation.phone.Phone;
@@ -49,7 +51,10 @@ public class CompanyUpdateDto {
 	@Min(0)
 	private Integer employeeCount;
 	
-	@NotNull(message = "설립일은 필수로 입력해야합니다")
+	@NotNull(message = "설립일은 필수로 입력해야합니다.")
 	@Past
 	private LocalDate establishedDate;
+	
+	private MultipartFile logoImageFile;
+	
 }

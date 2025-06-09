@@ -58,7 +58,7 @@ public class Company {
 	@Column(name = "business_number", nullable = false)
 	private String businessNumber;
 
-	@Column(name = "company_adress", nullable = false)
+	@Column(name = "company_address", nullable = false)
 	private String companyAddress;
 
 	@Column(name = "company_phone", nullable = false)
@@ -76,6 +76,9 @@ public class Company {
 
 	@Column(name = "established_date", nullable = false)
 	private LocalDate establishedDate;
+	
+	@Column(name = "logo_image_name")
+	private String logoImageName;
 
 	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Schedule> schedules = new ArrayList<>();
@@ -87,7 +90,7 @@ public class Company {
 	private List<Proposal> proposals = new ArrayList<>();
 
 	
-	public void updateCompanyInfo(CompanyUpdateDto companyUpdateDto) {
+	public void updateCompanyInfo(CompanyUpdateDto companyUpdateDto, String uuidName) {
 		this.companyName = companyUpdateDto.getCompanyName();
 		this.representativeName = companyUpdateDto.getRepresentativeName();
 		this.establishedDate = companyUpdateDto.getEstablishedDate();
@@ -98,10 +101,10 @@ public class Company {
 		this.companyPhone = companyUpdateDto.getCompanyPhone();
 		this.introduction = companyUpdateDto.getIntroduction();
 		this.employeeCount = companyUpdateDto.getEmployeeCount();
-
+		this.logoImageName = uuidName;
 	}
 	
-	public static Company of(User user, CompanyCreateDto companyCreateDto) {
+	public static Company of(User user, CompanyCreateDto companyCreateDto,String uuidName) {
 		return Company.builder()
 			.id(user.getId())
 			.user(user)
@@ -115,6 +118,7 @@ public class Company {
 			.companyPhone(companyCreateDto.getCompanyPhone())
 			.introduction(companyCreateDto.getIntroduction())
 			.employeeCount(companyCreateDto.getEmployeeCount())
+			.logoImageName(uuidName)
 			.build();
 	}
 

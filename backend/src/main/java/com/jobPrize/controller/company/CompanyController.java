@@ -6,11 +6,13 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jobPrize.dto.common.myPage.MyPageResponseDto;
 import com.jobPrize.dto.company.company.CompanyCreateDto;
@@ -55,13 +57,15 @@ public class CompanyController {
 	
 	
 	@PostMapping
-	public ResponseEntity<Void> createCompany(@RequestBody @Valid CompanyCreateDto companyCreateDto) {
+	public ResponseEntity<Void> createCompany(@ModelAttribute @Valid CompanyCreateDto companyCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		companyService.createCompanyInfo(id, userType, companyCreateDto);
+		MultipartFile logoImageFile = companyCreateDto.getLogoImageFile();
+		
+		companyService.createCompanyInfo(id, userType, companyCreateDto,logoImageFile);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 		
@@ -72,11 +76,13 @@ public class CompanyController {
 
 	
 	@PutMapping
-	public ResponseEntity<Void> updateMyCompany(@RequestBody @Valid CompanyUpdateDto companyUpdateDto){
+	public ResponseEntity<Void> updateMyCompany(@ModelAttribute @Valid CompanyUpdateDto companyUpdateDto){
 		
 		Long id = SecurityUtil.getId();
 		
-		companyService.updateCompanyInfo(id, companyUpdateDto);
+		MultipartFile logoImageFile = companyUpdateDto.getLogoImageFile();
+		
+		companyService.updateCompanyInfo(id, companyUpdateDto, logoImageFile);
 		
 		
 		return ResponseEntity.status(HttpStatus.OK).build();
