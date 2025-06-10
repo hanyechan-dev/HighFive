@@ -4,18 +4,26 @@ import { setToken } from '../auth/AuthSlice';
 
 
 
-import { loginApi } from "./AuthApi.tsx";
+import { kakaoLoginApi, loginApi } from "./AuthApi.tsx";
 import ModalTitle from "../../common/components/title/ModalTitle.tsx";
 import Input from "../../common/components/input/Input.tsx";
 import Button from "../../common/components/button/Button.tsx";
 import CommonModal from "../../common/modals/CommonModal.tsx";
 
-const LoginModal = () => {
+interface LoginModalProps {
+    setKakaoEmail: (email: string) => void;
+    onClose: () => void;
+    onSwitchToSignUp: () => void;
+}
+
+const LoginModal = ({ setKakaoEmail,onClose,onSwitchToSignUp }: LoginModalProps) => {
+    console.log("setKakaoEmail 타입:", typeof setKakaoEmail);
+
+
     const dispatch = useDispatch();
-    const [showModal, setShowModal] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const onClose = () => { setShowModal(false) };
+
 
     const login = async (email: string, password: string) => {
         try {
@@ -32,10 +40,41 @@ const LoginModal = () => {
     };
 
     const kakaoLogin = () => {
-        // 구현 필요
-    };
+        if (!window.Kakao.isInitialized()) return;
 
-    if (!showModal) return null
+        window.Kakao.Auth.login({
+            success: async (authObj: any) => {
+                console.log('카카오 로그인 성공:', authObj);
+                const kakaoAccessToken = authObj.access_token;
+
+                try {
+                    const res = await kakaoLoginApi(kakaoAccessToken);
+
+                    if (res.status === 200 && res.data.accessToken) {
+                        const { accessToken, refreshToken } = res.data;
+                        dispatch(setToken({ accessToken, refreshToken }));
+                        onClose();
+                    }
+                }
+                catch (err: any) {
+                    if (err.response?.status === 404) {
+                        const email = err.response.data;
+                        setKakaoEmail(email);
+                        onClose();
+                        onSwitchToSignUp();
+
+                    } else {
+                        console.error("기타 백엔드 오류:", err.response?.status, err.response?.data);
+                    }
+                }
+
+
+            },
+            fail: function (err: any) {
+                console.error('카카오 로그인 실패:', err);
+            }
+        });
+    };
 
     return (
 

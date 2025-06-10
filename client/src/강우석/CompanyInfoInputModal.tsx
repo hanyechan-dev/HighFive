@@ -8,7 +8,7 @@ import Button from "../common/components/button/Button.tsx";
 import TextArea from "../common/components/input/TextArea.tsx";
 import RadioButton from "../common/components/button/RadioButton.tsx";
 import { companyTypeEnum } from "../common/enum/Enum.tsx";
-import ImageOutputArea from "../common/components/ImageOutputArea.tsx";
+import ImageOutputArea from "../common/components/image/ImageOutputArea.tsx";
 
 const CompanyInfoInputModal = () => {
     const [showModal, setShowModal] = useState(true);

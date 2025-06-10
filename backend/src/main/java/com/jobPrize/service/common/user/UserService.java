@@ -22,6 +22,6 @@ public interface UserService {
 	public TokenDto createUserForKakao(KakaoUserSignUpDto kakaoUserSignUpDto);
 	public TokenDto logInForKakao(String email);
 	
-	public String getEmailFromKakaoCode(String code);
+	public String getEmailFromKakaoAccessToken(String kakaoAccessToken);
 		
 }

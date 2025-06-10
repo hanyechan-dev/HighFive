@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { setToken } from '../auth/AuthSlice';
 
@@ -15,12 +15,17 @@ import { genderTypeEnum, userTypeEnum } from "../../common/enum/Enum.tsx";
 import NicknameInputModal from "../member/NicknameInputMoal.tsx";
 import CompanyInfoInputModal from "../../강우석/CompanyInfoInputModal.tsx";
 
-const SignUpModal = () => {
+interface SignUpModalProps {
+    kakaoEmail: string;
+    onClose: () => void;
+}
 
-    const onClose = () => { setShowModal(false) };
+const SignUpModal = ({ kakaoEmail, onClose }: SignUpModalProps) => {
+
 
     const dispatch = useDispatch();
-    const [showModal, setShowModal] = useState(true);
+
+    const [isKakao, setIsKakao] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -31,8 +36,21 @@ const SignUpModal = () => {
     const [checkedUserType, setCheckedUserType] = useState(userTypeEnum[0].value)
     const [selectedGenderType, setSelectedGenderType] = useState(genderTypeEnum[0].value)
 
+    useEffect(() => {
+        if (kakaoEmail) {
+            setEmail(kakaoEmail);
+            setIsKakao(true);
+        }
+    }, [kakaoEmail]);
+
     const [showNicknameModal, setShowNicknameModal] = useState(false);
     const [showCompanyInfoModal, setShowCompanyInfoModal] = useState(false);
+
+    useEffect(() => {
+        if (showNicknameModal && showCompanyInfoModal) {
+            onClose();
+        }
+    }, [showNicknameModal, showCompanyInfoModal]);
 
     const signUp = async (
         email: string,
@@ -50,16 +68,13 @@ const SignUpModal = () => {
 
             if (type == '일반회원') {
                 setShowNicknameModal(true);
+                onClose();
             }
 
-            if (type == '기업회원') {
+            else if (type == '기업회원') {
                 setShowCompanyInfoModal(true);
+                onClose();
             }
-
-
-
-            onClose();
-
 
 
         } catch (err) {
@@ -67,14 +82,12 @@ const SignUpModal = () => {
         }
     };
 
-    if (!showModal && !showNicknameModal && !showCompanyInfoModal) return null
-
     return (
         <>
-            {showModal && (<CommonModal size="m" onClose={onClose} >
+            <CommonModal size="m" onClose={onClose} >
                 <ModalTitle title={'회원가입'} />
                 <RadioButton name={"회원유형"} textList={userTypeEnum} checkedText={checkedUserType} setCheckedText={setCheckedUserType} />
-                <Input label={'이메일'} placeholder={'이메일 주소를 입력해주세요.'} size={'m'} disabled={false} type={'email'} value={email} setValue={setEmail} />
+                <Input label={'이메일'} placeholder={'이메일 주소를 입력해주세요.'} size={'m'} disabled={isKakao ? true : false} type={'email'} value={email} setValue={setEmail} />
                 <Input label={'비밀번호'} placeholder={'비밀번호를 입력해주세요.'} size={'m'} disabled={false} type={'password'} value={password} setValue={setPassword} />
                 <Input label={'이름'} placeholder={'이름을 입력해주세요.'} size={'m'} disabled={false} type={'text'} value={name} setValue={setName} />
                 <Input label={'생년월일'} placeholder={'생년월일을 입력해주세요.'} size={'m'} disabled={false} type={'date'} value={birthDate} setValue={setBirthDate} />
@@ -83,7 +96,6 @@ const SignUpModal = () => {
                 <Input label={'주소'} placeholder={'주소를 입력해주세요.'} size={'m'} disabled={false} type={'text'} value={address} setValue={setAddress} />
                 <Button color={"theme"} size={"l"} disabled={false} text={"회원가입"} onClick={() => signUp(email, password, name, birthDate, selectedGenderType, phone, address, checkedUserType)} type={"button"} />
             </CommonModal>
-            )}
 
             {showNicknameModal && <NicknameInputModal />}
             {showCompanyInfoModal && <CompanyInfoInputModal />}

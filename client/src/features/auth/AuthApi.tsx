@@ -33,3 +33,13 @@ export const SignUpApi = (
     type
   });
 };
+
+export const kakaoLoginApi = (
+  kakaoAccessToken: string,
+  
+
+) => {
+  return api(false).post('/auth/kakao', {
+    kakaoAccessToken
+  });
+};

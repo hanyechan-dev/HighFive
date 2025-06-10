@@ -1,6 +1,7 @@
 import Badge from "../../../common/components/badge/Badge";
 import BuildingIcon from "../../../common/icons/BuildingIcon";
 import CalenderIcon from "../../../common/icons/CalenderIcon";
+import CareerTypeIcon from "../../../common/icons/CareerTypeIcon";
 import CompanyTypeIcon from "../../../common/icons/CompanyTypeIcon";
 import GraduationCapIcon from "../../../common/icons/GraduationCapIcon";
 import JobIcon from "../../../common/icons/JobIcon";
@@ -18,7 +19,7 @@ interface JobPostingMainCardProps {
     educationLevel: string;
     similarityScore: number | null;
     createdDate: string;
-    imageUrl : string;
+    imageUrl: string;
     onClick: (id: number) => void;
 }
 const JobPostingMainCard = ({
@@ -68,11 +69,14 @@ const JobPostingMainCard = ({
             </div>
             {/* 끼워지는 정보 */}
             <div
-                className="border-x border-gray-300 absolute bottom-50 left-0 w-[345px] h-[60px] px-4 py-2 text-center text-theme text-base font-roboto
+                className="border-x border-gray-300 absolute bottom-50 left-0 w-[345px] h-[60px] px-4 py-1 text-center text-theme text-base font-roboto
                  opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 bg-theme bg-opacity-10"
             >
-                <div className="truncate">{title}</div>
-                <div className="flex justify-center items-center mt-1">
+                <div className="flex justify-start">
+                    <div className="truncate">{title}</div>
+                </div>
+
+                <div className="flex justify-start items-center mt-1">
                     <BuildingIcon className="mr-2" />
                     <span className="font-medium">{companyName}</span>
                 </div>
@@ -82,7 +86,7 @@ const JobPostingMainCard = ({
             <div className="transition-transform duration-300 group-hover:translate-y-[60px] bg-white border border-t-0 border-gray-300 rounded-b-lg">
                 <div className="text-black text-base font-roboto  w-[345px] flex flex-col space-y-1.5 p-6 p-4">
                     <div className="grid grid-cols-1 gap-2 text-sm">
-                        
+
                         <div className="flex items-center">
                             <CompanyTypeIcon className="mr-3" />
                             <span className="min-w-[70px] font-medium">기업분류:</span>
@@ -107,10 +111,10 @@ const JobPostingMainCard = ({
                         </div>
 
                         <div className="flex items-center space-x-2">
-                            <Badge text={careerType} />
+                            <Badge icon={<CareerTypeIcon />} text={careerType} />
                             <Badge icon={<GraduationCapIcon />} text={educationLevel} />
                         </div>
-                        
+
 
 
                     </div>
