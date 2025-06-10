@@ -21,7 +21,7 @@ const CompanyInfoInputModal = () => {
     const [employeeCount, setEmployeeCount] = useState('');
     const [establishedDate, setEstablishedDate] = useState('');
     const [introduction, setIntroduction] = useState('');
-    const [logoImage, setLogoImage] = useState<File | null>(null);
+    const [logoImageFile, setLogoImageFile] = useState<File | null>(null);
     const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
     const [checkedCompanyType, setCheckedCompanyType] = useState(companyTypeEnum[0].value)
     const onClose = () => { setShowModal(false) };
@@ -30,46 +30,31 @@ const CompanyInfoInputModal = () => {
         const selectedFile = event.target.files ? event.target.files[0] : null;
 
         if (selectedFile) {
-            setLogoImage(selectedFile);
-            setLogoPreviewUrl(URL.createObjectURL(selectedFile)); 
+            setLogoImageFile(selectedFile);
+            setLogoPreviewUrl(URL.createObjectURL(selectedFile));
         } else {
-            setLogoImage(null);
+            setLogoImageFile(null);
             setLogoPreviewUrl(null);
         }
     };
-    
+
     const companyInfoInput = async () => {
+
         try {
-            if (logoImage) {
-                await companyInfoInputModalApi(
-                    companyName,
-                    businessNumber,
-                    representativeName,
-                    companyAddress,
-                    companyPhone,
-                    industry,
-                    employeeCount,
-                    establishedDate,
-                    introduction,
-                    logoImage
-                );
-            } else {
-                await companyInfoInputModalApi(
-                    companyName,
-                    businessNumber,
-                    representativeName,
-                    companyAddress,
-                    companyPhone,
-                    industry,
-                    employeeCount,
-                    establishedDate,
-                    introduction,
-                    // @ts-expect-error: logoImage is required, but passing null for no image
-                    null
-                );
-            }
-           
-            onClose();
+            await companyInfoInputModalApi(
+                companyName,
+                businessNumber,
+                representativeName,
+                checkedCompanyType,
+                companyAddress,
+                companyPhone,
+                industry,
+                employeeCount,
+                establishedDate,
+                introduction,
+                logoImageFile,
+            );
+            onClose
 
         } catch (err) {
             console.error('입력 실패:', err);
@@ -169,27 +154,27 @@ const CompanyInfoInputModal = () => {
                 setValue={setIntroduction} />
 
             <div className="mb-6">
-                    <label htmlFor="logo-upload" className="font-roboto text-base mb-2 inline-block ml-[24px]">회사 로고 (선택 사항):</label> 
-                    <input
-                        id="logo-upload"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleLogoImageChange}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ml-[24px]" 
-                    />
-                    {logoPreviewUrl && (
-                        <ImageOutputArea size={"m"} imageUrl={logoPreviewUrl} />
-                        // <div className="mt-4 p-4 border border-gray-200 rounded-md bg-gray-50 ml-[24px] mr-[24px]"> 
-                        //     <h4 className="text-md font-semibold mb-2"></h4>
-                        //     <img
-                        //         src={logoPreviewUrl}
-                        //         alt="선택된 로고"
-                        //         className="max-w-xs max-h-36 object-contain block mb-4 border border-gray-300 rounded-sm"
-                        //     />
-                            
-                        // </div>
-                    )}
-                </div>
+                <label htmlFor="logo-upload" className="font-roboto text-base mb-2 inline-block ml-[24px]">회사 로고 (선택 사항):</label>
+                <input
+                    id="logo-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoImageChange}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ml-[24px]"
+                />
+                {logoPreviewUrl && (
+                    <ImageOutputArea size={"m"} imageUrl={logoPreviewUrl} />
+                    // <div className="mt-4 p-4 border border-gray-200 rounded-md bg-gray-50 ml-[24px] mr-[24px]"> 
+                    //     <h4 className="text-md font-semibold mb-2"></h4>
+                    //     <img
+                    //         src={logoPreviewUrl}
+                    //         alt="선택된 로고"
+                    //         className="max-w-xs max-h-36 object-contain block mb-4 border border-gray-300 rounded-sm"
+                    //     />
+
+                    // </div>
+                )}
+            </div>
             <Button
                 color={"theme"}
                 size={"s"}

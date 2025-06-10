@@ -29,7 +29,7 @@ const Input = ({
 
 
     return (
-        <span>
+        <div>
             <label className={labelSetting}>{label}</label>
             <br />
             <input className={`${sizeClass[size]} ${defaultSetting}`}
@@ -38,7 +38,7 @@ const Input = ({
                 type={type}
                 value={value}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)} />
-        </span>
+        </div>
     );
 }
 

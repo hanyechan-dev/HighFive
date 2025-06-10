@@ -1,22 +1,21 @@
 package com.jobPrize.dto.company.company;
 
-import java.time.LocalDate;
-
 import org.springframework.web.multipart.MultipartFile;
 
-import com.jobPrize.enumerate.CompanyType;
 import com.jobPrize.validation.businessNumber.BusinessNumber;
+import com.jobPrize.validation.minForString.MinForString;
+import com.jobPrize.validation.pastForString.PastForString;
 import com.jobPrize.validation.phone.Phone;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 public class CompanyUpdateDto {
 	
 	@NotBlank(message = "기업명은 필수로 입력해야합니다.")
@@ -46,14 +45,15 @@ public class CompanyUpdateDto {
 	private String introduction;
 	
 	@NotNull
-	private CompanyType type;
+	private String type;
 	
-	@Min(0)
-	private Integer employeeCount;
+	@NotNull(message = "직원수는 필수로 입력해야합니다.")
+	@MinForString(value = 0, message = "직원수는 0 이상을 입력하야합니다.")
+	private String employeeCount;
 	
 	@NotNull(message = "설립일은 필수로 입력해야합니다.")
-	@Past
-	private LocalDate establishedDate;
+	@PastForString(pattern = "yyyy-MM-dd", message = "설립일은 오늘 이전이어야 합니다.")
+	private String establishedDate;
 	
 	private MultipartFile logoImageFile;
 	

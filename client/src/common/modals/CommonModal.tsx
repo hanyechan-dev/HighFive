@@ -32,13 +32,13 @@ const CommonModal = ({ size, onClose, children }: CommonModalProps) => {
 
     const raw = sizeClass[size].match(/\d+/)?.[0] ?? "0";
 
-    const newSize = `w-[${raw+extraWidth}px]`;
     return (
         <div
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
         >
             <div
-                className={`max-h-[800px] overflow-auto bg-white rounded-lg border border-gray-300 ${newSize}`}
+                className={`max-h-[800px] overflow-y-auto overflow-x-hidden bg-white rounded-lg border border-gray-300`}
+                style={{ width: `${Number(raw) + extraWidth}px` }}
                 ref={containerRef}
             >
                 <div className="flex justify-end">

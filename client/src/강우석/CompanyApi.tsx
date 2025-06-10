@@ -5,28 +5,29 @@ export const companyInfoInputModalApi = (
     companyName: string,
     businessNumber: string,
     representativeName: string,
+    type: string,
     companyAddress: string,
-    companyPhone: string, 
+    companyPhone: string,
     industry: string,
-    employeeCount: string, 
-    establishedDate: string, 
+    employeeCount: string,
+    establishedDate: string,
     introduction: string,
-    logoImage: File 
+    logoImageFile: File | null
 ) => {
     const formData = new FormData();
     formData.append("companyName", companyName);
-    formData.append("businessNumber", businessNumber);
+    formData.append("industry", industry);
     formData.append("representativeName", representativeName);
+    formData.append("businessNumber", businessNumber);
     formData.append("companyAddress", companyAddress);
     formData.append("companyPhone", companyPhone);
-    formData.append("industry", industry);
+    formData.append("introduction", introduction);
+    formData.append("type", type);
     formData.append("employeeCount", employeeCount);
     formData.append("establishedDate", establishedDate);
-    formData.append("introduction", introduction);
-    formData.append("logoImage", logoImage);
-
-    if (logoImage) { 
-        formData.append('logoImage', logoImage);
+    if (logoImageFile) {
+        formData.append("logoImageFile", logoImageFile);
     }
     return apiForm(true).post('/companies', formData);
 };
+
