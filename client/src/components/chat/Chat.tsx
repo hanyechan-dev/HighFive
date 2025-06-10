@@ -1,5 +1,7 @@
-import { useCallback, useRef, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import type { IMessage } from '@stomp/stompjs';
+import { jwtDecode } from 'jwt-decode';
+import { store } from '../../common/store/store';
 
 // 채팅 메시지 객체 타입 정의
 interface ChatMessage {
@@ -16,18 +18,22 @@ const Chat = () => {
 const [chatRoomId, setChatRoomId] = useState<number | null>(null);
 const [senderId, setSenderId] = useState<number | null>(null);
 const [targetId, setTargetId] = useState<number | null>(null);
-const [content, setContent] = useState<string | null>('');
-const [chatHistory, setChatHistory] = useState<string | null>('');
+const [content, setContent] = useState<string>('');
+const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
 // ref 변수 정의
-const refDialogDiv = useRef<HTMLDivElement | null>(null);
-const refSenderInput = useRef<HTMLInputElement | null>(null);
-const refMessageInput = useRef<HTMLTextAreaElement | null>(null);
+// const refDialogDiv = useRef<HTMLDivElement | null>(null);
+// const refSenderInput = useRef<HTMLInputElement | null>(null);
+// const refMessageInput = useRef<HTMLTextAreaElement | null>(null);
 
-// 토큰에서 ID 추출하여, 발신자 ID로 세팅팅
+
+// 토큰에서 ID 추출하여, 발신자 ID로 세팅
 useEffect(() => {
+    const accessToken = store.getState().auth.accessToken;
+    const decodePayload = jwtDecode(accessToken);
+    const extractedId = decodePayload.userId;
     setSenderId(extractedId);
-})
+}, [senderId])
 
 
 // 채팅방 생성 또는 기존 채팅방 참여
@@ -73,17 +79,33 @@ const sendMessage = useCallback(() => {
 }, [content]);
 
 
-// 메세지 수신
-const receiveMessage = useCallback((payload: IMessage) => { // STOMP 라이브러리에서 지원하는 메시지 인터페이스스
-    const receivedMessage: ChatMessage = JSON.parse(payload.body);
+// 채팅 내역 불러오기
+const getHistory = async() => { // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
+    try {
+        const response = await fetch(`http://localhost:8090/chats/detail`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ targetId })
+        });
 
-    if (receivedMessage.history) {
-        setChatHistory(prevHistory => [...prevHistory, ...receivedMessage.history!]);
+        const chatContents : ChatMessage[] = await response.json();
+
+        if(chatContents){
+            setChatHistory(() => [...chatContents]);
+        }
+        } catch (error) {
+        console.error("채팅 내역 불러오기 실패: ", error);
     }
-    } else {
-        setChatHistory(prevChatHistory => [...prevChatHistory, receivedMessage]);
-    }
-}, [chatHistory]);
+}
+
+// 메세지 수신
+const receiveMessage = (payload: IMessage) => {
+    const receivedMessage : ChatMessage = JSON.parse(payload.body);
+
+    setChatHistory(prevHistory => [...prevHistory, receivedMessage]);
+};
 
 
 // 채팅 시 화면 자동 스크롤
