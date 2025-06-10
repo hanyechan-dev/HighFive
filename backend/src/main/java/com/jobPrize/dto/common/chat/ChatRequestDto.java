@@ -6,6 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class ChatRequestDto {
+	
+	@NotBlank(message = "발신자 ID는 비어 있을 수 없습니다.")
+	private Long senderId;
+	
+	@NotBlank(message = "수신자 ID는 비어 있을 수 없습니다.")
+	private Long targetId;
 
     @NotBlank(message = "채팅방 ID는 비어 있을 수 없습니다.")
     private Long chatRoomId;

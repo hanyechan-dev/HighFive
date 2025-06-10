@@ -10,5 +10,7 @@ public interface ChatRoomRepositoryCustom {
 	
 	Optional<ChatRoom> findWithChatContentsByChatRoomId(Long id);	// 채팅방 번호를 통해 채팅 내용과 연결
 	
-	public Boolean checkMemberInChatRoom(Long id, Long roomId);	// 채팅방 소속 여부 확인
+	Boolean checkMemberInChatRoom(Long id, Long roomId);	// 채팅방 소속 여부 확인
+	
+	ChatRoom findChatRoomWithTwoUsers(Long id, Long targetId);
 }
