@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 
 interface TextAreaProps {
-    size : 'm' | 'l';
+    size : 'm' | 'ml' | 'l';
     label: string;
     placeholder: string;
     disabled: boolean;
@@ -11,6 +11,7 @@ interface TextAreaProps {
 
 const sizeClass = {
     m: 'w-[464px]',
+    ml:'w-[904px]',
     l: 'w-[952px]'
 }
 

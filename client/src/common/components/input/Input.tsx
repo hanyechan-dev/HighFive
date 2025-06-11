@@ -3,7 +3,7 @@ interface InputProps {
     placeholder: string;
     size: 'xs' | 's' |'sm'| 'm' | 'ml' | 'l';
     disabled: boolean;
-    type: 'text' | 'password' | 'email' | 'date';
+    type: 'text' | 'password' | 'email' | 'date' ;
     value: string;
     setValue: (value: string) => void
 }

@@ -1,6 +1,7 @@
 
 import { useEffect } from "react";
-import AuthModal from "./features/auth/AuthModal";
+import ConsultingRequestPage from "./common/pages/ConsultingRequestPage";
+import AiConsultingDetailModal from "./common/modals/AiConsultingDetailModal";
 
 
 
@@ -18,7 +19,9 @@ function App() {
     return (
         <>
 
-            <AuthModal />
+            <AiConsultingDetailModal />
+
+
 
         </>
     )
