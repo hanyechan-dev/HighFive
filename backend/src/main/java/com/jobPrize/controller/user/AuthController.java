@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.token.TokenDto;
-import com.jobPrize.dto.common.user.kakao.KakaoCodeDto;
+import com.jobPrize.dto.common.user.kakao.KakaoAccessTokenDto;
 import com.jobPrize.dto.common.user.login.LogInDto;
 import com.jobPrize.service.common.user.UserService;
 
@@ -32,12 +32,12 @@ public class AuthController {
 	}
 
 	@PostMapping("/kakao")
-	public ResponseEntity<?> loginKakao(@RequestBody KakaoCodeDto kakaoCodeDto) {
-		String code = kakaoCodeDto.getCode();
+	public ResponseEntity<?> loginKakao(@RequestBody KakaoAccessTokenDto kakaoAccessTokenDto) {
+		String kakaoAccessToken = kakaoAccessTokenDto.getKakaoAccessToken();
 		
-		String email = userService.getEmailFromKakaoCode(code);
+		String email = userService.getEmailFromKakaoAccessToken(kakaoAccessToken);
 		
-		if(userService.isExsitEmail(email)) {
+		if(userService.isExistEmail(email)) {
 			TokenDto tokenDto = userService.logInForKakao(email);
 			return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
 		}

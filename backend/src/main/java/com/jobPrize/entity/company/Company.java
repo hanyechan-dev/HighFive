@@ -3,6 +3,7 @@ package com.jobPrize.entity.company;
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -46,7 +46,6 @@ public class Company {
 	@JoinColumn(name="USER_ID", nullable = false)
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
 	private String industry;
 
@@ -59,7 +58,7 @@ public class Company {
 	@Column(name = "business_number", nullable = false)
 	private String businessNumber;
 
-	@Column(name = "company_adress", nullable = false)
+	@Column(name = "company_address", nullable = false)
 	private String companyAddress;
 
 	@Column(name = "company_phone", nullable = false)
@@ -77,6 +76,9 @@ public class Company {
 
 	@Column(name = "established_date", nullable = false)
 	private LocalDate establishedDate;
+	
+	@Column(name = "logo_image_name")
+	private String logoImageName;
 
 	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Schedule> schedules = new ArrayList<>();
@@ -88,35 +90,78 @@ public class Company {
 	private List<Proposal> proposals = new ArrayList<>();
 
 	
-	public void updateCompanyInfo(CompanyUpdateDto companyUpdateDto) {
+	public void updateCompanyInfo(CompanyUpdateDto companyUpdateDto, String uuidName) {
+		
+	    LocalDate establishedDate;
+	    try {
+	        establishedDate = LocalDate.parse(companyUpdateDto.getEstablishedDate());
+	    } catch (DateTimeParseException e) {
+	        throw new IllegalArgumentException("설립일 형식이 잘못되었습니다. yyyy-MM-dd 형식이어야 합니다.");
+	    }
+
+	    int employeeCount;
+	    try {
+	        employeeCount = Integer.parseInt(companyUpdateDto.getEmployeeCount());
+	    } catch (NumberFormatException e) {
+	        throw new IllegalArgumentException("직원 수는 숫자 형식이어야 합니다.");
+	    }
+
+	    CompanyType type;
+	    try {
+	        type = CompanyType.valueOf(companyUpdateDto.getType());
+	    } catch (IllegalArgumentException e) {
+	        throw new IllegalArgumentException("존재하지 않는 CompanyType입니다: " + companyUpdateDto.getType());
+	    }
+		
 		this.companyName = companyUpdateDto.getCompanyName();
 		this.representativeName = companyUpdateDto.getRepresentativeName();
-		this.establishedDate = companyUpdateDto.getEstablishedDate();
+		this.establishedDate = establishedDate;
 		this.businessNumber = companyUpdateDto.getBusinessNumber();
 		this.companyAddress = companyUpdateDto.getCompanyAddress();
-		this.type = companyUpdateDto.getType();
+		this.type = type;
 		this.industry = companyUpdateDto.getIndustry();
 		this.companyPhone = companyUpdateDto.getCompanyPhone();
 		this.introduction = companyUpdateDto.getIntroduction();
-		this.employeeCount = companyUpdateDto.getEmployeeCount();
-
+		this.employeeCount = employeeCount;
+		this.logoImageName = uuidName;
 	}
 	
-	public static Company of(User user, CompanyCreateDto companyCreateDto) {
-		return Company.builder()
-			.id(user.getId())
-			.user(user)
-			.companyName(companyCreateDto.getCompanyName())
-			.representativeName(companyCreateDto.getRepresentativeName())
-			.establishedDate(companyCreateDto.getEstablishedDate())
-			.businessNumber(companyCreateDto.getBusinessNumber())
-			.companyAddress(companyCreateDto.getCompanyAddress())	
-			.type(companyCreateDto.getType())
-			.industry(companyCreateDto.getIndustry())
-			.companyPhone(companyCreateDto.getCompanyPhone())
-			.introduction(companyCreateDto.getIntroduction())
-			.employeeCount(companyCreateDto.getEmployeeCount())
-			.build();
+	public static Company of(User user, CompanyCreateDto dto, String uuidName) {
+	    LocalDate establishedDate;
+	    try {
+	        establishedDate = LocalDate.parse(dto.getEstablishedDate());
+	    } catch (DateTimeParseException e) {
+	        throw new IllegalArgumentException("설립일 형식이 잘못되었습니다. yyyy-MM-dd 형식이어야 합니다.");
+	    }
+
+	    int employeeCount;
+	    try {
+	        employeeCount = Integer.parseInt(dto.getEmployeeCount());
+	    } catch (NumberFormatException e) {
+	        throw new IllegalArgumentException("직원 수는 숫자 형식이어야 합니다.");
+	    }
+
+	    CompanyType type;
+	    try {
+	        type = CompanyType.valueOf(dto.getType());
+	    } catch (IllegalArgumentException e) {
+	        throw new IllegalArgumentException("존재하지 않는 CompanyType입니다: " + dto.getType());
+	    }
+
+	    return Company.builder()
+	        .user(user)
+	        .companyName(dto.getCompanyName())
+	        .representativeName(dto.getRepresentativeName())
+	        .establishedDate(establishedDate)
+	        .businessNumber(dto.getBusinessNumber())
+	        .companyAddress(dto.getCompanyAddress())
+	        .type(type)
+	        .industry(dto.getIndustry())
+	        .companyPhone(dto.getCompanyPhone())
+	        .introduction(dto.getIntroduction())
+	        .employeeCount(employeeCount)
+	        .logoImageName(uuidName)
+	        .build();
 	}
 
 	

@@ -32,6 +32,8 @@ public class CompanyResponseDto {
 	private Integer employeeCount;
 
 	private LocalDate establishedDate;
+	
+	private String imageUrl;
 
 	public static CompanyResponseDto from(Company company) {
 		return CompanyResponseDto.builder()

@@ -72,7 +72,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://localhost:3000")); // 허용할 프론트 주소, 실 배포중에는 실제 도메인 작성 (프로젝트시 수정 필요)
+		config.setAllowedOrigins(List.of("http://localhost:5173")); // 허용할 프론트 주소, 실 배포중에는 실제 도메인 작성 (프로젝트시 수정 필요)
 		config.setAllowedMethods(List.of("GET", "POST", "PUT")); // 이 메소드만 허용
 		config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 헤더 정보 중, Content-Type(요청 데이터 형식)과 Authorization(JWT 토큰) 헤더만 허용
 		// 이 모든 허용은 모두 and로 3가지 조건 모두 만족 시 허용

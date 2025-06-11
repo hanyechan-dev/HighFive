@@ -1,0 +1,41 @@
+interface RadioButtonProps {
+    name: string;
+    textList: {label: string; value: string}[];
+    checkedText: string;
+    setCheckedText: (value: string) => void
+};
+
+const colorClass = 'text-black';
+
+const checkedColorClass = 'bg-semi_theme text-theme';
+
+const defaultSetting = 'w-[154px] h-[42px] text-base font-roboto rounded-lg mb-6';
+
+const labelSetting = 'font-roboto text-base mb-2 inline-block ml-[24px]';
+
+
+const RadioButton = ({
+    name,
+    textList,
+    checkedText,
+    setCheckedText
+}: RadioButtonProps) => {
+
+
+
+    return (<>
+        <div className={labelSetting}>{name}</div>
+        <br />
+        {textList.map((text, index) => <button
+            className={`${checkedText == text.value ? checkedColorClass : colorClass} ${defaultSetting} ${index === 0 ? 'ml-[24px]' : ''}`} value={text.value} name={name}
+            onClick={() => setCheckedText(text.value)}
+            type={'button'}
+        >
+            {text.label}
+        </button>)}
+    </>
+    );
+};
+
+export default RadioButton;
+

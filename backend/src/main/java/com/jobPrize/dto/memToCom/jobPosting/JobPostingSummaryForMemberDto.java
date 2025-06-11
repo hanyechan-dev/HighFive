@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.memToCom.Similarity;
-import com.jobPrize.enumerate.CompanyType;
-import com.jobPrize.enumerate.EducationLevel;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +18,7 @@ public class JobPostingSummaryForMemberDto {
 	
 	private String companyName;
 	
-	private CompanyType type;
+	private String companyType;
 	
 	private String job;
 	
@@ -28,7 +26,7 @@ public class JobPostingSummaryForMemberDto {
 	
 	private String careerType;
 	
-	private EducationLevel educationLevel;
+	private String educationLevel;
 	
 	private int similarityScore;
 	
@@ -44,10 +42,10 @@ public class JobPostingSummaryForMemberDto {
 				.title(jobPosting.getTitle())
 				.companyName(jobPosting.getCompany().getCompanyName())
 				.job(jobPosting.getJob())
-				.type(jobPosting.getCompany().getType())
+				.companyType(jobPosting.getCompany().getType().name())
 				.workLocation(jobPosting.getWorkLocation())
 				.careerType(jobPosting.getCareerType())
-				.educationLevel(jobPosting.getEducationLevel())
+				.educationLevel(jobPosting.getEducationLevel().name())
 				.similarityScore(similarity.getScore())
 				.createdDate(jobPosting.getCreatedDate())
 				.build();

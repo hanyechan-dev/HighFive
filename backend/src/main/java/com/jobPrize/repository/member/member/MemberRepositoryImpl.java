@@ -21,7 +21,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
         Member result = queryFactory
             .selectFrom(member)
-            .join(member.user, user).fetchJoin()
+            .join(member.user).fetchJoin()
             .where(member.id.eq(id),
                    user.deletedDate.isNull())
             .fetchOne();

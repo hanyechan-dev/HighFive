@@ -17,7 +17,7 @@ public class AiConsultingSummaryDto {
 	private String targetJob;
 	private String targetCompanyName;
 	private LocalDate requestedDate;
-	private ConsultingType consultingType;
+	private String consultingType;
 
 	public static AiConsultingSummaryDto from(AiConsulting aiConsulting) {
 		return AiConsultingSummaryDto.builder()
@@ -26,7 +26,7 @@ public class AiConsultingSummaryDto {
 			.targetJob(aiConsulting.getRequest().getTargetJob())
 			.targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
 			.requestedDate(aiConsulting.getRequestedDate())
-			.consultingType(aiConsulting.getType())
+			.consultingType(aiConsulting.getType().name())
 			.build();
 	}
 }

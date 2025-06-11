@@ -20,7 +20,7 @@ public class EducationResponseDto {
 	
 	private String schoolName;
 	
-	private EducationLevel educationLevel;
+	private String educationLevel;
 	
 	private String major;
 	
@@ -36,7 +36,7 @@ public class EducationResponseDto {
 		return EducationResponseDto.builder()
 				.id(education.getId())
 				.schoolName(education.getSchoolName())
-				.educationLevel(education.getEducationLevel())
+				.educationLevel(education.getEducationLevel().name())
 				.major(education.getMajor())
 				.gpa(education.getGpa())
 				.location(education.getLocation())

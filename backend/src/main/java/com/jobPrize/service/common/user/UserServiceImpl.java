@@ -2,13 +2,10 @@ package com.jobPrize.service.common.user;
 
 import java.util.List;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
@@ -16,8 +13,7 @@ import com.jobPrize.dto.common.myPage.MyPageResponseDto;
 import com.jobPrize.dto.common.myPage.MyPageUpdateDto;
 import com.jobPrize.dto.common.myPage.PasswordUpdateDto;
 import com.jobPrize.dto.common.token.TokenDto;
-import com.jobPrize.dto.common.user.kakao.KakaoTokenResponseDto;
-import com.jobPrize.dto.common.user.kakao.KakaoUserDto;
+import com.jobPrize.dto.common.user.kakao.KakaoProfileDto;
 import com.jobPrize.dto.common.user.kakao.KakaoUserSignUpDto;
 import com.jobPrize.dto.common.user.login.LogInDto;
 import com.jobPrize.dto.common.user.signUp.UserSignUpDto;
@@ -25,6 +21,8 @@ import com.jobPrize.entity.common.User;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.user.UserRepository;
+import com.jobPrize.service.admin.admin.AdminService;
+import com.jobPrize.service.consultant.consultant.ConsultantService;
 import com.jobPrize.util.AssertUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +35,10 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 
 	private final PasswordEncoder passwordEncoder;
+	
+	private final AdminService adminService;
+	
+	private final ConsultantService consultantService;
 
 	private final TokenProvider tokenProvider;
 
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public TokenDto createUser(UserSignUpDto userSignUpDto) {
 
-		boolean isExistEmail = isExsitEmail(userSignUpDto.getEmail());
+		boolean isExistEmail = isExistEmail(userSignUpDto.getEmail());
 
 		if (isExistEmail) {
 			throw new IllegalStateException("이미 사용 중인 이메일입니다.");
@@ -56,12 +58,18 @@ public class UserServiceImpl implements UserService {
 		String encodedPassword = passwordEncoder.encode(userSignUpDto.getPassword());
 
 		User user = User.of(userSignUpDto, encodedPassword);
+		
 
-		if (UserType.일반회원.equals(userSignUpDto.getType())) {
+		
+		if (UserType.일반회원.equals(userSignUpDto.getType())||UserType.관리자.equals(userSignUpDto.getType())) {
 			user.approve();
 		}
-
+		
 		userRepository.save(user);
+		
+
+		createAdminOrConsultant(user);
+		
 
 		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(), user.getApprovalStatus(),
 				user.isSubscribed());
@@ -147,7 +155,7 @@ public class UserServiceImpl implements UserService {
 		
 		String email = kakaoUserSignUpDto.getEmail();
 		
-		boolean isExistEmail = isExsitEmail(email);
+		boolean isExistEmail = isExistEmail(email);
 		
 		if (isExistEmail) {
 			throw new IllegalStateException("이미 사용 중인 이메일입니다.");
@@ -160,6 +168,8 @@ public class UserServiceImpl implements UserService {
 		}
 
 		userRepository.save(user);
+		
+		createAdminOrConsultant(user);
 
 		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(), user.getApprovalStatus(), user.isSubscribed());
 		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType(), user.getApprovalStatus(), user.isSubscribed());
@@ -191,32 +201,36 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean isExsitEmail(String email) {
+	public boolean isExistEmail(String email) {
 		return userRepository.existsByEmailAndDeletedDateIsNull(email);
 	}
 
 	@Override
-	public String getEmailFromKakaoCode(String code) {
+	public String getEmailFromKakaoAccessToken(String kakaoAccessToken) {
 
 		WebClient webClient = WebClient.create();
 
-		KakaoTokenResponseDto kakaoTokenResponseDto = webClient.post().uri("https://kauth.kakao.com/oauth/token")
-				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-				.body(BodyInserters.fromFormData("grant_type", "authorization_code")
-						.with("client_id", "8678004dbb84fae5257d60576b65542f").with("redirect_uri", "{REDIRECT_URI}")
-						.with("code", code))
-				.retrieve().bodyToMono(KakaoTokenResponseDto.class).block();
+		KakaoProfileDto profile = webClient.get()
+		        .uri("https://kapi.kakao.com/v2/user/me")
+		        .header("Authorization", "Bearer " + kakaoAccessToken)
+		        .retrieve()
+		        .bodyToMono(KakaoProfileDto.class)
+		        .block();
 
-		String accessTokenFromKakao = kakaoTokenResponseDto.getAccessToken();
+		    return profile.getKakao_account().getEmail();
+
+	}
+	
+	private void createAdminOrConsultant(User user) {
+		Long id = user.getId();
+		UserType userType = user.getType();
 		
-		KakaoUserDto kakaoUserDto = WebClient.create().get().uri("https://kapi.kakao.com/v2/user/me")
-				.header(HttpHeaders.AUTHORIZATION, "Bearer " + accessTokenFromKakao).retrieve()
-				.bodyToMono(KakaoUserDto.class).block();
-
-		String email = kakaoUserDto.getKakao_account().getEmail();
-
-		return email;
-
+		if (UserType.컨설턴트회원.equals(userType)) {
+			consultantService.createConsultant(id, userType);
+		}
+		else if(UserType.관리자.equals(userType)) {
+			adminService.createAdmin(id, userType);
+		}
 	}
 
 		

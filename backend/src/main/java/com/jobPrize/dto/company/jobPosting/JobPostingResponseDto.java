@@ -3,8 +3,6 @@ package com.jobPrize.dto.company.jobPosting;
 import java.util.List;
 
 import com.jobPrize.entity.company.JobPosting;
-import com.jobPrize.enumerate.CompanyType;
-import com.jobPrize.enumerate.EducationLevel;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +15,7 @@ public class JobPostingResponseDto {
 
 	private String title;
 
-	private CompanyType companyType;
+	private String companyType;
 
 	private String workingHours;
 
@@ -27,7 +25,7 @@ public class JobPostingResponseDto {
 
 	private String careerType;
 
-	private EducationLevel educationLevel;
+	private String educationLevel;
 	
 	private int salary;
 	
@@ -41,12 +39,12 @@ public class JobPostingResponseDto {
 		return JobPostingResponseDto.builder()
 			.id(jobPosting.getId())
 			.title(jobPosting.getTitle())
-			.companyType(jobPosting.getCompany().getType())
+			.companyType(jobPosting.getCompany().getType().name())
 			.workingHours(jobPosting.getWorkingHours())
 			.workLocation(jobPosting.getWorkLocation())
 			.job(jobPosting.getJob())
 			.careerType(jobPosting.getCareerType())
-			.educationLevel(jobPosting.getEducationLevel())
+			.educationLevel(jobPosting.getEducationLevel().name())
 			.salary(jobPosting.getSalary())
 			.content(jobPosting.getContent())
 			.requirement(jobPosting.getRequirement())

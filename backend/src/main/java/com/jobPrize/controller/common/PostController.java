@@ -65,7 +65,7 @@ public class PostController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponseDto> readPostDetail(@PathVariable Long id) {
+    public ResponseEntity<PostResponseDto> readPostDetail(@PathVariable("id") Long id) {
     	
         PostResponseDto dto = postService.readPost(id);
         

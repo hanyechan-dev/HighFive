@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jobPrize.dto.common.id.IdDto;
+import com.jobPrize.dto.company.jobPosting.JobPostingResponseDto;
 import com.jobPrize.dto.memToCom.jobPosting.JobPostingFilterCondition;
 import com.jobPrize.dto.memToCom.jobPosting.JobPostingSummaryForMemberDto;
+import com.jobPrize.service.company.jobPosting.JobPostingService;
 import com.jobPrize.service.memToCom.jobPosting.JobPostingForMemberService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -23,7 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class MemberJobPostingController {
 
     private final JobPostingForMemberService jobPostingForMemberService;
-
+    
+    private final JobPostingService jobPostingService;
+    
+    
     @PostMapping
     public ResponseEntity<Page<JobPostingSummaryForMemberDto>> readMyJobPostings(@RequestBody @Valid JobPostingFilterCondition condition, Pageable pageable) {
 
@@ -33,5 +39,13 @@ public class MemberJobPostingController {
 
         return ResponseEntity.status(HttpStatus.OK).body(jobPostingSummaryForMemberDtos);
     }
+    
+    @PostMapping("/detail")
+	public ResponseEntity<JobPostingResponseDto> readMyJobPosting(@RequestBody @Valid IdDto IdDto){
+		
+		JobPostingResponseDto jobPostingResponseDto = jobPostingService.readJobPosting(IdDto.getId());
+		
+		return ResponseEntity.status(HttpStatus.OK).body(jobPostingResponseDto);
+	}
 
 }
