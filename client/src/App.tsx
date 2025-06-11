@@ -1,7 +1,19 @@
 
 import { useEffect } from "react";
+
+import CoverLetterInfo from "./common/components/coverLetter/CoverLetterInfo";
+import type { coverLetterProps, aiContentsProps, careerProps } from "./common/props/AiConsultingProps";
+import AiConsultingFeedbackDetailModal from "./common/modals/AiConsultingEditDetailModal";
 import ConsultingRequestPage from "./common/pages/ConsultingRequestPage";
-import AiConsultingDetailModal from "./common/modals/AiConsultingDetailModal";
+import ResumeOutputModal from "./features/request/resumeOutputModal";
+
+
+
+
+
+
+
+
 
 
 
@@ -16,11 +28,10 @@ function App() {
     // 상기 유즈이펙트 수정 절대 금지
 
 
+
     return (
         <>
-
-            <AiConsultingDetailModal />
-
+            <ResumeOutputModal />
 
 
         </>

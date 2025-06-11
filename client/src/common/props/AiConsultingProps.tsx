@@ -1,3 +1,52 @@
+export interface aiConsultingDetailProps {
+    targetCompanyName: string;
+    targetJob: string;
+    requestedDate: string;
+    resume: string;
+    careerDescription: string;
+    coverLetter: string;
+    aiContents: aiContentProps[];
+}
+
+export interface aiContentProps {
+	item: string;
+	content: string;
+}
+
+
+export interface aiContentsProps {
+	aiContents: aiContentProps[];
+}
+
+
+
+export interface careerDescriptionContentProps {
+	id: number;
+	item: string;
+	content: string;
+}	
+
+
+export interface careerDescriptionProps {
+	id: number;
+	title: string;
+	contents: careerDescriptionContentProps[];
+}
+
+export interface coverLetterContentProps {
+	id: number;
+	item: string;
+	content: string;
+}
+
+
+export interface coverLetterProps {
+	id: number;
+	title: string;
+	contents: coverLetterContentProps[];
+}
+
+
 export interface educationProps {
     id: number;
     schoolName: string;
@@ -49,3 +98,6 @@ export interface resumeProps {
     certification : certificationProps[];
     languageTest : languageTestProps[];
 }
+
+
+

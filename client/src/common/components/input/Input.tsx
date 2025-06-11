@@ -1,7 +1,7 @@
 interface InputProps {
     label: string;
     placeholder: string;
-    size: 'xs' | 's' |'sm'| 'm' | 'ml' | 'l';
+    size: 'ibs' | 'ebs' | 's' | 'ibm' |'ebm'| 'm' | 'ibl' |'ebl' | 'l';
     disabled: boolean;
     type: 'text' | 'password' | 'email' | 'date' ;
     value: string;
@@ -9,11 +9,14 @@ interface InputProps {
 }
 
 const sizeClass = {
-    xs : 'w-[208px] h-[42px]',
+    ibs: 'w-[195.5px] h-[42px]',
+    ebs : 'w-[208px] h-[42px]',
     s: 'w-[220px] h-[42px]',
-    sm: 'w-[439px] h-[42px]',
+    ibm :'w-[415px] h-[42px]',
+    ebm: 'w-[439px] h-[42px]',
     m: 'w-[464px] h-[42px]',
-    ml: 'w-[904px] h-[42px]',
+    ibl :'w-[854px] h-[42px]',
+    ebl: 'w-[904px] h-[42px]',
     l: 'w-[952px] h-[42px]',
 };
 

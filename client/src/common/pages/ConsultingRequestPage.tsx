@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
-import ConsultingList, { type ConsultingType } from "../../admin_client/components/list/ConsultingList";
+import { useState, useEffect } from "react";
+import ConsultingList from "../../admin_client/components/list/ConsultingList";
+import { consultingRequest, listClick, consultingApprve } from "../../features/ConsultingRequest/ConsultingRequestApi";
+import EmptyState from "../components/emptyState/EmptyState";
 import Pagination from "../components/pagination/Pagination";
 import ModalTitle from "../components/title/ModalTitle";
 import { usePagination } from "../coustomHooks/usePagination";
+import AiConsultingEditDetailModal from "../modals/AiConsultingEditDetailModal";
+import AiConsultingFeedbackDetailModal from "../modals/AiConsultingFeedbackDetailModal";
+import type { aiConsultingDetailProps } from "../props/AiConsultingProps";
 import CommonPage from "./CommonPage";
-import { consultingApprve, consultingRequest, listClick } from "../../features/ConsultingRequestPage/ConsultingRequestPageApi";
-import EmptyState from "../components/emptyState/EmptyState";
+
 
 interface consultingProps {
     aiConsultingId: number;
@@ -16,32 +20,18 @@ interface consultingProps {
     consultingType: string;
 }
 
+const elementsPerPage = 10;
+const pagesPerBlock = 10;
+
 
 
 const ConsultingRequestPage = () => {
 
-    const [consultings, setConsultings] = useState<consultingProps[]>();
+    const [consultings, setConsultings] = useState<consultingProps[]>([]);
     const [totalElements, setTotalElements] = useState<number>(0);
-    const [clickToggle, setClickToggle] = useState(false);
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            try {
-                const res = await consultingRequest();
-                setConsultings(res.data.content);
-                setTotalElements(res.data.totalElements)
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        fetchData();
-
-    }, [clickToggle]);
-
-    const elementsPerPage = 10;
-    const pagesPerBlock = 10;
+    const [showAiFeedbackDetailModal, setShowAiFeedbackDetailModal] = useState(false);
+    const [showAiEditDetailModal, setShowAiEditDetailModal] = useState(false);
+    const [aiConsultingDetail, setAiConsultingDetail] = useState<aiConsultingDetailProps>();
 
     const {
         clickedPage,
@@ -59,91 +49,121 @@ const ConsultingRequestPage = () => {
         pagesPerBlock: pagesPerBlock,
     });
 
-    const onClick = (id: number) => {
+    useEffect(() => {
 
+        const fetchData = async () => {
+            try {
+                const res = await consultingRequest(clickedPage, elementsPerPage);
+                setConsultings(res.data.content);
+                setTotalElements(res.data.totalElements)
+            } catch (err) {
+                console.error(err);
+            }
+        }
 
-        const click = async () => {
-            try{
+        fetchData();
+
+    }, [clickedPage]);
+
+    const onClick = (id: number, consultingType: string) => {
+
+        const fetchDataAndShowDetail = async () => {
+            try {
                 const res = await listClick(id);
-                res.data.content;
+                setAiConsultingDetail(res.data.content);
+
+                if (consultingType === '첨삭') {
+                    setShowAiFeedbackDetailModal(false);
+                    setShowAiEditDetailModal(true);
+                } else if (consultingType === '피드백') {
+                    setShowAiEditDetailModal(false);
+                    setShowAiFeedbackDetailModal(true);
+                }
+
 
             } catch (err) {
                 console.error(err);
-            }  
+            }
         }
 
 
-        click();
+        fetchDataAndShowDetail();
     }
 
     const onApprove = (id: number) => {
         const approve = async () => {
             try {
                 await consultingApprve(id);
+                setClickedPage(prev => prev);
 
             } catch (err) {
                 console.error(err);
             }
         }
         approve();
-        setClickToggle(!clickToggle)
     }
 
 
-return (
-    <div className="ml-[200px]">
-        <CommonPage>
+    return (
 
-            <ModalTitle title="컨설팅 요청" />
+        <>
+
+            <div className="ml-[200px]">
+                <CommonPage>
+
+                    <ModalTitle title="컨설팅 요청" />
 
 
-            <div className="grid grid-cols-6 items-center w-full border-b pb-3 pt-4 text-center text-sm font-semibold text-[#666] bg-[#f5f5f5] font-roboto">
-                <div>회원 이름</div>
-                <div>희망 부문</div>
-                <div>희망 기업</div>
-                <div>요청 일자</div>
-                <div>유형</div>
-                <div>승인</div>
+                    <div className="grid grid-cols-6 items-center w-full border-b pb-3 pt-4 rounded-t-xl bg-gray-100 text-center text-sm font-semibold text-[#666] font-roboto">
+                        <div>회원 이름</div>
+                        <div>희망 부문</div>
+                        <div>희망 기업</div>
+                        <div>요청 일자</div>
+                        <div>유형</div>
+                        <div>승인</div>
+                    </div>
+
+
+                    {consultings.length > 0 ? (consultings.map((consulting) => (
+                        <ConsultingList
+                            consulting={consulting}
+                            onApprove={onApprove}
+                            onClick={onClick} />
+
+                    ))) :
+                        <EmptyState title={"요청이 없습니다."} text={"회원가입 및 로그인을 해주십시오."} />
+
+                    }
+
+
+                    <div className="flex justify-center mt-6">
+
+
+                        <Pagination currentPageBlockIndex={pageBlockIndex}
+                            lastPageBlockIndex={lastPageBlockIndex}
+                            pagesPerBlock={pagesPerBlock}
+                            lastPage={lastPage}
+                            clickedPage={clickedPage}
+                            onClickFirst={onClickFirst}
+                            onClickPrev={onClickPrev}
+                            onClickNext={onClickNext}
+                            onClickLast={onClickLast}
+                            onClickPage={setClickedPage} />
+                    </div>
+
+                </CommonPage>
             </div>
 
 
-            {consultings ? (consultings.map((consulting) => (
-                <ConsultingList
-                    key={consulting.aiConsultingId}
-                    id={consulting.aiConsultingId}
-                    userName={consulting.userName}
-                    targetJob={consulting.targetJob}
-                    targetCompanyName={consulting.targetCompanyName}
-                    requestDate={consulting.requestedDate}
-                    consultingType={consulting.consultingType as ConsultingType}
-                    onApprove={onApprove}
-                    onClick={onClick} />
+            {showAiEditDetailModal && aiConsultingDetail && (<AiConsultingEditDetailModal aiConsultingDetail={aiConsultingDetail} />)}
+            {showAiFeedbackDetailModal && aiConsultingDetail && (<AiConsultingFeedbackDetailModal aiConsultingDetail={aiConsultingDetail} />)}
 
-            ))) :
-                <EmptyState title={"요청이 없습니다."} text={"회원가입 및 로그인을 해주십시오."} />
+        </>
 
-            }
-
-
-            <div className="flex justify-center mt-6">
-
-
-                <Pagination currentPageBlockIndex={pageBlockIndex}
-                    lastPageBlockIndex={lastPageBlockIndex}
-                    pagesPerBlock={pagesPerBlock}
-                    lastPage={lastPage}
-                    clickedPage={clickedPage}
-                    onClickFirst={onClickFirst}
-                    onClickPrev={onClickPrev}
-                    onClickNext={onClickNext}
-                    onClickLast={onClickLast}
-                    onClickPage={setClickedPage} />
-            </div>
-
-        </CommonPage>
-    </div>
-
-)
+    )
 };
 
 export default ConsultingRequestPage;
+
+
+

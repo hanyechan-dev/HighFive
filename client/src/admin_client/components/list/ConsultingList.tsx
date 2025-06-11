@@ -2,45 +2,44 @@ import Button from "../../../common/components/button/Button"
 
 export type ConsultingType = "첨삭" | "피드백"
 
-interface ConsultingListProps {
-    id: number;
+interface consultingProps {
+    aiConsultingId: number;
     userName: string;
     targetJob: string;
     targetCompanyName: string;
-    requestDate: string;
-    consultingType: ConsultingType;
-    completed?: boolean;
+    requestedDate: string;
+    consultingType: string;
+}
+
+
+
+interface Props {
+    consulting : consultingProps
     onApprove: (id: number) => void;
-    onClick: (id: number) => void;
+    onClick: (id: number, consultingType : string) => void;
 }
 
 const defaultSetting = "h-[50px] grid grid-cols-6 items-center w-full border-b text-center text-lg text-[#333] font-roboto hover:bg-semi_theme cursor-pointer"
 
 const ConsultingList = ({
-    id,
-    userName,
-    targetJob,
-    targetCompanyName,
-    requestDate,
-    consultingType,
-    completed,
+    consulting,
     onApprove,
-    onClick,
-}: ConsultingListProps) => {
+    onClick
+}: Props) => {
     return (
-        <div key={id} onClick={()=>{onClick(id)}} className={defaultSetting}>
-            <div className="mb-5">{userName}</div>
-            <div className="mb-5">{targetJob}</div>
-            <div className="mb-5">{targetCompanyName}</div>
-            <div className="mb-5">{requestDate}</div>
-            <div className="mb-5">{consultingType}</div>
+        <div key={consulting.aiConsultingId} onClick={()=>{onClick(consulting.aiConsultingId, consulting.consultingType)}} className={defaultSetting}>
+            <div className="mb-5">{consulting.userName}</div>
+            <div className="mb-5">{consulting.targetJob}</div>
+            <div className="mb-5">{consulting.targetCompanyName}</div>
+            <div className="mb-5">{consulting.requestedDate}</div>
+            <div className="mb-5">{consulting.consultingType}</div>
             <div className="mt-1">
                 <Button color={"theme"}
                     size={"s"}
                     disabled={false}
                     text={"승인"}
                     type={"button"}
-                    onClick={()=>{onApprove(id)}} />
+                    onClick={()=>{onApprove(consulting.aiConsultingId)}} />
             </div>
         </div>
     )
