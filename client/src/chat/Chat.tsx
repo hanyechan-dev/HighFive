@@ -1,18 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { IMessage } from '@stomp/stompjs';
-import { type RootState } from '../../common/store/store';
+import { type RootState } from '../common/store/store';
 import { useSelector } from 'react-redux';
 import { MessageCircle, X, Send, User } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
-import Button from '../../common/components/button/Button';
-import Input from '../../common/components/input/Input';
-import getIdFromToken from '../../common/utils/AuthUtil';
-import AuthUtil from '../../common/utils/AuthUtil';
+import Input from '../common/components/input/Input';
+import AuthUtil from '../common/utils/AuthUtil';
+import { Button } from '@radix-ui/themes/dist/cjs/components/button';
 
+interface ChatRoomList {
+    chatRoomId: number;
+    senderId?: number;
+    name: string;
+    content?: string;
+    createdAt?: string;
+}
 
-// 채팅 메시지 객체 타입 정의
 interface ChatMessage {
     chatRoomId: number;
     senderId: number;
@@ -21,72 +26,51 @@ interface ChatMessage {
     createdAt: string;
 }
 
-interface ChatUser {
-    id: string
-    name: string
-    avatar: string
-    lastMessage: string
+interface MockUser {
+    id: number;
+    name: string;
+    userType: string;
+    avatar: string;
 }
 
 interface Message {
-    id: string
-    text: string
-    sender: "me" | "other"
-    timestamp: Date
+    id: number;
+    text: string;
+    sender: "me" | "other";
+    timestamp: Date;
 }
 
 // 임시 유저 리스트
-const mockUsers: ChatUser[] = [
+const mockUsers: MockUser[] = [
     {
-        id: "1",
-        name: "김민수",
+        id: 1,
+        name: "샘숭맨",
+        userType: "기업회원",
         avatar: "/placeholder.svg?height=40&width=40",
-        lastMessage: "안녕하세요! 잘 지내시나요?",
     },
     {
-        id: "2",
-        name: "이영희",
+        id: 2,
+        name: "리짜이밍",
+        userType: "일반회원",
         avatar: "/placeholder.svg?height=40&width=40",
-        lastMessage: "내일 회의 시간 확인 부탁드려요.",
     },
     {
-        id: "3",
-        name: "박철수",
+        id: 3,
+        name: "준스톤",
+        userType: "일반회원",
         avatar: "/placeholder.svg?height=40&width=40",
-        lastMessage: "프로젝트 진행 상황 공유드립니다.",
     },
     {
-        id: "4",
-        name: "정수진",
+        id: 4,
+        name: "한화",
+        userType: "기업회원",
         avatar: "/placeholder.svg?height=40&width=40",
-        lastMessage: "오늘 수고하셨습니다!",
     },
 ]
 
-// 임시 메시지 리스트
-const mockMessages: { [key: string]: Message[] } = {
-    "1": [
-        { id: "1", text: "안녕하세요! 잘 지내시나요?", sender: "other", timestamp: new Date() },
-        { id: "2", text: "네, 안녕하세요! 잘 지내고 있어요.", sender: "me", timestamp: new Date() },
-        { id: "3", text: "오늘 날씨가 정말 좋네요.", sender: "other", timestamp: new Date() },
-    ],
-    "2": [
-        { id: "1", text: "내일 회의 시간 확인 부탁드려요.", sender: "other", timestamp: new Date() },
-        { id: "2", text: "오후 2시로 예정되어 있습니다.", sender: "me", timestamp: new Date() },
-    ],
-    "3": [
-        { id: "1", text: "프로젝트 진행 상황 공유드립니다.", sender: "other", timestamp: new Date() },
-        { id: "2", text: "감사합니다. 확인해보겠습니다.", sender: "me", timestamp: new Date() },
-    ],
-    "4": [
-        { id: "1", text: "오늘 수고하셨습니다!", sender: "other", timestamp: new Date() },
-        { id: "2", text: "수고하셨어요! 내일 봐요.", sender: "me", timestamp: new Date() },
-    ],
-}
-
 // SockJS와 Stomp를 이용해서 웹 소켓 서버로 연결하고 메시지를 주고 받는 기능 구현
 const Chat = () => {
-
+    const [chatRoomList, setChatRoomList] = useState<ChatRoomList[]>([]);
     const [chatRoomId, setChatRoomId] = useState<number | null>(null);
     const [senderId, setSenderId] = useState<number | null>(null);
     const [targetId, setTargetId] = useState<number | null>(null);
@@ -94,7 +78,7 @@ const Chat = () => {
     const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
     const [showChatList, setShowChatList] = useState(false)
-    const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null)
+    const [selectedChat, setSelectedChat] = useState<MockUser | null>(null)
     const [messages, setMessages] = useState<Message[]>([])
     const [newMessage, setNewMessage] = useState("")
 
@@ -106,41 +90,49 @@ const Chat = () => {
     const stompClient = useSelector((state: RootState) => state.websocket.client); // 웹소켓 객체 획득
     const token = useSelector((state: RootState) => state.auth.accessToken); // 토큰 획득
 
-    // 토큰에서 ID 추출하여, 발신자 ID로 세팅
-    useEffect(() => {
-        const extractedId = AuthUtil.getIdFromToken(token); // ID 추출
-        if (extractedId != null) {
-            setSenderId(extractedId);
+    // 토큰에서 ID 추출하여 발신자 ID로 세팅 후, 채팅 상대의 ID를 가져옴.
+    // "채팅하기"를 눌렀을 때 호출되며, 해당 회원이 로그인된 회원인지 검증하는 로직 필요함.
+    const getEachId = useCallback(() => {
+        const id = AuthUtil.getIdFromToken(token); // ID 추출
+        if (id != null) {
+            setSenderId(id);
+            setTargetId(extractedTargetId); // 채팅 대상 회원 ID 추출 (추후 수정 필요)
+        } else {
+            alert("해당 기능은 로그인이 필요합니다.")
+            // 로그인 페이지로 이동
         }
     }, [token])
 
     // 채팅방 생성 또는 기존 채팅방 참여
-    const createChatRoom() => {
-        setTargetId(extractedTargetId); // 채팅 대상 회원 ID 추출 (추후 수정 필요)
+    const createChatRoom = () => {
+        if (senderId != null && targetId != null) {
+            const createChatRoom = () => {
+                fetch("https://localhost:9000/chats", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id: targetId
+                    })
+                })
+                    .then((response) => response.json()) // JSON -> Javascript 객체로 변환
+                    .then((data) => setChatRoomId(data.chatRoomId))
+                    .catch((error) => console.error("chatRoomId를 가져오지 못했습니다.: ", error));
+            }
 
-        const createChatRoom = () => {
-            await fetch("https://localhost:9000/chats", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    id: // 채팅 대상 회원  ID
-        })
-            })
-                .then((response) => response.json()) // JSON -> Javascript 객체로 변환
-                .then((data) => setChatRoomId(data.chatRoomId))
-                .catch((error) => console.error("chatRoomId를 가져오지 못했습니다.: ", error));
-        }
-
-        // 채팅방 구독 후, 채팅 대상 또한 동일한 채팅방을 구독하도록 서버에 요청
-        if (stompClient != null) {
-            stompClient.subscribe(`/topic/${chatRoomId}`, receiveMessage);
-            stompClient.publish({
-                destination: "app/chat/subscribe",
-                body: JSON.stringify({ targetId, chatRoomId })
-            })
+            // 채팅방 구독 후, 채팅 대상 또한 동일한 채팅방을 구독하도록 서버에 요청
+            if (stompClient != null) {
+                stompClient.subscribe(`/topic/${chatRoomId}`, receiveMessage);
+                stompClient.publish({
+                    destination: "app/chat/subscribe",
+                    body: JSON.stringify({ targetId, chatRoomId })
+                })
+            }
+        } else {
+            alert("해당 기능은 로그인이 필요합니다.")
+            // 로그인 페이지로 이동
         }
     }
 
@@ -164,6 +156,22 @@ const Chat = () => {
         setChatHistory(prevHistory => [...prevHistory, receivedMessage]);
     };
 
+    // 채팅방 리스트 불러오기
+    const getChatRoomList = async () => {
+        try {
+            const response = await fetch('http://localhost:8090/chats', {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            const tempChatRoomList: ChatRoomList[] = await response.json();
+            setChatRoomList(tempChatRoomList);
+        } catch(error){
+            console.log("채팅방 리스트 불러오기 실패: ", error);
+        }
+    }
+
     // 채팅 내역 불러오기
     const getHistory = async () => { // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
         try {
@@ -175,7 +183,6 @@ const Chat = () => {
                 },
                 body: JSON.stringify({ targetId })
             });
-
             const chatContents: ChatMessage[] = await response.json();
 
             if (chatContents) {
@@ -185,6 +192,11 @@ const Chat = () => {
             console.error("채팅 내역 불러오기 실패: ", error);
         }
     }
+
+    // 메시지 수발신 시 채팅방 리스트 자동 렌더링
+    useEffect(() => {
+        getChatRoomList();
+    }, [chatHistory])
 
     // 채팅 시 화면 자동 스크롤
     // useEffect(() => {
@@ -202,7 +214,7 @@ const Chat = () => {
     }
 
     // 채팅방 클릭 시, 채팅 메시지 출력
-    const handleChatSelect = (user: ChatUser) => {
+    const handleChatSelect = (chatRoom: MockUser) => {
         setSelectedChat(user)
         setMessages(mockMessages[user.id] || [])
         setShowChatList(false)
@@ -222,7 +234,7 @@ const Chat = () => {
         }
     }
 
-    // Enter키로 메시지 전송
+    // Enter키를 통한 메시지 전송
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
             handleSendMessage()
@@ -253,21 +265,20 @@ const Chat = () => {
                     </div>
                     <ScrollArea className="max-h-80">
                         <div className="p-2">
-                            {mockUsers.map((user) => (
+                            {chatRoomList.map((chatRoom) => (
                                 <div
-                                    key={user.id}
-                                    onClick={() => handleChatSelect(user)}
+                                    key={chatRoom.chatRoomId}
+                                    onClick={() => handleChatSelect(chatRoom)}
                                     className="flex items-center p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
                                 >
                                     <Avatar className="h-10 w-10 mr-3">
-                                        <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
+                                        <AvatarImage src={user.avatar || "/placeholder.svg"} alt={chatRoom.name} />
                                         <AvatarFallback>
                                             <User className="h-5 w-5" />
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-medium text-gray-900 truncate">{user.name}</p>
-                                        <p className="text-sm text-gray-500 truncate">{user.lastMessage}</p>
+                                        <p className="font-medium text-gray-900 truncate">{chatRoom.name}</p>
                                     </div>
                                 </div>
                             ))}
@@ -279,7 +290,6 @@ const Chat = () => {
             {/* 채팅 모달 */}
             <Dialog open={!!selectedChat} onOpenChange={() => setSelectedChat(null)}>
                 <DialogContent className="sm:max-w-md bg-white">
-                    <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                         <DialogTitle className="flex items-center space-x-3">
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src={selectedChat?.avatar || "/placeholder.svg"} alt={selectedChat?.name} />
@@ -292,7 +302,6 @@ const Chat = () => {
                         <Button variant="ghost" size="icon" onClick={() => setSelectedChat(null)} className="h-6 w-6">
                             <X className="h-4 w-4" />
                         </Button>
-                    </DialogHeader>
 
                     {/* 메시지 영역 */}
                     <ScrollArea className="h-80 w-full pr-4">
@@ -301,8 +310,8 @@ const Chat = () => {
                                 <div key={message.id} className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}>
                                     <div
                                         className={`max-w-xs px-4 py-2 rounded-lg ${message.sender === "me"
-                                                ? "bg-white border border-[#EE57CD] text-[#EE57CD]"
-                                                : "bg-[#EE57CD] text-white"
+                                            ? "bg-white border border-[#EE57CD] text-[#EE57CD]"
+                                            : "bg-[#EE57CD] text-white"
                                             }`}
                                     >
                                         <p className="text-sm">{message.text}</p>

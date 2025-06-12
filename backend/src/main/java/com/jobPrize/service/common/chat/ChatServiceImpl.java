@@ -115,6 +115,7 @@ public class ChatServiceImpl implements ChatService {
         			: otherUser.getName();
         	
         	return ChatResponseDto.builder()
+        			.chatRoomId(chatRoom.getId())
         			.name(name)
         			.build();
         })

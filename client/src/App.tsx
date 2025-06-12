@@ -1,10 +1,26 @@
-import LoginModal from "./features/auth/LoginModal"
+import TempPage from './chat/TempPage';
+import Button from './common/components/button/Button';
+import SignUpModal from './features/auth/SignUpModal';
 
-function App() {
+const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('버튼이 클릭되었습니다.', e);
+};
+
+const App = () => {
     return (
-        <LoginModal />
+        <div>
+            <h1>버튼 예제</h1>
+            <Button
+                color="theme"
+                size="m"
+                text="클릭하세요!"
+                disabled={false}
+                onClick={handleClick}
+                type="button"
+            />
+        </div>
+        // <TempPage />
     )
+};
 
-}
-
-export default App
+export default App;

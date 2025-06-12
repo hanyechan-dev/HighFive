@@ -2,12 +2,12 @@ import { useCallback, useRef, useState, useEffect } from "react";
 import type { Frame } from "@stomp/stompjs";
 import { Client as StompClient } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
-import type { RootState } from "../store/store";
+import type { RootState } from "../common/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setClient } from "../../components/chat/WebSocketSlice";
-import AuthUtil from "./AuthUtil";
+import { setClient } from "./WebSocketSlice";
+import AuthUtil from "../common/utils/AuthUtil";
 
-const useWebSocket = () => {
+const WebSocketUtil = () => {
   const stompClient = useRef<StompClient | null>(null);
   const [id, setId] = useState<number | null>(null);
 
@@ -80,4 +80,4 @@ const useWebSocket = () => {
   return;
 };
 
-export default useWebSocket;
+export default WebSocketUtil;

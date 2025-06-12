@@ -12,7 +12,7 @@ import CommonModal from "../../common/modals/CommonModal.tsx";
 import RadioButton from "../../common/components/button/RadioButton.tsx";
 import Select from "../../common/components/input/Select.tsx";
 import { genderTypeEnum, userTypeEnum } from "../../common/enum/Enum.tsx";
-import NicknameInputModal from "../member/NicknameInputMoal.tsx";
+import NicknameInputModal from "../member/NicknameInputModal.tsx";
 import CompanyInfoInputModal from "../../강우석/CompanyInfoInputModal.tsx";
 
 const SignUpModal = () => {

@@ -1,12 +1,12 @@
 
 
 interface ButtonProps {
-  color : 'theme' | 'kakao' | 'action';
-  size : 's' | 'm' | 'l';
-  disabled : boolean;
-  text : string;
+  color: 'theme' | 'kakao' | 'action';
+  size: 's' | 'm' | 'l';
+  disabled: boolean;
+  text: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  type : 'button' | 'submit';
+  type: 'button' | 'submit';
 };
 
 const colorClass = {

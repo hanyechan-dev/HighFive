@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 import AuthSlice from '../../features/auth/AuthSlice';
 import jobPostingFilterSlice from '../../features/jobPostingForMember/JobPostingSlice';
-import WebSocketSlice from '../../components/chat/WebSocketSlice';
+import WebSocketSlice from '../../chat/WebSocketSlice';
 
 const rootReducer = combineReducers({
   auth: AuthSlice,
