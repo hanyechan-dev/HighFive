@@ -6,6 +6,11 @@ import type { coverLetterProps, aiContentsProps, careerProps } from "./common/pr
 import AiConsultingFeedbackDetailModal from "./common/modals/AiConsultingEditDetailModal";
 import ConsultingRequestPage from "./common/pages/ConsultingRequestPage";
 import ResumeOutputModal from "./features/request/resumeOutputModal";
+import CompanyInfoInputModal from "./강우석/CompanyInfoInputModal";
+import CommonPage from "./common/pages/CommonPage";
+import JobPostingForMemberPage from "./features/jobPostingForMember/JobPostingForMemberPage";
+import TalentPoolPage from "./강우석/memberPool/TalentPoolPage";
+import MemberDetailModal from "./company/memberPoolPage/MemberPoolDetailModal";
 
 
 
@@ -30,11 +35,13 @@ function App() {
 
 
     return (
-        <>
-            <ResumeOutputModal />
+       <MemberDetailModal isOpen={false} onClose={function (): void {
+            throw new Error("Function not implemented.");
+        } }/>
+            
 
 
-        </>
+        
     )
 
 }

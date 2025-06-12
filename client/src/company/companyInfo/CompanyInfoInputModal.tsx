@@ -1,14 +1,14 @@
 import { useState, type ChangeEvent } from "react"
 
 import { companyInfoInputModalApi } from "./CompanyApi.tsx";
-import CommonModal from "../common/modals/CommonModal";
-import ModalTitle from "../common/components/title/ModalTitle.tsx";
-import Input from "../common/components/input/Input";
-import Button from "../common/components/button/Button.tsx";
-import TextArea from "../common/components/input/TextArea.tsx";
-import RadioButton from "../common/components/button/RadioButton.tsx";
-import { companyTypeEnum } from "../common/enum/Enum.tsx";
-import ImageOutputArea from "../common/components/image/ImageOutputArea.tsx";
+import CommonModal from "../../common/modals/CommonModal.tsx";
+import ModalTitle from "../../common/components/title/ModalTitle.tsx";
+import Input from "../../common/components/input/Input.tsx";
+import Button from "../../common/components/button/Button.tsx";
+import TextArea from "../../common/components/input/TextArea.tsx";
+import RadioButton from "../../common/components/button/RadioButton.tsx";
+import { companyTypeEnum } from "../../common/enum/Enum.tsx";
+import ImageOutputArea from "../../common/components/image/ImageOutputArea.tsx";
 
 const CompanyInfoInputModal = () => {
     const [showModal, setShowModal] = useState(true);
@@ -54,7 +54,7 @@ const CompanyInfoInputModal = () => {
                 introduction,
                 logoImageFile,
             );
-            onClose
+            onClose();
 
         } catch (err) {
             console.error('입력 실패:', err);
@@ -163,18 +163,16 @@ const CompanyInfoInputModal = () => {
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ml-[24px]"
                 />
                 {logoPreviewUrl && (
-                    <ImageOutputArea size={"m"} imageUrl={logoPreviewUrl} />
-                    // <div className="mt-4 p-4 border border-gray-200 rounded-md bg-gray-50 ml-[24px] mr-[24px]"> 
-                    //     <h4 className="text-md font-semibold mb-2"></h4>
-                    //     <img
-                    //         src={logoPreviewUrl}
-                    //         alt="선택된 로고"
-                    //         className="max-w-xs max-h-36 object-contain block mb-4 border border-gray-300 rounded-sm"
-                    //     />
+                    <><ImageOutputArea size={"m"} imageUrl={logoPreviewUrl} /><div className="mt-4 p-4 border border-gray-200 rounded-md bg-gray-50 ml-[24px] mr-[24px]">
+                        <h4 className="text-md font-semibold mb-2"></h4>
+                        <img
+                            src={logoPreviewUrl}
+                            alt="선택된 로고"
+                            className="max-w-xs max-h-36 object-contain block mb-4 border border-gray-300 rounded-sm" />
 
-                    // </div>
+                    </div></>
                 )}
-            </div>
+                </div>
             <Button
                 color={"theme"}
                 size={"s"}
