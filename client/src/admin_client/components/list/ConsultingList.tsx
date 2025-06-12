@@ -1,6 +1,7 @@
 import Button from "../../../common/components/button/Button"
+import type { ConsultingTypeEnum } from "../../../common/enum/Enum";
 
-export type ConsultingType = "첨삭" | "피드백"
+
 
 interface consultingProps {
     aiConsultingId: number;
@@ -8,7 +9,7 @@ interface consultingProps {
     targetJob: string;
     targetCompanyName: string;
     requestedDate: string;
-    consultingType: string;
+    consultingType: ConsultingTypeEnum;
 }
 
 
@@ -16,7 +17,7 @@ interface consultingProps {
 interface Props {
     consulting : consultingProps
     onApprove: (id: number) => void;
-    onClick: (id: number, consultingType : string) => void;
+    onClick: (id: number, consultingType : ConsultingTypeEnum) => void;
 }
 
 const defaultSetting = "h-[50px] grid grid-cols-6 items-center w-full border-b text-center text-lg text-[#333] font-roboto hover:bg-semi_theme cursor-pointer"

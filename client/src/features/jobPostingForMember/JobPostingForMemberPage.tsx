@@ -78,7 +78,7 @@ const JobPostingForMemberPage = () => {
     return (
         <>
             {showJobPostingDetailModal && (
-                <JobPostingDetailForMemberModal />
+                <JobPostingDetailForMemberModal id={0} title={""} companyType={""} workingHours={""} workLocation={""} job={""} careerType={""} educationLevel={""} salary={0} content={""} requirement={""} imageUrls={[]} />
             )}
             <CommonPage >
                 <div className="flex mt-2">

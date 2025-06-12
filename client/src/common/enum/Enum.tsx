@@ -80,3 +80,5 @@ export const documentTypeEnum = [
   {label: '자기소개서', value: '자기소개서'}
 ];
 
+export type consultingTypeEnum = "첨삭" | "피드백"
+

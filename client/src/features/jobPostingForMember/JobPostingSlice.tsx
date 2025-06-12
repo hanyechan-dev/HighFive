@@ -9,7 +9,7 @@ interface JobPostingFilter {
 }
 
 interface JobPostingFilterState {
-  filter: JobPostingFilter;
+  filter : JobPostingFilter;
 }
 
 const initialState: JobPostingFilterState = {

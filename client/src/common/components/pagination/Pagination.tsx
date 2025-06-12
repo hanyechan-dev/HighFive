@@ -63,7 +63,7 @@ const Pagination = ({
                     className={`${defaultSetting} ${page === clickedPage ? clickedPageSetting : unclickedPageSetting} ${page>lastPage? 'invisible': ' '}`}
                     onClick={() => onClickPage(page)}
                 >
-                    <div className="relative top-[-2px]">
+                    <div >
                         {page}
                     </div>
                     

@@ -2,7 +2,9 @@ package com.jobPrize.service.memToCon.request;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,7 @@ import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.ConsultingType;
+import com.jobPrize.enumerate.RequestStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
@@ -88,9 +91,12 @@ public class RequestServiceImpl implements RequestService {
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
 		for(Request request : requests) {
 
-			LocalDate date = getPriorityDate(request);
+			Map<String,Object> result = getPriorityDateAndRequestStatus(request);
+			LocalDate date = (LocalDate) result.get("date");
+			
+			RequestStatus requestStatus = (RequestStatus)result.get("requestStatus");
 	
-			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date);
+			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date,requestStatus);
 			requestSummaryDtos.add(requestSummaryDto);
 		}
 		
@@ -106,9 +112,13 @@ public class RequestServiceImpl implements RequestService {
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
 		for(Request request : requests) {
 
-			LocalDate date = getPriorityDate(request);
+			Map<String,Object> result = getPriorityDateAndRequestStatus(request);
+			LocalDate date = (LocalDate) result.get("date");
+			
+			RequestStatus requestStatus = (RequestStatus)result.get("requestStatus");
+			
 	
-			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date);
+			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date,requestStatus);
 			requestSummaryDtos.add(requestSummaryDto);
 		}
 		
@@ -174,31 +184,43 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	
-	private LocalDate getPriorityDate(Request request) {
+	private Map<String,Object> getPriorityDateAndRequestStatus(Request request) {
 		LocalDate date = null;
+		RequestStatus requestStatus;
 		
 		if(request.getAiConsulting()!= null) {
 			if(request.getAiConsulting().getConsultantConsulting()!=null) {
 				if(request.getAiConsulting().getConsultantConsulting().getCompletedDate()!=null) {
 					date = request.getAiConsulting().getConsultantConsulting().getCompletedDate();
+					requestStatus=RequestStatus.완료;
 				}
 				else {
 					date = request.getAiConsulting().getConsultantConsulting().getCreatedDate();
+					requestStatus=RequestStatus.승인;
 				}
 			}
 			else if(request.getAiConsulting().getRequestedDate()!=null) {
 				date = request.getAiConsulting().getRequestedDate();
+				requestStatus=RequestStatus.요청;
 			}
 			
 			else{
 				date = request.getCreatedDate();
+				requestStatus=RequestStatus.AI;
 			}
 		}
 		else{
 			date = request.getCreatedDate();
+			requestStatus=RequestStatus.AI;
 		}
 		
-		return date;
+		Map<String,Object> result = new HashMap<>();
+		
+		result.put("date", date);
+		result.put("requestStatus", requestStatus);
+		
+		
+		return result;
 	}
 
 

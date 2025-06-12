@@ -1,17 +1,6 @@
 
 import { useEffect } from "react";
-
-import CoverLetterInfo from "./common/components/coverLetter/CoverLetterInfo";
-import type { coverLetterProps, aiContentsProps, careerProps } from "./common/props/AiConsultingProps";
-import AiConsultingFeedbackDetailModal from "./common/modals/AiConsultingEditDetailModal";
-import ConsultingRequestPage from "./common/pages/ConsultingRequestPage";
-import ResumeOutputModal from "./features/request/resumeOutputModal";
-
-
-
-
-
-
+import FeedbackRequestPage from "./features/request/FeedbackRequestPage";
 
 
 
@@ -31,7 +20,7 @@ function App() {
 
     return (
         <>
-            <ResumeOutputModal />
+            <FeedbackRequestPage />
 
 
         </>

@@ -93,11 +93,22 @@ export interface languageTestProps {
 
 
 export interface resumeProps {
-    education : educationProps[];
-    career : careerProps[];
-    certification : certificationProps[];
-    languageTest : languageTestProps[];
+    educations : educationProps[];
+    careers : careerProps[];
+    certifications : certificationProps[];
+    languageTests : languageTestProps[];
 }
 
+export interface careerDescriptionOrCoverLetterSummaryProps {
+    id: number;
+    title: string;
+    createdDate: string;
+}
 
-
+export interface requestSummaryProps {
+    id: number;
+    targetJob: string;
+    targetCompanyName: string;
+    requestStatus: string;
+    createdDate: string;
+}
