@@ -2,7 +2,8 @@
 import { ExternalBox } from "../../common/components/box/Box";
 import Button from "../../common/components/button/Button";
 import ModalTitle from "../../common/components/title/ModalTitle";
-import type { CareerDescriptionOrCoverLetterSummaryProps } from "../../common/props/MemberProps";
+import type { careerDescriptionOrCoverLetterSummaryProps } from "../../common/props/AiConsultingProps";
+
 import RequestSelect from "./RequestSelect";
 import TargetInfo from "./TargetInfo";
 
@@ -11,7 +12,7 @@ interface CareerDescriptionSelectModalPrpos {
     targetJob: string;
     targetCompanyName: string;
     setShowModalNumber: (showModalNumber: number) => void
-    careerDescriptions: CareerDescriptionOrCoverLetterSummaryProps[]
+    careerDescriptions: careerDescriptionOrCoverLetterSummaryProps[]
     clickedCareerDescriptionId: number;
     setClickedCareerDescriptionId: (id: number) => void
 }

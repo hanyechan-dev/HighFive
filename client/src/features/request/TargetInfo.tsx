@@ -9,7 +9,7 @@ interface TargetInfoProps{
 const TargetInfo = ({targetCompanyName, targetJob} : TargetInfoProps) => {
 
     return (
-        <div className="flex justify-center gap-12">
+        <div className="flex justify-start ml-12 gap-12">
             <InfoBox label={"지원 기업"} value={targetCompanyName} />
             <InfoBox label={"지원 부문"} value={targetJob} />
         </div>

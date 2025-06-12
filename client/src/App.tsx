@@ -1,6 +1,7 @@
 
 import { useEffect } from "react";
 import FeedbackRequestPage from "./features/request/FeedbackRequestPage";
+import RequestDetailModal from "./features/request/RequestDetailModal";
 
 
 
@@ -20,7 +21,7 @@ function App() {
 
     return (
         <>
-            <FeedbackRequestPage />
+            <RequestDetailModal consultingType={"피드백"} />
 
 
         </>

@@ -76,9 +76,17 @@ export const consultingTypeEnum = [
 ];
 
 export const documentTypeEnum = [
+  {label: '이력서', value: '이력서'},
   {label: '경력기술서', value: '경력기술서'},
   {label: '자기소개서', value: '자기소개서'}
 ];
+
+export const resumeTypeEnum = [
+  {label: '학력 사항', value: '학력사항'},
+  {label: '경력 사항', value: '경력사항'},
+  {label: '자격증', value: '자격증'},
+  {label: '어학', value: '어학'}
+]
 
 export type consultingTypeEnum = "첨삭" | "피드백"
 

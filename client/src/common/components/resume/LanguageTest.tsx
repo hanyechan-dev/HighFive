@@ -1,4 +1,5 @@
-import type { languageTestProps } from "../../props/resumeProps";
+
+import type { languageTestProps } from "../../props/AiConsultingProps";
 import { InternalBox } from "../box/Box";
 import Input from "../input/Input";
 

@@ -35,10 +35,10 @@ const AiConsultingFeedbackDetailModal = ({
 }: Props) => {
 
     const resumeJson = JSON.parse(aiConsultingDetail.resume) as resumeProps;
-    const educations = resumeJson.education;
-    const careers = resumeJson.career;
-    const certifications = resumeJson.certification;
-    const languageTests = resumeJson.languageTest;
+    const educations = resumeJson.educations;
+    const careers = resumeJson.careers;
+    const certifications = resumeJson.certifications;
+    const languageTests = resumeJson.languageTests;
 
     const coverLetterJson = JSON.parse(aiConsultingDetail.coverLetter) as coverLetterProps;
 

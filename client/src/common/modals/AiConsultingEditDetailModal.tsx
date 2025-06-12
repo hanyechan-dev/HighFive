@@ -10,7 +10,8 @@ import type { resumeProps, coverLetterProps, careerDescriptionProps, aiConsultin
 import CommonModal from "./CommonModal";
 import CoverLetterInfo from "../components/coverLetter/CoverLetterInfo";
 import CareerDescriptionInfo from "../components/careerDescription/CareerDescriptionInfo";
-import AiEdit from "../components/aiConsulting/AiEdit";
+import AiEdit from "../components/aiConsulting/AiConsulting";
+import AiConsulting from "../components/aiConsulting/AiConsulting";
 
 interface Props {
     aiConsultingDetail: aiConsultingDetailProps
@@ -35,10 +36,10 @@ const AiConsultingEditDetailModal = ({
 }: Props) => {
 
     const resumeJson = JSON.parse(aiConsultingDetail.resume) as resumeProps;
-    const educations = resumeJson.education;
-    const careers = resumeJson.career;
-    const certifications = resumeJson.certification;
-    const languageTests = resumeJson.languageTest;
+    const educations = resumeJson.educations;
+    const careers = resumeJson.careers;
+    const certifications = resumeJson.certifications;
+    const languageTests = resumeJson.languageTests;
 
     const coverLetterJson = JSON.parse(aiConsultingDetail.coverLetter) as coverLetterProps;
 
@@ -98,7 +99,7 @@ const AiConsultingEditDetailModal = ({
                 {checkedText === "coverLetter" && (
                     <>
                         <CoverLetterInfo coverLetter={coverLetterJson} />
-                        <AiEdit aiContents={aiConsultingDetail.aiContents} />
+                        <AiConsulting aiContents={aiConsultingDetail.aiContents} />
                     </>
                 )}
 
@@ -106,7 +107,7 @@ const AiConsultingEditDetailModal = ({
                 {checkedText === "careerDescription" && (
                     <>
                         <CareerDescriptionInfo careerDescription={careerDescriptionJson} />
-                        <AiEdit aiContents={aiConsultingDetail.aiContents} />
+                        <AiConsulting aiContents={aiConsultingDetail.aiContents} />
                     </>
                 )}
 

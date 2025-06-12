@@ -84,7 +84,7 @@ const JobPostingMainCard = ({
 
             {/* 바디 */}
             <div className="transition-transform duration-300 group-hover:translate-y-[60px] bg-white border border-t-0 border-gray-300 rounded-b-lg">
-                <div className="text-black text-base font-roboto  w-[345px] flex flex-col space-y-1.5 p-6 p-4">
+                <div className="text-black text-base font-roboto  w-[345px] flex flex-col space-y-1.5 p-6">
                     <div className="grid grid-cols-1 gap-2 text-sm">
 
                         <div className="flex items-center">

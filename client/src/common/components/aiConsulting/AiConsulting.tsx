@@ -3,13 +3,18 @@ import { ExternalBox } from "../box/Box";
 import TextArea from "../input/TextArea";
 import ModalTitle from "../title/ModalTitle";
 
-const AiFeedback = ({aiContents} : aiContentsProps) => {
+interface AiConsultingProps {
+    aiContents : aiContentsProps;
+    consultingType : "첨삭" | "피드백";
+}
+
+const AiConsulting = ({aiContents, consultingType} : AiConsultingProps) => {
 
     return (
         <>
-            <ModalTitle title='AI 피드백' />
+            <ModalTitle title={consultingType === "첨삭" ? 'AI 첨삭' : 'AI 피드백'} />
             <ExternalBox color="semi_theme">
-                {aiContents.map((aiContent) =>
+                {aiContents.aiContents.map((aiContent) =>
                 (<TextArea label={aiContent.item}
                     placeholder={""}
                     disabled={true}
@@ -22,4 +27,4 @@ const AiFeedback = ({aiContents} : aiContentsProps) => {
 
 };
 
-export default AiFeedback;
+export default AiConsulting;

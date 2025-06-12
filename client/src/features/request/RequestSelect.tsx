@@ -1,7 +1,8 @@
-import type { CareerDescriptionOrCoverLetterSummaryProps } from "../../common/props/MemberProps";
+import type { careerDescriptionOrCoverLetterSummaryProps } from "../../common/props/AiConsultingProps";
+
 
 interface RequestSelectProps{
-    careerOrCoverLetter : CareerDescriptionOrCoverLetterSummaryProps
+    careerOrCoverLetter : careerDescriptionOrCoverLetterSummaryProps
     isClicked : boolean; 
     setIsClicked : (id : number) => void
 }
