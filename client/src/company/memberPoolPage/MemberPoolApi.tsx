@@ -1,5 +1,5 @@
 import { api } from "../../common/Axios.tsx";
-import { store } from "../../common/store/store.tsx";
+import type { MemberFilter } from "./MemberPoolSlice.tsx";
 
 export interface MemberPoolSummary {
     id: number;
@@ -66,16 +66,15 @@ export interface LanguageTestResponseDto {
     acquisitionDate?: string;
 }
 
-export const MemberPoolListApi = (
+export const MemberPoolSummaryApi = (
+    filter: MemberFilter,
     page: number,
 ) => {
-    const { hasCareer, educationLevel, address, job } = store.getState().memberPoolFilter.filter;
-
     return api(true).post<MemberPoolSummary[]>('/companies/members', {
-        hasCareer,
-        educationLevel,
-        address,
-        job
+        hasCareer: filter.hasCareer,
+        educationLevel: filter.educationLevel,
+        address: filter.address,
+        job: filter.job
     },
         {
             params: {

@@ -1,16 +1,6 @@
 
 import { useEffect } from "react";
-
-import CoverLetterInfo from "./common/components/coverLetter/CoverLetterInfo";
-import type { coverLetterProps, aiContentsProps, careerProps } from "./common/props/AiConsultingProps";
-import AiConsultingFeedbackDetailModal from "./common/modals/AiConsultingEditDetailModal";
-import ConsultingRequestPage from "./common/pages/ConsultingRequestPage";
-import ResumeOutputModal from "./features/request/resumeOutputModal";
-import CompanyInfoInputModal from "./강우석/CompanyInfoInputModal";
-import CommonPage from "./common/pages/CommonPage";
-import JobPostingForMemberPage from "./features/jobPostingForMember/JobPostingForMemberPage";
-import TalentPoolPage from "./강우석/memberPool/TalentPoolPage";
-import MemberDetailModal from "./company/memberPoolPage/MemberPoolDetailModal";
+import MemberFilterModal from "./company/memberPoolPage/MemberPoolFilterModal";
 
 
 
@@ -35,9 +25,10 @@ function App() {
 
 
     return (
-       <MemberDetailModal isOpen={false} onClose={function (): void {
+       <MemberFilterModal isOpen={true} onClose={function (): void {
             throw new Error("Function not implemented.");
-        } }/>
+        } } />
+       
             
 
 
