@@ -1,4 +1,4 @@
-package com.jobPrize.dto.memToCon.aiConsulting;
+package com.jobPrize.dto.member.aiConsulting;
 
 import java.util.List;
 

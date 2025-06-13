@@ -3,7 +3,7 @@ package com.jobPrize.service.consultant.aiConsultingContent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentCreateDto;
+import com.jobPrize.dto.member.aiConsulting.AiConsultingContentCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.repository.consultant.aiConsultingContent.AiConsultingContentRepository;

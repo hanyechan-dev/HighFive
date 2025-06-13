@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
-import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
+import com.jobPrize.dto.consultant.aiConuslting.AiConsultingDetailResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiConsultingSummaryDto;
-import com.jobPrize.dto.consultant.aiConuslting.AiEditDetailResponseDto;
-import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
-import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentCreateDto;
-import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
+import com.jobPrize.dto.memToCon.request.RequestResponseDto;
+import com.jobPrize.dto.member.aiConsulting.AiConsultingContentCreateDto;
+import com.jobPrize.dto.member.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.memToCon.Request;
@@ -67,7 +68,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public AiEditDetailResponseDto readEditDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
+	public AiConsultingDetailResponseDto readEditDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 		
 		String action = "조회";
 		
@@ -76,24 +77,26 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	    AiConsulting aiConsulting = aiConsultingRepository.findWithAllRequestByAiConsultingId(aiConsultingId) //상세 모달 정보
 	            .orElseThrow(() -> new CustomEntityNotFoundException("Ai 컨설팅"));
 	    
-	    List<AiConsultingContent> aiConsultingContents=aiConsulting.getAiConsultingContents();
-	    
-	    List<AiContentResponseDto> aiContentResponseDtos = new ArrayList<>();
+	    List<AiConsultingContent> aiConsultingContents = aiConsulting.getAiConsultingContents();
+	    List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos = new ArrayList<>();
 	    
 	    for(AiConsultingContent aiConsultingContent : aiConsultingContents) {
-	    	AiContentResponseDto aiContentResponseDto = AiContentResponseDto.from(aiConsultingContent);
-	    	aiContentResponseDtos.add(aiContentResponseDto);
+	    	AiConsultingContentResponseDto aiConsultingContentResponseDto = AiConsultingContentResponseDto.from(aiConsultingContent);
+	    	aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);
 	    }
 	    
-	    AiEditDetailResponseDto aiEditDetailResponseDto = AiEditDetailResponseDto.of(aiConsulting, aiContentResponseDtos);
+	    RequestResponseDto requestResponseDto = RequestResponseDto.from(aiConsulting.getRequest());
+	    AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.of(aiConsulting, aiConsultingContentResponseDtos);
 	    
-	    return aiEditDetailResponseDto;
+	    AiConsultingDetailResponseDto aiConsultingDetailResponseDto = AiConsultingDetailResponseDto.of(requestResponseDto, aiConsultingResponseDto);
+	    
+	    return aiConsultingDetailResponseDto;
 
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public AiFeedbackDetailResponseDto readFeedbackDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
+	public AiConsultingDetailResponseDto readFeedbackDetail(UserType userType, ApprovalStatus approvalStatus, Long aiConsultingId) {
 		
 		String action = "조회";
 		
@@ -104,14 +107,17 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 
 		List<AiConsultingContent> aiConsultingContents=aiConsulting.getAiConsultingContents();
 		
-		List<AiContentResponseDto> aiContentResponseDtos = new ArrayList<>();
+		List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos = new ArrayList<>();
 		
 		for(AiConsultingContent aiConsultingContent : aiConsultingContents) {
-			AiContentResponseDto aiContentResponseDto = AiContentResponseDto.from(aiConsultingContent);
-			aiContentResponseDtos.add(aiContentResponseDto);
+			AiConsultingContentResponseDto aiConsultingContentResponseDto = AiConsultingContentResponseDto.from(aiConsultingContent);
+			aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);
 		}
 		
-		AiFeedbackDetailResponseDto aiFeedbackDetailResponseDto =AiFeedbackDetailResponseDto.of(aiConsulting, aiContentResponseDtos);
+		RequestResponseDto requestResponseDto = RequestResponseDto.from(aiConsulting.getRequest());
+		AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.of(aiConsulting, aiConsultingContentResponseDtos);
+		
+		AiConsultingDetailResponseDto aiFeedbackDetailResponseDto =AiConsultingDetailResponseDto.of( requestResponseDto, aiConsultingResponseDto);
 		
 	    
 	    return aiFeedbackDetailResponseDto;

@@ -1,17 +1,17 @@
 
-import type { languageTestProps } from "../../props/AiConsultingProps";
+import type { LanguageTestResponseDto } from "../../../features/request/RequestProps";
 import { InternalBox } from "../box/Box";
 import Input from "../input/Input";
 
 
 
 interface LanguageTestProps {
-    languageTests: languageTestProps[];
+    languageTestResponseDtos: LanguageTestResponseDto[];
 }
 
-const LanguageTest = ({ languageTests }: LanguageTestProps) => {
+const LanguageTest = ({ languageTestResponseDtos }: LanguageTestProps) => {
     return (
-        languageTests.map((languageTest) => (
+        languageTestResponseDtos.map((languageTest) => (
             <InternalBox>
                 <div className="flex">
                     <Input label="언어 종류" placeholder="" size="ibm" disabled={true} type="text" value={languageTest.languageType} setValue={() => { }} />

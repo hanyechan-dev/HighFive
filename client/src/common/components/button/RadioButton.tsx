@@ -3,7 +3,7 @@ interface RadioButtonProps {
     textList: {label: string; value: string}[];
     checkedText: string;
     setCheckedText: (value: string) => void
-    size? : "document" | "resume"
+    size? : "document" | "externalResume" | "internalResume"
 };
 
 const colorClass = 'text-black';
@@ -16,7 +16,8 @@ const labelSetting = 'font-roboto text-base mb-2 inline-block ml-[24px]';
 
 const sizeClass = {
     document: 'w-[317px] h-[42px]',
-    resume: 'w-[226px] h-[42px]'
+    externalResume: 'w-[238px] h-[42px]',
+    internalResume: 'w-[226px] h-[42px]'
 }
 
 
@@ -33,8 +34,8 @@ const RadioButton = ({
     return (<>
         <div className={labelSetting}>{name}</div>
         <br />
-        {textList.map((text, index) => <button
-            className={`${checkedText == text.value ? checkedColorClass : colorClass} ${defaultSetting} ${index === 0 ? 'ml-[24px]' : ''} ${size ? sizeClass[size] : ''}`} value={text.value} name={name}
+        {textList.map((text,index) => <button
+            className={`${checkedText == text.value ? checkedColorClass : colorClass} ${defaultSetting} ${size ? sizeClass[size] : ''} ${index === 0 ? 'ml-6' : ''}`} value={text.value} name={name}
             onClick={() => setCheckedText(text.value)}
             type={'button'}
         >

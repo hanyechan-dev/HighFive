@@ -3,7 +3,6 @@ package com.jobPrize.dto.memToCon.request;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.memToCon.Request;
-import com.jobPrize.enumerate.ConsultingType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,19 +12,13 @@ import lombok.Getter;
 public class RequestResponseDto {
     
     private Long id;
-    
     private String targetJob;
-
     private String targetCompanyName;
-
-    private ConsultingType type;
-
+    private String consultingType;
+    private String requestStatus;
     private LocalDate createdDate;
-    
     private String resumeJson;
-
     private String coverLetterJson;
-    
     private String careerDescriptionJson;
 
     public static RequestResponseDto from(Request request) {
@@ -33,7 +26,8 @@ public class RequestResponseDto {
             .id(request.getId())
             .targetJob(request.getTargetJob())
             .targetCompanyName(request.getTargetCompanyName())
-            .type(request.getType())
+            .consultingType(request.getConsultingType().name())
+            .requestStatus(request.getRequestStatus().name())
             .createdDate(request.getCreatedDate())
             .resumeJson(request.getResumeJson())
             .coverLetterJson(request.getCoverLetterJson())

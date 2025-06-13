@@ -11,19 +11,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
-import com.jobPrize.dto.consultant.aiConsultingContent.AiContentResponseDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingDetailResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
-import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResponseDto;
-import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
-import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentResponseDto;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
+import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
+import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingContentResponseDto;
+import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingResponseDto;
+import com.jobPrize.dto.memToCon.request.RequestResponseDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.consultant.Consultant;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.entity.consultant.ConsultantConsultingContent;
+import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.RequestStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.consultant.consultant.ConsultantRepository;
@@ -62,6 +66,8 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	    Consultant consultant = consultantRepository.findByIdAndDeletedDateIsNull(id)
 	        .orElseThrow(() -> new CustomEntityNotFoundException("컨설턴트"));
+	    
+	    aiConsulting.getRequest().updateRequestStatus(RequestStatus.승인);
 
 
 	    if (aiConsulting.getConsultantConsulting() != null) {
@@ -72,7 +78,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    	.builder()
 	        .aiConsulting(aiConsulting)
 	        .consultant(consultant)
-	        .type(aiConsulting.getType())
+	        .consultingType(aiConsulting.getType())
 	        .build();
 
 	    consultantConsultingRepository.save(consultantConsulting);
@@ -123,6 +129,8 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    if (consultantConsulting.getCompletedDate() != null) {
 	        throw new IllegalStateException("이미 완료된 컨설팅입니다.");
 	    }
+	    
+	    consultantConsulting.getAiConsulting().getRequest().updateRequestStatus(RequestStatus.완료);
 
 	    consultantConsulting.complete();
 	    consultantConsultingRepository.save(consultantConsulting);
@@ -151,7 +159,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 	    
 	    @Override
-	    public ConsultantEditDetailResponseDto readEditDetail(Long id, UserType userType, Long consultantConsultingId) {
+	    public ConsultantConsultingDetailResponseDto readDetail(Long id, UserType userType, Long consultantConsultingId) {
 			
 			String action = "조회";
 			
@@ -175,86 +183,29 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	        
 
 	        AiConsulting aiConsulting = consultantConsulting.getAiConsulting();
+	        Request request = aiConsulting.getRequest();
 
-	        List<AiContentResponseDto> aiContents = new ArrayList<>();
+	        List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos = new ArrayList<>();
 	        for (AiConsultingContent aiConsultingContent : aiConsulting.getAiConsultingContents()) {
-	            AiContentResponseDto aiContentResponseDto = AiContentResponseDto
-	            	.builder()
-	                .item(aiConsultingContent.getItem())
-	                .content(aiConsultingContent.getContent())
-	                .build();
-	            aiContents.add(aiContentResponseDto);
+	        	AiConsultingContentResponseDto aiConsultingContentResponseDto = AiConsultingContentResponseDto.from(aiConsultingContent);
+	        	aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);
 	        }
 
-	        List<ConsultantContentResponseDto> consultantContents = new ArrayList<>();
+	        List<ConsultantConsultingContentResponseDto> consultantConsultingContentResponseDtos = new ArrayList<>();
 	        for (ConsultantConsultingContent consultantConsultingContent : consultantConsulting.getConsultantConsultingContents()) {
-	            ConsultantContentResponseDto consultantCommentResponseDto = ConsultantContentResponseDto
-	            	.builder()
-	                .item(consultantConsultingContent.getItem())
-	                .content(consultantConsultingContent.getContent())
-	                .documentType(consultantConsultingContent.getDocumentType())
-	                .build();
-	            consultantContents.add(consultantCommentResponseDto);
+	            ConsultantConsultingContentResponseDto consultantConsultingContentResponseDto = ConsultantConsultingContentResponseDto.from(consultantConsultingContent);
+	            consultantConsultingContentResponseDtos.add(consultantConsultingContentResponseDto);
 	        }
 	        
-	        ConsultantEditDetailResponseDto consultantEditDetailResponseDto = ConsultantEditDetailResponseDto.of(consultantConsulting, aiContents, consultantContents);
-
-	        return consultantEditDetailResponseDto;
-	    }
-
-	    
-	    @Override
-	    public ConsultantFeedBackDetailResponseDto readFeedbackDetail(Long id, UserType userType, Long consultantConsultingId) {
+	        RequestResponseDto requestResponseDto = RequestResponseDto.from(request);
+	        AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.of(aiConsulting, aiConsultingContentResponseDtos);
+	        ConsultantConsultingResponseDto consultantConsultingResponseDto = ConsultantConsultingResponseDto.of(consultantConsulting, consultantConsultingContentResponseDtos);
 	        
-			String action = "조회";
-			
-			ConsultantConsulting consultantConsulting = consultantConsultingRepository
-	            .findWithConsultantConsultingContentsByConsultantConsultingId(consultantConsultingId)
-	            .orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 	        
-			
-			
-	        if(UserType.컨설턴트회원.equals(userType)) {
+	        ConsultantConsultingDetailResponseDto consultantConsultingDetailResponseDto 
+	        	= ConsultantConsultingDetailResponseDto.of(requestResponseDto, aiConsultingResponseDto, consultantConsultingResponseDto);
 
-				Long ownerId = consultantConsultingRepository.findConsultantIdByConsultantConsultingId(consultantConsultingId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
-
-	        	assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
-	        }
-	        else if(UserType.일반회원.equals(userType)) {
-
-				Long ownerId = consultantConsultingRepository.findMemberIdByConsultantConsultingId(consultantConsultingId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
-				
-	        	assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
-	        }
-
-	        AiConsulting aiConsulting = consultantConsulting.getAiConsulting();
-
-	        List<AiContentResponseDto> aiContents = new ArrayList<>();
-	        for (AiConsultingContent aiConsultingContent : aiConsulting.getAiConsultingContents()) {
-	            AiContentResponseDto aiContentResponseDto = AiContentResponseDto
-	                .builder()
-	                .item(aiConsultingContent.getItem())
-	                .content(aiConsultingContent.getContent())
-	                .build();
-	            aiContents.add(aiContentResponseDto);
-	        }
-
-	        List<ConsultantContentResponseDto> consultantContents = new ArrayList<>();
-	        for (ConsultantConsultingContent consultantConsultingContent : consultantConsulting.getConsultantConsultingContents()) {
-	            ConsultantContentResponseDto consultantCommentResponseDto = ConsultantContentResponseDto
-	                .builder()
-	                .item(consultantConsultingContent.getItem())
-	                .content(consultantConsultingContent.getContent())
-	                .documentType(consultantConsultingContent.getDocumentType())
-	                .build();
-	            consultantContents.add(consultantCommentResponseDto);
-	        }
-	        
-	        ConsultantFeedBackDetailResponseDto consultantFeedBackDetailResponseDto = ConsultantFeedBackDetailResponseDto.of(consultantConsulting, aiContents, consultantContents);
-
-	        return consultantFeedBackDetailResponseDto;
+	        return consultantConsultingDetailResponseDto;
 	    }
 
 }

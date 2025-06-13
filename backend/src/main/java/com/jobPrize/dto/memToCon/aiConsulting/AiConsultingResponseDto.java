@@ -1,7 +1,8 @@
 package com.jobPrize.dto.memToCon.aiConsulting;
 
+import java.util.List;
+
 import com.jobPrize.entity.consultant.AiConsulting;
-import com.jobPrize.enumerate.ConsultingType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,11 +11,14 @@ import lombok.Getter;
 @Builder
 public class AiConsultingResponseDto {
 
-    private ConsultingType type;
+    private String consultingTypetype;
     
-    public static AiConsultingResponseDto from(AiConsulting aiConsulting) {
+    private List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos;
+    
+    public static AiConsultingResponseDto of(AiConsulting aiConsulting, List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos) {
         return AiConsultingResponseDto.builder()
-            .type(aiConsulting.getType())
+            .consultingTypetype(aiConsulting.getType().name())
+            .aiConsultingContentResponseDtos(aiConsultingContentResponseDtos)
             .build();
     }
 

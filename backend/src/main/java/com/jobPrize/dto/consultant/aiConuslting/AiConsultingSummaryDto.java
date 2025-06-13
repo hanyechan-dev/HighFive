@@ -3,7 +3,6 @@ package com.jobPrize.dto.consultant.aiConuslting;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.consultant.AiConsulting;
-import com.jobPrize.enumerate.ConsultingType;
 
 import lombok.Builder;
 import lombok.Getter;

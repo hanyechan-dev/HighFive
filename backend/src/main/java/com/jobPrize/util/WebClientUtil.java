@@ -3,9 +3,8 @@ package com.jobPrize.util;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.dto.memToCon.request.RequestResponseDto;
-import com.jobPrize.enumerate.ConsultingType;
+import com.jobPrize.dto.member.aiConsulting.AiConsultingCreateDto;
 
 @Component
 public class WebClientUtil {
@@ -18,9 +17,9 @@ public class WebClientUtil {
 
 	public AiConsultingCreateDto postRequestToPython(RequestResponseDto requestResponseDto) {
 		
-		ConsultingType type = requestResponseDto.getType();
+		String type = requestResponseDto.getConsultingType();
 
-		String path = type == ConsultingType.첨삭 ? "/guide/edit" : "/guide/feedback";
+		String path = type.equals("첨삭") ? "/guide/edit" : "/guide/feedback";
 		
 		try {
 		    return webClient

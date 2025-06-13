@@ -1,10 +1,10 @@
 import TextArea from "../input/TextArea"
 import { ExternalBox } from "../box/Box"
-import type { coverLetterProps } from "../../props/AiConsultingProps";
 import ModalTitle from "../title/ModalTitle";
+import type { coverLetterJson } from "../../../features/request/RequestProps";
 
 interface CoverLetterInfoProps{
-    coverLetter: coverLetterProps
+    coverLetter: coverLetterJson
 }
 
 const CoverLetterInfo = ( { coverLetter } : CoverLetterInfoProps) => {

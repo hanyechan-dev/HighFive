@@ -12,24 +12,25 @@ import LanguageTest from "../../common/components/resume/LanguageTest";
 import CareerDescriptionInfo from "../../common/components/careerDescription/CareerDescriptionInfo";
 import AiConsulting from "../../common/components/aiConsulting/AiConsulting";
 import CoverLetterInfo from "../../common/components/coverLetter/CoverLetterInfo";
-import Button from "../../common/components/button/Button";
-import type { CareerDescriptionResponseDto, CoverLetterResponseDto, RequestDetailDto, ResumeJson } from "./RequestProps";
+import type { CareerDescriptionResponseDto, CoverLetterResponseDto, CompletedRequestDetailDto, ResumeJson } from "./RequestProps";
+import ConsultantConsulting from "./ConsultantConsulting";
 
 
 
-interface RequestDetailModalProps {
-    requestDetailDto: RequestDetailDto;
-    onClick: () => void;
+interface CompletedRequestDetailModalProps {
+    completedRequestDetailDto: CompletedRequestDetailDto;
     onClose: () => void
 }
 
-const RequestDetailModal = ({ requestDetailDto, onClick, onClose }: RequestDetailModalProps) => {
+const CompletedRequestDetailModal = ({ completedRequestDetailDto, onClose }: CompletedRequestDetailModalProps) => {
 
 
     const [checkedDocument, setCheckedDocument] = useState(documentTypeEnum[0].value);
     const [checkedResume, setCheckedResume] = useState(resumeTypeEnum[0].value);
 
-    const requestResponseDto = requestDetailDto.requestResponseDto;
+    const requestResponseDto = completedRequestDetailDto.requestResponseDto;
+    const aiConsultingResponseDto = completedRequestDetailDto.aiConsultingResponseDto;
+    const consultantConsultingResponseDto = completedRequestDetailDto.consultantConsultingResponseDto;
 
     const { targetCompanyName, targetJob } = requestResponseDto;
     const resume = JSON.parse(requestResponseDto.resumeJson) as ResumeJson;
@@ -40,15 +41,20 @@ const RequestDetailModal = ({ requestDetailDto, onClick, onClose }: RequestDetai
     const coverLetter = JSON.parse(requestResponseDto.coverLetterJson) as CoverLetterResponseDto;
     const careerDescription = JSON.parse(requestResponseDto.careerDescriptionJson) as CareerDescriptionResponseDto;
 
-    const aiConsultingResponseDto = requestDetailDto.aiConsultingResponseDto;
-    const consultingType = aiConsultingResponseDto.consultingType
+    
+    const consultingType = requestResponseDto.consultingType
 
-    const aiConsultingContentResponseDtos = requestDetailDto.aiConsultingResponseDto.aiConsultingContentResponseDtos
+    const aiConsultingContentResponseDtos = aiConsultingResponseDto.aiConsultingContentResponseDtos
 
     const aiConsultingContentForCareerDescriptionResponseDtos = aiConsultingContentResponseDtos.filter(item => item.documentType === "경력기술서"); // 문서 타입 분할
     const aiConsultingContentForCoverLetterResponseDtos = aiConsultingContentResponseDtos.filter(item => item.documentType === "자기소개서"); // 문서 타입 분할
 
-    const requestStatus = requestDetailDto.requestResponseDto.requestStatus;
+    const consultantConsultingContentResponseDtos = consultantConsultingResponseDto.consultantConsultingContentResponseDtos
+
+    const consultantConsultingContentForCareerDescriptionResponseDtos = consultantConsultingContentResponseDtos.filter(item => item.documentType === "경력기술서"); // 문서 타입 분할
+    const consultantConsultingContentForCoverLetterResponseDtos = consultantConsultingContentResponseDtos.filter(item => item.documentType === "자기소개서"); // 문서 타입 분할
+
+    
     return (
         <CommonModal size="l" onClose={onClose}>
             <ModalTitle title={`${consultingType} 요청 상세`} />
@@ -71,21 +77,19 @@ const RequestDetailModal = ({ requestDetailDto, onClick, onClose }: RequestDetai
                 <>
                     <CareerDescriptionInfo careerDescription={careerDescription} />
                     <AiConsulting aiConsultingContentResponseDtos={aiConsultingContentForCareerDescriptionResponseDtos} consultingType={consultingType} />
+                    <ConsultantConsulting consultantConsultingContentResponseDtos={consultantConsultingContentForCareerDescriptionResponseDtos} consultingType={consultingType} />
                 </>
             }
             {checkedDocument === "자기소개서" &&
                 <>
                     <CoverLetterInfo coverLetter={coverLetter} />
                     <AiConsulting aiConsultingContentResponseDtos={aiConsultingContentForCoverLetterResponseDtos} consultingType={consultingType} />
+                    <ConsultantConsulting consultantConsultingContentResponseDtos={consultantConsultingContentForCoverLetterResponseDtos} consultingType={consultingType} />
                 </>
             }
 
-            <div className="flex justify-end mr-6">
-                
-                <Button color="theme" size="m" text="컨설턴트 컨설팅 요청" onClick={onClick} disabled={requestStatus !== "AI"} type={"button"} />
-            </div>
         </CommonModal>
     );
 };
 
-export default RequestDetailModal;
+export default CompletedRequestDetailModal;

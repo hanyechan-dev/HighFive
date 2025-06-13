@@ -1,8 +1,10 @@
-import type { careerDescriptionOrCoverLetterSummaryProps } from "../../common/props/AiConsultingProps";
+import type { CareerDescriptionSummaryDto } from "./RequestProps";
+import type { CoverLetterSummaryDto } from "./RequestProps";
+
 
 
 interface RequestSelectProps{
-    careerOrCoverLetter : careerDescriptionOrCoverLetterSummaryProps
+    careerOrCoverLetter : CareerDescriptionSummaryDto | CoverLetterSummaryDto
     isClicked : boolean; 
     setIsClicked : (id : number) => void
 }

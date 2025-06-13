@@ -3,7 +3,6 @@ package com.jobPrize.dto.consultant.consultantConsulting;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.consultant.ConsultantConsulting;
-import com.jobPrize.enumerate.ConsultingType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class ConsultantConsultingSummaryDto {
 	private String targetJob;
 	private String targetCompanyName;
 	private LocalDate requestedDate;
-	private ConsultingType consultingType;
+	private String consultingType;
 	private boolean completed;
 	
 	public static ConsultantConsultingSummaryDto from(ConsultantConsulting consultantConsulting) {
@@ -28,7 +27,7 @@ public class ConsultantConsultingSummaryDto {
             .targetJob(consultantConsulting.getAiConsulting().getRequest().getTargetJob())
             .targetCompanyName(consultantConsulting.getAiConsulting().getRequest().getTargetCompanyName())
             .requestedDate(consultantConsulting.getAiConsulting().getRequestedDate())
-            .consultingType(consultantConsulting.getType())
+            .consultingType(consultantConsulting.getConsultingType().name())
             .completed(consultantConsulting.getCompletedDate() != null)	                
             .build();
 	}

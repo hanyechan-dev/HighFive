@@ -5,10 +5,11 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.jobPrize.dto.memToCon.request.RequestCreateDto;
+import com.jobPrize.dto.member.request.RequestCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.ConsultingType;
+import com.jobPrize.enumerate.RequestStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,7 +55,11 @@ public class Request {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "CONSULTING_TYPE", nullable = false)
-	private ConsultingType type;
+	private ConsultingType consultingType;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "CONSULTING_STATUS", nullable = false)
+	private RequestStatus requestStatus;
 
 	@Column(name = "resume_json", columnDefinition = "TEXT", nullable = false)
 	private String resumeJson;
@@ -72,16 +77,21 @@ public class Request {
 	@OneToOne(mappedBy = "request", fetch = FetchType.LAZY)
 	private AiConsulting aiConsulting;
 
-	public static Request of(Member member, RequestCreateDto requestCreateDto, String resumeJson, String careerDescriptionJson, String coverLetterJson) {
+	public static Request of(Member member, RequestCreateDto requestCreateDto, RequestStatus requestStatus, String resumeJson, String careerDescriptionJson, String coverLetterJson) {
 		return Request.builder()
 			.member(member)
 			.targetJob(requestCreateDto.getTargetJob())
 			.targetCompanyName(requestCreateDto.getTargetCompanyName())
+			.requestStatus(requestStatus)
 			.resumeJson(resumeJson)
 			.careerDescriptionJson(careerDescriptionJson)
 			.coverLetterJson(coverLetterJson)
-			.type(requestCreateDto.getType())
+			.consultingType(requestCreateDto.getType())
 			.build();
+	}
+	
+	public void updateRequestStatus (RequestStatus requestStatus) {
+		this.requestStatus =requestStatus;
 	}
 
 }

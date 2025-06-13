@@ -50,7 +50,7 @@ public class ConsultantConsulting {
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ConsultingType type;
+    private ConsultingType consultingType;
    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

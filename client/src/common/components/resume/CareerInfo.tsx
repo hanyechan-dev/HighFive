@@ -1,4 +1,4 @@
-import type { careerProps } from "../../props/AiConsultingProps";
+import type { CareerResponseDto } from "../../../features/request/RequestProps";
 import { InternalBox } from "../box/Box";
 import Input from "../input/Input";
 
@@ -6,14 +6,14 @@ import Input from "../input/Input";
 
 
 interface CareerInfoProps {
-    careers: careerProps[];
+    careerResponseDtos: CareerResponseDto[];
 }
 
 
 
-const CareerInfo = ({ careers }: CareerInfoProps) => {
+const CareerInfo = ({ careerResponseDtos }: CareerInfoProps) => {
     return (
-        careers.map((career) => (
+        careerResponseDtos.map((career) => (
 
             <InternalBox >
                 <div className="flex">

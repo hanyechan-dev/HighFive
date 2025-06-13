@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import BasicInfoInputModal from "./BasicInfoInputModal";
 import CareerDescriptionSelectModal from "./CareerDescriptionSelectModal";
 import CoverLetterSelectModal from "./CoverLetterSelectModal";
-import type { careerDescriptionOrCoverLetterSummaryProps, resumeProps } from "../../common/props/AiConsultingProps";
 
 import CommonModal from "../../common/modals/CommonModal";
 import { createRequestApi, readCareerDescriptionsApi, readCareersApi, readCertificationsApi, readCoverLettersApi, readEducationsApi, readLanguageTestsApi } from "../member/MemberApi";
 import type { consultingTypeEnum } from "../../common/enum/Enum";
 import ResumeOutputModal from "./ResumeOutputModal";
+import type { CareerDescriptionSummaryDto, CareerResponseDto, CertificationResponseDto, CoverLetterSummaryDto, EducationResponseDto, LanguageTestResponseDto, ResumeJson } from "./RequestProps";
 
 
 interface RequestModalProps {
@@ -27,9 +27,9 @@ const RequestModal = ({
     const [clickedCareerDescriptionId, setClickedCareerDescriptionId] = useState(-1);
     const [clickedCoverLetterId, setClickedCoverLetterId] = useState(-1);
     const [modalSize, setModalSize] = useState<"s" | "m" | "l">('m')
-    const [resume, setResume] = useState<resumeProps>()
-    const [careerDescriptions, setCareerDescriptions] = useState<careerDescriptionOrCoverLetterSummaryProps[]>([])
-    const [coverLetters, setCoverLetters] = useState<careerDescriptionOrCoverLetterSummaryProps[]>([])
+    const [resume, setResume] = useState<ResumeJson>()
+    const [careerDescriptions, setCareerDescriptions] = useState<CareerDescriptionSummaryDto[]>([])
+    const [coverLetters, setCoverLetters] = useState<CoverLetterSummaryDto[]>([])
 
 
     useEffect(() => {
@@ -43,15 +43,15 @@ const RequestModal = ({
 
                 try {
 
-                    const educations = (await readEducationsApi()).data.content;
-                    const careers = (await readCareersApi()).data.content;
-                    const certifications = (await readCertificationsApi()).data.content;
-                    const languageTests = (await readLanguageTestsApi()).data.content;
+                    const educationResponseDtos = (await readEducationsApi()).data.content as EducationResponseDto[];
+                    const careerResponseDtos = (await readCareersApi()).data.content as CareerResponseDto[];
+                    const certificationResponseDtos = (await readCertificationsApi()).data.content as CertificationResponseDto[];
+                    const languageTestResponseDtos = (await readLanguageTestsApi()).data.content as LanguageTestResponseDto[];
                     setResume({
-                        educations,
-                        careers,
-                        certifications,
-                        languageTests
+                        educationResponseDtos,
+                        careerResponseDtos,
+                        certificationResponseDtos,
+                        languageTestResponseDtos
                     });
 
                 } catch (err) {
@@ -125,7 +125,7 @@ const RequestModal = ({
                         targetJob={targetJob}
                         targetCompanyName={targetCompanyName}
                         setShowModalNumber={setShowModalNumber}
-                        resume={resume ?? { educations: [], careers: [], certifications: [], languageTests: [] }} />)}
+                        resume={resume ?? { educationResponseDtos: [], careerResponseDtos: [], certificationResponseDtos: [], languageTestResponseDtos: [] }} />)}
 
 
                 {showModalNumber === 2 &&
@@ -133,7 +133,7 @@ const RequestModal = ({
                         targetJob={targetJob}
                         targetCompanyName={targetCompanyName}
                         setShowModalNumber={setShowModalNumber}
-                        careerDescriptions={careerDescriptions ?? []}
+                        careerDescriptionSummaryDtos={careerDescriptions ?? []}
                         clickedCareerDescriptionId={clickedCareerDescriptionId}
                         setClickedCareerDescriptionId={setClickedCareerDescriptionId} />)}
 
@@ -143,7 +143,7 @@ const RequestModal = ({
                         targetJob={targetJob}
                         targetCompanyName={targetCompanyName}
                         setShowModalNumber={setShowModalNumber}
-                        coverLetters={coverLetters ?? []}
+                        coverLetterSummaryDtos={coverLetters ?? []}
                         clickedCoverLetterId={clickedCoverLetterId}
                         setClickedCoverLetterId={setClickedCoverLetterId}
                         consultingType={consultingType} />)}

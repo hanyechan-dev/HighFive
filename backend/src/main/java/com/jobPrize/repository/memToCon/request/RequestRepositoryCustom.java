@@ -11,5 +11,6 @@ import com.jobPrize.enumerate.ConsultingType;
 public interface RequestRepositoryCustom {
 	public Page<Request> findAllByMemberIdAndType(Long id, ConsultingType type, Pageable pageable);
 	Optional<Request> findWithAiConsultingByRequestId(Long id);
+	Optional<Request> findWithConsultantConsultingByRequestId(Long id);
 	Optional<Long> findMemberIdByRequestId(Long id);
 }

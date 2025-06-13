@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.id.IdDto;
+import com.jobPrize.dto.consultant.aiConuslting.AiConsultingDetailResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiConsultingSummaryDto;
-import com.jobPrize.dto.consultant.aiConuslting.AiEditDetailResponseDto;
-import com.jobPrize.dto.consultant.aiConuslting.AiFeedbackDetailResponseDto;
 import com.jobPrize.enumerate.ApprovalStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.consultant.aiConsulting.AiConsultingService;
@@ -61,26 +60,26 @@ public class AiConsultingController {
 
  
     @PostMapping("/edits/detail")
-    public ResponseEntity<AiEditDetailResponseDto> readMyEditDetail(@RequestBody @Valid IdDto idDto) {
+    public ResponseEntity<AiConsultingDetailResponseDto> readMyEditDetail(@RequestBody @Valid IdDto idDto) {
     	
     	UserType userType = SecurityUtil.getUserType();
     	
     	ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
     	
-        AiEditDetailResponseDto aiEditDetailResponseDto = aiConsultingService.readEditDetail(userType, approvalStatus, idDto.getId());
+    	AiConsultingDetailResponseDto aiConsultingDetailResponseDto = aiConsultingService.readEditDetail(userType, approvalStatus, idDto.getId());
         
-        return ResponseEntity.status(200).body(aiEditDetailResponseDto);
+        return ResponseEntity.status(200).body(aiConsultingDetailResponseDto);
     }
 
  
     @PostMapping("/feedbacks/detail")
-    public ResponseEntity<AiFeedbackDetailResponseDto> readMyFeedbackDetail(@RequestBody @Valid IdDto idDto) {
+    public ResponseEntity<AiConsultingDetailResponseDto> readMyFeedbackDetail(@RequestBody @Valid IdDto idDto) {
     	
     	UserType userType = SecurityUtil.getUserType();
     	
     	ApprovalStatus approvalStatus = SecurityUtil.getApprovalStatus();
     	
-        AiFeedbackDetailResponseDto aiFeedbackDetailResponseDto = aiConsultingService.readFeedbackDetail(userType, approvalStatus, idDto.getId());
+        AiConsultingDetailResponseDto aiFeedbackDetailResponseDto = aiConsultingService.readFeedbackDetail(userType, approvalStatus, idDto.getId());
         
         return ResponseEntity.status(200).body(aiFeedbackDetailResponseDto);
     }

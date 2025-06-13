@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.entity.consultant.QAiConsulting;
+import com.jobPrize.entity.consultant.QConsultantConsulting;
 import com.jobPrize.entity.memToCon.QRequest;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.enumerate.ConsultingType;
@@ -47,7 +48,6 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
 
 
-		
 		Request result = queryFactory
 				.selectFrom(request)
 				.join(request.aiConsulting,aiConsulting).fetchJoin()
@@ -59,6 +59,26 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 				
 		return Optional.ofNullable(result);
 	}
+	
+	@Override
+	public Optional<Request> findWithConsultantConsultingByRequestId(Long id) {
+		
+		QRequest request = QRequest.request;
+		QAiConsulting aiConsulting = QAiConsulting.aiConsulting;
+		QConsultantConsulting consultantConsulting = QConsultantConsulting.consultantConsulting;
+		
+		Request result = queryFactory
+				.selectFrom(request)
+				.join(request.aiConsulting,aiConsulting).fetchJoin()
+				.join(aiConsulting.consultantConsulting, consultantConsulting).fetchJoin()
+				.join(consultantConsulting.consultantConsultingContents) 
+				.where(request.id.eq(id))
+				.distinct()
+				.fetchOne();
+		
+		return Optional.ofNullable(result);
+	}
+
 
 	@Override
 	public Optional<Long> findMemberIdByRequestId(Long id) {
@@ -84,5 +104,6 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 	        .fetchOne())
 	    	.orElse(0L);
 	}
+
 
 }

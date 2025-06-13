@@ -1,18 +1,18 @@
 
-import type { educationProps } from "../../props/AiConsultingProps";
+import type { EducationResponseDto } from "../../../features/request/RequestProps";
 import { InternalBox } from "../box/Box";
 import Input from "../input/Input"
 
 
 interface EducationInfoProps {
-    educations: educationProps[]
+    educationResponseDtos: EducationResponseDto[];
 }
 
-const EducationInfo = ({ educations }: EducationInfoProps) => {
+const EducationInfo = ({ educationResponseDtos }: EducationInfoProps) => {
 
 
     return (
-        educations.map((education) => (
+        educationResponseDtos.map((education) => (
             <InternalBox>
                 <div className="flex">
                     <Input label="학교명" placeholder="" size="ibm" disabled={true} type="text" value={education.schoolName} setValue={() => { }} />

@@ -6,19 +6,12 @@ import EducationInfo from "../../common/components/resume/EducationInfo";
 import LanguageTest from "../../common/components/resume/LanguageTest";
 import ModalTitle from "../../common/components/title/ModalTitle";
 import { ExternalBox } from "../../common/components/box/Box";
-import type { resumeProps } from "../../common/props/AiConsultingProps";
 import Button from "../../common/components/button/Button";
 import TargetInfo from "./TargetInfo";
+import { resumeTypeEnum } from "../../common/enum/Enum";
+import type { ResumeJson } from "./RequestProps";
 
 
-
-
-const resumeTextList = [
-    { label: "학력 사항", value: "education" },
-    { label: "경력 사항", value: "career" },
-    { label: "자격증", value: "certification" },
-    { label: "어학", value: "languageTest" },
-]
 
 
 
@@ -26,7 +19,7 @@ interface ResumeOutputModalProps {
     targetJob: string;
     targetCompanyName: string;
     setShowModalNumber: (showModalNumber: number) => void
-    resume: resumeProps
+    resume: ResumeJson
 }
 
 
@@ -38,7 +31,7 @@ const ResumeOutputModal = ({
     resume
 
 }: ResumeOutputModalProps) => {
-    const [selectedTag, setSelectedTag] = useState(resumeTextList[0].value);
+    const [clickedResume, setClickedResume] = useState(resumeTypeEnum[0].value);
 
 
 
@@ -54,39 +47,40 @@ const ResumeOutputModal = ({
         <>
             <ModalTitle title="이력서" />
             <TargetInfo targetCompanyName={targetCompanyName} targetJob={targetJob} />
-            <div>
-                <div className="flex gap-[24px] justify-center ml-[-80px] mt-4">
-                    <RadioButton
-                        name=""
-                        textList={resumeTextList}
-                        checkedText={selectedTag}
-                        setCheckedText={setSelectedTag}
-                    />
-                </div>
 
-                <div className="flex justify-center">
-                    {selectedTag == "education" && (
-                        <ExternalBox>
-                            <EducationInfo educations={resume.educations} />
-                        </ExternalBox>
-                    )}
-                    {selectedTag == "career" && (
-                        <ExternalBox>
-                            <CareerInfo careers={resume.careers} />
-                        </ExternalBox>
-                    )}
-                    {selectedTag == "certification" && (
-                        <ExternalBox>
-                            <CertificationInfo certifications={resume.certifications} />
-                        </ExternalBox>
-                    )}
-                    {selectedTag == "languageTest" && (
-                        <ExternalBox>
-                            <LanguageTest languageTests={resume.languageTests} />
-                        </ExternalBox>
-                    )}
-                </div>
+            <div className="flex mt-4 ml-[-24px]">
+                <RadioButton
+                    name=""
+                    textList={resumeTypeEnum}
+                    checkedText={clickedResume}
+                    setCheckedText={setClickedResume}
+                    size="externalResume"
+                />
             </div>
+
+            <div className="flex">
+                {clickedResume == "학력사항" && (
+                    <ExternalBox>
+                        <EducationInfo educationResponseDtos={resume.educationResponseDtos} />
+                    </ExternalBox>
+                )}
+                {clickedResume == "경력사항" && (
+                    <ExternalBox>
+                        <CareerInfo careerResponseDtos={resume.careerResponseDtos} />
+                    </ExternalBox>
+                )}
+                {clickedResume == "자격증" && (
+                    <ExternalBox>
+                        <CertificationInfo certificationResponseDtos={resume.certificationResponseDtos} />
+                    </ExternalBox>
+                )}
+                {clickedResume == "어학" && (
+                    <ExternalBox>
+                        <LanguageTest languageTestResponseDtos={resume.languageTestResponseDtos} />
+                    </ExternalBox>
+                )}
+            </div>
+
 
             <div className="flex justify-end mr-6">
                 <Button color={"white"} size={"s"} disabled={false} text={"이전"} type={"button"} onClick={onClickPrev} />

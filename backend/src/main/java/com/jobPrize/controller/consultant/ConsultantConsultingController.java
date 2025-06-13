@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.id.IdDto;
+import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingDetailResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
-import com.jobPrize.dto.consultant.consultantConsulting.ConsultantEditDetailResponseDto;
-import com.jobPrize.dto.consultant.consultantConsulting.ConsultantFeedBackDetailResponseDto;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.consultant.consultantConsulting.ConsultantConsultingService;
 import com.jobPrize.util.SecurityUtil;
@@ -41,27 +40,27 @@ public class ConsultantConsultingController {
 	}
 	
 	@PostMapping("/edits/detail")
-	public ResponseEntity<ConsultantEditDetailResponseDto> readMyEditDetail(@RequestBody @Valid IdDto idDto) {
+	public ResponseEntity<ConsultantConsultingDetailResponseDto> readMyEditDetail(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		ConsultantEditDetailResponseDto consultantEditDetailResponseDto = consultantConsultingService.readEditDetail(id, userType, idDto.getId());
+		ConsultantConsultingDetailResponseDto consultantConsultingDetailResponseDto = consultantConsultingService.readDetail(id, userType, idDto.getId());
 		
-		return ResponseEntity.status(200).body(consultantEditDetailResponseDto);
+		return ResponseEntity.status(200).body(consultantConsultingDetailResponseDto);
 				
 	}
 	
 	@PostMapping("/feedbacks/detail")
-	public ResponseEntity<ConsultantFeedBackDetailResponseDto> readMyFeedBackDetail(@RequestBody @Valid IdDto idDto) {
+	public ResponseEntity<ConsultantConsultingDetailResponseDto> readMyFeedBackDetail(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		ConsultantFeedBackDetailResponseDto consultantFeedBackDetailResponseDto = consultantConsultingService.readFeedbackDetail(id, userType, idDto.getId());
-		return ResponseEntity.status(200).body(consultantFeedBackDetailResponseDto);
+		ConsultantConsultingDetailResponseDto consultantConsultingDetailResponseDto = consultantConsultingService.readDetail(id, userType, idDto.getId());
+		return ResponseEntity.status(200).body(consultantConsultingDetailResponseDto);
 	}
 
 	

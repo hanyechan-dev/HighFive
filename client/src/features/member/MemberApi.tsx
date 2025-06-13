@@ -57,7 +57,7 @@ export const readRequestsApi = (
     size: number,
     type: string
 ) => {
-    if(type === '피드백') {
+    if (type === '피드백') {
         return api(true).get('/requests/feedbacks', {
             params: {
                 page,
@@ -65,7 +65,7 @@ export const readRequestsApi = (
             }
         });
     }
-    else if(type === '첨삭') {
+    else if (type === '첨삭') {
         return api(true).get('/requests/edits', {
             params: {
                 page,
@@ -73,4 +73,32 @@ export const readRequestsApi = (
             }
         });
     }
+}
+
+
+export const readRequestApi = (
+    id: number,
+
+) => {
+    return api(true).post('/requests/detail', {
+        id
+    });
+}
+
+export const readCompletedRequestApi = (
+    id: number,
+
+    
+) => {
+    return api(true).post('/requests/completions/detail', {
+        id
+    });
+}
+
+export const createConsultantRequestApi = (
+    id: number,
+) => {
+    return api(true).put('/requests', {
+        id
+    });
 }

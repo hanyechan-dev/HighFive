@@ -85,10 +85,10 @@ public class JsonUtil {
 		}
 		
 		Map<String, Object> resumeMap = new HashMap<>();
-		resumeMap.put("educationDtos", educationResponseDtos);
-		resumeMap.put("careerDtos", careerResponseDtos);
-		resumeMap.put("certificationDtos", certificationResponseDtos);
-		resumeMap.put("languageTestDtos", languageTestResponseDtos);
+		resumeMap.put("educationResponseDtos", educationResponseDtos);
+		resumeMap.put("careerResponseDtos", careerResponseDtos);
+		resumeMap.put("certificationResponseDtos", certificationResponseDtos);
+		resumeMap.put("languageTestResponseDtos", languageTestResponseDtos);
 		
 		String resumeJson = null;
 		try {

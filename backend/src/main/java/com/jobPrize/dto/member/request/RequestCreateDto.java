@@ -1,4 +1,4 @@
-package com.jobPrize.dto.memToCon.request;
+package com.jobPrize.dto.member.request;
 
 import com.jobPrize.enumerate.ConsultingType;
 

@@ -2,9 +2,7 @@ package com.jobPrize.service.memToCon.request;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,14 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
-import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
-import com.jobPrize.dto.memToCon.request.RequestCreateDto;
-import com.jobPrize.dto.memToCon.request.RequestDetailDto;
+import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingContentResponseDto;
+import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingResponseDto;
 import com.jobPrize.dto.memToCon.request.RequestResponseDto;
-import com.jobPrize.dto.memToCon.request.RequestSummaryDto;
+import com.jobPrize.dto.member.aiConsulting.AiConsultingCreateDto;
+import com.jobPrize.dto.member.request.CompletedRequestDetailDto;
+import com.jobPrize.dto.member.request.RequestCreateDto;
+import com.jobPrize.dto.member.request.RequestDetailDto;
+import com.jobPrize.dto.member.request.RequestSummaryDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
+import com.jobPrize.entity.consultant.ConsultantConsulting;
+import com.jobPrize.entity.consultant.ConsultantConsultingContent;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.ConsultingType;
@@ -74,7 +77,7 @@ public class RequestServiceImpl implements RequestService {
 		String careerDescriptionJson =jsonUtil.getCareerDescriptionJsonByCareerDescriptionId(id, careerDescriptionId);
 		String coverLetterJson =jsonUtil.getCoverLetterJsonByCoverLetterId(id, coverLetterId);
 
-		Request request = Request.of(member, requestCreateDto, resumeJson, careerDescriptionJson, coverLetterJson);
+		Request request = Request.of(member, requestCreateDto, RequestStatus.AI, resumeJson, careerDescriptionJson, coverLetterJson);
 
 		requestRepository.save(request);
 		
@@ -91,12 +94,9 @@ public class RequestServiceImpl implements RequestService {
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
 		for(Request request : requests) {
 
-			Map<String,Object> result = getPriorityDateAndRequestStatus(request);
-			LocalDate date = (LocalDate) result.get("date");
-			
-			RequestStatus requestStatus = (RequestStatus)result.get("requestStatus");
+			LocalDate date = getPriorityDate(request);
 	
-			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date,requestStatus);
+			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date);
 			requestSummaryDtos.add(requestSummaryDto);
 		}
 		
@@ -112,13 +112,9 @@ public class RequestServiceImpl implements RequestService {
 		List<RequestSummaryDto> requestSummaryDtos = new ArrayList<>();
 		for(Request request : requests) {
 
-			Map<String,Object> result = getPriorityDateAndRequestStatus(request);
-			LocalDate date = (LocalDate) result.get("date");
+			LocalDate date = getPriorityDate(request);
 			
-			RequestStatus requestStatus = (RequestStatus)result.get("requestStatus");
-			
-	
-			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date,requestStatus);
+			RequestSummaryDto requestSummaryDto = RequestSummaryDto.of(request,date);
 			requestSummaryDtos.add(requestSummaryDto);
 		}
 		
@@ -130,34 +126,38 @@ public class RequestServiceImpl implements RequestService {
 	@Transactional(readOnly = true)
 	public RequestDetailDto readRequestDetail(Long id, UserType userType, Long requestId) {
 
-		String action = "조회";
-		
-		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
-			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+		return readUncompletedRequestDetail(id, userType, requestId);
+	}
+	
+	
+	@Override
+	public CompletedRequestDetailDto readCompletedRequestDetail(Long id, UserType userType, Long requestId) {
 
-		Long ownerId = requestRepository.findMemberIdByRequestId(requestId)
-			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 		
-		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+		Request request = requestRepository.findWithConsultantConsultingByRequestId(requestId)
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
-		AiConsulting aiConsulting = request.getAiConsulting();
+		ConsultantConsulting consultantConsulting = request.getAiConsulting().getConsultantConsulting();
 		
-		List<AiConsultingContent> aiConsultingContents = aiConsulting.getAiConsultingContents();
-		
-		RequestResponseDto requestResponseDto = RequestResponseDto.from(request);
-		
-		AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.from(aiConsulting);
-		
-		List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos = new ArrayList<>();
-		
-		for(AiConsultingContent aiConsultingContent : aiConsultingContents ) {
-			AiConsultingContentResponseDto aiConsultingContentResponseDto = AiConsultingContentResponseDto.from(aiConsultingContent);
-			aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);
+		List<ConsultantConsultingContent> consultantConsultingContents = consultantConsulting.getConsultantConsultingContents();
+		List<ConsultantConsultingContentResponseDto> consultantConsultingContentResponseDtos = new ArrayList<>();
+		for(ConsultantConsultingContent consultantConsultingContent : consultantConsultingContents) {
+			ConsultantConsultingContentResponseDto consultantConsultingContentResponseDto = ConsultantConsultingContentResponseDto.from(consultantConsultingContent);
+			consultantConsultingContentResponseDtos.add(consultantConsultingContentResponseDto);
 		}
 		
-	
-		return RequestDetailDto.of(requestResponseDto, aiConsultingResponseDto, aiConsultingContentResponseDtos);
+		RequestDetailDto requestDetailDto=readUncompletedRequestDetail(id, userType, requestId);
+		
+		RequestResponseDto requestResponseDto = requestDetailDto.getRequestResponseDto();
+		AiConsultingResponseDto aiConsultingResponseDto = requestDetailDto.getAiConsultingResponseDto();
+		ConsultantConsultingResponseDto consultantConsultingResponseDto = ConsultantConsultingResponseDto.of(consultantConsulting, consultantConsultingContentResponseDtos);
+		
+		CompletedRequestDetailDto completedRequestDetailDto = CompletedRequestDetailDto.of(requestResponseDto, aiConsultingResponseDto, consultantConsultingResponseDto);
+		
+		return completedRequestDetailDto;
 	}
+	
+	
 	
 	@Override
 	public void createRequestToConsultant(Long id, boolean isSubscribed, Long requestId) {
@@ -168,6 +168,8 @@ public class RequestServiceImpl implements RequestService {
 		
 		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+		
+		request.updateRequestStatus(RequestStatus.요청);
 		
 		request.getAiConsulting().RequestToConsultant();
 		
@@ -184,44 +186,60 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	
-	private Map<String,Object> getPriorityDateAndRequestStatus(Request request) {
+	private LocalDate getPriorityDate(Request request) {
+		
+		RequestStatus requestStatus = request.getRequestStatus();
+		
 		LocalDate date = null;
-		RequestStatus requestStatus;
 		
-		if(request.getAiConsulting()!= null) {
-			if(request.getAiConsulting().getConsultantConsulting()!=null) {
-				if(request.getAiConsulting().getConsultantConsulting().getCompletedDate()!=null) {
-					date = request.getAiConsulting().getConsultantConsulting().getCompletedDate();
-					requestStatus=RequestStatus.완료;
-				}
-				else {
-					date = request.getAiConsulting().getConsultantConsulting().getCreatedDate();
-					requestStatus=RequestStatus.승인;
-				}
-			}
-			else if(request.getAiConsulting().getRequestedDate()!=null) {
-				date = request.getAiConsulting().getRequestedDate();
-				requestStatus=RequestStatus.요청;
-			}
-			
-			else{
-				date = request.getCreatedDate();
-				requestStatus=RequestStatus.AI;
-			}
+		if(RequestStatus.AI.equals(requestStatus)) {
+			date=request.getCreatedDate();
 		}
-		else{
-			date = request.getCreatedDate();
-			requestStatus=RequestStatus.AI;
+		else if(RequestStatus.요청.equals(requestStatus)) {
+			date=request.getAiConsulting().getRequestedDate();
 		}
+		else if(RequestStatus.승인.equals(requestStatus)) {
+			date=request.getAiConsulting().getConsultantConsulting().getCreatedDate();
+		}
+		else {
+			date=request.getAiConsulting().getConsultantConsulting().getCreatedDate();
+		}
+
 		
-		Map<String,Object> result = new HashMap<>();
-		
-		result.put("date", date);
-		result.put("requestStatus", requestStatus);
-		
-		
-		return result;
+		return date;
 	}
+	
+	private RequestDetailDto readUncompletedRequestDetail(Long id, UserType userType, Long requestId) {
+
+		String action = "조회";
+		
+		Request request = requestRepository.findWithAiConsultingByRequestId(requestId)
+			.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+
+		Long ownerId = requestRepository.findMemberIdByRequestId(requestId)
+			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+		
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+		
+		AiConsulting aiConsulting = request.getAiConsulting();
+		
+		List<AiConsultingContent> aiConsultingContents = aiConsulting.getAiConsultingContents();
+		List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos = new ArrayList<>();
+		
+		for(AiConsultingContent aiConsultingContent : aiConsultingContents ) {
+			AiConsultingContentResponseDto aiConsultingContentResponseDto = AiConsultingContentResponseDto.from(aiConsultingContent);
+			aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);
+		}
+		
+		RequestResponseDto requestResponseDto = RequestResponseDto.from(request);
+		
+		AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.of(aiConsulting, aiConsultingContentResponseDtos);
+		
+	
+		return RequestDetailDto.of(requestResponseDto, aiConsultingResponseDto);
+	}
+
+
 
 
 

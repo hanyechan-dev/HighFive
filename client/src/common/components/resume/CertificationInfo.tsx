@@ -1,16 +1,16 @@
 
-import type { certificationProps } from "../../props/AiConsultingProps";
+import type { CertificationResponseDto } from "../../../features/request/RequestProps";
 import { InternalBox } from "../box/Box";
 import Input from "../input/Input";
 
 
 interface CertificationInfoProps {
-    certifications: certificationProps[];
+    certificationResponseDtos: CertificationResponseDto[];
 }
 
-const CertificationInfo = ({ certifications }: CertificationInfoProps) => {
+const CertificationInfo = ({ certificationResponseDtos }: CertificationInfoProps) => {
     return (
-        certifications.map((certification) => (
+        certificationResponseDtos.map((certification) => (
             <InternalBox>
                 <div className="flex">
                     <Input label="자격증명" placeholder="" size="ibm" disabled={true} type="text" value={certification.certificationName} setValue={() => { }} />

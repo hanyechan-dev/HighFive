@@ -10,25 +10,12 @@ import type { resumeProps, coverLetterProps, careerDescriptionProps, aiConsultin
 import CommonModal from "./CommonModal";
 import CoverLetterInfo from "../components/coverLetter/CoverLetterInfo";
 import CareerDescriptionInfo from "../components/careerDescription/CareerDescriptionInfo";
-import AiEdit from "../components/aiConsulting/AiConsulting";
 import AiConsulting from "../components/aiConsulting/AiConsulting";
+import { documentTypeEnum, resumeTypeEnum } from "../enum/Enum";
 
 interface Props {
     aiConsultingDetail: aiConsultingDetailProps
 }
-
-const requestTextList = [
-    { label: "이력서", value: "resume" },
-    { label: "자기소개서", value: "coverLetter" },
-    { label: "경력기술서", value: "careerDescription" },
-]
-
-const resumeTextList = [
-    { label: "학력 사항", value: "resume" },
-    { label: "경력 사항", value: "career" },
-    { label: "자격증", value: "certification" },
-    { label: "어학", value: "languageTest" },
-]
 
 
 const AiConsultingEditDetailModal = ({
@@ -40,13 +27,10 @@ const AiConsultingEditDetailModal = ({
     const careers = resumeJson.careers;
     const certifications = resumeJson.certifications;
     const languageTests = resumeJson.languageTests;
-
     const coverLetterJson = JSON.parse(aiConsultingDetail.coverLetter) as coverLetterProps;
-
     const careerDescriptionJson = JSON.parse(aiConsultingDetail.careerDescription) as careerDescriptionProps;
-
-    const [checkedText, setCheckedText] = useState("resume");
-    const [selectedTag, setSelectedTag] = useState("education");
+    const [checkedDocument, setCheckedDocument] = useState(documentTypeEnum[0].value);
+    const [checkedResume, setCheckedResume] = useState(resumeTypeEnum[0].value);
 
 
 
@@ -66,14 +50,15 @@ const AiConsultingEditDetailModal = ({
                     <div className="w-full border-t border-gray-300 my-2" />
                     <RadioButton
                         name=""
-                        textList={requestTextList}
-                        checkedText={checkedText}
-                        setCheckedText={setCheckedText}
+                        textList={documentTypeEnum}
+                        checkedText={checkedDocument}
+                        setCheckedText={setCheckedDocument}
+                        size="document"
                     />
                 </div>
 
                 {/* ✅ 이력서 선택 시: 학력/경력/자격증/어학 */}
-                {checkedText === "resume" && (
+                {checkedDocument === "이력서" && (
                     <div>
                         <div className="w-full border-t border-gray-300 my-2" />
                         {/* 태그 선택 */}
@@ -81,33 +66,35 @@ const AiConsultingEditDetailModal = ({
 
                             <RadioButton
                                 name=""
-                                textList={resumeTextList}
-                                checkedText={selectedTag}
-                                setCheckedText={setSelectedTag}
+                                textList={resumeTypeEnum}
+                                checkedText={checkedResume}
+                                setCheckedText={setCheckedResume}
                             />
                         </div>
 
                         <div className="flex justify-center">
-                            {selectedTag === "education" && (<EducationInfo educations={educations} />)}
-                            {selectedTag === "career" && (<CareerInfo careers={careers} />)}
-                            {selectedTag === "certification" && (<CertificationInfo certifications={certifications} />)}
-                            {selectedTag === "languageTest" && (<LanguageTest languageTests={languageTests} />)}
+                            {checkedResume === "학력사항" && (<EducationInfo educations={educations} />)}
+                            {checkedResume === "경력사항" && (<CareerInfo careers={careers} />)}
+                            {checkedResume === "자격증" && (<CertificationInfo certifications={certifications} />)}
+                            {checkedResume === "어학" && (<LanguageTest languageTests={languageTests} />)}
                         </div>
                     </div>
                 )}
 
-                {checkedText === "coverLetter" && (
+
+
+
+                {checkedDocument === "경력기술서" && (
                     <>
-                        <CoverLetterInfo coverLetter={coverLetterJson} />
-                        <AiConsulting aiContents={aiConsultingDetail.aiContents} />
+                        <CareerDescriptionInfo careerDescription={careerDescriptionJson} />
+                        <AiConsulting aiContents={aiConsultingDetail.aiContents} consultingType={"첨삭"} />
                     </>
                 )}
 
-
-                {checkedText === "careerDescription" && (
+                {checkedDocument === "자기소개서" && (
                     <>
-                        <CareerDescriptionInfo careerDescription={careerDescriptionJson} />
-                        <AiConsulting aiContents={aiConsultingDetail.aiContents} />
+                        <CoverLetterInfo coverLetter={coverLetterJson} />
+                        <AiConsulting aiContents={aiConsultingDetail.aiContents} consultingType={"첨삭"} />
                     </>
                 )}
 

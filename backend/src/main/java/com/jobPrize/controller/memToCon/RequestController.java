@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.id.IdDto;
-import com.jobPrize.dto.memToCon.request.RequestCreateDto;
-import com.jobPrize.dto.memToCon.request.RequestDetailDto;
-import com.jobPrize.dto.memToCon.request.RequestSummaryDto;
+import com.jobPrize.dto.member.request.CompletedRequestDetailDto;
+import com.jobPrize.dto.member.request.RequestCreateDto;
+import com.jobPrize.dto.member.request.RequestDetailDto;
+import com.jobPrize.dto.member.request.RequestSummaryDto;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.memToCon.request.RequestService;
 import com.jobPrize.util.SecurityUtil;
@@ -73,6 +74,19 @@ public class RequestController {
     	RequestDetailDto requestDetailDto = requestService.readRequestDetail(id, userType, idDto.getId());
     	
     	return ResponseEntity.status(HttpStatus.OK).body(requestDetailDto);
+    	
+    }
+    
+    @PostMapping("/completions/detail")
+    public ResponseEntity<CompletedRequestDetailDto> readCompletedRequest(@RequestBody @Valid IdDto idDto) {
+    	
+    	Long id = SecurityUtil.getId();
+    	
+    	UserType userType = SecurityUtil.getUserType();
+    	
+    	CompletedRequestDetailDto completedRequestDetailDto = requestService.readCompletedRequestDetail(id, userType, idDto.getId());
+    	
+    	return ResponseEntity.status(HttpStatus.OK).body(completedRequestDetailDto);
     	
     }
     

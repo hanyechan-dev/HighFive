@@ -1,10 +1,10 @@
 import TextArea from "../input/TextArea"
 import { ExternalBox } from "../box/Box"
 import ModalTitle from "../title/ModalTitle";
-import type { careerDescriptionProps } from "../../props/AiConsultingProps";
+import type { careerDescriptionJson } from "../../../features/request/RequestProps";
 
 interface CareerDescriptionInfoProps{
-    careerDescription : careerDescriptionProps
+    careerDescription : careerDescriptionJson
 }
 
 const CareerDescriptionInfo = ({careerDescription

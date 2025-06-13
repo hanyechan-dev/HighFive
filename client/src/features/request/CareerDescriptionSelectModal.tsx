@@ -2,7 +2,7 @@
 import { ExternalBox } from "../../common/components/box/Box";
 import Button from "../../common/components/button/Button";
 import ModalTitle from "../../common/components/title/ModalTitle";
-import type { careerDescriptionOrCoverLetterSummaryProps } from "../../common/props/AiConsultingProps";
+import type { CareerDescriptionSummaryDto } from "./RequestProps";
 
 import RequestSelect from "./RequestSelect";
 import TargetInfo from "./TargetInfo";
@@ -12,7 +12,7 @@ interface CareerDescriptionSelectModalPrpos {
     targetJob: string;
     targetCompanyName: string;
     setShowModalNumber: (showModalNumber: number) => void
-    careerDescriptions: careerDescriptionOrCoverLetterSummaryProps[]
+    careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[]
     clickedCareerDescriptionId: number;
     setClickedCareerDescriptionId: (id: number) => void
 }
@@ -21,7 +21,7 @@ const CareerDescriptionSelectModal = ({
     targetJob,
     targetCompanyName,
     setShowModalNumber,
-    careerDescriptions,
+    careerDescriptionSummaryDtos,
     clickedCareerDescriptionId,
     setClickedCareerDescriptionId,
 }: CareerDescriptionSelectModalPrpos) => {
@@ -42,11 +42,11 @@ const CareerDescriptionSelectModal = ({
             <ModalTitle title="경력기술서 선택" />
             <TargetInfo targetCompanyName={targetCompanyName} targetJob={targetJob} />
             <ExternalBox>
-                {careerDescriptions.map(careerDescription =>
+                {careerDescriptionSummaryDtos.map(careerDescriptionSummaryDto =>
                 (<RequestSelect
-                    key={careerDescription.id}
-                    careerOrCoverLetter={careerDescription}
-                    isClicked={clickedCareerDescriptionId === careerDescription.id}
+                    key={careerDescriptionSummaryDto.id}
+                    careerOrCoverLetter={careerDescriptionSummaryDto}
+                    isClicked={clickedCareerDescriptionId === careerDescriptionSummaryDto.id}
                     setIsClicked={setClickedCareerDescriptionId} />
                 ))}
             </ExternalBox>

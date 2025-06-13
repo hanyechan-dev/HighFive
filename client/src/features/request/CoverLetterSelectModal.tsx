@@ -6,14 +6,14 @@ import ModalTitle from "../../common/components/title/ModalTitle";
 import RequestSelect from "./RequestSelect";
 import TargetInfo from "./TargetInfo";
 import type { consultingTypeEnum } from "../../common/enum/Enum";
-import type { careerDescriptionOrCoverLetterSummaryProps } from "../../common/props/AiConsultingProps";
+import type { CoverLetterSummaryDto } from "./RequestProps";
 
 
 interface CoverLetterSelectModalPrpos {
     targetJob: string;
     targetCompanyName: string;
     setShowModalNumber: (showModalNumber: number) => void
-    coverLetters: careerDescriptionOrCoverLetterSummaryProps[]
+    coverLetterSummaryDtos: CoverLetterSummaryDto[]
     clickedCoverLetterId: number;
     setClickedCoverLetterId: (id: number) => void
     consultingType : consultingTypeEnum
@@ -23,7 +23,7 @@ const CoverLetterSelectModal = ({
     targetJob,
     targetCompanyName,
     setShowModalNumber,
-    coverLetters,
+    coverLetterSummaryDtos,
     clickedCoverLetterId,
     setClickedCoverLetterId,
     consultingType
@@ -51,11 +51,11 @@ const CoverLetterSelectModal = ({
             <ModalTitle title="자기소개서 선택" />
             <TargetInfo targetCompanyName={targetCompanyName} targetJob={targetJob} />
             <ExternalBox>
-                {coverLetters.map(coverLetter =>
+                {coverLetterSummaryDtos.map(coverLetterSummaryDto =>
                 (<RequestSelect
-                    key={coverLetter.id}
-                    careerOrCoverLetter={coverLetter}
-                    isClicked={clickedCoverLetterId === coverLetter.id}
+                    key={coverLetterSummaryDto.id}
+                    careerOrCoverLetter={coverLetterSummaryDto}
+                    isClicked={clickedCoverLetterId === coverLetterSummaryDto.id}
                     setIsClicked={setClickedCoverLetterId} />
                 ))}
             </ExternalBox>
