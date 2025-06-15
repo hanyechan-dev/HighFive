@@ -23,11 +23,9 @@ const CommonModal = ({ size, onClose, children }: CommonModalProps) => {
         const el = containerRef.current;
         if (!el) return;
         // 스크롤이 필요한지, 스크롤바 너비
-        const hasVScroll = el.scrollHeight > el.clientHeight;
-        if (hasVScroll) {
-            const scrollbarWidth = el.offsetWidth - el.clientWidth;
-            setExtraWidth(scrollbarWidth);
-        }
+        const hasVScroll = el.scrollHeight > 800;
+        const scrollbarWidth = el.offsetWidth - el.clientWidth;
+        setExtraWidth(hasVScroll ? scrollbarWidth : 0);
     }, [children]);
 
     const raw = sizeClass[size].match(/\d+/)?.[0] ?? "0";

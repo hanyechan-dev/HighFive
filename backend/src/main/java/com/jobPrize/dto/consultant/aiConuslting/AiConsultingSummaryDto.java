@@ -12,7 +12,7 @@ import lombok.Getter;
 public class AiConsultingSummaryDto {
 
 	private Long aiConsultingId;
-	private String userName;
+	private String nickname;
 	private String targetJob;
 	private String targetCompanyName;
 	private LocalDate requestedDate;
@@ -21,7 +21,7 @@ public class AiConsultingSummaryDto {
 	public static AiConsultingSummaryDto from(AiConsulting aiConsulting) {
 		return AiConsultingSummaryDto.builder()
 			.aiConsultingId(aiConsulting.getId())
-			.userName(aiConsulting.getRequest().getMember().getUser().getName())
+			.nickname(aiConsulting.getRequest().getMember().getNickname())
 			.targetJob(aiConsulting.getRequest().getTargetJob())
 			.targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
 			.requestedDate(aiConsulting.getRequestedDate())

@@ -14,7 +14,7 @@ import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
 import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingContentResponseDto;
-import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingResponseDto;
+import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingForMemberResponseDto;
 import com.jobPrize.dto.memToCon.request.RequestResponseDto;
 import com.jobPrize.dto.member.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.dto.member.request.CompletedRequestDetailDto;
@@ -150,9 +150,9 @@ public class RequestServiceImpl implements RequestService {
 		
 		RequestResponseDto requestResponseDto = requestDetailDto.getRequestResponseDto();
 		AiConsultingResponseDto aiConsultingResponseDto = requestDetailDto.getAiConsultingResponseDto();
-		ConsultantConsultingResponseDto consultantConsultingResponseDto = ConsultantConsultingResponseDto.of(consultantConsulting, consultantConsultingContentResponseDtos);
+		ConsultantConsultingForMemberResponseDto consultantConsultingForMemberResponseDto = ConsultantConsultingForMemberResponseDto.of(consultantConsulting, consultantConsultingContentResponseDtos);
 		
-		CompletedRequestDetailDto completedRequestDetailDto = CompletedRequestDetailDto.of(requestResponseDto, aiConsultingResponseDto, consultantConsultingResponseDto);
+		CompletedRequestDetailDto completedRequestDetailDto = CompletedRequestDetailDto.of(requestResponseDto, aiConsultingResponseDto, consultantConsultingForMemberResponseDto);
 		
 		return completedRequestDetailDto;
 	}

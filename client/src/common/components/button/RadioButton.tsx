@@ -34,7 +34,7 @@ const RadioButton = ({
     return (<>
         <div className={labelSetting}>{name}</div>
         <br />
-        {textList.map((text,index) => <button
+        {textList.map((text,index) => <button key={index}
             className={`${checkedText == text.value ? checkedColorClass : colorClass} ${defaultSetting} ${size ? sizeClass[size] : ''} ${index === 0 ? 'ml-6' : ''}`} value={text.value} name={name}
             onClick={() => setCheckedText(text.value)}
             type={'button'}

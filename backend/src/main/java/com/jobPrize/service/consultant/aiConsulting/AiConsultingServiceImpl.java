@@ -14,7 +14,7 @@ import com.jobPrize.dto.consultant.aiConuslting.AiConsultingDetailResponseDto;
 import com.jobPrize.dto.consultant.aiConuslting.AiConsultingSummaryDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
-import com.jobPrize.dto.memToCon.request.RequestResponseDto;
+import com.jobPrize.dto.memToCon.request.RequestForConsultantResponseDto;
 import com.jobPrize.dto.member.aiConsulting.AiConsultingContentCreateDto;
 import com.jobPrize.dto.member.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
@@ -85,10 +85,10 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 	    	aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);
 	    }
 	    
-	    RequestResponseDto requestResponseDto = RequestResponseDto.from(aiConsulting.getRequest());
+	    RequestForConsultantResponseDto requestForConsultantResponseDto = RequestForConsultantResponseDto.from(aiConsulting.getRequest());
 	    AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.of(aiConsulting, aiConsultingContentResponseDtos);
 	    
-	    AiConsultingDetailResponseDto aiConsultingDetailResponseDto = AiConsultingDetailResponseDto.of(requestResponseDto, aiConsultingResponseDto);
+	    AiConsultingDetailResponseDto aiConsultingDetailResponseDto = AiConsultingDetailResponseDto.of(requestForConsultantResponseDto, aiConsultingResponseDto);
 	    
 	    return aiConsultingDetailResponseDto;
 
@@ -114,10 +114,10 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 			aiConsultingContentResponseDtos.add(aiConsultingContentResponseDto);
 		}
 		
-		RequestResponseDto requestResponseDto = RequestResponseDto.from(aiConsulting.getRequest());
+		RequestForConsultantResponseDto requestForConsultantResponseDto = RequestForConsultantResponseDto.from(aiConsulting.getRequest());
 		AiConsultingResponseDto aiConsultingResponseDto = AiConsultingResponseDto.of(aiConsulting, aiConsultingContentResponseDtos);
 		
-		AiConsultingDetailResponseDto aiFeedbackDetailResponseDto =AiConsultingDetailResponseDto.of( requestResponseDto, aiConsultingResponseDto);
+		AiConsultingDetailResponseDto aiFeedbackDetailResponseDto =AiConsultingDetailResponseDto.of(requestForConsultantResponseDto, aiConsultingResponseDto);
 		
 	    
 	    return aiFeedbackDetailResponseDto;

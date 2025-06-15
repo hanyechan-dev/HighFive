@@ -1,7 +1,7 @@
   package com.jobPrize.dto.consultant.aiConuslting;
 
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
-import com.jobPrize.dto.memToCon.request.RequestResponseDto;
+import com.jobPrize.dto.memToCon.request.RequestForConsultantResponseDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,12 +10,12 @@ import lombok.Getter;
 @Builder
 public class AiConsultingDetailResponseDto {
 
-	private RequestResponseDto requestResponseDto;
+	private RequestForConsultantResponseDto requestForConsultantResponseDto;
 	private AiConsultingResponseDto aiConsultingResponseDto;
 
-	public static AiConsultingDetailResponseDto of(RequestResponseDto requestResponseDto, AiConsultingResponseDto aiConsultingResponseDto) {
+	public static AiConsultingDetailResponseDto of(RequestForConsultantResponseDto requestForConsultantResponseDto, AiConsultingResponseDto aiConsultingResponseDto) {
 		return AiConsultingDetailResponseDto.builder()
-			.requestResponseDto(requestResponseDto)
+			.requestForConsultantResponseDto(requestForConsultantResponseDto)
 			.aiConsultingResponseDto(aiConsultingResponseDto)
 			.build();
 	}

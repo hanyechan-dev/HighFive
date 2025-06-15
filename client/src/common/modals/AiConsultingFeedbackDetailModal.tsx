@@ -8,9 +8,9 @@ import LanguageTest from "../components/resume/LanguageTest";
 import ModalTitle from "../components/title/ModalTitle";
 import type { resumeProps, coverLetterProps, careerDescriptionProps, aiConsultingDetailProps } from "../props/AiConsultingProps";
 import CommonModal from "./CommonModal";
-import CoverLetterInfo from "../components/coverLetter/CoverLetterInfo";
+import CoverLetterInfo from "../../features/request/components/CoverLetterInfo";
 import AiFeedback from "../components/aiConsulting/AiFeedback";
-import CareerDescriptionInfo from "../components/careerDescription/CareerDescriptionInfo";
+import CareerDescriptionInfo from "../../features/request/components/CareerDescriptionInfo";
 
 interface Props {
     aiConsultingDetail: aiConsultingDetailProps
