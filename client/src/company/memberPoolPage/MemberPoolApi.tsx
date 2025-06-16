@@ -4,6 +4,8 @@ import type { MemberFilter } from "./MemberPoolSlice.tsx";
 export interface MemberPoolSummary{
     id: number;
     name: string;
+    genderType: string;
+    birthDate: string;
     job: string;
     hasCareer: boolean;
     similarityScore: number;

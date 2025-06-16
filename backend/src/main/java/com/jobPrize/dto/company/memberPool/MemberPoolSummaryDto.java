@@ -3,6 +3,8 @@ package com.jobPrize.dto.company.memberPool;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.GenderType;
+import java.time.LocalDate;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +16,10 @@ public class MemberPoolSummaryDto {
 	private Long id;
 	
 	private String name;
+
+	private GenderType genderType;
+
+	private LocalDate birthDate;
 	
 	private String job;
 	
@@ -28,6 +34,8 @@ public class MemberPoolSummaryDto {
 		return MemberPoolSummaryDto.builder()
 			.id(member.getId())
 			.name(member.getUser().getName())
+			.genderType(member.getUser().getGenderType())
+			.birthDate(member.getUser().getBirthDate())
 			.job(job)
 			.hasCareer(hasCareer)
 			.similarityScore(similarity.getScore())
