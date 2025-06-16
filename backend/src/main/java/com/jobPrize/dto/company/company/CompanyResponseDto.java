@@ -27,7 +27,7 @@ public class CompanyResponseDto {
 
 	private String introduction;
 
-	private CompanyType type;
+	private String type;
 
 	private Integer employeeCount;
 
@@ -44,7 +44,7 @@ public class CompanyResponseDto {
 			.companyAddress(company.getCompanyAddress())
 			.companyPhone(company.getCompanyPhone())
 			.introduction(company.getIntroduction())
-			.type(company.getType())
+			.type(company.getType().name())
 			.employeeCount(company.getEmployeeCount())
 			.establishedDate(company.getEstablishedDate())
 			.build();

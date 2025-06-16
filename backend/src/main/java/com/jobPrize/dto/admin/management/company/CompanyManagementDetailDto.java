@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.jobPrize.dto.admin.management.user.UserManagementDetailDto;
 import com.jobPrize.entity.company.Company;
-import com.jobPrize.enumerate.CompanyType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +29,7 @@ public class CompanyManagementDetailDto {
 
 	private String introduction;
 
-	private CompanyType type;
+	private String type;
 
 	private int employeeCount;
 
@@ -47,7 +46,7 @@ public class CompanyManagementDetailDto {
 			.companyAddress(company.getCompanyAddress())
 			.companyPhone(company.getCompanyPhone())
 			.introduction(company.getIntroduction())
-			.type(company.getType())
+			.type(company.getType().name())
 			.employeeCount(company.getEmployeeCount())
 			.establishedDate(company.getEstablishedDate())
 			.build();

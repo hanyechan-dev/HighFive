@@ -86,7 +86,7 @@ public class Request {
 			.resumeJson(resumeJson)
 			.careerDescriptionJson(careerDescriptionJson)
 			.coverLetterJson(coverLetterJson)
-			.consultingType(requestCreateDto.getType())
+			.consultingType(ConsultingType.valueOf(requestCreateDto.getConsultingType()))
 			.build();
 	}
 	

@@ -1,7 +1,5 @@
 package com.jobPrize.dto.common.user.login;
 
-import com.jobPrize.validation.password.Password;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

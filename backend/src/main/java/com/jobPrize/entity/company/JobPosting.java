@@ -93,7 +93,7 @@ public class JobPosting {
 		this.workingHours = jobPostingUpdateDto.getWorkingHours();
 		this.workLocation = jobPostingUpdateDto.getWorkLocation();
 		this.careerType = jobPostingUpdateDto.getCareerType();
-		this.educationLevel = jobPostingUpdateDto.getEducationLevel();
+		this.educationLevel = EducationLevel.valueOf(jobPostingUpdateDto.getEducationLevel());
 		this.salary = jobPostingUpdateDto.getSalary();
 		this.requirement = jobPostingUpdateDto.getRequirement();
 	}
@@ -107,7 +107,7 @@ public class JobPosting {
 			.workingHours(jobPostingCreateDto.getWorkingHours())
 			.workLocation(jobPostingCreateDto.getWorkLocation())
 			.careerType(jobPostingCreateDto.getCareerType())
-			.educationLevel(jobPostingCreateDto.getEducationLevel())
+			.educationLevel(EducationLevel.valueOf(jobPostingCreateDto.getEducationLevel()))
 			.salary(jobPostingCreateDto.getSalary())
 			.createdDate(LocalDate.now())
 			.expiredDate(LocalDate.now().plusMonths(1))

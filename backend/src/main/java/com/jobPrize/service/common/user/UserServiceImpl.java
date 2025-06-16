@@ -71,9 +71,9 @@ public class UserServiceImpl implements UserService {
 		createAdminOrConsultant(user);
 		
 
-		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(), user.getApprovalStatus(),
+		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getUserType(), user.getApprovalStatus(),
 				user.isSubscribed());
-		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType(), user.getApprovalStatus(),
+		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getUserType(), user.getApprovalStatus(),
 				user.isSubscribed());
 
 		return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
@@ -89,9 +89,9 @@ public class UserServiceImpl implements UserService {
 		if (!passwordEncoder.matches(logInDto.getPassword(), user.getPassword())) {
 			throw new IllegalStateException("이메일 또는 비밀번호가 일치하지 않습니다.");
 		}
-		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(), user.getApprovalStatus(),
+		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getUserType(), user.getApprovalStatus(),
 				user.isSubscribed());
-		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType(), user.getApprovalStatus(),
+		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getUserType(), user.getApprovalStatus(),
 				user.isSubscribed());
 
 		return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
@@ -171,8 +171,8 @@ public class UserServiceImpl implements UserService {
 		
 		createAdminOrConsultant(user);
 
-		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(), user.getApprovalStatus(), user.isSubscribed());
-		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType(), user.getApprovalStatus(), user.isSubscribed());
+		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getUserType(), user.getApprovalStatus(), user.isSubscribed());
+		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getUserType(), user.getApprovalStatus(), user.isSubscribed());
 
 		return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 
@@ -184,9 +184,9 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByEmailAndDeletedDateIsNull(email)
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
-		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getType(), user.getApprovalStatus(),
+		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getUserType(), user.getApprovalStatus(),
 				user.isSubscribed());
-		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getType(), user.getApprovalStatus(),
+		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getUserType(), user.getApprovalStatus(),
 				user.isSubscribed());
 
 		return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
@@ -223,7 +223,7 @@ public class UserServiceImpl implements UserService {
 	
 	private void createAdminOrConsultant(User user) {
 		Long id = user.getId();
-		UserType userType = user.getType();
+		UserType userType = user.getUserType();
 		
 		if (UserType.컨설턴트회원.equals(userType)) {
 			consultantService.createConsultant(id, userType);

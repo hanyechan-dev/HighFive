@@ -3,7 +3,6 @@ package com.jobPrize.dto.admin.management.user;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.common.User;
-import com.jobPrize.enumerate.GenderType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,7 @@ public class UserManagementDetailDto {
 	private String phone;
 	private String address;
 	private boolean  isSubscribed;
-	private GenderType genderType;
+	private String genderType;
 	private LocalDate birthDate;
 	private LocalDate createdDate;
 	
@@ -29,7 +28,7 @@ public class UserManagementDetailDto {
 				.phone(user.getPhone())
 				.address(user.getAddress())
 				.isSubscribed(user.isSubscribed())
-				.genderType(user.getGenderType())
+				.genderType(user.getGenderType().name())
 				.birthDate(user.getBirthDate())
 				.createdDate(user.getCreatedDate())
 				.build();

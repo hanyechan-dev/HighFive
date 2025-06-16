@@ -19,7 +19,7 @@ public class JobPostingSummaryDto {
 	
 	private String companyName;
 	
-	private CompanyType type;
+	private String type;
 	
 	private String job;
 	
@@ -27,7 +27,7 @@ public class JobPostingSummaryDto {
 	
 	private String careerType;
 	
-	private EducationLevel educationLevel;
+	private String educationLevel;
 	
 	private LocalDate createdDate;
 	
@@ -38,10 +38,10 @@ public class JobPostingSummaryDto {
 				.title(jobPosting.getTitle())
 				.companyName(jobPosting.getCompany().getCompanyName())
 				.job(jobPosting.getJob())
-				.type(jobPosting.getCompany().getType())
+				.type(jobPosting.getCompany().getType().name())
 				.workLocation(jobPosting.getWorkLocation())
 				.careerType(jobPosting.getCareerType())
-				.educationLevel(jobPosting.getEducationLevel())
+				.educationLevel(jobPosting.getEducationLevel().name())
 				.createdDate(jobPosting.getCreatedDate())
 				.build();
 		

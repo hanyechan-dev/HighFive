@@ -24,7 +24,7 @@ public class KakaoUserSignUpDto {
 	private LocalDate birthDate;
 	
 	@NotNull(message = "성별은 필수입니다.")
-	private GenderType genderType;
+	private String genderType;
 
 	@NotBlank(message = "전화번호는 필수로 입력해야합니다")
 	@Phone
@@ -35,6 +35,6 @@ public class KakaoUserSignUpDto {
 	private String address;
 
 	@NotNull(message = "회원 유형은 필수입니다.")
-	private UserType type;
+	private String type;
 
 }

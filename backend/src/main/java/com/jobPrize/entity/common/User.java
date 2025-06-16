@@ -72,7 +72,7 @@ public class User {
 	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private UserType type;
+	private UserType userType;
 	
 	@Builder.Default
 	@Column(nullable = false)
@@ -157,10 +157,10 @@ public class User {
 			.password(encodedPassword)
 			.name(userSignUpDto.getName())
 			.birthDate(userSignUpDto.getBirthDate())
-			.genderType(userSignUpDto.getGenderType())
+			.genderType(GenderType.valueOf(userSignUpDto.getGenderType()))
 			.phone(userSignUpDto.getPhone())
 			.address(userSignUpDto.getAddress())
-			.type(userSignUpDto.getType())
+			.userType(UserType.valueOf(userSignUpDto.getType()))
 			.build();
 	}
 	
@@ -169,10 +169,10 @@ public class User {
 				.email(kakaoUserSignUpDto.getEmail())
 				.name(kakaoUserSignUpDto.getName())
 				.birthDate(kakaoUserSignUpDto.getBirthDate())
-				.genderType(kakaoUserSignUpDto.getGenderType())
+				.genderType(GenderType.valueOf(kakaoUserSignUpDto.getGenderType()))
 				.phone(kakaoUserSignUpDto.getPhone())
 				.address(kakaoUserSignUpDto.getAddress())
-				.type(kakaoUserSignUpDto.getType())
+				.userType(UserType.valueOf(kakaoUserSignUpDto.getType()))
 				.build();
 		
 	}

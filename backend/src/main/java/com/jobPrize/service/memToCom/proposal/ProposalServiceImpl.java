@@ -20,6 +20,7 @@ import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.ApprovalStatus;
 import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.ProposalStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.memToCom.proposal.ProposalRepository;
@@ -133,7 +134,7 @@ public class ProposalServiceImpl implements ProposalService {
 	@Override
 	public void updateProposal(Long id, UserType userType, ProposalUpdateDto proposalUpdateDto) {
 		
-		String action = proposalUpdateDto.getProposalStatus().name();
+		String action = proposalUpdateDto.getProposalStatus();
 		
 		assertUtil.assertUserType(userType, UserType.일반회원, ENTITY_NAME, action);
 
@@ -147,7 +148,7 @@ public class ProposalServiceImpl implements ProposalService {
 
 		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
-		proposal.changeStatus(proposalUpdateDto.getProposalStatus());
+		proposal.changeStatus(ProposalStatus.valueOf(proposalUpdateDto.getProposalStatus()));
 		
 	}
 	

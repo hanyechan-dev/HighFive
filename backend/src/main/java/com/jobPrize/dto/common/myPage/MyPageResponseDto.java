@@ -19,7 +19,7 @@ public class MyPageResponseDto {
 	
 	private LocalDate birthDate;
 
-	private GenderType genderType;
+	private String genderType;
 
 	private String phone;
 
@@ -32,7 +32,7 @@ public class MyPageResponseDto {
 			.email(user.getEmail())
 			.name(user.getName())
 			.birthDate(user.getBirthDate())
-			.genderType(user.getGenderType())
+			.genderType(user.getGenderType().name())
 			.phone(user.getPhone())
 			.address(user.getAddress())
 			.build();

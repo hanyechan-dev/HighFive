@@ -17,7 +17,7 @@ public class AiConsultingResponseDto {
     
     public static AiConsultingResponseDto of(AiConsulting aiConsulting, List<AiConsultingContentResponseDto> aiConsultingContentResponseDtos) {
         return AiConsultingResponseDto.builder()
-            .consultingTypetype(aiConsulting.getType().name())
+            .consultingTypetype(aiConsulting.getConsultingType().name())
             .aiConsultingContentResponseDtos(aiConsultingContentResponseDtos)
             .build();
     }

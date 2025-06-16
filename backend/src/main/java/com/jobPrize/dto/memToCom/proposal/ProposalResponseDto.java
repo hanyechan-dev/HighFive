@@ -26,7 +26,7 @@ public class ProposalResponseDto {
 	
 	private LocalDate proposalDate;
 	
-	private ProposalStatus proposalStatus;
+	private String proposalStatus;
 	
 
 	public static ProposalResponseDto from(Proposal proposal) {
@@ -38,7 +38,7 @@ public class ProposalResponseDto {
 			.proposalJob(proposal.getProposalJob())
 			.proposalSalary(proposal.getProposalSalary())
 			.proposalDate(proposal.getProposalDate())
-			.proposalStatus(proposal.getProposalStatus())
+			.proposalStatus(proposal.getProposalStatus().name())
 			.build();
 	}
 	

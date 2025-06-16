@@ -19,7 +19,7 @@ public class ProposalSummaryForCompanyDto {
     
     private String name;
     
-    private GenderType genderType;
+    private String genderType;
     
     private LocalDate birthDate;
     
@@ -27,24 +27,24 @@ public class ProposalSummaryForCompanyDto {
     
     private String job;
     
-    private EducationLevel educationLevel;
+    private String educationLevel;
     
     private LocalDate proposalDate;
     
-    private ProposalStatus proposalStatus;
+    private String proposalStatus;
 
     public static ProposalSummaryForCompanyDto of(Proposal proposal, boolean hasCareer, EducationLevel educationLevel) {
     	User user = proposal.getMember().getUser();
 		return ProposalSummaryForCompanyDto.builder()
 			.id(proposal.getId())
 			.name(user.getName())
-			.genderType(user.getGenderType())
+			.genderType(user.getGenderType().name())
 			.birthDate(user.getBirthDate())
 			.hasCareer(hasCareer)
 			.job(proposal.getProposalJob())
-			.educationLevel(educationLevel)
+			.educationLevel(educationLevel.name())
 			.proposalDate(proposal.getProposalDate())
-			.proposalStatus(proposal.getProposalStatus())
+			.proposalStatus(proposal.getProposalStatus().name())
 			.build();
 	}
 }

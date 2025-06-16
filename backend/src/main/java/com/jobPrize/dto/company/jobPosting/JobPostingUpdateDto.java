@@ -1,10 +1,5 @@
 package com.jobPrize.dto.company.jobPosting;
 
-import java.util.List;
-
-import com.jobPrize.dto.company.jobPostingImage.JobPostingImageCreateDto;
-import com.jobPrize.enumerate.EducationLevel;
-
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -39,7 +34,7 @@ public class JobPostingUpdateDto {
 	private String careerType;
 
 	@NotNull(message = "요구 학력을 선택해주세요.")
-	private EducationLevel educationLevel;
+	private String educationLevel;
 
 	@Min(value = 0, message = "급여는 0 이상이어야 합니다.")
 	@Max(value = 1000000000, message = "급여는 10억 이하이어야 합니다.")

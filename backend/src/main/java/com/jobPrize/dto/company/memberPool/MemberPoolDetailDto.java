@@ -8,7 +8,6 @@ import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestResponseDto;
 import com.jobPrize.entity.common.User;
-import com.jobPrize.enumerate.GenderType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +20,7 @@ public class MemberPoolDetailDto {
 	
 	private String email;
 	
-	private GenderType gender;
+	private String gender;
 	
 	private LocalDate birthDate;
 	
@@ -51,7 +50,7 @@ public class MemberPoolDetailDto {
 		return MemberPoolDetailDto.builder()
 			.name(user.getName())
 			.email(user.getEmail())
-			.gender(user.getGenderType())
+			.gender(user.getGenderType().name())
 			.birthDate(user.getBirthDate())
 			.hasCareer(hasCareer)
 			.job(job)

@@ -21,6 +21,7 @@ import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
 import com.jobPrize.entity.memToCon.Request;
 import com.jobPrize.enumerate.ApprovalStatus;
+import com.jobPrize.enumerate.ConsultingType;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.consultant.aiConsulting.AiConsultingRepository;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
@@ -133,7 +134,7 @@ public class AiConsultingServiceImpl implements AiConsultingService {
 		
 		AiConsulting aiConsulting = AiConsulting.builder()
 				.request(request)
-				.type(aiConsultingCreateDto.getType())
+				.consultingType(ConsultingType.valueOf(aiConsultingCreateDto.getConsultingType()))
 				.build();
 		
 		aiConsultingRepository.save(aiConsulting);

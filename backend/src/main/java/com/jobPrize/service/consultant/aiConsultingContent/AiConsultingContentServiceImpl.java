@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobPrize.dto.member.aiConsulting.AiConsultingContentCreateDto;
 import com.jobPrize.entity.consultant.AiConsulting;
 import com.jobPrize.entity.consultant.AiConsultingContent;
+import com.jobPrize.enumerate.DocumentType;
 import com.jobPrize.repository.consultant.aiConsultingContent.AiConsultingContentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class AiConsultingContentServiceImpl implements AiConsultingContentServic
 		AiConsultingContent aiConsultingContent = AiConsultingContent.builder()
 				.aiConsulting(aiConsulting)
 				.item(aiConsultingContentCreateDto.getItem())
-				.documentType(aiConsultingContentCreateDto.getDocumentType())
+				.documentType(DocumentType.valueOf(aiConsultingContentCreateDto.getDocumentType()))
 				.content(aiConsultingContentCreateDto.getContent())
 				.build();
 		

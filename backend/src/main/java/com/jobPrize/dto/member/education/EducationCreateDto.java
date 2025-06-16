@@ -4,8 +4,6 @@ package com.jobPrize.dto.member.education;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.jobPrize.enumerate.EducationLevel;
-
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +20,7 @@ public class EducationCreateDto {
 	private String schoolName;
 	
 	@NotNull(message = "학위는 필수로 입력해야합니다")
-	private EducationLevel educationLevel;
+	private String educationLevel;
 	
 	@Size(max = 20,message = "전공명은 20자 이하로 입력해야합니다.")
 	private String major;

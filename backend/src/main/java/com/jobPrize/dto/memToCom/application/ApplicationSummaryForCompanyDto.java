@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.enumerate.EducationLevel;
-import com.jobPrize.enumerate.GenderType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class ApplicationSummaryForCompanyDto {
 
 	private String name;
 	
-	private GenderType gender;
+	private String genderType;
 	
 	private LocalDate birthDate;
 	
@@ -27,7 +26,7 @@ public class ApplicationSummaryForCompanyDto {
 	
 	private String job;
 	
-	private EducationLevel educationLevel;
+	private String educationLevel;
 	
 	private LocalDate createdDate;
 	
@@ -38,11 +37,11 @@ public class ApplicationSummaryForCompanyDto {
 			.id(application.getId())
 			.jobPostingTitle(application.getJobPosting().getTitle())
 			.name(application.getMember().getUser().getName())
-			.gender(application.getMember().getUser().getGenderType())
+			.genderType(application.getMember().getUser().getGenderType().name())
 			.birthDate(application.getMember().getUser().getBirthDate())
 			.hasCareer(hasCareer)
 			.job(application.getJobPosting().getJob())
-			.educationLevel(educationLevel)
+			.educationLevel(educationLevel.name())
 			.createdDate(application.getCreatedDate())
 			.isPassed(isPassed)
 			.build();

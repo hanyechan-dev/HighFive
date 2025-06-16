@@ -44,7 +44,7 @@ public class AiConsulting {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ConsultingType type;
+    private ConsultingType consultingType;
     
     @Column(name = "request_date", nullable = false) //컨설턴트 컨설팅 요청 일자 
     private LocalDate requestedDate;

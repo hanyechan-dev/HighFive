@@ -35,7 +35,7 @@ public class ApproveServiceImpl implements ApproveService {
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetUserId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
-		if (UserType.일반회원.equals(user.getType()) || UserType.관리자.equals(user.getType())) {
+		if (UserType.일반회원.equals(user.getUserType()) || UserType.관리자.equals(user.getUserType())) {
 			throw new IllegalArgumentException("승인 할 수 없는 회원입니다");
 			
 		}
@@ -56,7 +56,7 @@ public class ApproveServiceImpl implements ApproveService {
 		User user = userRepository.findByIdAndDeletedDateIsNull(targetUserId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
-		if (UserType.일반회원.equals(user.getType()) || UserType.관리자.equals(user.getType())) {
+		if (UserType.일반회원.equals(user.getUserType()) || UserType.관리자.equals(user.getUserType())) {
 			throw new IllegalArgumentException("거절 할 수 없는 회원입니다");
 		}
 		

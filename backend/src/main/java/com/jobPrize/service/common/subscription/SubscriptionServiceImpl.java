@@ -81,7 +81,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 			.map(subs -> SubscriptionResponseDto.builder()
 					.id(subs.getUser().getId())
 					.name(subs.getUser().getName())
-					.userType(subs.getUser().getType())
+					.userType(subs.getUser().getUserType().name())
 					.startDate(subs.getStartDate())
 					.endDate(subs.getEndDate())
 					.build()
@@ -127,7 +127,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return SubscriptionResponseDto.builder()
 				.id(subscription.getUser().getId())
 		        .name(subscription.getUser().getName())
-		        .userType(subscription.getUser().getType())
+		        .userType(subscription.getUser().getUserType().name())
 		        .startDate(subscription.getStartDate())
 	            .endDate(subscription.getEndDate())
 	            .build();

@@ -64,7 +64,7 @@ public class Education {
 
 	public void updateEducation(EducationUpdateDto educationUpdateDto) {
 		this.schoolName = educationUpdateDto.getSchoolName();
-		this.educationLevel = educationUpdateDto.getEducationLevel();
+		this.educationLevel = EducationLevel.valueOf(educationUpdateDto.getEducationLevel());
 		this.major = educationUpdateDto.getMajor();
 		this.gpa = educationUpdateDto.getGpa();
 		this.location = educationUpdateDto.getLocation();
@@ -76,7 +76,7 @@ public class Education {
 		return Education.builder()
 			.member(member)
 			.schoolName(educationCreateDto.getSchoolName())
-			.educationLevel(educationCreateDto.getEducationLevel())
+			.educationLevel(EducationLevel.valueOf(educationCreateDto.getEducationLevel()))
 			.major(educationCreateDto.getMajor())
 			.gpa(educationCreateDto.getGpa())
 			.location(educationCreateDto.getLocation())

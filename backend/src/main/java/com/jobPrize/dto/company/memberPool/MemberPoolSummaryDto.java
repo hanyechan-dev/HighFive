@@ -21,7 +21,7 @@ public class MemberPoolSummaryDto {
 	
 	private int similarityScore;
 	
-	private EducationLevel educationLevel;
+	private String educationLevel;
 
 	public static MemberPoolSummaryDto of(Similarity similarity, boolean hasCareer, String job, EducationLevel educationLevel) {
 		Member member = similarity.getMember();
@@ -31,7 +31,7 @@ public class MemberPoolSummaryDto {
 			.job(job)
 			.hasCareer(hasCareer)
 			.similarityScore(similarity.getScore())
-			.educationLevel(educationLevel)
+			.educationLevel(educationLevel.name())
 			.build();
 	}
 }

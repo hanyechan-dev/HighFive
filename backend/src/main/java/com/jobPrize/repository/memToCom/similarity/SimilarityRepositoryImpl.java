@@ -13,6 +13,7 @@ import com.jobPrize.entity.company.QJobPosting;
 import com.jobPrize.entity.memToCom.QSimilarity;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.member.QMember;
+import com.jobPrize.enumerate.EducationLevel;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -163,7 +164,7 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	        builder.and(jobPosting.careerType.like("%" + condition.getCareerType().toString() + "%"));
 	    }
 	    if (condition.getEducationLevel() != null) {
-	        builder.and(jobPosting.educationLevel.eq(condition.getEducationLevel()));
+	        builder.and(jobPosting.educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
 	    }
 	    if (condition.getJob() != null) {
 	        builder.and(jobPosting.job.like("%" + condition.getJob().toString() + "%"));
@@ -199,7 +200,7 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	    if (condition.isHasCareer()) {
 	    	builder.and(member.careers.any().isNotNull());	    }
 	    if (condition.getEducationLevel() != null) {
-	        builder.and(member.educations.any().educationLevel.eq(condition.getEducationLevel()));
+	        builder.and(member.educations.any().educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
 	    }
 	    if (condition.getAddress() != null && !condition.getAddress().isBlank()) {
 	        builder.and(member.user.address.like("%" + condition.getAddress() + "%"));

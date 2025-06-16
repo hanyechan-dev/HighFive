@@ -110,7 +110,7 @@ public class ChatServiceImpl implements ChatService {
         			? chatRoom.getUser2()
         			: chatRoom.getUser1();
         	
-        	String name = otherUser.getType().equals(UserType.기업회원)
+        	String name = otherUser.getUserType().equals(UserType.기업회원)
         			? otherUser.getCompany().getCompanyName()
         			: otherUser.getName();
         	

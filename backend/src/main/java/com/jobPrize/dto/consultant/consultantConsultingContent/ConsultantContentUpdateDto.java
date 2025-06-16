@@ -1,8 +1,6 @@
 package com.jobPrize.dto.consultant.consultantConsultingContent;
 
 
-import com.jobPrize.enumerate.DocumentType;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,5 +21,5 @@ public class ConsultantContentUpdateDto {
     private String content;
     
     @NotNull(message = "문서 구분은 필수입니다.")
-    private DocumentType documentType;
+    private String documentType;
 }

@@ -25,7 +25,7 @@ public class AiConsultingSummaryDto {
 			.targetJob(aiConsulting.getRequest().getTargetJob())
 			.targetCompanyName(aiConsulting.getRequest().getTargetCompanyName())
 			.requestedDate(aiConsulting.getRequestedDate())
-			.consultingType(aiConsulting.getType().name())
+			.consultingType(aiConsulting.getConsultingType().name())
 			.build();
 	}
 }

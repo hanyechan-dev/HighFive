@@ -18,7 +18,7 @@ public class ProposalSummaryForMemberDto {
 	
 	private String companyName;
 
-	private ProposalStatus proposalStatus;
+	private String proposalStatus;
 
 	private LocalDate proposalDate;
 	
@@ -27,7 +27,7 @@ public class ProposalSummaryForMemberDto {
 			.id(proposal.getId())
 			.proposalTitle(proposal.getProposalTitle())
 			.companyName(proposal.getCompany().getCompanyName())
-			.proposalStatus(proposal.getProposalStatus())
+			.proposalStatus(proposal.getProposalStatus().name())
 			.proposalDate(proposal.getProposalDate())
 			.build();
 	}

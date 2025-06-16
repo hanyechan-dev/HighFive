@@ -78,7 +78,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    	.builder()
 	        .aiConsulting(aiConsulting)
 	        .consultant(consultant)
-	        .consultingType(aiConsulting.getType())
+	        .consultingType(aiConsulting.getConsultingType())
 	        .build();
 
 	    consultantConsultingRepository.save(consultantConsulting);

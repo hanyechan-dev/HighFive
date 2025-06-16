@@ -2,8 +2,6 @@ package com.jobPrize.dto.common.user.signUp;
 
 import java.time.LocalDate;
 
-import com.jobPrize.enumerate.GenderType;
-import com.jobPrize.enumerate.UserType;
 import com.jobPrize.validation.phone.Phone;
 
 import jakarta.validation.constraints.Email;
@@ -31,7 +29,7 @@ public class UserSignUpDto {
 	private LocalDate birthDate;
 	
 	@NotNull(message = "성별은 필수입니다.")
-	private GenderType genderType;
+	private String genderType;
 
 	@NotBlank(message = "전화번호는 필수로 입력해야합니다")
 	@Phone
@@ -42,6 +40,6 @@ public class UserSignUpDto {
 	private String address;
 
 	@NotNull(message = "회원 유형은 필수입니다.")
-	private UserType type;
+	private String type;
 
 }
