@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import JobPostingForMemberPage from "./features/jobPostingForMember/pages/JobPostingForMemberPage";
 import { JobPostingForMemberPageProvider } from "./features/jobPostingForMember/contexts/JobPostingForMemberPageProvider";
+import MyPageForMemberTap from "./features/myPageForMember/components/MyPageForMemberTap";
+import { ExternalBox } from "./common/components/box/Box";
+import CommonPage from "./common/pages/CommonPage";
 
 
 
@@ -21,9 +24,18 @@ function App() {
 
     return (
         <>
-            <JobPostingForMemberPageProvider>
-                <JobPostingForMemberPage />
-            </JobPostingForMemberPageProvider>
+            <CommonPage>
+                <div className="flex">
+
+
+                    <MyPageForMemberTap />
+                    <ExternalBox>
+                        <div>
+
+                        </div>
+                    </ExternalBox>
+                </div>
+            </CommonPage>
 
         </>
     )

@@ -1,7 +1,7 @@
 import TextArea from "../../../common/components/input/TextArea"
 import { ExternalBox } from "../../../common/components/box/Box"
 import ModalTitle from "../../../common/components/title/ModalTitle";
-import type { CareerDescriptionResponseDto } from "../props/RequestProps";
+import type { CareerDescriptionResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 interface CareerDescriptionInfoProps{
     careerDescriptionResponseDto : CareerDescriptionResponseDto

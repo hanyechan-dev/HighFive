@@ -1,5 +1,7 @@
 
-import type { Resume, CareerDescriptionSummaryDto, CoverLetterSummaryDto, RequestSummaryDto, RequestDetailDto, CompletedRequestDetailDto } from "../props/RequestProps";
+
+import type { CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../../myPageForMember/props/myPageForMemberProps";
+import type { Resume, RequestSummaryDto, RequestDetailDto, CompletedRequestDetailDto } from "../props/RequestProps";
 import { useRequestPageContext } from "./useRequestPageContext";
 
 

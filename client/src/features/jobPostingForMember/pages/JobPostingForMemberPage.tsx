@@ -4,7 +4,7 @@ import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import { CreateApplicationApi, JobPostingDetailApi, JobPostingListForMemberApi, JobPostingMainCardForMemberApi, JobPostingUnderCardForMemberApi } from "../apis/JobPostingForMemberApi";
 import JobPostingMainCard from "../components/JobPostingMainCard";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
-import type { CareerResponseDto, CertificationResponseDto, EducationResponseDto, JobPostingForMemberResponseDto, JobPostingMainCardDto, JobPostingSummaryForMemberDto, JobPostingUnderCardDto, LanguageTestResponseDto } from "../props/JobPostingForMemberProps";
+
 import { usePagination } from "../../../common/coustomHooks/usePagination";
 import JobPostingUnderCard from "../components/JobPostingUnderCard";
 import Pagination from "../../../common/components/pagination/Pagination";
@@ -15,7 +15,10 @@ import Button from "../../../common/components/button/Button";
 import JobPostingFilterModal from "../modals/JobPostingFilterModal";
 import JobPostingDetailForMemberModal from "../modals/JobPostingDetailForMemberModal";
 import ApplicationModal from "../modals/ApplicationModal";
-import { readEducationsApi, readCareersApi, readCertificationsApi, readLanguageTestsApi, readCareerDescriptionsApi, readCoverLettersApi } from "../../member/MemberApi";
+import { readEducationsApi, readCareersApi, readCertificationsApi, readLanguageTestsApi, readCareerDescriptionsApi, readCoverLettersApi } from "../../myPageForMember/apis/MyPageForMemberApi";
+import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
+import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryForMemberDto, JobPostingForMemberResponseDto } from "../props/JobPostingForMemberProps";
+
 
 
 const elementsPerPage = 10;

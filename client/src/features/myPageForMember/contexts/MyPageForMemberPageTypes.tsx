@@ -1,18 +1,13 @@
-import type { CareerDescriptionSummaryDto, CareerDescriptionResponseDto, CoverLetterSummaryDto, CoverLetterResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
+import type { CareerDescriptionSummaryDto, CareerDescriptionResponseDto, CoverLetterSummaryDto, CoverLetterResponseDto, MyPageResponseDto } from "../props/myPageForMemberProps";
 import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryForMemberDto, JobPostingForMemberResponseDto, Resume } from "../props/JobPostingForMemberProps";
 
 
 
 export interface JobPostingForMemberPageState {
-    jobPostingMainCardDtos: JobPostingMainCardDto[];
-    jobPostingUnderCardDtos : JobPostingUnderCardDto[];
-    jobPostingForMemberSummaryDtos: JobPostingSummaryForMemberDto[];
-    showJobPostingFilterModal : boolean;
-    clickedJobPostingId : number;
-    showJobPostingForMemberDetailModal: boolean;
-    jobPostingForMemberResponseDto: JobPostingForMemberResponseDto;
-    showApplicationModal: boolean;
-    showModalNumber: number;
+    showMyPageTabNumber: number;
+    myPageResponseDto: MyPageResponseDto;
+    showMemberInfoUpdateModal : boolean;
+    showMemberInfoUpdateModalNumber : number;
     resume: Resume
     clickedCareerDescriptionId: number;
     careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[];

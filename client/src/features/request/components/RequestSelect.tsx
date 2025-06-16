@@ -1,4 +1,5 @@
-import type { CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../props/RequestProps";
+import type { CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../../myPageForMember/props/myPageForMemberProps";
+
 
 
 

@@ -1,4 +1,6 @@
-import type { RequestSummaryDto, RequestDetailDto, CompletedRequestDetailDto, Resume, CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../props/RequestProps";
+import type { CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../../myPageForMember/props/myPageForMemberProps";
+import type { CompletedRequestDetailDto, RequestDetailDto, RequestSummaryDto, Resume } from "../props/RequestProps";
+
 
 export interface RequestPageState {
     requestSummaryDtos: RequestSummaryDto[];

@@ -1,6 +1,6 @@
 import { InternalBox } from "../../../common/components/box/Box";
 import Input from "../../../common/components/input/Input";
-import type { CertificationResponseDto } from "../props/RequestProps";
+import type { CertificationResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 
 

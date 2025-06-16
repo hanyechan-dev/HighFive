@@ -1,6 +1,6 @@
 import TextArea from "../../../common/components/input/TextArea";
 import ModalTitle from "../../../common/components/title/ModalTitle";
-import type { CoverLetterResponseDto } from "../props/JobPostingForMemberProps";
+import type { CoverLetterResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 
 interface CoverLetterOutputProps {

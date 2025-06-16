@@ -1,6 +1,6 @@
 import TextArea from "../../../common/components/input/TextArea";
 import ModalTitle from "../../../common/components/title/ModalTitle";
-import type { CareerDescriptionResponseDto } from "../props/JobPostingForMemberProps";
+import type { CareerDescriptionResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 
 interface CareerDescriptionOutputProps {

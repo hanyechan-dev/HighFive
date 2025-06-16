@@ -1,6 +1,6 @@
 import { InternalBox } from "../../../common/components/box/Box";
 import Input from "../../../common/components/input/Input";
-import type { LanguageTestResponseDto } from "../props/RequestProps";
+import type { LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 
 

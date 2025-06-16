@@ -25,7 +25,6 @@ public class MyPageResponseDto {
 
 	private String address;
 
-	private UserType type;
 
 	public static MyPageResponseDto from(User user) {
 
@@ -36,7 +35,6 @@ public class MyPageResponseDto {
 			.genderType(user.getGenderType())
 			.phone(user.getPhone())
 			.address(user.getAddress())
-			.type(user.getType())
 			.build();
 	}
 	

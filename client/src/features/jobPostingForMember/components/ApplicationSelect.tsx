@@ -1,4 +1,4 @@
-import type { CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../props/JobPostingForMemberProps";
+import type { CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 interface ApplicationSelectProps {
     careerOrCoverLetterSummaryDto: CareerDescriptionSummaryDto | CoverLetterSummaryDto

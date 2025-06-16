@@ -1,6 +1,6 @@
 import { InternalBox } from "../../../common/components/box/Box";
 import Input from "../../../common/components/input/Input";
-import type { CareerResponseDto } from "../props/RequestProps";
+import type { CareerResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 
 

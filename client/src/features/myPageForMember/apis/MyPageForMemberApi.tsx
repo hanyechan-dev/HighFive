@@ -1,0 +1,129 @@
+import { api } from "../../../common/Axios";
+import type { CareerCreateDto, CareerDescriptionCreateDto, CareerDescriptionUpdateDto, CareerUpdateDto, CertificationCreateDto, CertificationUpdateDto, CoverLetterCreateDto, CoverLetterUpdateDto, EducationCreateDto, EducationUpdateDto, LanguageTestCreateDto, LanguageTestUpdateDto } from "../props/myPageForMemberProps";
+
+export const readMyPageApi = () => {
+    return api(true).get('/members/my-page');
+}
+
+export const readEducationsApi = () => {
+    return api(true).get('/educations');
+}
+
+export const createEducationApi = (educationCreateDto: EducationCreateDto) => {
+    return api(true).post('/educations', educationCreateDto);
+}
+
+export const updateEducationApi = (educationUpdateDto: EducationUpdateDto) => {
+    return api(true).put('/educations', educationUpdateDto);
+}
+
+export const deleteEducationApi = (id: number) => {
+    return api(true).post('/educations/delete', {
+        id
+    });
+}
+
+export const readCareersApi = () => {
+    return api(true).get('/careers');
+}
+
+
+export const createCareerApi = (careerCreateDto: CareerCreateDto) => {
+    return api(true).post('/careers', careerCreateDto);
+}
+
+export const updateCareerApi = (careerUpdateDto: CareerUpdateDto) => {
+    return api(true).put('/careers', careerUpdateDto);
+}
+
+export const deleteCareerApi = (id: number) => {
+    return api(true).post('/careers/delete', {
+        id
+    });
+}
+
+export const readCertificationsApi = () => {
+    return api(true).get('/certifications');
+}
+
+export const createCertificationApi = (certificationCreateDto: CertificationCreateDto) => {
+    return api(true).post('/certifications', certificationCreateDto);
+}
+
+export const updateCertificationApi = (certificationUpdateDto: CertificationUpdateDto) => {
+    return api(true).put('/certifications', certificationUpdateDto);
+}
+
+export const deleteCertificationApi = (id: number) => {
+    return api(true).post('/certifications/delete', {
+        id
+    });
+}
+
+
+export const readLanguageTestsApi = () => {
+    return api(true).get('/language-tests');
+}
+
+export const createLanguageTestApi = (languageTestCreateDto: LanguageTestCreateDto) => {
+    return api(true).post('/language-tests', languageTestCreateDto);
+}
+
+export const updateLanguageTestApi = (languageTestUpdateDto: LanguageTestUpdateDto) => {
+    return api(true).put('/language-tests', languageTestUpdateDto);
+}
+
+export const deleteLanguageTestApi = (id: number) => {
+    return api(true).post('/language-tests/delete', {
+        id
+    });
+}
+
+export const readCareerDescriptionsApi = () => {
+    return api(true).get('/career-descriptions');
+}
+
+
+export const readCareerDescriptionApi = (id: number) => {
+    return api(true).post('/career-descriptions/detail', {
+        id
+    });
+}
+
+export const createCareerDescriptionApi = (careerDescriptionCreateDto: CareerDescriptionCreateDto) => {
+    return api(true).post('/career-descriptions', careerDescriptionCreateDto);
+}
+
+export const updateCareerDescriptionApi = (careerDescriptionUpdateDto: CareerDescriptionUpdateDto) => {
+    return api(true).put('/career-descriptions', careerDescriptionUpdateDto);
+}
+
+export const deleteCareerDescriptionApi = (id: number) => {
+    return api(true).post('/career-descriptions/delete', {
+        id
+    });
+}
+
+export const readCoverLettersApi = () => {
+    return api(true).get('/cover-letters');
+}
+
+export const readCoverLetterApi = (id: number) => {
+    return api(true).post('/cover-letters/detail', {
+        id
+    });
+}
+
+export const createCoverLetterApi = (coverLetterCreateDto: CoverLetterCreateDto) => {
+    return api(true).post('/cover-letters', coverLetterCreateDto);
+}
+
+export const updateCoverLetterApi = (coverLetterUpdateDto: CoverLetterUpdateDto) => {
+    return api(true).put('/cover-letters', coverLetterUpdateDto);
+}
+
+export const deleteCoverLetterApi = (id: number) => {
+    return api(true).post('/cover-letters/delete', {
+        id
+    });
+}

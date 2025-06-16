@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.myPage.MyPageResponseDto;
 import com.jobPrize.dto.member.member.MemberCreateDto;
+import com.jobPrize.dto.member.member.MemberMyPageResponseDto;
 import com.jobPrize.dto.member.member.MemberResponseDto;
 import com.jobPrize.dto.member.member.MemberUpdateDto;
 import com.jobPrize.enumerate.UserType;
@@ -36,7 +37,7 @@ public class MemberController {
 	
 	
 	@GetMapping
-	public ResponseEntity<Map<String,Object>> readMyPage(){
+	public ResponseEntity<MemberMyPageResponseDto> readMyPage(){
 		
 		Long id = SecurityUtil.getId();
 		
@@ -44,12 +45,9 @@ public class MemberController {
 		
 		MemberResponseDto memberResponseDto = memberService.readMemberInfo(id);
 		
-		Map<String,Object> map = new HashMap<>();
+		MemberMyPageResponseDto memberMyPageResponseDto = MemberMyPageResponseDto.of(memberResponseDto, myPageResponseDto);
 		
-		map.put("myPageResponseDto",myPageResponseDto);
-		map.put("memberResponseDto",memberResponseDto);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(map);
+		return ResponseEntity.status(HttpStatus.OK).body(memberMyPageResponseDto);
 	}
 	
 	

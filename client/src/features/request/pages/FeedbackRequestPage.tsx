@@ -5,7 +5,7 @@ import Pagination from "../../../common/components/pagination/Pagination";
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import { usePagination } from "../../../common/coustomHooks/usePagination";
 import CommonPage from "../../../common/pages/CommonPage";
-import { readRequestsApi, readRequestApi, readCompletedRequestApi, createConsultantRequestApi, createRequestApi, readCareerDescriptionsApi, readCareersApi, readCertificationsApi, readCoverLettersApi, readEducationsApi, readLanguageTestsApi } from "../apis/RequestApi";
+
 import RequestListItem from "../components/RequestListItem";
 import RequestListTop from "../components/RequestListTop";
 import CompletedRequestDetailModal from "../modals/CompletedRequestDetailModal";
@@ -14,8 +14,12 @@ import RequestModal from "../modals/RequestModal";
 
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 
-import type { RequestDetailDto, CompletedRequestDetailDto, EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto, RequestSummaryDto } from "../props/RequestProps";
+import type { RequestDetailDto, CompletedRequestDetailDto, RequestSummaryDto } from "../props/RequestProps";
 import { useRequestController } from "../customHooks/useRequestController";
+
+import { readRequestsApi, readRequestApi, readCompletedRequestApi, createConsultantRequestApi, createRequestApi } from "../apis/RequestApi";
+import { readEducationsApi, readCareersApi, readCertificationsApi, readLanguageTestsApi, readCareerDescriptionsApi, readCoverLettersApi } from "../../myPageForMember/apis/MyPageForMemberApi";
+import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
 const consultingType = '피드백'
 const elementsPerPage = 10;
