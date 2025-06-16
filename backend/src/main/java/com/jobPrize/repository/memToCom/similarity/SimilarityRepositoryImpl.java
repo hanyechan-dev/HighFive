@@ -47,6 +47,48 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	}
 	
 	@Override
+	public List<Similarity> findFirst4WithJobPostingByMemberId(Long id) {
+		QSimilarity similarity = QSimilarity.similarity;
+		QJobPosting jobPosting = QJobPosting.jobPosting;
+		
+		List<Similarity> results = queryFactory
+			    .selectFrom(similarity)
+			    .join(similarity.jobPosting, jobPosting).fetchJoin()
+			    .join(jobPosting.company).fetchJoin()
+			    .join(similarity.member).fetchJoin()
+			    .where(similarity.member.id.eq(id))
+			    .orderBy(similarity.score.desc())
+			    .limit(4)
+			    .fetch();
+		
+		
+		// TODO Auto-generated method stub
+		return results;
+	}
+
+	@Override
+	public List<Similarity> findSecond8WithJobPostingByMemberIdAndCondition(Long id) {
+		QSimilarity similarity = QSimilarity.similarity;
+		QJobPosting jobPosting = QJobPosting.jobPosting;
+		
+		List<Similarity> results = queryFactory
+			    .selectFrom(similarity)
+			    .join(similarity.jobPosting, jobPosting).fetchJoin()
+			    .join(jobPosting.company).fetchJoin()
+			    .join(similarity.member).fetchJoin()
+			    .where(similarity.member.id.eq(id))
+			    .orderBy(similarity.score.desc())
+			    .offset(4)
+			    .limit(8)
+			    .fetch();
+		
+		return results;
+	}
+	
+	
+	
+	
+	@Override
 	public Page<Similarity> findAllWithMemberByCompanyIdAndCondition(Long id, MemberFilterCondition condition, Pageable pageable) {
 		
 		
@@ -186,5 +228,7 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 		
 		return Optional.ofNullable(jobPostingId).orElse(0L);
 	}
+
+
 
 }

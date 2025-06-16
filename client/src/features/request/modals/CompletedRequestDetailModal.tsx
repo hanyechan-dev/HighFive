@@ -9,24 +9,28 @@ import ModalTitle from "../../../common/components/title/ModalTitle";
 import { documentTypeEnum, resumeTypeEnum } from "../../../common/enum/Enum";
 import CommonModal from "../../../common/modals/CommonModal";
 import ConsultantConsulting from "../components/ConsultantConsulting";
-import type { CompletedRequestDetailDto} from "../props/RequestProps";
 import BasicInfo from "../components/BasicInfo";
 import CareerInfo from "../components/CareerInfo";
 import CertificationInfo from "../components/CertificationInfo";
 import EducationInfo from "../components/EducationInfo";
 import LanguageTest from "../components/LanguageTest";
 import { parseStringToJson } from "../../../common/utils/JsonParseUtil";
+import { useRequestController } from "../customHooks/useRequestController";
 
 
 
+const CompletedRequestDetailModal = () => {
 
-interface CompletedRequestDetailModalProps {
-    completedRequestDetailDto: CompletedRequestDetailDto;
-    onClose: () => void
-}
+    const {
+        completedRequestDetailDto,
+        setShowRequestDetailModal
+    } = useRequestController();
 
-const CompletedRequestDetailModal = ({
-    completedRequestDetailDto: {
+    const onClose = () => {
+        setShowRequestDetailModal(false);
+    }
+
+    const {
         requestResponseDto: {
             targetCompanyName,
             targetJob,
@@ -41,9 +45,8 @@ const CompletedRequestDetailModal = ({
         consultantConsultingForMemberResponseDto: {
             consultantConsultingContentResponseDtos
         }
-    },
-    onClose
-}: CompletedRequestDetailModalProps) => {
+    } = completedRequestDetailDto
+
 
 
     const [checkedDocument, setCheckedDocument] = useState(documentTypeEnum[0].value);

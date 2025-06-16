@@ -1,57 +1,30 @@
 import { useState, useEffect } from "react";
 import type { consultingTypeEnum } from "../../../common/enum/Enum";
 import CommonModal from "../../../common/modals/CommonModal";
-import type { Resume, CareerDescriptionSummaryDto, CoverLetterSummaryDto } from "../props/RequestProps";
 import BasicInfoInputModal from "./BasicInfoInputModal";
-import CareerDescriptionSelectModal from "./CareerDescriptionSelectModal";
-import CoverLetterSelectModal from "./CoverLetterSelectModal";
-import ResumeOutputModal from "./ResumeOutputModal";
-
-
-export interface RequestModalInfoProps {
-    targetJob: string;
-    targetCompanyName: string;
-    resume: Resume;
-    careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[];
-    coverLetterSummaryDtos: CoverLetterSummaryDto[];
-    clickedCareerDescriptionId: number;
-    clickedCoverLetterId: number;
-    showModalNumber: number;
-    setTargetJob: (targetJob: string) => void;
-    setTargetCompanyName: (targetCompanyName: string) => void;
-    setClickedCareerDescriptionId: (clickedCareerDescriptionId: number) => void;
-    setClickedCoverLetterId: (clickedCoverLetterId: number) => void;
-    setShowModalNumber: (showModalNumber: number) => void;
-}
-
+import ResumeOutputForRequestModal from "./ResumeOutputForRequestModal";
+import { useRequestController } from "../customHooks/useRequestController";
+import CareerDescriptionSelectForRequestModal from "./CareerDescriptionSelectForRequestModal";
+import CoverLetterSelectForRequestModal from "./CoverLetterSelectForRequestModal";
 
 interface RequestModalProps {
-    requestModalInfo: RequestModalInfoProps;
-    onClose: () => void
     consultingType: consultingTypeEnum
 }
 
-
 const RequestModal = ({
-    requestModalInfo: {
-        targetJob,
-        targetCompanyName,
-        resume,
-        careerDescriptionSummaryDtos,
-        coverLetterSummaryDtos,
-        clickedCareerDescriptionId,
-        clickedCoverLetterId,
-        showModalNumber,
-        setTargetJob,
-        setTargetCompanyName,
-        setClickedCareerDescriptionId,
-        setClickedCoverLetterId,
-        setShowModalNumber
-    },
-    onClose,
     consultingType
 }: RequestModalProps) => {
 
+    const {
+        showModalNumber,
+        setShowRequestModal,
+        setShowModalNumber
+    } = useRequestController();
+
+    const onClose = () =>{
+        setShowModalNumber(-1)
+        setShowRequestModal(false);
+    }
 
     //모달 내 상태 선언부
     const [modalSize, setModalSize] = useState<"s" | "m" | "l">('m');
@@ -69,45 +42,7 @@ const RequestModal = ({
         }
     }, [showModalNumber]);
 
-    if (showModalNumber < 0 && showModalNumber >= 4) return null;
-
-    
-    //모달 내 하위 모달 정보 조합부
-    const basicInfoInputProps = {
-        targetJob,
-        setTargetJob,
-        targetCompanyName,
-        setTargetCompanyName,
-        setShowModalNumber
-    }
-
-    const resumeOutputModalProps = {
-        targetJob,
-        targetCompanyName,
-        setShowModalNumber,
-        resume
-    }
-
-    const careerDescriptionSelectProps = {
-        targetJob,
-        targetCompanyName,
-        setShowModalNumber,
-        careerDescriptionSummaryDtos,
-        clickedCareerDescriptionId,
-        setClickedCareerDescriptionId
-    }
-
-    const coverLetterSelectProps = {
-        targetJob,
-        targetCompanyName,
-        setShowModalNumber,
-        coverLetterSummaryDtos,
-        clickedCoverLetterId,
-        setClickedCoverLetterId,
-        consultingType
-    }
-
-
+    if (showModalNumber < 0 || showModalNumber >= 4) return null;
 
     return (
         <>
@@ -115,13 +50,13 @@ const RequestModal = ({
 
             <CommonModal size={modalSize} onClose={onClose} >
                 {showModalNumber === 0 &&
-                    (<BasicInfoInputModal basicInfoInputProps={basicInfoInputProps} />)}
+                    (<BasicInfoInputModal />)}
                 {showModalNumber === 1 &&
-                    (<ResumeOutputModal resumeOutputModalProps={resumeOutputModalProps} />)}
+                    (<ResumeOutputForRequestModal  />)}
                 {showModalNumber === 2 &&
-                    (<CareerDescriptionSelectModal careerDescriptionSelectProps={careerDescriptionSelectProps} />)}
+                    (<CareerDescriptionSelectForRequestModal />)}
                 {showModalNumber === 3 &&
-                    (<CoverLetterSelectModal coverLetterSelectProps={coverLetterSelectProps}/>)}
+                    (<CoverLetterSelectForRequestModal consultingType={consultingType}/>)}
             </CommonModal >
         </>
     )

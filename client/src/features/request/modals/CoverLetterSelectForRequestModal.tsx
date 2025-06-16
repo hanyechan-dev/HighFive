@@ -5,37 +5,29 @@ import ModalTitle from "../../../common/components/title/ModalTitle";
 import type { consultingTypeEnum } from "../../../common/enum/Enum";
 import BasicInfo from "../components/BasicInfo";
 import RequestSelect from "../components/RequestSelect";
-import type { CoverLetterSummaryDto } from "../props/RequestProps";
+import { useRequestController } from "../customHooks/useRequestController";
 
 
 
 
-interface CoverLetterSelectModalProps {
-    coverLetterSelectProps: {
-        targetJob: string;
-        targetCompanyName: string;
-        setShowModalNumber: (showModalNumber: number) => void
-        coverLetterSummaryDtos: CoverLetterSummaryDto[]
-        clickedCoverLetterId: number;
-        setClickedCoverLetterId: (id: number) => void
-        consultingType: consultingTypeEnum
-    }
+interface CoverLetterSelectForRequestModalProps {
+    consultingType: consultingTypeEnum
 }
 
 
 
-const CoverLetterSelectModal = ({
-  coverLetterSelectProps: {
-    targetJob,
-    targetCompanyName,
-    setShowModalNumber,
-    coverLetterSummaryDtos,
-    clickedCoverLetterId,
-    setClickedCoverLetterId,
-    consultingType
-  }
-}: CoverLetterSelectModalProps) => {
-   
+const CoverLetterSelectForRequestModal = ({ consultingType
+}: CoverLetterSelectForRequestModalProps) => {
+
+    const {
+        targetJob,
+        targetCompanyName,
+        setShowModalNumber,
+        coverLetterSummaryDtos,
+        clickedCoverLetterId,
+        setClickedCoverLetterId,
+    } = useRequestController();
+
 
 
     const [showAlert, setShowAlert] = useState(false);
@@ -80,4 +72,4 @@ const CoverLetterSelectModal = ({
 
 };
 
-export default CoverLetterSelectModal;
+export default CoverLetterSelectForRequestModal;

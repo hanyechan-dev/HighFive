@@ -6,17 +6,16 @@ import CompanyTypeIcon from "../../../common/icons/CompanyTypeIcon";
 import GraduationCapIcon from "../../../common/icons/GraduationCapIcon";
 import JobIcon from "../../../common/icons/JobIcon";
 import MapPinIcon from "../../../common/icons/MapPinIcon";
-import type { JobPostingSummaryForMemberDto } from "../props/JobPostingForMemberProps";
-import SimilarityCircle from "./SimilarityCircle";
+import type { JobPostingUnderCardDto } from "../props/JobPostingForMemberProps";
 
 
 
 interface JobPostingUnderCardProps {
-    jobPostingSummaryForMemberDto: JobPostingSummaryForMemberDto;
+    jobPostingUnderCardDto : JobPostingUnderCardDto;
     onClick: (id: number) => void;
 }
 const JobPostingUnderCard = ({
-    jobPostingSummaryForMemberDto,
+    jobPostingUnderCardDto,
     onClick
 }: JobPostingUnderCardProps) => {
     const {
@@ -30,7 +29,7 @@ const JobPostingUnderCard = ({
         educationLevel,
         similarityScore,
         createdDate
-    } = jobPostingSummaryForMemberDto
+    } = jobPostingUnderCardDto
 
 
     return (
@@ -38,7 +37,11 @@ const JobPostingUnderCard = ({
         <div className="w-[345px]  cursor-pointer transition-all hover:shadow-[0_6px_20px_rgba(238,87,205,0.3)] hover:scale-[1.03] ml-[24px] mb-[24px]" onClick={() => onClick(id)}>
             <div className="text-base font-roboto border border-b-0 border-gray-300 rounded-t-lg w-[345px] h-[87px] flex flex-col space-y-1.5 p-6 py-4 bg-gradient-to-r from-[#EE57CD]/40 to-transparent">
                 <div>
-                    <span className="font-semibold truncate w-60 block">{title}</span>
+                    <div className="flex justify-start gap-7">
+                        <span className="font-semibold truncate w-60 block">{title}</span>
+                        <div className=" text-theme">{similarityScore}%</div>
+                    </div>
+                    
                 </div>
                 <div className="flex items-center">
                     <BuildingIcon className="mr-3" />
@@ -75,7 +78,6 @@ const JobPostingUnderCard = ({
                     <div className="flex items-center space-x-2">
                         <Badge icon={<CareerTypeIcon />} text={careerType} />
                         <Badge icon={<GraduationCapIcon />} text={educationLevel} />
-                        <SimilarityCircle similarityScore={similarityScore} size={60}/>
                     </div>
 
 

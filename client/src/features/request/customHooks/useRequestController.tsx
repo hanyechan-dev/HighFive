@@ -1,11 +1,13 @@
-import { useRequestPageContext } from "../contexts/useRequestPageContext";
+
 import type { Resume, CareerDescriptionSummaryDto, CoverLetterSummaryDto, RequestSummaryDto, RequestDetailDto, CompletedRequestDetailDto } from "../props/RequestProps";
+import { useRequestPageContext } from "./useRequestPageContext";
 
 
 
 export const useRequestController = () => {
     const { state, dispatch } = useRequestPageContext();
     const targetJob = state.targetJob;
+    
     const setTargetJob = (targetJob: string) => {
         dispatch({
             type: "SET_TARGET_JOB",

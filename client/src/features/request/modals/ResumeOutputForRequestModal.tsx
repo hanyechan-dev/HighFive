@@ -5,35 +5,28 @@ import RadioButton from "../../../common/components/button/RadioButton";
 
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import { resumeTypeEnum } from "../../../common/enum/Enum";
-import type { Resume } from "../props/RequestProps";
 import BasicInfo from "../components/BasicInfo";
 import CareerInfo from "../components/CareerInfo";
 import EducationInfo from "../components/EducationInfo";
 import CertificationInfo from "../components/CertificationInfo";
 import LanguageTest from "../components/LanguageTest";
+import { useRequestController } from "../customHooks/useRequestController";
+
+
+
+const ResumeOutputForRequestModal = () => {
+
+    const {
+        targetJob,
+        targetCompanyName,
+        setShowModalNumber,
+        resume
+
+    } = useRequestController();
 
 
 
 
-
-interface ResumeOutputModalProps {
-    resumeOutputModalProps: {
-        targetJob: string;
-        targetCompanyName: string;
-        setShowModalNumber: (showModalNumber: number) => void
-        resume: Resume
-    }
-}
-
-
-
-const ResumeOutputModal = ({resumeOutputModalProps:{
-    targetJob,
-    targetCompanyName,
-    setShowModalNumber,
-    resume
-
-}}: ResumeOutputModalProps) => {
     const [clickedResume, setClickedResume] = useState(resumeTypeEnum[0].value);
 
 
@@ -95,4 +88,4 @@ const ResumeOutputModal = ({resumeOutputModalProps:{
 
 }
 
-export default ResumeOutputModal
+export default ResumeOutputForRequestModal

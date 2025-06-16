@@ -4,31 +4,20 @@ import ModalTitle from "../../../common/components/title/ModalTitle";
 import BasicInfo from "../components/BasicInfo";
 
 import RequestSelect from "../components/RequestSelect";
-import type { CareerDescriptionSummaryDto } from "../props/RequestProps";
+import { useRequestController } from "../customHooks/useRequestController";
 
 
 
-interface CareerDescriptionSelectModalProps {
-    careerDescriptionSelectProps: {
-        targetJob: string;
-        targetCompanyName: string;
-        setShowModalNumber: (showModalNumber: number) => void
-        careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[]
-        clickedCareerDescriptionId: number;
-        setClickedCareerDescriptionId: (id: number) => void
-    }
-}
+const CareerDescriptionSelectForRequestModal = () => {
 
-const CareerDescriptionSelectModal = ({
-    careerDescriptionSelectProps: {
+    const {
         targetJob,
         targetCompanyName,
         setShowModalNumber,
         careerDescriptionSummaryDtos,
         clickedCareerDescriptionId,
         setClickedCareerDescriptionId,
-    }
-}: CareerDescriptionSelectModalProps) => {
+    } = useRequestController();
 
 
     const onClickNext = () => {
@@ -66,4 +55,4 @@ const CareerDescriptionSelectModal = ({
 
 };
 
-export default CareerDescriptionSelectModal;
+export default CareerDescriptionSelectForRequestModal;

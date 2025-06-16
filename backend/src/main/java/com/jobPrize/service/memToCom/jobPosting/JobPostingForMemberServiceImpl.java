@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.memToCom.jobPosting.JobPostingFilterCondition;
 import com.jobPrize.dto.memToCom.jobPosting.JobPostingForMemberResponseDto;
+import com.jobPrize.dto.memToCom.jobPosting.JobPostingMainCardDto;
 import com.jobPrize.dto.memToCom.jobPosting.JobPostingSummaryForMemberDto;
+import com.jobPrize.dto.memToCom.jobPosting.JobPostingUnderCardDto;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.JobPostingImage;
 import com.jobPrize.entity.memToCom.Similarity;
@@ -29,6 +31,30 @@ public class JobPostingForMemberServiceImpl implements JobPostingForMemberServic
 	private final SimilarityRepository similarityRepository;
 	
 	private final JobPostingRepository jobPostingRepository;
+	
+	@Override
+	public List<JobPostingMainCardDto> readJobPostingMainCardListByMemberId(Long id) {
+		List<Similarity> similarities = similarityRepository.findFirst4WithJobPostingByMemberId(id);
+		List<JobPostingMainCardDto> jobPostingMainCardDtos = new ArrayList<>();
+		for(Similarity similarity : similarities) {
+			String imageUrl = "/images/" + similarity.getJobPosting().getCompany().getLogoImageName();
+			JobPostingMainCardDto jobPostingMainCardDto = JobPostingMainCardDto.of(similarity, imageUrl);
+			jobPostingMainCardDtos.add(jobPostingMainCardDto);
+		}
+		return jobPostingMainCardDtos;
+	}
+
+	@Override
+	public List<JobPostingUnderCardDto> readJobPostingUnderCardListByMemberId(Long id) {
+		List<Similarity> similarities = similarityRepository.findSecond8WithJobPostingByMemberIdAndCondition(id);
+		List<JobPostingUnderCardDto> jobPostingUnderCardDtos = new ArrayList<>();
+		for(Similarity similarity : similarities) {
+			JobPostingUnderCardDto jobPostingUnderCardDto = JobPostingUnderCardDto.from(similarity);
+			jobPostingUnderCardDtos.add(jobPostingUnderCardDto);
+		}
+		return jobPostingUnderCardDtos;
+	}
+
 
 	@Override
 	public Page<JobPostingSummaryForMemberDto> readJobPostingPageByMemberIdAndCondition(Long id,JobPostingFilterCondition condition, Pageable pageable) {
@@ -40,7 +66,8 @@ public class JobPostingForMemberServiceImpl implements JobPostingForMemberServic
 		}
 		return new PageImpl<JobPostingSummaryForMemberDto>(jobPostingSummaryForMemberDtos,pageable,similarities.getTotalElements());
 	}
-
+	
+	
 	@Override
 	public JobPostingForMemberResponseDto readJobPosting(Long jobPostingid) {
 		JobPosting jobPosting = jobPostingRepository.findWithJobPostingImageByJobPostingId(jobPostingid)
@@ -57,5 +84,6 @@ public class JobPostingForMemberServiceImpl implements JobPostingForMemberServic
 		JobPostingForMemberResponseDto jobPostingForMemberResponseDto = JobPostingForMemberResponseDto.of(jobPosting, jobPostingImageUrls);
 		return jobPostingForMemberResponseDto;
 	}
+
 
 }

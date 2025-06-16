@@ -3,27 +3,18 @@ import { useState } from "react";
 import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import ModalTitle from "../../../common/components/title/ModalTitle";
+import { useRequestController } from "../customHooks/useRequestController";
 
-interface BasicInfoInputModalProps {
-    basicInfoInputProps: {
-        targetJob: string;
-        setTargetJob: (targetJob: string) => void;
-        targetCompanyName: string;
-        setTargetCompanyName: (targetCompanyName: string) => void;
-        setShowModalNumber: (showModalNumber: number) => void
-    }
-}
 
-const BasicInfoInputModal = ({
-    basicInfoInputProps: {
+const BasicInfoInputModal = () => {
+
+    const {
         targetJob,
         setTargetJob,
         targetCompanyName,
         setTargetCompanyName,
         setShowModalNumber
-    }
-}
-    : BasicInfoInputModalProps) => {
+    } = useRequestController();
 
     const [showAlert, setShowAlert] = useState(false);
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.id.IdDto;
+import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForMemberDto;
 import com.jobPrize.enumerate.UserType;
@@ -47,6 +48,18 @@ public class MemberApplicationController {
 		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(id, userType,idDto.getId());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseDto);
+	}
+	
+	@PostMapping
+	public ResponseEntity<Void> createApplication(@RequestBody @Valid ApplicationCreateDto applicationCreateDto) {
+
+		Long id = SecurityUtil.getId();
+
+		UserType userType = SecurityUtil.getUserType();
+
+		applicationService.createApplication(id, userType, applicationCreateDto);
+
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 }
