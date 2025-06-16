@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { IMessage } from '@stomp/stompjs';
 import { type RootState } from '../common/store/store';
 import { useSelector } from 'react-redux';
@@ -6,12 +6,13 @@ import { MessageCircle, X, Send, User } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
-import Input from '../common/components/input/Input';
 import AuthUtil from '../common/utils/AuthUtil';
 import { Button } from '@radix-ui/themes/dist/cjs/components/button';
+import ChatInput from '../common/components/input/ChatInput';
 
 interface ChatRoomList {
     chatRoomId: number;
+    contentId?: number;
     senderId?: number;
     name: string;
     content?: string;
@@ -20,27 +21,22 @@ interface ChatRoomList {
 
 interface ChatMessage {
     chatRoomId: number;
+    contentId: number;
     senderId: number;
     name: string;
     content: string;
     createdAt: string;
 }
 
-interface MockUser {
-    id: number;
-    name: string;
-    userType: string;
-    avatar: string;
-}
-
-interface Message {
-    id: number;
-    text: string;
-    sender: "me" | "other";
-    timestamp: Date;
-}
+// interface MockUser {
+//     id: number;
+//     name: string;
+//     userType: string;
+//     avatar: string;
+// }
 
 // 임시 유저 리스트
+/*
 const mockUsers: MockUser[] = [
     {
         id: 1,
@@ -67,36 +63,31 @@ const mockUsers: MockUser[] = [
         avatar: "/placeholder.svg?height=40&width=40",
     },
 ]
+    */
 
 // SockJS와 Stomp를 이용해서 웹 소켓 서버로 연결하고 메시지를 주고 받는 기능 구현
 const Chat = () => {
     const [chatRoomList, setChatRoomList] = useState<ChatRoomList[]>([]);
     const [chatRoomId, setChatRoomId] = useState<number | null>(null);
+    const [chatRoomName, setChatRoomName] = useState<string | null>('');
     const [senderId, setSenderId] = useState<number | null>(null);
     const [targetId, setTargetId] = useState<number | null>(null);
     const [content, setContent] = useState<string>('');
     const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-
     const [showChatList, setShowChatList] = useState(false)
-    const [selectedChat, setSelectedChat] = useState<MockUser | null>(null)
-    const [messages, setMessages] = useState<Message[]>([])
-    const [newMessage, setNewMessage] = useState("")
+    const [selectedChat, setSelectedChat] = useState<boolean>(false)
 
-    // ref 변수 정의
-    // const refDialogDiv = useRef<HTMLDivElement | null>(null);
-    // const refSenderInput = useRef<HTMLInputElement | null>(null);
-    // const refMessageInput = useRef<HTMLTextAreaElement | null>(null);
+    const scrollViewportRef = useRef<HTMLDivElement | null>(null);
 
     const stompClient = useSelector((state: RootState) => state.websocket.client); // 웹소켓 객체 획득
     const token = useSelector((state: RootState) => state.auth.accessToken); // 토큰 획득
 
     // 토큰에서 ID 추출하여 발신자 ID로 세팅 후, 채팅 상대의 ID를 가져옴.
-    // "채팅하기"를 눌렀을 때 호출되며, 해당 회원이 로그인된 회원인지 검증하는 로직 필요함.
     const getEachId = useCallback(() => {
         const id = AuthUtil.getIdFromToken(token); // ID 추출
         if (id != null) {
             setSenderId(id);
-            setTargetId(extractedTargetId); // 채팅 대상 회원 ID 추출 (추후 수정 필요)
+            setTargetId(1); // 채팅 대상 회원 ID 추출 (테스트를 위해 임의 작성함)
         } else {
             alert("해당 기능은 로그인이 필요합니다.")
             // 로그인 페이지로 이동
@@ -105,22 +96,22 @@ const Chat = () => {
 
     // 채팅방 생성 또는 기존 채팅방 참여
     const createChatRoom = () => {
+        getEachId();
+
         if (senderId != null && targetId != null) {
-            const createChatRoom = () => {
-                fetch("https://localhost:9000/chats", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        id: targetId
-                    })
+            fetch("https://localhost:9000/chats", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    id: targetId
                 })
-                    .then((response) => response.json()) // JSON -> Javascript 객체로 변환
-                    .then((data) => setChatRoomId(data.chatRoomId))
-                    .catch((error) => console.error("chatRoomId를 가져오지 못했습니다.: ", error));
-            }
+            })
+                .then((response) => response.json()) // JSON -> Javascript 객체로 변환
+                .then((data) => setChatRoomId(data.chatRoomId))
+                .catch((error) => console.error("chatRoomId를 가져오지 못했습니다.: ", error));
 
             // 채팅방 구독 후, 채팅 대상 또한 동일한 채팅방을 구독하도록 서버에 요청
             if (stompClient != null) {
@@ -136,9 +127,20 @@ const Chat = () => {
         }
     }
 
-    // 메시지 발송
-    const sendMessage = () => {
-        if (stompClient) {
+        // "전송" 버튼 클릭 시, 메시지 전송
+    const handleSendMessage = () => {
+        if (content.trim() && selectedChat && stompClient) {
+            const message: ChatMessage = {
+                chatRoomId: chatRoomId!,
+                contentId: 9999, // 프론트 내 임시적인 데이터 처리이므로 임의의 숫자 할당
+                senderId: senderId!,
+                name: "me", // 상기와 마찬가지로 임의의 데이터 할당당
+                content: content,
+                createdAt: String(new Date())
+            }
+            setChatHistory((prev) => [...prev, message])
+            setContent("")
+
             stompClient.publish({
                 destination: '/app/chat/send',
                 headers: {
@@ -148,7 +150,14 @@ const Chat = () => {
                 body: JSON.stringify({ senderId, targetId, chatRoomId, content })
             });
         }
-    };
+    }
+
+    // Enter키를 통한 메시지 전송
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            handleSendMessage()
+        }
+    }
 
     // 메시지 수신
     const receiveMessage = (payload: IMessage) => {
@@ -181,7 +190,7 @@ const Chat = () => {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
                 },
-                body: JSON.stringify({ targetId })
+                body: JSON.stringify({ chatRoomId })
             });
             const chatContents: ChatMessage[] = await response.json();
 
@@ -199,14 +208,14 @@ const Chat = () => {
     }, [chatHistory])
 
     // 채팅 시 화면 자동 스크롤
-    // useEffect(() => {
-    //     if (refDialogDiv.current) {
-    //         refDialogDiv.current.scroll({
-    //             top: refDialogDiv.current.scrollHeight, 
-    //             behavior: 'smooth'
-    //         });
-    //     }
-    // }, [chatHistory]);
+    useEffect(() => {
+        if (scrollViewportRef.current) {
+            scrollViewportRef.current.scroll({
+                top:  scrollViewportRef.current.scrollHeight, 
+                behavior: 'smooth'
+            });
+        }
+    }, [chatHistory]);
 
     // 채팅 아이콘 클릭 시, 채팅 리스트 출력
     const handleChatIconClick = () => {
@@ -214,43 +223,27 @@ const Chat = () => {
     }
 
     // 채팅방 클릭 시, 채팅 메시지 출력
-    const handleChatSelect = (chatRoom: MockUser) => {
-        setSelectedChat(user)
-        setMessages(mockMessages[user.id] || [])
+    const handleChatSelect = (chatRoom: ChatRoomList) => {
+        createChatRoom();
+        setChatRoomId(chatRoom.chatRoomId)
+        getHistory();
         setShowChatList(false)
-    }
-
-    // "전송" 버튼 클릭 시, 메시지 전송
-    const handleSendMessage = () => {
-        if (newMessage.trim() && selectedChat) {
-            const message: Message = {
-                id: Date.now().toString(),
-                text: newMessage,
-                sender: "me",
-                timestamp: new Date(),
-            }
-            setMessages((prev) => [...prev, message])
-            setNewMessage("")
-        }
-    }
-
-    // Enter키를 통한 메시지 전송
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") {
-            handleSendMessage()
-        }
+        setSelectedChat(true);
+        setChatRoomName(chatRoom.name);
     }
 
     return (
         <div className="fixed bottom-6 right-6 z-50">
             {/* 채팅 아이콘 */}
-            <Button
-                onClick={handleChatIconClick}
-                className="rounded-full w-14 h-14 bg-[#EE57CD] hover:bg-[#EE57CD]/90 shadow-lg"
-                size="icon"
-            >
-                <MessageCircle className="h-6 w-6 text-white" />
-            </Button>
+            {token && ( // 로그인 상태일 때만 채팅 아이콘 활성화
+                <Button
+                    onClick={handleChatIconClick}
+                    className="rounded-full w-14 h-14 bg-[#EE57CD] hover:bg-[#EE57CD]/90 shadow-lg"
+                    size="icon"
+                >
+                    <MessageCircle className="h-6 w-6 text-white" />
+                </Button>
+            )}
 
             {/* 채팅 리스트 */}
             {showChatList && (
@@ -272,7 +265,7 @@ const Chat = () => {
                                     className="flex items-center p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
                                 >
                                     <Avatar className="h-10 w-10 mr-3">
-                                        <AvatarImage src={user.avatar || "/placeholder.svg"} alt={chatRoom.name} />
+                                        <AvatarImage src={/*mockUsers[chatRoom.chatRoomId].avatar || */"/placeholder.svg"} alt={chatRoom.name} />
                                         <AvatarFallback>
                                             <User className="h-5 w-5" />
                                         </AvatarFallback>
@@ -288,33 +281,33 @@ const Chat = () => {
             )}
 
             {/* 채팅 모달 */}
-            <Dialog open={!!selectedChat} onOpenChange={() => setSelectedChat(null)}>
+            <Dialog open={selectedChat} onOpenChange={() => setSelectedChat(false)}>
                 <DialogContent className="sm:max-w-md bg-white">
                         <DialogTitle className="flex items-center space-x-3">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage src={selectedChat?.avatar || "/placeholder.svg"} alt={selectedChat?.name} />
+                                <AvatarImage src={/* selectedChat?.avatar || */"/placeholder.svg"} alt={chatRoomName!} />
                                 <AvatarFallback>
                                     <User className="h-4 w-4" />
                                 </AvatarFallback>
                             </Avatar>
-                            <span>{selectedChat?.name}</span>
+                            <span>{chatRoomName}</span>
                         </DialogTitle>
-                        <Button variant="ghost" size="icon" onClick={() => setSelectedChat(null)} className="h-6 w-6">
+                        <Button variant="ghost" size="icon" onClick={() => setSelectedChat(false)} className="h-6 w-6">
                             <X className="h-4 w-4" />
                         </Button>
 
                     {/* 메시지 영역 */}
                     <ScrollArea className="h-80 w-full pr-4">
                         <div className="space-y-3">
-                            {messages.map((message) => (
-                                <div key={message.id} className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"}`}>
+                            {chatHistory.map((message) => (
+                                <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
                                     <div
-                                        className={`max-w-xs px-4 py-2 rounded-lg ${message.sender === "me"
-                                            ? "bg-white border border-[#EE57CD] text-[#EE57CD]"
-                                            : "bg-[#EE57CD] text-white"
+                                        className={`max-w-xs px-4 py-2 rounded-lg ${message.senderId === senderId
+                                            ? "bg-[#EE57CD] text-white"
+                                            : "bg-white border border-[#EE57CD] text-[#EE57CD]"
                                             }`}
                                     >
-                                        <p className="text-sm">{message.text}</p>
+                                        <p className="text-sm">{message.content}</p>
                                     </div>
                                 </div>
                             ))}
@@ -323,12 +316,16 @@ const Chat = () => {
 
                     {/* 메시지 입력 영역 */}
                     <div className="flex items-center space-x-2 pt-4 border-t">
-                        <Input
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            onKeyPress={handleKeyPress}
+                        <ChatInput
+                            label=""
                             placeholder="메시지를 입력하세요..."
-                            className="flex-1"
+                            size="m"
+                            disabled={false}
+                            type="text"
+                            value={content}
+                            setValue = {setContent}
+                            handleKeyPress={handleKeyPress}
+                            // className="flex-1"
                         />
                         <Button onClick={handleSendMessage} className="bg-[#EE57CD] hover:bg-[#EE57CD]/90 text-white" size="icon">
                             <Send className="h-4 w-4" />

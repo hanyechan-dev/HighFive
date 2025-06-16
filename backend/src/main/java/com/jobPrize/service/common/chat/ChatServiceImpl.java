@@ -54,6 +54,7 @@ public class ChatServiceImpl implements ChatService {
 		
 		ChatResponseDto chatResponseDto = ChatResponseDto.builder()
 				.chatRoomId(chatRequestDto.getChatRoomId())
+				.contentId(chatContent.getId())
 				.senderId(chatRequestDto.getSenderId())
 				.name(chatContent.getUser().getName())
 				.content(chatRequestDto.getContent())
@@ -132,6 +133,7 @@ public class ChatServiceImpl implements ChatService {
         return chatRoom.getChatContents().stream()
             .map(chatContent -> ChatResponseDto.builder()
                 .chatRoomId(roomId)
+                .contentId(chatContent.getId())
                 .senderId(chatContent.getUser().getId())
                 .name(chatContent.getUser().getName())
                 .content(chatContent.getContent())
