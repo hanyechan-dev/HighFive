@@ -1,267 +1,202 @@
-"use client"
+import { useCallback, useEffect, useState } from "react";
+import CommonModal from "../../common/modals/CommonModal";
+import Input from "../../common/components/input/Input";
+import { TabButton } from "./TabButton";
+import ModalTitle from "../../common/components/title/ModalTitle";
+import Button from "../../common/components/button/Button";
+import type { MemberPoolDetail } from "./MemberPoolApi";
+import { MemberPoolDetailApi } from "./MemberPoolApi";
+import MemberInfoBox from "./MemberInfoBox";
 
-import { useState, useEffect } from "react"
-import { type TalentDetail, TabType, TabLabels } from "../../types/talent-types"
-import { InfoItem } from "./InfoItem"
-import { CertificationCard } from "./CertificationCard"
-import { LanguageCard } from "./languageCard"
-import { TabButton } from "./TebButton"
-import CommonModal from "../common/CommonModal"
+const TABS = ["학력 사항", "경력 사항", "자격증", "어학"];
 
-// 더미 데이터
-const DUMMY_TALENT: TalentDetail = {
-  id: 100,
-  name: "김인재",
-  email: "talent@example.com",
-  gender: "여성",
-  birthDate: "1992-05-20",
-  job: "UX 디자이너",
-  hasCareer: true,
-  phone: "010-1234-5678",
-  education: {
-    id: 1,
-    schoolName: "서울대학교",
-    educationLevel: "학사",
-    major: "시각 디자인",
-    gpa: 4.2,
-    location: "서울",
-    enterDate: "2011-03-01",
-    graduateDate: "2015-02-28",
-  },
-  career: {
-    id: 1,
-    companyName: "네이버",
-    job: "UX/UI 디자이너",
-    department: "디자인 센터",
-    position: "선임 디자이너",
-    startDate: "2015-03-01",
-    endDate: "2023-12-31",
-  },
-  certifications: [
-    {
-      id: 1,
-      certificationName: "웹디자인 기능사",
-      issuingOrg: "한국산업인력공단",
-      grade: "합격",
-      certificationNo: "WEB-12345",
-      acquisitionDate: "2014-11-15",
-    },
-  ],
-  languageTests: [
-    {
-      id: 1,
-      languageType: "영어",
-      testName: "TOEIC",
-      issuingOrg: "ETS",
-      score: "950점",
-      acquisitionDate: "2016-03-01",
-    },
-  ],
+interface MemberPoolDetailModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  memberId: number | null;
 }
 
-interface TalentDetailModalProps {
-  isOpen: boolean
-  onClose: () => void
-  talentId?: number
-}
+export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: MemberPoolDetailModalProps) {
+  const [activeTab, setActiveTab] = useState(TABS[0]);
+  const [detail, setDetail] = useState<MemberPoolDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isProposalOpen, setProposalOpen] = useState(false);
 
-export default function TalentDetailModal({ isOpen, onClose, talentId }: TalentDetailModalProps) {
-  const [talent, setTalent] = useState<TalentDetail | null>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [activeTab, setActiveTab] = useState<TabType>(TabType.EDUCATION)
+  // 1. 데이터 불러오는 함수 useCallback으로 분리
+  const fetchDetail = useCallback(() => {
+    if (!memberId) return;
+    setLoading(true);
+    setError(null);
+    MemberPoolDetailApi(memberId)
+      .then(res => {
+        if (!res) throw new Error("데이터를 불러올 수 없습니다.");
+        setDetail(res);
+      })
+      .catch(err => {
+        setError("멤버 정보를 불러오는데 실패했습니다. 다시 시도해주세요.");
+      })
+      .finally(() => setLoading(false));
+  }, [memberId]);
 
-  // 데이터 로딩 (실제로는 API 호출)
+  // 2. useEffect에서 재사용
   useEffect(() => {
-    if (isOpen) {
-      setIsLoading(true)
-      // 실제 구현에서는 API 호출
-      const timer = setTimeout(() => {
-        setTalent(DUMMY_TALENT)
-        setIsLoading(false)
-      }, 500)
-
-      return () => clearTimeout(timer)
-    } else {
-      setTalent(null)
+    if (isOpen && memberId) {
+      fetchDetail();
     }
-  }, [isOpen, talentId])
+  }, [isOpen, memberId, fetchDetail]);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
-  // 학력사항 렌더링
-  const renderEducation = () => {
-    if (!talent?.education) return <EmptyState message="등록된 학력 정보가 없습니다." />
-
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InfoItem label="학교명" value={talent.education.schoolName} />
-        <InfoItem label="전공" value={talent.education.major} />
-        <InfoItem label="학위" value={talent.education.educationLevel} />
-        <InfoItem label="소재지" value={talent.education.location} />
-        <InfoItem label="입학일" value={talent.education.enterDate} />
-        <InfoItem label="졸업일" value={talent.education.graduateDate} />
-      </div>
-    )
-  }
-
-  // 경력사항 렌더링
-  const renderCareer = () => {
-    if (!talent?.career) return <EmptyState message="등록된 경력 정보가 없습니다." />
-
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InfoItem label="회사명" value={talent.career.companyName} />
-        <InfoItem label="직무" value={talent.career.job} />
-        <InfoItem label="부서" value={talent.career.department} />
-        <InfoItem label="직위" value={talent.career.position} />
-        <InfoItem label="시작일" value={talent.career.startDate} />
-        <InfoItem label="종료일" value={talent.career.endDate || "재직중"} />
-      </div>
-    )
-  }
-
-  // 자격증 렌더링
-  const renderCertifications = () => {
-    if (!talent?.certifications || talent.certifications.length === 0) {
-      return <EmptyState message="등록된 자격증 정보가 없습니다." />
-    }
-
-    return (
-      <div className="space-y-4">
-        {talent.certifications.map((cert) => (
-          <CertificationCard key={cert.id} certification={cert} />
-        ))}
-      </div>
-    )
-  }
-
-  // 어학 렌더링
-  const renderLanguageTests = () => {
-    if (!talent?.languageTests || talent.languageTests.length === 0) {
-      return <EmptyState message="등록된 어학 정보가 없습니다." />
-    }
-
-    return (
-      <div className="space-y-4">
-        {talent.languageTests.map((lang) => (
-          <LanguageCard key={lang.id} languageTest={lang} />
-        ))}
-      </div>
-    )
-  }
-
-  // 탭 내용 렌더링
+  // 각 탭별 내용
   const renderTabContent = () => {
-    switch (activeTab) {
-      case TabType.EDUCATION:
-        return renderEducation()
-      case TabType.CAREER:
-        return renderCareer()
-      case TabType.CERTIFICATION:
-        return renderCertifications()
-      case TabType.LANGUAGE:
-        return renderLanguageTests()
-      default:
-        return null
+    if (!detail) return null;
+
+    if (activeTab === "학력 사항" && detail.educationResponseDto) {
+      const edu = detail.educationResponseDto;
+      return (
+        <>
+          <div className="flex">
+            <Input label="학교명" placeholder="" size="m" disabled type="text" value={edu.schoolName ?? ""} setValue={() => { }} />
+            <Input label="전공" placeholder="" size="m" disabled type="text" value={edu.major ?? ""} setValue={() => { }} />
+          </div>
+          <div className="flex">
+            <Input label="학위" placeholder="" size="m" disabled type="text" value={edu.educationLevel ?? ""} setValue={() => { }} />
+            <Input label="학점" placeholder="" size="m" disabled type="text" value={edu.gpa?.toString() ?? ""} setValue={() => { }} />
+          </div>
+          <div className="flex">
+            <Input label="소재지" placeholder="" size="m" disabled type="text" value={edu.location ?? ""} setValue={() => { }} />
+            <div className="flex items-end">
+              <Input label="재학 기간" placeholder="" size="s" disabled type="text" value={edu.enterDate ?? ""} setValue={() => { }} />
+              <Input label="" placeholder="" size="s" disabled type="text" value={edu.graduateDate ?? ""} setValue={() => { }} />
+            </div>
+          </div>
+        </>
+      );
     }
-  }
+    if (activeTab === "경력 사항" && detail.careerResponseDto) {
+      const career = detail.careerResponseDto;
+      return (
+        <>
+          <div className="flex">
+            <Input label="회사명" placeholder="" size="m" disabled type="text" value={career.companyName ?? ""} setValue={() => {}} />
+            <Input label="직무" placeholder="" size="m" disabled type="text" value={career.job ?? ""} setValue={() => {}} />
+          </div>
+          <div className="flex">
+            <Input label="부서" placeholder="" size="m" disabled type="text" value={career.department ?? ""} setValue={() => {}} />
+            <Input label="직급" placeholder="" size="m" disabled type="text" value={career.position ?? ""} setValue={() => {}} />
+          </div>
+          <div className="flex items-end">
+            <Input label="근무기간" placeholder="" size="s" disabled type="text" value={career.startDate ?? ""} setValue={() => { }} />
+            <Input label="" placeholder="" size="s" disabled type="text" value={career.endDate ?? ""} setValue={() => { }} />
+          </div>
+        </>
+      );
+    }
+    if (activeTab === "자격증" && detail.certificationResponseDto) {
+      const certifications = detail.certificationResponseDto;
+      if (certifications.length === 0) return null;
+      
+      return (
+        <>
+          {certifications.map((cert, idx) => (
+            <div key={cert.id || idx} className="mb-4">
+              <div className="flex">
+                <Input label="자격증명" placeholder="" size="m" disabled type="text" value={cert.certificationName ?? ""} setValue={() => {}} />
+                <Input label="발급기관" placeholder="" size="m" disabled type="text" value={cert.issuingOrg ?? ""} setValue={() => {}} />
+              </div>
+              <div className="flex">
+                <Input label="취득일" placeholder="" size="m" disabled type="text" value={cert.acquisitionDate ?? ""} setValue={() => {}} />
+              </div>
+            </div>
+          ))}
+        </>
+      );
+    }
+    
+    if (activeTab === "어학" && detail.languageTestResponseDto) {
+      const languages = detail.languageTestResponseDto;
+      if (languages.length === 0) return null;
+      
+      return (
+        <>
+          {languages.map((lang, idx) => (
+            <div key={lang.id || idx} className="mb-4">
+              <div className="flex">
+                <Input label="언어" placeholder="" size="m" disabled type="text" value={lang.languageType ?? ""} setValue={() => {}} />
+                <Input label="시험명" placeholder="" size="m" disabled type="text" value={lang.testName ?? ""} setValue={() => {}} />
+              </div>
+              <div className="flex">
+                <Input label="점수" placeholder="" size="m" disabled type="text" value={lang.score ?? ""} setValue={() => {}} />
+                <Input label="취득일" placeholder="" size="m" disabled type="text" value={lang.acquisitionDate ?? ""} setValue={() => {}} />
+              </div>
+            </div>
+          ))}
+        </>
+      );
+    }
+    return null;
+  };
 
   return (
     <CommonModal size="l" onClose={onClose}>
-      <div className="px-6 pb-6">
-        <div className="mb-6">
-          <h2 className="text-lg font-bold">{talent ? `${talent.name} 님의 정보` : "인재 상세 정보"}</h2>
+      {loading ? (
+        <div className="p-8 text-center">로딩 중...</div>
+      ) : error ? (
+        <div className="p-8 text-center text-red-500">
+          <p className="mb-4">{error}</p>
+          <Button 
+            color="theme" 
+            size="s" 
+            text="다시 시도" 
+            disabled={false}
+            type="button"
+            onClick={() => {
+              setError(null);
+              if (memberId) {
+                fetchDetail();
+              }
+            }}
+          />
         </div>
-
-        {/* 기본 정보 */}
-        {!isLoading && talent && (
-          <div className="mb-6">
-            <h3 className="text-base font-medium mb-3">기본 정보</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">이름:</span>
-                <span>{talent.name}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">이메일:</span>
-                <span className="text-blue-500">{talent.email}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">성별:</span>
-                <span>{talent.gender}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">생년월일:</span>
-                <span>{talent.birthDate}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">연락처:</span>
-                <span>{talent.phone}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">직업:</span>
-                <span>{talent.job}</span>
-                <span className="ml-2 px-2 py-0.5 bg-pink-100 text-pink-600 text-xs rounded-full">
-                  {talent.hasCareer ? "경력" : "신입"}
-                </span>
-              </div>
-            </div>
+      ) : !detail ? (
+        <div className="p-8 text-center text-gray-500">
+          멤버 정보가 없습니다.
+        </div>
+      ) : (
+        <>
+          <ModalTitle title={`${detail.name} 님의 상세`} />
+          <MemberInfoBox items={[
+            { label: "이름", value: detail.name },
+            { label: "이메일", value: detail.email },
+            { label: "성별", value: detail.gender },
+            { label: "생년월일", value: detail.birthDate },
+            { label: "연락처", value: detail.phone },
+            { label: "직무", value: detail.job }]} />
+          {/* 탭 */}
+          <div className="flex border-b mb-4 ml-6 w-[952px]">
+            {TABS.map(tab => (
+              <TabButton key={tab} label={tab} isActive={activeTab === tab} onClick={() => setActiveTab(tab)} />
+            ))}
           </div>
-        )}
-
-        {/* 탭 메뉴 */}
-        {!isLoading && talent && (
+          {/* 탭별 내용 */}
           <div>
-            <div className="grid grid-cols-4 gap-1 mb-4">
-              {Object.values(TabType).map((tab) => (
-                <TabButton
-                  key={tab}
-                  label={TabLabels[tab]}
-                  isActive={activeTab === tab}
-                  onClick={() => setActiveTab(tab)}
-                />
-              ))}
-            </div>
-
-            {/* 탭 내용 */}
-            <div className="mt-4">{renderTabContent()}</div>
+            {renderTabContent()}
           </div>
-        )}
-
-        {/* 로딩 상태 */}
-        {isLoading && (
-          <div className="flex justify-center items-center h-40">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-pink-500"></div>
+          {/* 하단 버튼 */}
+          <div className="flex justify-end mr-6">
+            <Button color="white" size="s" disabled={false} text="채팅하기" type="button" onClick={() => {/* 채팅 */ }} />
+            <Button
+              color="theme"
+              size="s"
+              disabled={false}
+              text="채용 제안"
+              type="button"
+              onClick={() => setProposalOpen(true)}
+            />
           </div>
-        )}
-
-        {/* 모달 푸터 */}
-        {!isLoading && talent && (
-          <div className="mt-6 pt-4 flex justify-end space-x-2 border-t border-gray-100">
-            <button
-              onClick={onClose}
-              className="px-4 py-1 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
-            >
-              취소하기
-            </button>
-            <button
-              onClick={() => {}}
-              className="px-4 py-1 bg-pink-500 text-white rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors"
-            >
-              저장하기
-            </button>
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </CommonModal>
-  )
-}
-
-// 빈 상태 컴포넌트
-function EmptyState({ message }: { message: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center py-8 text-gray-500">
-      <p className="text-center">{message}</p>
-    </div>
-  )
+  );
 }

@@ -11,9 +11,9 @@ export function TabButton({ label, isActive, onClick }: TabButtonProps) {
     <button
       onClick={onClick}
       className={`
-        py-2 text-center rounded-md transition-colors
-        ${isActive ? "bg-pink-100 text-pink-600 font-medium" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}
-        focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-1
+        px-8 py-2 text-base rounded-lg font-medium transition-colors
+        w-[238px]
+        ${isActive ? "bg-pink-100 text-pink-500" : "bg-transparent text-gray-400 hover:bg-gray-100"}
       `}
     >
       {label}

@@ -1,7 +1,7 @@
-import { api } from "../../common/Axios.tsx";
+import { Request } from '../api/Request';
 import type { MemberFilter } from "./MemberPoolSlice.tsx";
 
-export interface MemberPoolSummary {
+export interface MemberPoolSummary{
     id: number;
     name: string;
     job: string;
@@ -41,7 +41,7 @@ export interface CareerResponseDto {
     job: string;
     department?: string;
     position?: string;
-    startDate: string;
+    startDate?: string;
     endDate?: string;
 }
 
@@ -66,26 +66,32 @@ export interface LanguageTestResponseDto {
     acquisitionDate?: string;
 }
 
-export const MemberPoolSummaryApi = (
+export interface ProposalCreateDto {
+    memberId: number;
+    proposalTitle: string;
+    proposalContent: string;
+    proposalJob: string;
+    proposalSalary: number;
+}
+
+export const MemberPoolPageApi = (
     filter: MemberFilter,
     page: number,
 ) => {
-    return api(true).post<MemberPoolSummary[]>('/companies/members', {
+    return Request.post<MemberPoolSummary[]>('/companies/members', {
         hasCareer: filter.hasCareer,
         educationLevel: filter.educationLevel,
         address: filter.address,
-        job: filter.job
-    },
-        {
-            params: {
-                page,
-                size: 10
-            },
-        });
+        job: filter.job,
+        page,
+        size: 10
+    });
 };
 
 export const MemberPoolDetailApi = (id: number) => {
-    return api(false).post<MemberPoolDetail>('/companies/members', {
-        id
-    });
+    return Request.post<MemberPoolDetail>('/companies/members/detail', { id });
+};
+
+export const createProposalApi = (data: ProposalCreateDto) => {
+    return Request.post<void>('/companies/proposals', data);
 };

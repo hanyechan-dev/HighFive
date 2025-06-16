@@ -29,6 +29,7 @@ public class MemberPoolDetailDto {
 	
 	private String job;
 	
+	
 	private String phone;
 
 	private EducationResponseDto educationResponseDto;
