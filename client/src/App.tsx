@@ -6,10 +6,10 @@ import SignUpModal from './features/auth/SignUpModal';
 
 const App = () => {
     return (
-        // <TempPage />
-    <BrowserRouter>
-        <AdminMainPage />
-    </BrowserRouter>
+        <TempPage />
+    // <BrowserRouter>
+    //     <AdminMainPage />
+    // </BrowserRouter>
     )
 };
 

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { MessageCircle, X, Send, User } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
-import { ScrollArea } from '@radix-ui/react-scroll-area';
+import * as ScrollArea from '@radix-ui/react-scroll-area';
 import AuthUtil from '../common/utils/AuthUtil';
 import { Button } from '@radix-ui/themes/dist/cjs/components/button';
 import ChatInput from '../common/components/input/ChatInput';
@@ -82,59 +82,62 @@ const Chat = () => {
     const stompClient = useSelector((state: RootState) => state.websocket.client); // 웹소켓 객체 획득
     const token = useSelector((state: RootState) => state.auth.accessToken); // 토큰 획득
 
-    // 토큰에서 ID 추출하여 발신자 ID로 세팅 후, 채팅 상대의 ID를 가져옴.
-    const getEachId = useCallback(() => {
+    // 토큰에서 ID 추출
+    useEffect(() => {
         const id = AuthUtil.getIdFromToken(token); // ID 추출
         if (id != null) {
             setSenderId(id);
-            setTargetId(1); // 채팅 대상 회원 ID 추출 (테스트를 위해 임의 작성함)
-        } else {
-            alert("해당 기능은 로그인이 필요합니다.")
-            // 로그인 페이지로 이동
+            setTargetId(1); // 채팅 대상 회원 ID 추출 (테스트를 위해 여기에 임시 작성함)
         }
     }, [token])
 
-    // 채팅방 생성 또는 기존 채팅방 참여
-    const createChatRoom = () => {
-        getEachId();
-
+    // targetId가 들어오면 채팅 시작
+    useEffect(() => {
         if (senderId != null && targetId != null) {
-            fetch("https://localhost:9000/chats", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    id: targetId
-                })
-            })
-                .then((response) => response.json()) // JSON -> Javascript 객체로 변환
-                .then((data) => setChatRoomId(data.chatRoomId))
-                .catch((error) => console.error("chatRoomId를 가져오지 못했습니다.: ", error));
+            createChatRoom();
+        }
+    }, [senderId, targetId])
 
-            // 채팅방 구독 후, 채팅 대상 또한 동일한 채팅방을 구독하도록 서버에 요청
-            if (stompClient != null) {
-                stompClient.subscribe(`/topic/${chatRoomId}`, receiveMessage);
-                stompClient.publish({
-                    destination: "app/chat/subscribe",
-                    body: JSON.stringify({ targetId, chatRoomId })
+    // 채팅방 생성 또는 기존 채팅방 참여
+    const createChatRoom = async () => {
+        if (senderId != null && targetId != null) {
+            try {
+                const response = await fetch("https://localhost:9000/chats", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id: targetId
+                    })
                 })
+                    const data = await response.json(); // JSON -> Javascript 객체로 변환
+                    const roomId = data.chatRoomId; // useState의 비동기 이슈로 인한 roomId 변수 생성
+                    setChatRoomId(data.chatRoomId);
+
+                // 채팅방 구독 후, 채팅 대상 또한 동일한 채팅방을 구독하도록 서버에 요청
+                if (stompClient != null) {
+                    stompClient.subscribe(`/topic/${roomId}`, receiveMessage);
+                    stompClient.publish({
+                        destination: "app/chat/subscribe",
+                        body: JSON.stringify({ targetId, chatRoomId: roomId })
+                    })
+                }
+            } catch(error) {
+                console.log("chatRoomId를 가져오지 못했습니다: ", error);
             }
-        } else {
-            alert("해당 기능은 로그인이 필요합니다.")
-            // 로그인 페이지로 이동
         }
     }
 
-        // "전송" 버튼 클릭 시, 메시지 전송
+    // "전송" 버튼 클릭 시, 메시지 전송
     const handleSendMessage = () => {
         if (content.trim() && selectedChat && stompClient) {
             const message: ChatMessage = {
                 chatRoomId: chatRoomId!,
-                contentId: 9999, // 프론트 내 임시적인 데이터 처리이므로 임의의 숫자 할당
+                contentId: Date.now(), // 프론트 내 임시적인 데이터 처리이므로 임의의 숫자 할당
                 senderId: senderId!,
-                name: "me", // 상기와 마찬가지로 임의의 데이터 할당당
+                name: "me", // 상기와 마찬가지로 임의의 데이터 할당
                 content: content,
                 createdAt: String(new Date())
             }
@@ -176,14 +179,15 @@ const Chat = () => {
             });
             const tempChatRoomList: ChatRoomList[] = await response.json();
             setChatRoomList(tempChatRoomList);
-        } catch(error){
+        } catch (error) {
             console.log("채팅방 리스트 불러오기 실패: ", error);
         }
     }
 
     // 채팅 내역 불러오기
-    const getHistory = async () => { // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
+    const getHistory = async(chatRoomId : number) => { // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
         try {
+
             const response = await fetch(`http://localhost:8090/chats/detail`, {
                 method: "POST",
                 headers: {
@@ -202,16 +206,16 @@ const Chat = () => {
         }
     }
 
-    // 메시지 수발신 시 채팅방 리스트 자동 렌더링
+    // 다른 사용자로 로그인 또는 메시지 수발신 시 채팅방 리스트 자동 렌더링
     useEffect(() => {
         getChatRoomList();
-    }, [chatHistory])
+    }, [chatHistory, token])
 
     // 채팅 시 화면 자동 스크롤
     useEffect(() => {
         if (scrollViewportRef.current) {
             scrollViewportRef.current.scroll({
-                top:  scrollViewportRef.current.scrollHeight, 
+                top: scrollViewportRef.current.scrollHeight,
                 behavior: 'smooth'
             });
         }
@@ -224,9 +228,9 @@ const Chat = () => {
 
     // 채팅방 클릭 시, 채팅 메시지 출력
     const handleChatSelect = (chatRoom: ChatRoomList) => {
-        createChatRoom();
+        // 여기서 targetId를 설정하면, useEffect문에 의해 채팅방이 자동 생성됨.
         setChatRoomId(chatRoom.chatRoomId)
-        getHistory();
+        getHistory(chatRoom.chatRoomId);
         setShowChatList(false)
         setSelectedChat(true);
         setChatRoomName(chatRoom.name);
@@ -256,7 +260,7 @@ const Chat = () => {
                             </Button>
                         </div>
                     </div>
-                    <ScrollArea className="max-h-80">
+                    <ScrollArea.Root className="max-h-80">
                         <div className="p-2">
                             {chatRoomList.map((chatRoom) => (
                                 <div
@@ -276,43 +280,45 @@ const Chat = () => {
                                 </div>
                             ))}
                         </div>
-                    </ScrollArea>
+                    </ScrollArea.Root>
                 </div>
             )}
 
             {/* 채팅 모달 */}
             <Dialog open={selectedChat} onOpenChange={() => setSelectedChat(false)}>
                 <DialogContent className="sm:max-w-md bg-white">
-                        <DialogTitle className="flex items-center space-x-3">
-                            <Avatar className="h-8 w-8">
-                                <AvatarImage src={/* selectedChat?.avatar || */"/placeholder.svg"} alt={chatRoomName!} />
-                                <AvatarFallback>
-                                    <User className="h-4 w-4" />
-                                </AvatarFallback>
-                            </Avatar>
-                            <span>{chatRoomName}</span>
-                        </DialogTitle>
-                        <Button variant="ghost" size="icon" onClick={() => setSelectedChat(false)} className="h-6 w-6">
-                            <X className="h-4 w-4" />
-                        </Button>
+                    <DialogTitle className="flex items-center space-x-3">
+                        <Avatar className="h-8 w-8">
+                            <AvatarImage src={/* selectedChat?.avatar || */"/placeholder.svg"} alt={chatRoomName!} />
+                            <AvatarFallback>
+                                <User className="h-4 w-4" />
+                            </AvatarFallback>
+                        </Avatar>
+                        <span>{chatRoomName}</span>
+                    </DialogTitle>
+                    <Button variant="ghost" size="icon" onClick={() => setSelectedChat(false)} className="h-6 w-6">
+                        <X className="h-4 w-4" />
+                    </Button>
 
                     {/* 메시지 영역 */}
-                    <ScrollArea className="h-80 w-full pr-4">
-                        <div className="space-y-3">
-                            {chatHistory.map((message) => (
-                                <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
-                                    <div
-                                        className={`max-w-xs px-4 py-2 rounded-lg ${message.senderId === senderId
-                                            ? "bg-[#EE57CD] text-white"
-                                            : "bg-white border border-[#EE57CD] text-[#EE57CD]"
-                                            }`}
-                                    >
-                                        <p className="text-sm">{message.content}</p>
+                    <ScrollArea.Root className="h-80 w-full pr-4">
+                        <ScrollArea.Viewport ref={scrollViewportRef} className="h-full w-full">
+                            <div className="space-y-3">
+                                {chatHistory.map((message) => (
+                                    <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
+                                        <div
+                                            className={`max-w-xs px-4 py-2 rounded-lg ${message.senderId === senderId
+                                                ? "bg-[#EE57CD] text-white"
+                                                : "bg-white border border-[#EE57CD] text-[#EE57CD]"
+                                                }`}
+                                        >
+                                            <p className="text-sm">{message.content}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    </ScrollArea>
+                                ))}
+                            </div>
+                        </ScrollArea.Viewport>
+                    </ScrollArea.Root>
 
                     {/* 메시지 입력 영역 */}
                     <div className="flex items-center space-x-2 pt-4 border-t">
@@ -323,9 +329,9 @@ const Chat = () => {
                             disabled={false}
                             type="text"
                             value={content}
-                            setValue = {setContent}
+                            setValue={setContent}
                             handleKeyPress={handleKeyPress}
-                            // className="flex-1"
+                        // className="flex-1"
                         />
                         <Button onClick={handleSendMessage} className="bg-[#EE57CD] hover:bg-[#EE57CD]/90 text-white" size="icon">
                             <Send className="h-4 w-4" />

@@ -4,18 +4,18 @@ import storage from 'redux-persist/lib/storage';
 
 import AuthSlice from '../../features/auth/AuthSlice';
 import jobPostingFilterSlice from '../../features/jobPostingForMember/JobPostingSlice';
-import WebSocketSlice from '../../chat/WebSocketSlice';
+import ChatControlSlice from '../../chat/ChatControlSlice';
 
 const rootReducer = combineReducers({
   auth: AuthSlice,
   jobPostingFilter: jobPostingFilterSlice,
-  websocket: WebSocketSlice
+  chatControl: ChatControlSlice
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'jobPostingFilter', 'websocket'],
+  whitelist: ['auth', 'jobPostingFilter', 'chatControl'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
