@@ -1,12 +1,12 @@
 import { useReducer, type ReactNode } from "react";
-import { JobPostingForMemberPageContext } from "./MyPageForMemberPageContext";
-import { initialState, reducer } from "./JobPostingForMemberPageReducer";
+import { MyPageForMemberPageContext } from "./MyPageForMemberPageContext";
+import { initialState, reducer } from "./MyPageForMemberPageReducer";
 
-export const JobPostingForMemberPageProvider = ({ children }: { children: ReactNode }) => {
+export const MyPageForMemberPageProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     return (
-        <JobPostingForMemberPageContext.Provider value={{ state, dispatch }}>
+        <MyPageForMemberPageContext.Provider value={{ state, dispatch }}>
             {children}
-        </JobPostingForMemberPageContext.Provider>
+        </MyPageForMemberPageContext.Provider>
     );
 };

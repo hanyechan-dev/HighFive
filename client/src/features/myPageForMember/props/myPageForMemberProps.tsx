@@ -3,7 +3,7 @@ export interface EducationResponseDto {
     schoolName: string;
     educationLevel: string;
     major: string;
-    gpa: number;
+    gpa: string;
     location: string;
     enterDate: string;
     graduateDate: string;
@@ -13,7 +13,7 @@ export interface EducationCreateDto {
     schoolName: string;
     educationLevel: string;
     major: string;
-    gpa: number;
+    gpa: string;
     location: string;
     enterDate: string;
     graduateDate: string;
@@ -25,7 +25,7 @@ export interface EducationUpdateDto {
     schoolName: string;
     educationLevel: string;
     major: string;
-    gpa: number;
+    gpa: string;
     location: string;
     enterDate: string;
     graduateDate: string;
@@ -221,4 +221,74 @@ export interface MyPageResponseDto {
 	phone: string;
 	address: string;
 	type: string;
+}
+
+export interface MyPageUpdateDto {
+	phone: string;
+	address: string;
+}
+
+
+export interface MemberUpdateDto {
+	nickname: string;
+}
+
+export interface PasswordUpdateDto {
+	password: string;
+	newPassword: string;
+	newPasswordCheck: string;
+}
+
+export interface ProposalSummaryForMemberDto {
+	id: number;
+	proposalTitle: string;
+	companyName: string;
+	proposalStatus: string;
+	proposalDate: string;
+}
+
+export interface ProposalResponseDto {
+	id: number;
+	proposalTitle: string;
+	companyName: string;
+	proposalContent: string;
+	proposalJob: string;
+	proposalSalary: number;
+	proposalDate: string;
+	proposalStatus: string;
+}
+
+export interface ProposalUpdateDto {
+	id: number;
+	proposalStatus: string;
+}
+
+export interface ApplicationSummaryForMemberDto {
+	id: number;
+	title: string;
+	companyName: string;
+	job: string;
+	isPassed: boolean;
+	createdDate: string;
+}
+
+export interface ApplicationResponseDto {
+	id: number;
+	title: string;
+	companyName: string;
+	job: string;
+	createdDate: string;
+	isPassed: boolean;
+	resumeJson: string;
+	coverLetterJson: string;
+	careerDescriptionJson: string;
+}
+
+export interface PaymentResponseDto {
+	paymentId: number;	// 주문 번호
+	id: number;	// 사용자 ID
+    paymentAmount: number;	// 결제 금액
+    content: string; // 결제 내역
+    createdTime: string;  // 결제 시각
+    method: string;
 }

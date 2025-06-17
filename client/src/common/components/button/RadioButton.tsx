@@ -3,7 +3,7 @@ interface RadioButtonProps {
     textList: {label: string; value: string}[];
     checkedText: string;
     setCheckedText: (value: string) => void
-    size? : "document" | "externalResume" | "internalResume"
+    size? : "document" | 'bigExternalDocument' | "externalResume" | "internalResume" | "bigInternalResume"
 };
 
 const colorClass = 'text-black';
@@ -16,8 +16,10 @@ const labelSetting = 'font-roboto text-base mb-2 inline-block ml-[24px]';
 
 const sizeClass = {
     document: 'w-[317px] h-[42px]',
+    bigExternalDocument: 'w-[373px] h-[42px]',
     externalResume: 'w-[238px] h-[42px]',
-    internalResume: 'w-[226px] h-[42px]'
+    internalResume: 'w-[226px] h-[42px]',
+    bigInternalResume:'w-[268px] h-[42px]',
 }
 
 

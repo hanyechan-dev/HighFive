@@ -8,7 +8,7 @@ import com.jobPrize.dto.member.education.EducationUpdateDto;
 import com.jobPrize.enumerate.UserType;
 
 public interface EducationService {
-    public void createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto);
+    public EducationResponseDto createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto);
     public List<EducationResponseDto> readEducationList(Long id);
     public void updateEducation(Long id, EducationUpdateDto educationUpdateDto);
     public void deleteEducation(Long id, Long educationId);

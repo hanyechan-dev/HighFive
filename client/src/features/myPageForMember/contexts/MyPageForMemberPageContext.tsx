@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-import type { JobPostingForMemberPageAction, JobPostingForMemberPageState } from "./MyPageForMemberPageTypes";
+import type { MyPageForMemberPageAction, MyPageForMemberPageState } from "./MyPageForMemberPageTypes";
 
-export const JobPostingForMemberPageContext = createContext<{
-    state: JobPostingForMemberPageState;
-    dispatch: React.Dispatch<JobPostingForMemberPageAction>;
+export const MyPageForMemberPageContext = createContext<{
+    state: MyPageForMemberPageState;
+    dispatch: React.Dispatch<MyPageForMemberPageAction>;
 } | undefined>(undefined);

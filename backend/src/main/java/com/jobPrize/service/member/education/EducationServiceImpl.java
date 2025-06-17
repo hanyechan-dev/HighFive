@@ -35,7 +35,7 @@ public class EducationServiceImpl implements EducationService {
 	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
 	
 	@Override
-	public void createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto) {
+	public EducationResponseDto createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto) {
 
 		String action = "등록";
 
@@ -51,6 +51,8 @@ public class EducationServiceImpl implements EducationService {
         Education education = Education.of(member,educationCreateDto);
 
         educationRepository.save(education);
+        
+        return EducationResponseDto.from(education);
 		
 	}
 

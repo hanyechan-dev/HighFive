@@ -1,11 +1,7 @@
 import { useEffect } from "react";
-import JobPostingForMemberPage from "./features/jobPostingForMember/pages/JobPostingForMemberPage";
-import { JobPostingForMemberPageProvider } from "./features/jobPostingForMember/contexts/JobPostingForMemberPageProvider";
-import MyPageForMemberTap from "./features/myPageForMember/components/MyPageForMemberTap";
-import { ExternalBox } from "./common/components/box/Box";
-import CommonPage from "./common/pages/CommonPage";
-import MemberPoolPage from "./company/memberPoolPage/pages/MemberPoolPage";
-import ProposalCreateModal from "./company/memberPoolPage/modals/proposalCreateModal";
+
+import MyPageForMemberPage from "./features/myPageForMember/pages/MyPageForMemberPage";
+import { MyPageForMemberPageProvider } from "./features/myPageForMember/contexts/MyPageForMemberPagePageProvider";
 
 
 
@@ -13,6 +9,7 @@ import ProposalCreateModal from "./company/memberPoolPage/modals/proposalCreateM
 
 
 function App() {
+
 
     useEffect(() => {
         if (!window.Kakao.isInitialized()) {
@@ -26,10 +23,9 @@ function App() {
 
     return (
         <>
-            <ProposalCreateModal isOpen={true} onClose={function (): void {
-                throw new Error("Function not implemented.");
-            } } memberId={0} />
-
+            <MyPageForMemberPageProvider>
+                <MyPageForMemberPage/>
+            </MyPageForMemberPageProvider>
         </>
     )
 
