@@ -7,17 +7,20 @@ import AuthSlice from '../../features/auth/AuthSlice';
 import jobPostingFilterSlice from '../../features/jobPostingForMember/slices/JobPostingSlice';
 import memberPoolFilterSlice from  '../../company/memberPoolPage/slices/MemberPoolSlice';
 
+import WebSocketSlice from '../../chat/WebSocketSlice';
 
 const rootReducer = combineReducers({
   auth: AuthSlice,
   jobPostingFilter: jobPostingFilterSlice,
   memberPoolFilter: memberPoolFilterSlice
+  websocket: WebSocketSlice
 });
 
 const persistConfig = {
   key: 'root',
   storage,
   whitelist: ['auth', 'jobPostingFilter','memberPoolFilter'],
+  whitelist: ['auth', 'jobPostingFilter', 'websocket'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

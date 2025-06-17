@@ -2,15 +2,27 @@ import { useCallback, useRef, useState, useEffect } from "react";
 import type { Frame } from "@stomp/stompjs";
 import { Client as StompClient } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
+import type { RootState } from "../common/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setClient } from "./WebSocketSlice";
+import AuthUtil from "../common/utils/AuthUtil";
 
-const useWebSocket = () => {
+const WebSocketUtil = () => {
   const stompClient = useRef<StompClient | null>(null);
   const [id, setId] = useState<number | null>(null);
-  
+
+  // 토큰에서 ID 추출
+  const token = useSelector((state: RootState) => state.auth.accessToken); // 토큰 획득
+
+  useEffect(() => {
+    const extractedId = AuthUtil.getIdFromToken(token); // ID 추출
+    if (extractedId != null) {
+      setId(extractedId);
+    }
+  }, [token])
+
   // 웹소켓 연결 (로그인 시 호출)
   useEffect(() => {
-    // 토큰을 통해 id 추출(작성 예정)
-    setId(extractedId);
     if (!id) return; // 로그인 시에만 연결
 
     stompClient.current = new StompClient({
@@ -21,6 +33,9 @@ const useWebSocket = () => {
       reconnectDelay: 5000,
     });
     stompClient.current.activate();
+
+    const dispatch = useDispatch();
+    dispatch(setClient(stompClient.current)); // StompClient 인스턴스를 Redux에 저장
   }, [id]);
 
   const client = stompClient.current;
@@ -31,7 +46,7 @@ const useWebSocket = () => {
       client.subscribe(`/user/queue/chat`, ({ body }) => {  // User Queue 구독
         const data = JSON.parse(body);
         const chatRoomId = data.chatRoomId;
-        client.subscribe(`/topic/chat/${chatRoomId}`, () => {}); // 채팅방 자동 구독
+        client.subscribe(`/topic/chat/${chatRoomId}`, () => { }); // 채팅방 자동 구독
       });
     }
   }, [id]);
@@ -65,4 +80,4 @@ const useWebSocket = () => {
   return;
 };
 
-export default useWebSocket;
+export default WebSocketUtil;
