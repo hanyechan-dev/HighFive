@@ -41,15 +41,15 @@ public class EducationController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createEducation(@RequestBody @Valid EducationCreateDto educationCreateDto) {
+	public ResponseEntity<EducationResponseDto> createEducation(@RequestBody @Valid EducationCreateDto educationCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 
 		UserType userType = SecurityUtil.getUserType();
 		
-		educationService.createEducation(id, userType, educationCreateDto);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		EducationResponseDto educationResponseDto = educationService.createEducation(id, userType, educationCreateDto);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(educationResponseDto);
 	}
 
 	@PutMapping

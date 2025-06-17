@@ -3,7 +3,6 @@ import Button from "../../../common/components/button/Button";
 import EmptyState from "../../../common/components/emptyState/EmptyState";
 import Pagination from "../../../common/components/pagination/Pagination";
 import ModalTitle from "../../../common/components/title/ModalTitle";
-import { usePagination } from "../../../common/coustomHooks/usePagination";
 import CommonPage from "../../../common/pages/CommonPage";
 
 import RequestListItem from "../components/RequestListItem";
@@ -20,6 +19,7 @@ import { useRequestController } from "../customHooks/useRequestController";
 import { readRequestsApi, readRequestApi, readCompletedRequestApi, createConsultantRequestApi, createRequestApi } from "../apis/RequestApi";
 import { readCareerDescriptionsApi, readCareersApi, readCertificationsApi, readCoverLettersApi, readEducationsApi, readLanguageTestsApi } from "../../myPageForMember/apis/MyPageForMemberApi";
 import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
+import { usePagination } from "../../../common/customHooks/usePagination";
 
 const consultingType = '첨삭'
 const elementsPerPage = 10;

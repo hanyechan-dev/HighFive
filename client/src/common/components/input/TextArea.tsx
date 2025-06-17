@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 
 interface TextAreaProps {
-    size : 'm' | 'ml' | 'l';
+    size : 'm' | 'ibl' | 'ml' | 'l' | 'mibl';
     label: string;
     placeholder: string;
     disabled: boolean;
@@ -11,8 +11,10 @@ interface TextAreaProps {
 
 const sizeClass = {
     m: 'w-[464px]',
+    ibl :'w-[854px] h-[42px]',
     ml:'w-[904px]',
-    l: 'w-[952px]'
+    l: 'w-[952px]',
+    mibl: 'w-[976px]'
 }
 
 const defaultSetting = 'min-h-[100px] text-base font-roboto rounded-lg border border-gray-300 ml-[24px] mb-6 px-3 py-2 break-words resize-none';

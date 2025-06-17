@@ -12,15 +12,14 @@ import WebSocketSlice from '../../chat/WebSocketSlice';
 const rootReducer = combineReducers({
   auth: AuthSlice,
   jobPostingFilter: jobPostingFilterSlice,
-  memberPoolFilter: memberPoolFilterSlice
+  memberPoolFilter: memberPoolFilterSlice,
   websocket: WebSocketSlice
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'jobPostingFilter','memberPoolFilter'],
-  whitelist: ['auth', 'jobPostingFilter', 'websocket'],
+  whitelist: ['auth', 'jobPostingFilter','memberPoolFilter', 'websocket'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

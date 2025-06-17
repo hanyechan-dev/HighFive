@@ -1,5 +1,6 @@
 import { api } from "../../../common/Axios";
 import { store } from "../../../common/store/store";
+import type { ApplicationCreateDto } from "../props/JobPostingForMemberProps";
 
 
 export const JobPostingListForMemberApi = (
@@ -46,12 +47,8 @@ export const JobPostingDetailApi = (id: number) => {
     );
 };
 
-export const CreateApplicationApi = (jobPostingId: number, coverLetterId: number, careerDescriptionId: number) => {
-    return api(true).post('members/applications', {
-        jobPostingId,
-        coverLetterId,
-        careerDescriptionId
-    }
+export const CreateApplicationApi = (applicationCreateDto: ApplicationCreateDto) => {
+    return api(true).post('members/applications', applicationCreateDto
     );
 }
 

@@ -2783,7 +2783,7 @@ __metadata:
     eslint-plugin-react-refresh: ^0.4.19
     globals: ^16.0.0
     jwt-decode: ^4.0.0
-    lucide-react: ^0.514.0
+    lucide-react: ^0.516.0
     postcss: ^8.4.31
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -3956,12 +3956,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.514.0":
-  version: 0.514.0
-  resolution: "lucide-react@npm:0.514.0"
+"lucide-react@npm:^0.516.0":
+  version: 0.516.0
+  resolution: "lucide-react@npm:0.516.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 8d6459e63863465a00bb5a9a3ffe12bf7f61d67764a399f09e4a30ce62d2809756658cf770ea4c2ae6cb94f7f4217d39810bf5384ade849126188d84917d168d
+  checksum: 424d8ea2f876485381618899e044d3572f04548a6b8bd6c9d5ffd2372d1f8a5dbe652a39d5e23e7871df69b0c6200718649187603f6cf09b2259ccefa51ba8bc
   languageName: node
   linkType: hard
 

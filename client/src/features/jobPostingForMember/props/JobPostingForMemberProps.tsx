@@ -67,3 +67,9 @@ export interface Resume {
 	certificationResponseDtos: CertificationResponseDto[];
 	languageTestResponseDtos: LanguageTestResponseDto[];
 }
+
+export interface ApplicationCreateDto {
+    jobPostingId: number;
+    coverLetterId: number;
+    careerDescriptionId: number;
+}

@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { JobPostingForMemberPageContext } from "../contexts/MyPageForMemberPageContext";
+import { MyPageForMemberPageContext } from "../contexts/MyPageForMemberPage/MyPageForMemberPageContext";
 
 
-export const useJobPostingForMemberPageContext = () => {
-    const context = useContext(JobPostingForMemberPageContext);
-    if (!context) throw new Error("JobPostingForMemberPageContext는 Provider 안에서 사용해야 함");
+export const useMyPageForMemberPageContext = () => {
+    const context = useContext(MyPageForMemberPageContext);
+    if (!context) throw new Error("MyPageForMemberPageContext는 Provider 안에서 사용해야 함");
     return context;
 };

@@ -29,4 +29,5 @@ const getUserTypeFromToken = (token: string | null): string | null => {
     return null;
   }
 }
+
 export default { getIdFromToken, getUserTypeFromToken };

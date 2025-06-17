@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "../../../common/components/button/Button";
 import Pagination from "../../../common/components/pagination/Pagination";
-import { usePagination } from "../../../common/coustomHooks/usePagination";
 import CommonPage from "../../../common/pages/CommonPage";
 import MemberPoolSummaryRow from "../components/MemberPoolSummaryRow";
 import MemberPoolDetailModal from "../modals/MemberPoolDetailModal";
@@ -11,6 +10,7 @@ import type { MemberPoolSummary } from "../props/MemberPoolProps";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import MemberPoolCard from "../components/MemberPoolCard";
+import { usePagination } from "../../../common/customHooks/usePagination";
 
 // AI 추천 mock 데이터 예시
 const aiRecommended: MemberPoolSummary[] = [
