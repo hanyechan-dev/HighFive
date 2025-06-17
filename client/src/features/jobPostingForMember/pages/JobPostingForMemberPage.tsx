@@ -18,6 +18,8 @@ import ApplicationModal from "../modals/ApplicationModal";
 import { readEducationsApi, readCareersApi, readCertificationsApi, readLanguageTestsApi, readCareerDescriptionsApi, readCoverLettersApi } from "../../myPageForMember/apis/MyPageForMemberApi";
 import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryForMemberDto, JobPostingForMemberResponseDto } from "../props/JobPostingForMemberProps";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../common/store/store";
 
 
 
@@ -27,6 +29,7 @@ const pagesPerBlock = 10;
 const JobPostingForMemberPage = () => {
 
     const [totalElements, setTotalElements] = useState(0);
+    const filter = useSelector((state: RootState) => state.jobPostingFilter.filter);
 
     const {
         jobPostingMainCardDtos,
@@ -112,7 +115,7 @@ const JobPostingForMemberPage = () => {
 
         fetchData();
 
-    }, [clickedPage]);
+    }, [clickedPage,filter]);
 
     useEffect(() => {
 
