@@ -3,17 +3,23 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import AuthSlice from '../../features/auth/AuthSlice';
+<<<<<<< HEAD
 import jobPostingFilterSlice from '../../features/jobPostingForMember/slices/JobPostingSlice';
+=======
+import jobPostingFilterSlice from '../../features/jobPostingForMember/JobPostingSlice';
+import memberPoolFilterSlice from  '../../company/memberPoolPage/MemberPoolSlice';
+>>>>>>> origin/COMPANY
 
 const rootReducer = combineReducers({
   auth: AuthSlice,
-  jobPostingFilter: jobPostingFilterSlice
+  jobPostingFilter: jobPostingFilterSlice,
+  memberPoolFilter: memberPoolFilterSlice
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'jobPostingFilter'],
+  whitelist: ['auth', 'jobPostingFilter','memberPoolFilter'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
