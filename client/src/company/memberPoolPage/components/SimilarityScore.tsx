@@ -10,7 +10,7 @@ interface SimilarityScoreProps {
   active?: boolean; // 외부에서 hover 상태 제어
 }
 
-const SimilarityScore: FC<SimilarityScoreProps> = ({ score, size = 56, color = '#EE57CD', bgColor = '#F3F4F6', className = '', active }) => {
+const SimilarityScore: FC<SimilarityScoreProps> = ({ score, size = 56, color = '#EE57CD', className = '', active }) => {
   const [progress, setProgress] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const requestRef = useRef<number>();
@@ -54,7 +54,7 @@ const SimilarityScore: FC<SimilarityScoreProps> = ({ score, size = 56, color = '
       {/* 숫자(수치)는 flex로 완전 중앙 정렬, 연한 회색(text-gray-700) */}
       <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
         <span
-          className="text-lg font-semibold text-gray-700"
+          className="text-lg font-semibold text-gray-700 pt-[2px]"
           style={{
             fontSize: size / 4,
             fontWeight: 600,

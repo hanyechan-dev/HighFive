@@ -3,10 +3,10 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 
 export interface MemberFilter {
-    hasCareer?: boolean;       
-    educationLevel?: string;    
-    address?: string;           
-    job?: string;               
+    hasCareer: boolean;       
+    educationLevel: string;    
+    address: string;           
+    job: string;               
 }
 
 export interface MemberPoolFilterState {

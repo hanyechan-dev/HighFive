@@ -1,4 +1,6 @@
-import type { Resume, CoverLetterResponseDto, CareerDescriptionResponseDto } from "../../features/request/props/RequestProps";
+import type { Resume } from "../../features/jobPostingForMember/props/JobPostingForMemberProps";
+import type { CareerDescriptionResponseDto, CoverLetterResponseDto } from "../../features/myPageForMember/props/myPageForMemberProps";
+
 
 export const parseStringToJson = (resumeJson: string, careerDescriptionJson: string, coverLetterJson: string,) => {
     const resume = JSON.parse(resumeJson) as Resume;

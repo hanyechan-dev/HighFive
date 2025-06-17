@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import CommonModal from '../../common/modals/CommonModal';
-import ModalTitle from '../../common/components/title/ModalTitle';
-import Input from '../../common/components/input/Input';
-import Button from '../../common/components/button/Button';
-import { createProposalApi } from './MemberPoolApi';
-import TextArea from '../../common/components/input/TextArea';
+import { useState } from "react";
+import Button from "../../../common/components/button/Button";
+import Input from "../../../common/components/input/Input";
+import TextArea from "../../../common/components/input/TextArea";
+import ModalTitle from "../../../common/components/title/ModalTitle";
+import CommonModal from "../../../common/modals/CommonModal";
+import { createProposalApi } from "../apis/MemberPoolApi";
+import { printErrorInfo } from "../../../common/utils/ErrorUtil";
+
 
 interface ProposalCreateModalProps {
     isOpen: boolean;
@@ -13,7 +15,7 @@ interface ProposalCreateModalProps {
 }
 
 export default function ProposalCreateModal({ isOpen, onClose, memberId }: ProposalCreateModalProps) {
-    if (!isOpen) return null;
+    
     const [proposalTitle, setProposalTitle] = useState('');
     const [proposalContent, setProposalContent] = useState('');
     const [proposalJob, setProposalJob] = useState('');
@@ -44,12 +46,14 @@ export default function ProposalCreateModal({ isOpen, onClose, memberId }: Propo
                 setSuccess(false);
                 onClose();
             }, 1200);
-        } catch (err: any) {
-            setError(err?.message || '제안 전송에 실패했습니다.');
+        } catch (err) {
+            printErrorInfo(err)
         } finally {
             setLoading(false);
         }
     };
+
+    if (!isOpen) return null;
 
     return (
         <CommonModal size="m" onClose={onClose}>

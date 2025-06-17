@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import Button from "../../../common/components/button/Button";
+import Input from "../../../common/components/input/Input";
+import Select from "../../../common/components/input/Select";
+import ModalTitle from "../../../common/components/title/ModalTitle";
+import { educationLevelEnum, regionEnum } from "../../../common/enum/Enum";
+import CommonModal from "../../../common/modals/CommonModal";
+import { type MemberFilter, setMemberPoolFilter } from "../slices/MemberPoolSlice";
 
-import ModalTitle from "../../common/components/title/ModalTitle.tsx";
-import Input from "../../common/components/input/Input.tsx";
-import Button from "../../common/components/button/Button.tsx";
-import CommonModal from "../../common/modals/CommonModal.tsx";
-import Select from '../../common/components/input/Select.tsx';
-import { setMemberPoolFilter, type MemberFilter } from './MemberPoolSlice';
-import { educationLevelEnum } from '../../common/enum/Enum.tsx';
 
 interface MemberFilterModalProps {
     isOpen: boolean;
@@ -27,20 +27,13 @@ const MemberFilterModal = ({ isOpen, onClose }: MemberFilterModalProps) => {
 
     const applyFilter = () => {
         try {
-            const newFilter: MemberFilter = {};
-            if (hasCareer !== undefined) {
-                newFilter.hasCareer = (hasCareer === 'true');
-            }
-            if (education.trim() !== '') {
-                newFilter.educationLevel = education;
-            }
+            const newFilter: MemberFilter = {
+                hasCareer : (hasCareer === 'true'),
+                educationLevel : education,
+                address : address,
+                job : job.trim(),
+            };
 
-            if (address.trim() !== '') {
-                newFilter.address = address.trim();
-            }
-            if (job.trim() !== '') {
-                newFilter.job = job.trim();
-            }
 
             dispatch(setMemberPoolFilter(newFilter));
             onClose();
@@ -71,15 +64,14 @@ const MemberFilterModal = ({ isOpen, onClose }: MemberFilterModalProps) => {
                     setValue={setEducation} />
             </div>
             <div className="flex">
-                <Input
-                    label={'지역'}
-                    placeholder={'주소 입력'}
+
+                <Select label={'지역'}
+                    options={regionEnum}
                     size={'s'}
                     disabled={false}
-                    type={'text'}
                     value={address}
-                    setValue={setAddress}
-                />
+                    setValue={setAddress} />
+
                 <Input
                     label={'직무'}
                     placeholder={'직무 입력'}

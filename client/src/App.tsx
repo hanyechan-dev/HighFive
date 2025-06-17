@@ -4,6 +4,8 @@ import { JobPostingForMemberPageProvider } from "./features/jobPostingForMember/
 import MyPageForMemberTap from "./features/myPageForMember/components/MyPageForMemberTap";
 import { ExternalBox } from "./common/components/box/Box";
 import CommonPage from "./common/pages/CommonPage";
+import MemberPoolPage from "./company/memberPoolPage/pages/MemberPoolPage";
+import ProposalCreateModal from "./company/memberPoolPage/modals/proposalCreateModal";
 
 
 
@@ -24,18 +26,9 @@ function App() {
 
     return (
         <>
-            <CommonPage>
-                <div className="flex">
-
-
-                    <MyPageForMemberTap />
-                    <ExternalBox>
-                        <div>
-
-                        </div>
-                    </ExternalBox>
-                </div>
-            </CommonPage>
+            <ProposalCreateModal isOpen={true} onClose={function (): void {
+                throw new Error("Function not implemented.");
+            } } memberId={0} />
 
         </>
     )

@@ -1,16 +1,29 @@
-import { useEffect, useState } from "react";
-import CommonPage from "../../common/pages/CommonPage";
-import MemberPoolDetailModal from "./MemberPoolDetailModal";
-import { MemberPoolPageApi, type MemberPoolSummary } from "./MemberPoolApi";
-import Pagination from "../../common/components/pagination/Pagination";
-import { usePagination } from "../../common/coustomHooks/usePagination";
-import MemberPoolFilterModal from "./MemberPoolFilterModal";
-import MemberPoolSummaryRow from "./MemberPoolSummaryRow";
-import AIRecommendationCard from "./components/AIRecommendationCard";
-import Button from "../../common/components/button/Button";
+import { useState, useEffect } from "react";
+import Button from "../../../common/components/button/Button";
+import Pagination from "../../../common/components/pagination/Pagination";
+import { usePagination } from "../../../common/coustomHooks/usePagination";
+import CommonPage from "../../../common/pages/CommonPage";
+import MemberPoolSummaryRow from "../components/MemberPoolSummaryRow";
+import MemberPoolDetailModal from "../modals/MemberPoolDetailModal";
+import MemberPoolFilterModal from "../modals/MemberPoolFilterModal";
+import { MemberPoolPageApi } from "../apis/MemberPoolApi";
+import type { MemberPoolSummary } from "../props/MemberPoolProps";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../common/store/store";
+import MemberPoolCard from "../components/MemberPoolCard";
 
-export default function MemberPoolPage() {
-    const [members, setMembers] = useState<MemberPoolSummary[]>([
+// AI 추천 mock 데이터 예시
+const aiRecommended: MemberPoolSummary[] = [
+    { id: 1, name: "김인재", job: "프론트엔드 개발자", hasCareer: true, similarityScore: 95, educationLevel: "고등학교 졸업", genderType: "남성", birthDate: "1992-01-01" },
+    { id: 2, name: "이개발", job: "백엔드 개발자", hasCareer: true, similarityScore: 92, educationLevel: "석사", genderType: "여성", birthDate: "1990-05-10" },
+    { id: 3, name: "박디자인", job: "UI/UX 디자이너", hasCareer: false, similarityScore: 88, educationLevel: "대졸", genderType: "여성", birthDate: "1995-09-15" },
+    { id: 4, name: "최기획", job: "프로덕트 매니저", hasCareer: true, similarityScore: 85, educationLevel: "대졸", genderType: "남성", birthDate: "1988-12-20" },
+];
+
+
+
+
+const mockMemberPoolSummary : MemberPoolSummary[] =[
         {
             id: 1,
             name: "김철수",
@@ -111,7 +124,38 @@ export default function MemberPoolPage() {
             genderType: "남성",
             birthDate: "1987-06-05"
         }
-    ]);
+    ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export default function MemberPoolPage() {
+
+    const filter = useSelector((state: RootState) => state.memberPoolFilter.filter);
+
+    const [members, setMembers] = useState<MemberPoolSummary[]>(mockMemberPoolSummary);
 
     const [totalElements, setTotalElements] = useState(0);
     const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -137,7 +181,7 @@ export default function MemberPoolPage() {
     useEffect(() => {
         const fetchMembers = async () => {
             try {
-                const res = await MemberPoolPageApi({}, clickedPage);
+                const res = await MemberPoolPageApi(filter, clickedPage);
                 if (res) {
                     setMembers(res);
                     setTotalElements(res.length);
@@ -147,23 +191,18 @@ export default function MemberPoolPage() {
             }
         };
         fetchMembers();
-    }, [clickedPage]);
+    }, [clickedPage, filter]);
 
-    // AI 추천 mock 데이터 예시
-    const aiRecommended: MemberPoolSummary[] = [
-        { id: 1, name: "김인재", job: "프론트엔드 개발자", hasCareer: true, similarityScore: 95, educationLevel: "대졸", genderType: "남성", birthDate: "1992-01-01" },
-        { id: 2, name: "이개발", job: "백엔드 개발자", hasCareer: true, similarityScore: 92, educationLevel: "석사", genderType: "여성", birthDate: "1990-05-10" },
-        { id: 3, name: "박디자인", job: "UI/UX 디자이너", hasCareer: false, similarityScore: 88, educationLevel: "대졸", genderType: "여성", birthDate: "1995-09-15" },
-        { id: 4, name: "최기획", job: "프로덕트 매니저", hasCareer: true, similarityScore: 85, educationLevel: "대졸", genderType: "남성", birthDate: "1988-12-20" },
-    ];
+
 
     const handleMemberClick = (id: number) => {
-        console.log('Clicked member:', id);
+        setDetailOpen(true)
+        setSelectedId(id);
     };
 
     return (
         <CommonPage>
-            <div className="max-w-[1400px] mx-auto px-6">
+            <div className="max-w-[1400px] mx-auto px-6 font-roboto">
                 {/* 헤더 섹션 */}
                 <div className="flex items-center justify-between mb-8">
                     <div>
@@ -172,7 +211,7 @@ export default function MemberPoolPage() {
                         </h1>
                         <p className="text-gray-500 mt-2">AI 기반으로 추천된 인재들을 확인해보세요</p>
                     </div>
-                    
+
                 </div>
 
                 {/* AI 인재 추천 섹션 */}
@@ -183,7 +222,8 @@ export default function MemberPoolPage() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {aiRecommended.map(member => (
-                            <AIRecommendationCard
+                            <MemberPoolCard
+                                onClick={handleMemberClick}
                                 key={member.id}
                                 member={member}
                             />
@@ -195,7 +235,7 @@ export default function MemberPoolPage() {
                 <div>
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
-                         
+
                             <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
                         </div>
                     </div>
@@ -209,9 +249,9 @@ export default function MemberPoolPage() {
                             onClick={() => setFilterOpen(true)}
                         />
                     </div>
-                    
+
                     {/* 헤더 */}
-                    <div className="w-full flex items-center bg-theme/5 border border-theme/20 rounded-2xl group cursor-pointer transition-all duration-200 relative overflow-hidden">
+                    <div className="w-full flex items-center bg-theme/5 border border-theme/20 rounded-2xl group transition-all duration-200 relative overflow-hidden font-roboto">
                         <div className="w-[200px] flex items-center justify-center py-4">
                             <span className="text-theme/80 text-lg font-bold">이름</span>
                         </div>
@@ -236,7 +276,7 @@ export default function MemberPoolPage() {
                     </div>
 
                     {/* 리스트 */}
-                    <div className="space-y-1 mt-3">
+                    <div className="space-y-1 mt-1">
                         {members.map((member) => (
                             <MemberPoolSummaryRow
                                 key={member.id}
@@ -264,11 +304,11 @@ export default function MemberPoolPage() {
                 </div>
             </div>
 
-            <MemberPoolDetailModal
+            {selectedId && < MemberPoolDetailModal
                 isOpen={isDetailOpen}
                 onClose={() => setDetailOpen(false)}
                 memberId={selectedId}
-            />
+            />}
 
             <MemberPoolFilterModal
                 isOpen={isFilterOpen}

@@ -1,5 +1,7 @@
 package com.jobPrize.dto.company.memberPool;
 
+import java.time.LocalDate;
+
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.EducationLevel;
@@ -17,6 +19,10 @@ public class MemberPoolSummaryDto {
 	
 	private String job;
 	
+	private String genderType;
+	
+	private LocalDate birthDate;
+	
 	private boolean hasCareer;
 	
 	private int similarityScore;
@@ -28,6 +34,8 @@ public class MemberPoolSummaryDto {
 		return MemberPoolSummaryDto.builder()
 			.id(member.getId())
 			.name(member.getUser().getName())
+			.genderType(member.getUser().getGenderType().name())
+			.birthDate(member.getUser().getBirthDate())
 			.job(job)
 			.hasCareer(hasCareer)
 			.similarityScore(similarity.getScore())

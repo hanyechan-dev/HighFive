@@ -20,7 +20,7 @@ public class MemberPoolDetailDto {
 	
 	private String email;
 	
-	private String gender;
+	private String genderType;
 	
 	private LocalDate birthDate;
 	
@@ -50,7 +50,7 @@ public class MemberPoolDetailDto {
 		return MemberPoolDetailDto.builder()
 			.name(user.getName())
 			.email(user.getEmail())
-			.gender(user.getGenderType().name())
+			.genderType(user.getGenderType().name())
 			.birthDate(user.getBirthDate())
 			.hasCareer(hasCareer)
 			.job(job)
