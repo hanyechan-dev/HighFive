@@ -15,7 +15,7 @@ const AdminMainPage = () => {
 
       <div className="grid grid-cols-2 gap-4 w-full max-w-3xl">
         {/* 1사분면: 회원 관리 */}
-        <Link to="/member">
+        <Link to="/dashboard/member">
           <div className="h-80 flex flex-col items-center justify-center bg-white border border-gray-200 rounded-tl-lg p-6 hover:bg-[#FFE6FB] transition-colors">
           <Users className="h-16 w-16 text-[#EE57CD] mb-4" />
           <h2 className="text-xl font-semibold text-[#666666]">회원 관리</h2>
@@ -23,7 +23,7 @@ const AdminMainPage = () => {
         </Link>
 
         {/* 2사분면: 컨설팅 */}
-        <Link to="/consulting">
+        <Link to="/dashboard/consulting">
           <div className="h-80 flex flex-col items-center justify-center bg-white border border-gray-200 rounded-tl-lg p-6 hover:bg-[#FFE6FB] transition-colors">
           <MessageSquare className="h-16 w-16 text-[#EE57CD] mb-4" />
           <h2 className="text-xl font-semibold text-[#666666]">컨설팅</h2>
@@ -31,7 +31,7 @@ const AdminMainPage = () => {
         </Link>
 
         {/* 3사분면: 서비스 통계 */}
-        <Link to="/service">
+        <Link to="/dashboard/service">
           <div className="h-80 flex flex-col items-center justify-center bg-white border border-gray-200 rounded-tl-lg p-6 hover:bg-[#FFE6FB] transition-colors">
           <BarChart2 className="h-16 w-16 text-[#EE57CD] mb-4" />
           <h2 className="text-xl font-semibold text-[#666666]">서비스 통계</h2>
@@ -39,7 +39,7 @@ const AdminMainPage = () => {
         </Link>
 
         {/* 4사분면: 프롬프트 설정 */}
-        <Link to="/prompt">
+        <Link to="/dashboard/prompt">
           <div className="h-80 flex flex-col items-center justify-center bg-white border border-gray-200 rounded-tl-lg p-6 hover:bg-[#FFE6FB] transition-colors">
           <Settings className="h-16 w-16 text-[#EE57CD] mb-4" />
           <h2 className="text-xl font-semibold text-[#666666]">프롬프트 설정</h2>
