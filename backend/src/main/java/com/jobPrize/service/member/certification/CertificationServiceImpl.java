@@ -36,7 +36,7 @@ public class CertificationServiceImpl implements CertificationService {
 
 
 	@Override
-	public void createCertification(Long id, UserType userType, CertificationCreateDto certificationCreateDto) {
+	public CertificationResponseDto createCertification(Long id, UserType userType, CertificationCreateDto certificationCreateDto) {
 
 		String action = "등록";
         
@@ -48,6 +48,8 @@ public class CertificationServiceImpl implements CertificationService {
 		Certification certification = Certification.of(member, certificationCreateDto);
 
 		certificationRepository.save(certification);
+
+		return CertificationResponseDto.from(certification);
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class CertificationServiceImpl implements CertificationService {
 	}
 
 	@Override
-	public void updateCertification(Long id, CertificationUpdateDto certificationUpdateDto) {
+	public CertificationResponseDto updateCertification(Long id, CertificationUpdateDto certificationUpdateDto) {
 
 		String action = "수정";
 
@@ -80,6 +82,7 @@ public class CertificationServiceImpl implements CertificationService {
         
 		certification.updateCertification(certificationUpdateDto);
 
+		return CertificationResponseDto.from(certification);
 	}
 
 	@Override

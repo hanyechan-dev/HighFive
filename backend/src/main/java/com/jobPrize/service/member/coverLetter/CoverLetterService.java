@@ -10,10 +10,10 @@ import com.jobPrize.enumerate.UserType;
 
 public interface CoverLetterService {
 
-	void createCoverLetter(Long id, UserType userType, CoverLetterCreateDto coverLetterCreateDto);
+	CoverLetterResponseDto createCoverLetter(Long id, UserType userType, CoverLetterCreateDto coverLetterCreateDto);
     List<CoverLetterSummaryDto> readCoverLetterList(Long id);
     CoverLetterResponseDto readCoverLetter(Long id, Long coverLetterId);
-    void updateCoverLetter(Long id, CoverLetterUpdateDto coverLetterUpdateDto);
+    CoverLetterResponseDto updateCoverLetter(Long id, CoverLetterUpdateDto coverLetterUpdateDto);
     void deleteCoverLetter(Long id, Long coverLetterId);
 
 }

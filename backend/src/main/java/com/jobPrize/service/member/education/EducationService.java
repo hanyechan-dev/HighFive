@@ -10,6 +10,6 @@ import com.jobPrize.enumerate.UserType;
 public interface EducationService {
     public EducationResponseDto createEducation(Long id, UserType userType, EducationCreateDto educationCreateDto);
     public List<EducationResponseDto> readEducationList(Long id);
-    public void updateEducation(Long id, EducationUpdateDto educationUpdateDto);
+    public EducationResponseDto updateEducation(Long id, EducationUpdateDto educationUpdateDto);
     public void deleteEducation(Long id, Long educationId);
 }

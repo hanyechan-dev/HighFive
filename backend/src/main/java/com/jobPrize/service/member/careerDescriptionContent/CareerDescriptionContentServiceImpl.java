@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentCreateDto;
+import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentResponseDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentUpdateDto;
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.CareerDescriptionContent;
@@ -20,18 +21,20 @@ public class CareerDescriptionContentServiceImpl implements CareerDescriptionCon
     private final CareerDescriptionContentRepository careerDescriptionContentRepository;
 
 	@Override
-	public void createCareerDescriptionContent(CareerDescription careerDescription, CareerDescriptionContentCreateDto careerDescriptionContentCreateDto) {
+	public CareerDescriptionContentResponseDto createCareerDescriptionContent(CareerDescription careerDescription, CareerDescriptionContentCreateDto careerDescriptionContentCreateDto) {
 		CareerDescriptionContent careerDescriptionContent = CareerDescriptionContent.of(careerDescription, careerDescriptionContentCreateDto);
 		careerDescriptionContentRepository.save(careerDescriptionContent);
 		
+		return CareerDescriptionContentResponseDto.from(careerDescriptionContent);
 	}
 
 	@Override
-	public void updateCareerDescriptionContent(CareerDescriptionContentUpdateDto careerDescriptionContentUpdateDto) {
+	public CareerDescriptionContentResponseDto updateCareerDescriptionContent(CareerDescriptionContentUpdateDto careerDescriptionContentUpdateDto) {
 		CareerDescriptionContent careerDescriptionContent = careerDescriptionContentRepository.findById(careerDescriptionContentUpdateDto.getId())
 				.orElseThrow(() -> new CustomEntityNotFoundException("경력기술서"));
 		careerDescriptionContent.updateContent(careerDescriptionContentUpdateDto);
 		
+		return CareerDescriptionContentResponseDto.from(careerDescriptionContent);
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
 	
 	@Override
-	public void createCoverLetter(Long id, UserType userType, CoverLetterCreateDto coverLetterCreateDto) {
+	public CoverLetterResponseDto createCoverLetter(Long id, UserType userType, CoverLetterCreateDto coverLetterCreateDto) {
 
 		String action = "등록";
 		
@@ -56,12 +56,13 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		coverLetterRepository.save(coverLetter);
 
 		List<CoverLetterContentCreateDto> coverLetterContentCreateDtos = coverLetterCreateDto.getContents();
-		
+		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
 		for(CoverLetterContentCreateDto coverLetterContentCreateDto : coverLetterContentCreateDtos) {
-			
-			coverLetterContentService.createCoverLetterContent(coverLetter, coverLetterContentCreateDto);
-
+			CoverLetterContentResponseDto coverLetterContentResponseDto = coverLetterContentService.createCoverLetterContent(coverLetter, coverLetterContentCreateDto);
+			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
+		
+		return CoverLetterResponseDto.of(coverLetter, coverLetterContentResponseDtos);
 	}
 
 	@Override
@@ -103,7 +104,7 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	}
 
 	@Override
-	public void updateCoverLetter(Long id, CoverLetterUpdateDto coverLetterUpdateDto) {
+	public CoverLetterResponseDto updateCoverLetter(Long id, CoverLetterUpdateDto coverLetterUpdateDto) {
 
 		String action = "수정";
 
@@ -117,11 +118,14 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		
 		coverLetter.updateCoverLetter(coverLetterUpdateDto);
 		List<CoverLetterContentUpdateDto> coverLetterContentUpdateDtos = coverLetterUpdateDto.getContents();
+		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
 		for(CoverLetterContentUpdateDto coverLetterContentUpdateDto : coverLetterContentUpdateDtos) {
-			coverLetterContentService.updateCoverLetterContent(coverLetterContentUpdateDto);
+			CoverLetterContentResponseDto coverLetterContentResponseDto = coverLetterContentService.updateCoverLetterContent(coverLetterContentUpdateDto);
+			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
 		
 		
+		return CoverLetterResponseDto.of(coverLetter, coverLetterContentResponseDtos);
 	}
 
 	@Override

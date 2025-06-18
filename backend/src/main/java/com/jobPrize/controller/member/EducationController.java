@@ -53,13 +53,13 @@ public class EducationController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateEducation(@RequestBody @Valid EducationUpdateDto educationUpdateDto) {
+	public ResponseEntity<EducationResponseDto> updateEducation(@RequestBody @Valid EducationUpdateDto educationUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		educationService.updateEducation(id, educationUpdateDto);
+		EducationResponseDto educationResponseDto = educationService.updateEducation(id, educationUpdateDto);
 		
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.OK).body(educationResponseDto);
 	}
 	
 

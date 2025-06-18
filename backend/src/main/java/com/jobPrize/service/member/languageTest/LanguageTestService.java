@@ -8,8 +8,8 @@ import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
 import com.jobPrize.enumerate.UserType;
 
 public interface LanguageTestService {
-    public void createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto);
+    public LanguageTestResponseDto createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto);
     public List<LanguageTestResponseDto> readLanguageTestList(Long id);
-    public void updateLanguageTest(Long id, LanguageTestUpdateDto languageTestUpdateDto);
+    public LanguageTestResponseDto updateLanguageTest(Long id, LanguageTestUpdateDto languageTestUpdateDto);
     public void deleteLanguageTest(Long id, Long languageTestId);
 }

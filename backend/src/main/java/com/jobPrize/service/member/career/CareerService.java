@@ -9,11 +9,11 @@ import com.jobPrize.enumerate.UserType;
 
 public interface CareerService {
 
-	void createCareer(Long id, UserType userType, CareerCreateDto careerCreateDto);
+	CareerResponseDto createCareer(Long id, UserType userType, CareerCreateDto careerCreateDto);
 
 	List<CareerResponseDto> readCareerList(Long id);
 
-	void updateCareer(Long id, CareerUpdateDto careerUpdateDto);
+	CareerResponseDto updateCareer(Long id, CareerUpdateDto careerUpdateDto);
 	
 	void deleteCareer(Long id, Long careerId);
 

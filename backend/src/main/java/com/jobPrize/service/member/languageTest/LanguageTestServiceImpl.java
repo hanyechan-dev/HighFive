@@ -36,7 +36,7 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
 
 	@Override
-	public void createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto) {
+	public LanguageTestResponseDto createLanguageTest(Long id, UserType userType, LanguageTestCreateDto languageTestCreateDto) {
 
 		String action = "등록";
 
@@ -48,6 +48,7 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 		
 		languageTestRepository.save(languageTest);
 		
+		return LanguageTestResponseDto.from(languageTest);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 	}
 
 	@Override
-	public void updateLanguageTest(Long id, LanguageTestUpdateDto languageTestUpdateDto) {
+	public LanguageTestResponseDto updateLanguageTest(Long id, LanguageTestUpdateDto languageTestUpdateDto) {
 
 		String action = "수정";
 
@@ -80,6 +81,7 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 		
 		languageTest.updateLanguageTest(languageTestUpdateDto);
 		
+		return LanguageTestResponseDto.from(languageTest);
 	}
 
 	@Override

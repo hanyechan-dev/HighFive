@@ -37,7 +37,7 @@ public class CareerServiceImpl implements CareerService {
 
 
 	@Override
-	public void createCareer(Long id, UserType userType, CareerCreateDto careerCreateDto) {
+	public CareerResponseDto createCareer(Long id, UserType userType, CareerCreateDto careerCreateDto) {
 
 		String action = "등록";
 
@@ -55,6 +55,7 @@ public class CareerServiceImpl implements CareerService {
 		
 		careerRepository.save(career);
 		
+		return CareerResponseDto.from(career);
 		
 	}
 
@@ -72,7 +73,7 @@ public class CareerServiceImpl implements CareerService {
 	}
 
 	@Override
-	public void updateCareer(Long id, CareerUpdateDto careerUpdateDto) {
+	public CareerResponseDto updateCareer(Long id, CareerUpdateDto careerUpdateDto) {
 
 		String action = "수정";
 		
@@ -91,7 +92,7 @@ public class CareerServiceImpl implements CareerService {
 		
 		career.updateCareer(careerUpdateDto);
 		
-		
+		return CareerResponseDto.from(career);
 	}
 
 	@Override
