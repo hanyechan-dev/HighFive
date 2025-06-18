@@ -6,6 +6,11 @@ import { ExternalBox } from "./common/components/box/Box";
 import CommonPage from "./common/pages/CommonPage";
 import MemberPoolPage from "./company/memberPoolPage/pages/MemberPoolPage";
 import ProposalCreateModal from "./company/memberPoolPage/modals/proposalCreateModal";
+import JobPostingDetailForMemberModal from "./features/jobPostingForMember/modals/JobPostingDetailForMemberModal";
+import JobPostingPage from "./company/jobPostingPage/pages/JobPostingPage";
+import ProposalPage from "./company/proposalPage/pages/ProposalPage";
+import ApplicationPage from "./company/applicationPage/pages/ApplicationPage";
+import ApplicationJobPostingPage from "./company/applicationPage/pages/ApplicationJobPostingPage";
 
 
 
@@ -25,12 +30,11 @@ function App() {
 
 
     return (
-        <>
-            <ProposalCreateModal isOpen={true} onClose={function (): void {
-                throw new Error("Function not implemented.");
-            } } memberId={0} />
+        //<ApplicationPage/>
+          <ApplicationJobPostingPage/>
+       
 
-        </>
+
     )
 
 }

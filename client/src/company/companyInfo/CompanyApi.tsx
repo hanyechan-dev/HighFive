@@ -1,4 +1,4 @@
-import { api, apiForm } from "../../common/Axios.tsx";
+import { apiForm } from "../../common/Axios.tsx";
 
 
 export const companyInfoInputModalApi = (

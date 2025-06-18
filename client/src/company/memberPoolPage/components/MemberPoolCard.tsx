@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import SimilarityScore from './SimilarityScore';
+import Badge from '../../common/components/Badge';
 
 interface MemberPoolSummary {
     id: number;
@@ -47,9 +48,9 @@ const MemberPoolCard: FC<MemberPoolCardProps> = ({ member, onClick }) => {
             </div>
             {/* 서브 정보 */}
             <div className="flex flex-wrap justify-center gap-3 mt-2">
-                <span className="text-gray-500 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{member.hasCareer ? `경력` : `신입`}</span>
-                <span className="text-gray-400 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{member.educationLevel}</span>
-                <span className="text-gray-400 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{member.genderType}</span>
+                <Badge label={member.hasCareer ? '경력' : '신입'} color={member.hasCareer ? 'career' : 'newbie'} />
+                <Badge label={member.educationLevel} color="info" />
+                <Badge label={member.genderType} color={member.genderType === '남성' ? 'male' : 'female'} />
                 <span className="text-gray-400 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{getAge(member.birthDate)}세</span>
             </div>
         </div>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "../../../common/components/button/Button";
 import Pagination from "../../../common/components/pagination/Pagination";
-import { usePagination } from "../../../common/coustomHooks/usePagination";
 import CommonPage from "../../../common/pages/CommonPage";
 import MemberPoolSummaryRow from "../components/MemberPoolSummaryRow";
 import MemberPoolDetailModal from "../modals/MemberPoolDetailModal";
@@ -11,6 +10,9 @@ import type { MemberPoolSummary } from "../props/MemberPoolProps";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import MemberPoolCard from "../components/MemberPoolCard";
+import { usePagination } from "../../../common/customHooks/usePagination";
+import PageTitle from "../../common/components/PageTitle";
+import MemberPoolListHeader from "../components/MemberPoolListHeader";
 
 // AI 추천 mock 데이터 예시
 const aiRecommended: MemberPoolSummary[] = [
@@ -184,10 +186,18 @@ export default function MemberPoolPage() {
                 const res = await MemberPoolPageApi(filter, clickedPage);
                 if (res) {
                     setMembers(res);
-                    setTotalElements(res.length);
+                    // API 응답이 있으면 전체 개수로 설정 (실제로는 API에서 totalElements를 받아야 함)
+                    setTotalElements(mockMemberPoolSummary.length);
+                } else {
+                    // API 응답이 없으면 mock 데이터 사용
+                    setMembers(mockMemberPoolSummary);
+                    setTotalElements(mockMemberPoolSummary.length);
                 }
             } catch (err) {
                 console.error(err);
+                // 에러 시에도 mock 데이터 사용
+                setMembers(mockMemberPoolSummary);
+                setTotalElements(mockMemberPoolSummary.length);
             }
         };
         fetchMembers();
@@ -202,25 +212,21 @@ export default function MemberPoolPage() {
 
     return (
         <CommonPage>
-            <div className="max-w-[1400px] mx-auto px-6 font-roboto">
+            <div className="w-[1452px] mx-auto px-0 font-roboto">
                 {/* 헤더 섹션 */}
                 <div className="flex items-center justify-between mb-8">
-                    <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r /80 bg-clip-text text-transparent">
-                            인재풀페이지
-                        </h1>
-                        <p className="text-gray-500 mt-2">AI 기반으로 추천된 인재들을 확인해보세요</p>
-                    </div>
-
+                    <PageTitle
+                        title="인재풀페이지"
+                        description="AI 기반으로 추천된 인재들을 확인해보세요"
+                    />
                 </div>
-
                 {/* AI 인재 추천 섹션 */}
                 <div className="mb-12">
                     <div className="flex items-center gap-3 mb-6">
                         <h2 className="text-xl font-semibold">AI 인재 추천</h2>
                         <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-4 gap-4">
                         {aiRecommended.map(member => (
                             <MemberPoolCard
                                 onClick={handleMemberClick}
@@ -230,12 +236,10 @@ export default function MemberPoolPage() {
                         ))}
                     </div>
                 </div>
-
                 {/* 인재 리스트 섹션 */}
                 <div>
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
-
                             <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
                         </div>
                     </div>
@@ -249,34 +253,10 @@ export default function MemberPoolPage() {
                             onClick={() => setFilterOpen(true)}
                         />
                     </div>
-
                     {/* 헤더 */}
-                    <div className="w-full flex items-center bg-theme/5 border border-theme/20 rounded-2xl group transition-all duration-200 relative overflow-hidden font-roboto">
-                        <div className="w-[200px] flex items-center justify-center py-4">
-                            <span className="text-theme/80 text-lg font-bold">이름</span>
-                        </div>
-                        <div className="w-[200px] flex items-center justify-center py-4">
-                            <span className="text-theme/80 text-lg font-bold">나이</span>
-                        </div>
-                        <div className="w-[200px] flex items-center justify-center py-4">
-                            <span className="text-theme/80 text-lg font-bold">학력</span>
-                        </div>
-                        <div className="w-[200px] flex items-center justify-center py-4">
-                            <span className="text-theme/80 text-lg font-bold">경력</span>
-                        </div>
-                        <div className="w-[200px] flex items-center justify-center py-4">
-                            <span className="text-theme/80 text-lg font-bold">직무</span>
-                        </div>
-                        <div className="w-[200px] flex items-center justify-center py-4">
-                            <span className="text-theme/80 text-lg font-bold">성별</span>
-                        </div>
-                        <div className="w-[200px] flex items-center justify-center py-4">
-                            <span className="text-theme/80 text-lg font-bold">매칭률</span>
-                        </div>
-                    </div>
-
+                    <MemberPoolListHeader />
                     {/* 리스트 */}
-                    <div className="space-y-1 mt-1">
+                    <div>
                         {members.map((member) => (
                             <MemberPoolSummaryRow
                                 key={member.id}
@@ -286,9 +266,8 @@ export default function MemberPoolPage() {
                         ))}
                     </div>
                 </div>
-
                 {/* 페이지네이션 */}
-                <div className="mt-8">
+                <div className="mt-8 flex justify-center">
                     <Pagination
                         currentPageBlockIndex={pageBlockIndex}
                         lastPageBlockIndex={lastPageBlockIndex}
@@ -303,13 +282,11 @@ export default function MemberPoolPage() {
                     />
                 </div>
             </div>
-
             {selectedId && < MemberPoolDetailModal
                 isOpen={isDetailOpen}
                 onClose={() => setDetailOpen(false)}
                 memberId={selectedId}
             />}
-
             <MemberPoolFilterModal
                 isOpen={isFilterOpen}
                 onClose={() => setFilterOpen(false)}

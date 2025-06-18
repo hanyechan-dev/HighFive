@@ -5,7 +5,7 @@ import { CreateApplicationApi, JobPostingDetailApi, JobPostingListForMemberApi, 
 import JobPostingMainCard from "../components/JobPostingMainCard";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
 
-import { usePagination } from "../../../common/coustomHooks/usePagination";
+
 import JobPostingUnderCard from "../components/JobPostingUnderCard";
 import Pagination from "../../../common/components/pagination/Pagination";
 import JobPostingListTop from "../components/JobPostingListTop";
@@ -20,6 +20,7 @@ import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto,
 import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryForMemberDto, JobPostingForMemberResponseDto } from "../props/JobPostingForMemberProps";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
+import { usePagination } from "../../../common/customHooks/usePagination";
 
 
 
