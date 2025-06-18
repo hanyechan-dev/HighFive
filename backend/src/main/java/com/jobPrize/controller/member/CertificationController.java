@@ -40,25 +40,25 @@ public class CertificationController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createCertification(@RequestBody @Valid CertificationCreateDto certificationCreateDto) {
+	public ResponseEntity<CertificationResponseDto> createCertification(@RequestBody @Valid CertificationCreateDto certificationCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		certificationService.createCertification(id, userType, certificationCreateDto);
+		CertificationResponseDto certificationResponseDto = certificationService.createCertification(id, userType, certificationCreateDto);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(certificationResponseDto);
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyCertification(@RequestBody @Valid CertificationUpdateDto certificationUpdateDto) {
+	public ResponseEntity<CertificationResponseDto> updateMyCertification(@RequestBody @Valid CertificationUpdateDto certificationUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		certificationService.updateCertification(id, certificationUpdateDto);
+		CertificationResponseDto certificationResponseDto = certificationService.updateCertification(id, certificationUpdateDto);
 		
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(HttpStatus.OK).body(certificationResponseDto);
 	}
 
 	@PostMapping("/delete")

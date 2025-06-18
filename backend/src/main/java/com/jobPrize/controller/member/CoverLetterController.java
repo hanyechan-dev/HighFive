@@ -51,25 +51,25 @@ public class CoverLetterController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createCoverLetter(@RequestBody @Valid CoverLetterCreateDto coverLetterCreateDto) {
+	public ResponseEntity<CoverLetterResponseDto> createCoverLetter(@RequestBody @Valid CoverLetterCreateDto coverLetterCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		coverLetterService.createCoverLetter(id, userType, coverLetterCreateDto);
+		CoverLetterResponseDto coverLetterResponseDto = coverLetterService.createCoverLetter(id, userType, coverLetterCreateDto);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(coverLetterResponseDto);
 	}
 	
 	@PutMapping
-	public ResponseEntity<Void> updateMyCoverLetter(@RequestBody @Valid CoverLetterUpdateDto coverLetterUpdateDto) {
+	public ResponseEntity<CoverLetterResponseDto> updateMyCoverLetter(@RequestBody @Valid CoverLetterUpdateDto coverLetterUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		coverLetterService.updateCoverLetter(id, coverLetterUpdateDto);
+		CoverLetterResponseDto coverLetterResponseDto = coverLetterService.updateCoverLetter(id, coverLetterUpdateDto);
     
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(HttpStatus.OK).body(coverLetterResponseDto);
 	}
 	
 	@PostMapping("/delete")

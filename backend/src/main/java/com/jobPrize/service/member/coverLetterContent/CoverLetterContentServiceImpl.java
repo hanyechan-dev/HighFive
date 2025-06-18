@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentCreateDto;
+import com.jobPrize.dto.member.coverLetter.CoverLetterContentResponseDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentUpdateDto;
 import com.jobPrize.entity.member.CoverLetter;
 import com.jobPrize.entity.member.CoverLetterContent;
@@ -21,18 +22,21 @@ public class CoverLetterContentServiceImpl implements CoverLetterContentService 
 	private final CoverLetterContentRepository coverLetterContentRepository;
 
 	@Override
-	public void createCoverLetterContent(CoverLetter coverLetter, CoverLetterContentCreateDto coverLetterContentCreateDto) {
+	public CoverLetterContentResponseDto createCoverLetterContent(CoverLetter coverLetter, CoverLetterContentCreateDto coverLetterContentCreateDto) {
 		CoverLetterContent coverLetterContent = CoverLetterContent.of(coverLetter, coverLetterContentCreateDto);
 		coverLetterContentRepository.save(coverLetterContent);
+		
+		return CoverLetterContentResponseDto.from(coverLetterContent);
 	}
 
 
 	@Override
-	public void updateCoverLetterContent(CoverLetterContentUpdateDto coverLetterContentUpdateDto) {
+	public CoverLetterContentResponseDto updateCoverLetterContent(CoverLetterContentUpdateDto coverLetterContentUpdateDto) {
 		CoverLetterContent coverLetterContent = coverLetterContentRepository.findById(coverLetterContentUpdateDto.getId())
 				.orElseThrow(() -> new CustomEntityNotFoundException("자기소개서 내용"));
 		coverLetterContent.updateContent(coverLetterContentUpdateDto);
 		
+		return CoverLetterContentResponseDto.from(coverLetterContent);
 	}
 
 	@Override

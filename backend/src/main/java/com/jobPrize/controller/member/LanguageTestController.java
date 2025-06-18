@@ -40,25 +40,25 @@ public class LanguageTestController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createLanguageTest(@RequestBody @Valid LanguageTestCreateDto languageTestCreateDto) {
+	public ResponseEntity<LanguageTestResponseDto> createLanguageTest(@RequestBody @Valid LanguageTestCreateDto languageTestCreateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		languageTestService.createLanguageTest(id, userType, languageTestCreateDto);
+		LanguageTestResponseDto languageTestResponseDto = languageTestService.createLanguageTest(id, userType, languageTestCreateDto);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(languageTestResponseDto);
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyLanguageTest(@RequestBody @Valid LanguageTestUpdateDto languageTestUpdateDto) {
+	public ResponseEntity<LanguageTestResponseDto> updateMyLanguageTest(@RequestBody @Valid LanguageTestUpdateDto languageTestUpdateDto) {
 		
 		Long id = SecurityUtil.getId();
 		
-		languageTestService.updateLanguageTest(id, languageTestUpdateDto);
+		LanguageTestResponseDto languageTestResponseDto = languageTestService.updateLanguageTest(id, languageTestUpdateDto);
 		
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(HttpStatus.OK).body(languageTestResponseDto);
 	}
 
 	@PostMapping("/delete")

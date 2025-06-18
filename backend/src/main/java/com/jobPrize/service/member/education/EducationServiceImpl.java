@@ -70,7 +70,7 @@ public class EducationServiceImpl implements EducationService {
 	}
 
 	@Override
-	public void updateEducation(Long id, EducationUpdateDto educationUpdateDto) {
+	public EducationResponseDto updateEducation(Long id, EducationUpdateDto educationUpdateDto) {
 
 		String action = "수정";
 
@@ -90,6 +90,7 @@ public class EducationServiceImpl implements EducationService {
 
 		education.updateEducation(educationUpdateDto);
 		
+		return EducationResponseDto.from(education);
 	}
 
 	@Override

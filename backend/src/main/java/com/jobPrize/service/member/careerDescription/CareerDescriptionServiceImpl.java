@@ -43,7 +43,7 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
 	
 	@Override
-	public void createCareerDescription(Long id, UserType userType, CareerDescriptionCreateDto careerDescriptionCreateDto) {
+	public CareerDescriptionResponseDto createCareerDescription(Long id, UserType userType, CareerDescriptionCreateDto careerDescriptionCreateDto) {
 		
 		String action = "등록";
 
@@ -56,11 +56,14 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 		careerDescriptionRepository.save(careerDescription);
 
 		List<CareerDescriptionContentCreateDto> careerDescriptionContentCreateDtos = careerDescriptionCreateDto.getContents();
+		List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();
 		
 		for(CareerDescriptionContentCreateDto careerDescriptionContentCreateDto : careerDescriptionContentCreateDtos) {
-			careerDescriptionContentService.createCareerDescriptionContent(careerDescription, careerDescriptionContentCreateDto);
+			CareerDescriptionContentResponseDto careerDescriptionContentResponseDto = careerDescriptionContentService.createCareerDescriptionContent(careerDescription, careerDescriptionContentCreateDto);
+			careerDescriptionContentResponseDtos.add(careerDescriptionContentResponseDto);
 		}
-		
+
+		return CareerDescriptionResponseDto.of(careerDescription, careerDescriptionContentResponseDtos);
 	}
 
 	@Override
@@ -101,7 +104,7 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	}
 
 	@Override
-	public void updateCareerDescription(Long id, CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
+	public CareerDescriptionResponseDto updateCareerDescription(Long id, CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
 
 		String action = "수정";
 
@@ -115,10 +118,13 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 
 		careerDescription.updateCareerDescription(careerDescriptionUpdateDto);
 		List<CareerDescriptionContentUpdateDto> careerDescriptionContentUpdateDtos = careerDescriptionUpdateDto.getContents();
+		List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();
 		for(CareerDescriptionContentUpdateDto careerDescriptionContentUpdateDto : careerDescriptionContentUpdateDtos) {
-			careerDescriptionContentService.updateCareerDescriptionContent(careerDescriptionContentUpdateDto);
+			CareerDescriptionContentResponseDto careerDescriptionContentResponseDto = careerDescriptionContentService.updateCareerDescriptionContent(careerDescriptionContentUpdateDto);
+			careerDescriptionContentResponseDtos.add(careerDescriptionContentResponseDto);
 		}
 		
+		return CareerDescriptionResponseDto.of(careerDescription,careerDescriptionContentResponseDtos);
 	}
 
 	@Override

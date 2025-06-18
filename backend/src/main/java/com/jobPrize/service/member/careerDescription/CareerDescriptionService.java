@@ -10,13 +10,13 @@ import com.jobPrize.enumerate.UserType;
 
 public interface CareerDescriptionService {
 
-    void createCareerDescription(Long id, UserType userType, CareerDescriptionCreateDto careerDescriptionCreateDto);
+    CareerDescriptionResponseDto createCareerDescription(Long id, UserType userType, CareerDescriptionCreateDto careerDescriptionCreateDto);
 
     List<CareerDescriptionSummaryDto> readCareerDescriptionList(Long id);
 
     CareerDescriptionResponseDto readCareerDescription(Long id, Long careerDescriptionId);
 
-    void updateCareerDescription(Long id, CareerDescriptionUpdateDto careerDescriptionUpdateDto);
+    CareerDescriptionResponseDto updateCareerDescription(Long id, CareerDescriptionUpdateDto careerDescriptionUpdateDto);
     
     void deleteCareerDescription(Long id, Long careerDescriptionId);
 

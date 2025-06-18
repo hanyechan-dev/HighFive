@@ -42,25 +42,25 @@ public class CareerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createCareer(@RequestBody @Valid CareerCreateDto careerCreateDto) {
+	public ResponseEntity<CareerResponseDto> createCareer(@RequestBody @Valid CareerCreateDto careerCreateDto) {
 
 		Long id = SecurityUtil.getId();
 
 		UserType userType = SecurityUtil.getUserType();
 
-		careerService.createCareer(id, userType, careerCreateDto);
+		CareerResponseDto careerResponseDto = careerService.createCareer(id, userType, careerCreateDto);
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(careerResponseDto);
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyCareer(@RequestBody @Valid CareerUpdateDto careerUpdateDto) {
+	public ResponseEntity<CareerResponseDto> updateMyCareer(@RequestBody @Valid CareerUpdateDto careerUpdateDto) {
 
 		Long id = SecurityUtil.getId();
 
-		careerService.updateCareer(id, careerUpdateDto);
+		CareerResponseDto careerResponseDto = careerService.updateCareer(id, careerUpdateDto);
 
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(HttpStatus.OK).body(careerResponseDto);
 	}
 
 	@PostMapping("/delete")
