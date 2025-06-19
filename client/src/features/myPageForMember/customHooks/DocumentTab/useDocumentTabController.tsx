@@ -46,16 +46,25 @@ export const useDocumentTabController = () => {
         dispatch({ type: "SET_COVER_LETTER_RESPONSE_DTO", payload: coverLetterResponseDto });
     };
 
-    const showDetailModal = state.showDetailModal;
-    const setShowDetailModal = (showDetailModal: boolean) => {
-        dispatch({ type: "SET_SHOW_DETAIL_MODAL", payload: showDetailModal });
+    const showModal = state.showModal;
+    const setShowModal = (showModal: boolean) => {
+        dispatch({ type: "SET_SHOW_MODAL", payload: showModal });
     };
 
-    const showCreateModal = state.showCreateModal;
-    const setShowCreateModal = (showCreateModal: boolean) => {
-        dispatch({ type: "SET_SHOW_CREATE_MODAL", payload: showCreateModal });
+    const showModalType = state.showModalType;
+    const setShowModalType = (modalType: string) => {
+        if (
+            modalType === "create" ||
+            modalType === "detail" ||
+            modalType === "update"
+        ) {
+            dispatch({ type: "SET_SHOW_MODAL_TYPE", payload: modalType });
+        }
+
     };
-    
+
+
+
     return {
         showDocumentTab,
         setShowDocumentTab,
@@ -73,10 +82,10 @@ export const useDocumentTabController = () => {
         setCoverLetterSummaryDtos,
         coverLetterResponseDto,
         setCoverLetterResponseDto,
-        showDetailModal,
-        setShowDetailModal,
-        showCreateModal,
-        setShowCreateModal,
+        showModal,
+        setShowModal,
+        showModalType,
+        setShowModalType,
     };
 
 

@@ -19,5 +19,5 @@ public class CareerDescriptionUpdateDto {
 	private String title;
 	
 	@Valid
-	List<CareerDescriptionContentUpdateDto> contents;
+	List<CareerDescriptionContentCreateDto> contents;
 }

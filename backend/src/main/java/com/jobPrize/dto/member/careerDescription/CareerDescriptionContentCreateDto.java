@@ -12,5 +12,6 @@ public class CareerDescriptionContentCreateDto {
 	@NotBlank(message = "제목은 필수로 입력해야합니다")
 	@Size(max = 2000, message = "내용은 2000자 이하로 입력해야합니다.")
 	private String content;
+	
 
 }

@@ -117,10 +117,13 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 		
 		coverLetter.updateCoverLetter(coverLetterUpdateDto);
-		List<CoverLetterContentUpdateDto> coverLetterContentUpdateDtos = coverLetterUpdateDto.getContents();
+		
+		coverLetter.getCoverLetterContents().clear();
+		
+		List<CoverLetterContentCreateDto> coverLetterContentCreateDtos = coverLetterUpdateDto.getContents();
 		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
-		for(CoverLetterContentUpdateDto coverLetterContentUpdateDto : coverLetterContentUpdateDtos) {
-			CoverLetterContentResponseDto coverLetterContentResponseDto = coverLetterContentService.updateCoverLetterContent(coverLetterContentUpdateDto);
+		for(CoverLetterContentCreateDto coverLetterContentCreateDto : coverLetterContentCreateDtos) {
+			CoverLetterContentResponseDto coverLetterContentResponseDto = coverLetterContentService.createCoverLetterContent(coverLetter, coverLetterContentCreateDto);
 			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
 		

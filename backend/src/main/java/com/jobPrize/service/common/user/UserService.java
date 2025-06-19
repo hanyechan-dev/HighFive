@@ -13,7 +13,7 @@ public interface UserService {
 	public TokenDto createUser(UserSignUpDto userSignUpDto);
 	public TokenDto logIn(LogInDto logInDto);
 	public MyPageResponseDto readUserMyPageInfo(Long id);
-	public void updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto);
+	public MyPageResponseDto updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto);
 	public void updateUserPassword(Long id, PasswordUpdateDto passwordUpdateDto);
 	public void softDeleteUser(Long id, UserType userType, Long targetId);
 	

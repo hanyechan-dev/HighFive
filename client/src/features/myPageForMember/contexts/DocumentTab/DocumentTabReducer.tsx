@@ -1,7 +1,7 @@
 import type { DocumentTabAction, DocumentTabState } from "./DocumentTabTypes";
 
 export const initialState: DocumentTabState = {
-    showDocumentTab : "이력서",
+    showDocumentTab: "이력서",
     resume: {
         educationResponseDtos: [],
         careerResponseDtos: [],
@@ -25,15 +25,16 @@ export const initialState: DocumentTabState = {
         contents: [],
         createdDate: ""
     },
-    showDetailModal: false,
-    showCreateModal: false,
+    showModal: false,
+    showModalType : "detail"
+
 }
 
 
 export const reducer = (state: DocumentTabState, action: DocumentTabAction): DocumentTabState => {
     switch (action.type) {
         case "SET_SHOW_DOCUMENT_TAB":
-            return { ...state, showDocumentTab : action.payload};
+            return { ...state, showDocumentTab: action.payload };
         case "SET_RESUME":
             return { ...state, resume: action.payload };
         case "SET_CLICKED_CAREER_DESCRIPTION_ID":
@@ -48,10 +49,10 @@ export const reducer = (state: DocumentTabState, action: DocumentTabAction): Doc
             return { ...state, coverLetterSummaryDtos: action.payload };
         case "SET_COVER_LETTER_RESPONSE_DTO":
             return { ...state, coverLetterResponseDto: action.payload };
-        case "SET_SHOW_DETAIL_MODAL":
-            return { ...state, showDetailModal: action.payload };
-        case "SET_SHOW_CREATE_MODAL":
-            return { ...state, showCreateModal: action.payload };
+        case "SET_SHOW_MODAL":
+            return { ...state, showModal: action.payload };
+        case "SET_SHOW_MODAL_TYPE":
+            return { ...state, showModalType: action.payload };
         default:
             return state;
     }

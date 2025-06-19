@@ -18,5 +18,5 @@ public interface ProposalService {
 	Page<ProposalSummaryForMemberDto> readProposalForMemberPage(Long id, Pageable pageable);
 	Page<ProposalSummaryForCompanyDto> readProposalForCompanyPage(Long id, Pageable pageable);
 	ProposalResponseDto readProposal(Long id, UserType userType, Long proposalId);
-	void updateProposal(Long id, UserType userType, ProposalUpdateDto proposalUpdateDto);
+	ProposalResponseDto updateProposal(Long id, UserType userType, ProposalUpdateDto proposalUpdateDto);
 }

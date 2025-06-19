@@ -52,15 +52,15 @@ public class MemberProposalController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateProposal(@RequestBody @Valid ProposalUpdateDto proposalUpdateDto) {
+    public ResponseEntity<ProposalResponseDto> updateProposal(@RequestBody @Valid ProposalUpdateDto proposalUpdateDto) {
 
         Long id = SecurityUtil.getId();
         
         UserType userType = SecurityUtil.getUserType();
 
-        proposalService.updateProposal(id, userType, proposalUpdateDto);
+        ProposalResponseDto proposalResponseDto = proposalService.updateProposal(id, userType, proposalUpdateDto);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(proposalResponseDto);
     }
 
 }

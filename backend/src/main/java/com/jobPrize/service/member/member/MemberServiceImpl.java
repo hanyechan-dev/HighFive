@@ -48,12 +48,14 @@ public class MemberServiceImpl implements MemberService{
 
 
 	@Override
-	public void updateMemberInfo(Long id, MemberUpdateDto memberUpdateDto) {
+	public MemberResponseDto updateMemberInfo(Long id, MemberUpdateDto memberUpdateDto) {
 
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		
 		member.updateNickname(memberUpdateDto.getNickname());
+		
+		return MemberResponseDto.builder().nickname(member.getNickname()).build();
 		
 	}
 

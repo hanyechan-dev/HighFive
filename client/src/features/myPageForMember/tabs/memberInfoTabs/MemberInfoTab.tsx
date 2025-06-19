@@ -8,17 +8,21 @@ import ModalTitle from "../../../../common/components/title/ModalTitle";
 import CompanyTypeIcon from "../../../../common/icons/CompanyTypeIcon";
 import { useMemberInfoTabController } from "../../customHooks/MemberInfoTab/useMemberInfoTabController";
 import MemberInfoUpdateModal from "../../modals/MemberInfoUpdateModal";
-import { readMyPageApi } from "../../apis/MyPageForMemberApi";
-import { printErrorInfo } from "../../../../common/utils/ErrorUtil";
-import { useDocumentTabApi } from "../../customHooks/DocumentTab/useDocumentTabApi";
+import { useMemberInfoTabApi } from "../../customHooks/MemberInfoTab/useMemberInfoTabApi";
 
 const MemberInfoTab = () => {
 
     const {
-        showMemberInfoUpdateModal,
+        showModal,
         memberMyPageResponseDto,
-        setShowMemberInfoUpdateModal,
+        setShowModal,
     } = useMemberInfoTabController();
+
+    const {readMyPage, deactivateAccount} = useMemberInfoTabApi();
+
+    useEffect(() => {
+        readMyPage();
+    }, []);
 
     const {
         memberResponseDto: {
@@ -35,13 +39,20 @@ const MemberInfoTab = () => {
         }
     } = memberMyPageResponseDto;
 
+    const onClickDeactivateAccountButton = () => {
+        deactivateAccount();
+    }
+
     return (
         <>
             <PageBox >
                 <div className="flex gap-3">
                     <ModalTitle title={"회원정보"} />
-                    <div className="mt-1">
-                        <Badge icon={<CompanyTypeIcon />} text={type} />
+                    <div className="flex gap-[803px] ">
+                        <div className="mt-2">
+                            <Badge icon={<CompanyTypeIcon />} text={type} />
+                        </div>
+                        <Button color={"action"} size={"s"} disabled={false} text={"회원탈퇴"} type={"button"} onClick={() => {onClickDeactivateAccountButton()}} />
                     </div>
                 </div>
                 <div className="mt-[-12px] ml-6 mb-6 font-roboto text-[#888]">
@@ -62,14 +73,15 @@ const MemberInfoTab = () => {
                 </div>
                 <Input label={"주소"} placeholder={""} size={"pbl"} disabled={true} type={"text"} value={address} setValue={() => { }} />
                 <div className="flex justify-end mr-6">
-                    <Button color={"theme"} size={"m"} disabled={false} text={"회원정보 수정"} type={"button"} onClick={() => {setShowMemberInfoUpdateModal(true)}} />
+                    <Button color={"theme"} size={"m"} disabled={false} text={"회원정보 수정"} type={"button"} onClick={() => {setShowModal(true)}} />
                 </div>
             </PageBox>
 
-            {showMemberInfoUpdateModal && <MemberInfoUpdateModal />}
+            {showModal && <MemberInfoUpdateModal />}
         </>
     )
 
 }
 
 export default MemberInfoTab;
+

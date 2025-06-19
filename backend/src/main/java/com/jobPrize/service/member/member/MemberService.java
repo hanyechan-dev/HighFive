@@ -7,7 +7,7 @@ import com.jobPrize.enumerate.UserType;
 
 public interface MemberService {
 	public void createMemberInfo(Long id, UserType userType, MemberCreateDto memberCreateDto);
-	public void updateMemberInfo(Long id, MemberUpdateDto memberUpdateDto);
+	public MemberResponseDto updateMemberInfo(Long id, MemberUpdateDto memberUpdateDto);
 	public MemberResponseDto readMemberInfo(Long id);
 
 }

@@ -156,7 +156,7 @@ export interface CareerDescriptionContentCreateDto {
 export interface CareerDescriptionUpdateDto {
 	id: number;
 	title: string;
-	contents: CareerDescriptionContentUpdateDto[];
+	contents: CareerDescriptionContentCreateDto[];
 }
 
 export interface CareerDescriptionContentUpdateDto {
@@ -197,7 +197,7 @@ export interface CoverLetterContentCreateDto {
 export interface CoverLetterUpdateDto {
 	id: number;
 	title: string;
-	contents: CoverLetterContentUpdateDto[];
+	contents: CoverLetterContentCreateDto[];
 }
 
 export interface CoverLetterContentUpdateDto {

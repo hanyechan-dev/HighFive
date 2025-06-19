@@ -67,14 +67,14 @@ public class MemberController {
 
 	
 	@PutMapping
-	public ResponseEntity<Void> updateMyNickName(@RequestBody @Valid MemberUpdateDto memberUpdateDto){
+	public ResponseEntity<MemberResponseDto> updateMyNickName(@RequestBody @Valid MemberUpdateDto memberUpdateDto){
 		
 		Long id = SecurityUtil.getId();
 		
-		memberService.updateMemberInfo(id, memberUpdateDto);
+		MemberResponseDto memberResponseDto = memberService.updateMemberInfo(id, memberUpdateDto);
 		
 		
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.OK).body(memberResponseDto);
 	}
 
 	

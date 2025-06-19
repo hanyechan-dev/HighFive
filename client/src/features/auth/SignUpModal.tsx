@@ -16,7 +16,7 @@ import NicknameInputModal from "../member/NicknameInputModal.tsx";
 import CompanyInfoInputModal from "../../company/companyInfo/CompanyInfoInputModal.tsx";
 
 interface SignUpModalProps {
-    kakaoEmail: string;
+    kakaoEmail?: string;
     onClose: () => void;
 }
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.id.IdDto;
+import com.jobPrize.dto.common.myPage.MyPageResponseDto;
 import com.jobPrize.dto.common.myPage.MyPageUpdateDto;
 import com.jobPrize.dto.common.myPage.PasswordUpdateDto;
 import com.jobPrize.dto.common.token.TokenDto;
@@ -49,14 +50,14 @@ public class UserController {
 	
 	
 	@PutMapping("/me")
-	public ResponseEntity<Void> updateMyPage(@RequestBody @Valid MyPageUpdateDto myPageUpdateDto){
+	public ResponseEntity<MyPageResponseDto> updateMyPage(@RequestBody @Valid MyPageUpdateDto myPageUpdateDto){
 		
 		Long id = SecurityUtil.getId();
 		
-		userService.updateUserMyPageInfo(id, myPageUpdateDto);
+		MyPageResponseDto myPageResponseDto = userService.updateUserMyPageInfo(id, myPageUpdateDto);
 		
 		
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.OK).body(myPageResponseDto);
 	}
 	
 	@PutMapping("/me/password")

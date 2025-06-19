@@ -5,6 +5,7 @@ import MyPageBasicInfoUpdate from "../components/MyPageBasicInfoUpdate";
 import NicknameUpdate from "../components/NicknameUpdate";
 import PasswordUpdate from "../components/PasswordUpdate";
 import { useMemberInfoTabController } from "../customHooks/MemberInfoTab/useMemberInfoTabController";
+import { useMemberInfoTabApi } from "../customHooks/MemberInfoTab/useMemberInfoTabApi";
 
 const memberInfoUpdateTextList = [
     { label: "기본정보", value: "기본정보" },
@@ -18,13 +19,15 @@ const MemberInfoUpdateModal = () => {
 
 
     const {
-        showMemberInfoUpdateModalTab,
-        setShowMemberInfoUpdateModalTab,
-        setShowMemberInfoUpdateModal,
+        showModalType,
+        setShowModalType,
+        setShowModal,
     } = useMemberInfoTabController();
 
+    const {updateMyPage, updateNickName, updatePassword} = useMemberInfoTabApi();
+
     const onClose = () => {
-        setShowMemberInfoUpdateModal(false);
+        setShowModal(false);
     }
 
 
@@ -33,11 +36,11 @@ const MemberInfoUpdateModal = () => {
 
     return (
         <CommonModal size="m" onClose={onClose}>
-            <ModalTitle title={"회원정보 수정"} />
-            <RadioButton name={""} textList={memberInfoUpdateTextList} checkedText={showMemberInfoUpdateModalTab} setCheckedText={setShowMemberInfoUpdateModalTab} />
-            {showMemberInfoUpdateModalTab === "기본정보" && <MyPageBasicInfoUpdate />}
-            {showMemberInfoUpdateModalTab === "닉네임" && <NicknameUpdate />}
-            {showMemberInfoUpdateModalTab === "비밀번호" && <PasswordUpdate />}
+            <ModalTitle title={`${showModalType} 수정`} />
+            <RadioButton name={""} textList={memberInfoUpdateTextList} checkedText={showModalType} setCheckedText={setShowModalType} />
+            {showModalType === "기본정보" && <MyPageBasicInfoUpdate setShowModal={setShowModal} onUpdate={updateMyPage} />}
+            {showModalType === "닉네임" && <NicknameUpdate setShowModal={setShowModal} onUpdate={updateNickName} />}
+            {showModalType === "비밀번호" && <PasswordUpdate setShowModal={setShowModal} onUpdate={updatePassword} />}
 
         </CommonModal>
     )

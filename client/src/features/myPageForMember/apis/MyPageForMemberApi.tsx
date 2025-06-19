@@ -1,8 +1,25 @@
 import { api } from "../../../common/Axios";
-import type { CareerCreateDto, CareerDescriptionCreateDto, CareerDescriptionUpdateDto, CareerUpdateDto, CertificationCreateDto, CertificationUpdateDto, CoverLetterCreateDto, CoverLetterUpdateDto, EducationCreateDto, EducationUpdateDto, LanguageTestCreateDto, LanguageTestUpdateDto } from "../props/myPageForMemberProps";
+import type { CareerCreateDto, CareerDescriptionCreateDto, CareerDescriptionUpdateDto, CareerUpdateDto, CertificationCreateDto, CertificationUpdateDto, CoverLetterCreateDto, CoverLetterUpdateDto, EducationCreateDto, EducationUpdateDto, LanguageTestCreateDto, LanguageTestUpdateDto, MemberUpdateDto, MyPageUpdateDto, PasswordUpdateDto, ProposalUpdateDto } from "../props/myPageForMemberProps";
 
 export const readMyPageApi = () => {
-    return api(true).get('/members/my-page');
+    return api(true).get('/members');
+}
+
+export const updateMyNickNameApi = (memberUpdateDto: MemberUpdateDto) => {
+    return api(true).put('/members', memberUpdateDto);
+}
+
+export const updateMyPageApi = (myPageUpdateDto: MyPageUpdateDto) => {
+    return api(true).put('/users/me', myPageUpdateDto);
+}
+
+export const updatePasswordApi = (passwordUpdateDto: PasswordUpdateDto) => {
+    return api(true).put('/users/me/password', passwordUpdateDto);
+}
+
+
+export const deactivateAccountApi = (id: number) => {
+    return api(true).put('/users/me/deactivation', { id });
 }
 
 export const readEducationsApi = () => {
@@ -126,4 +143,25 @@ export const deleteCoverLetterApi = (id: number) => {
     return api(true).post('/cover-letters/delete', {
         id
     });
+}
+
+
+export const readMyProposalsApi = (page: number, size: number) => {
+    return api(true).get('/members/proposals', {
+        params: {
+            page,
+            size,
+        }
+    });
+}
+
+
+export const readMyProposalApi = (id: number) => {
+    return api(true).post('/members/proposals/detail', {
+        id,
+    });
+}
+
+export const updateProposalApi = (proposalUpdateDto: ProposalUpdateDto) => {
+    return api(true).put('/members/proposals', proposalUpdateDto);
 }

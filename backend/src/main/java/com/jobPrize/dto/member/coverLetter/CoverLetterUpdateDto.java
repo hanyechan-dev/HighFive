@@ -19,5 +19,6 @@ public class CoverLetterUpdateDto {
 	private String title;
 	
 	@Valid
-	List<CoverLetterContentUpdateDto> contents;
+	List<CoverLetterContentCreateDto> contents;
 }
+	

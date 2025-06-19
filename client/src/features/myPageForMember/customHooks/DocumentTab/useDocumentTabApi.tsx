@@ -1,6 +1,6 @@
 
 import { printErrorInfo } from "../../../../common/utils/ErrorUtil";
-import { createCareerApi, createCareerDescriptionApi, createCertificationApi, createCoverLetterApi, createEducationApi, createLanguageTestApi, deleteCareerApi, deleteCertificationApi, deleteEducationApi, deleteLanguageTestApi, readCareerDescriptionApi, readCareerDescriptionsApi, readCareersApi, readCertificationsApi, readCoverLettersApi, readEducationsApi, readLanguageTestsApi, updateCareerApi, updateCareerDescriptionApi, updateCertificationApi, updateCoverLetterApi, updateEducationApi, updateLanguageTestApi } from "../../apis/MyPageForMemberApi";
+import { createCareerApi, createCareerDescriptionApi, createCertificationApi, createCoverLetterApi, createEducationApi, createLanguageTestApi, deleteCareerApi, deleteCareerDescriptionApi, deleteCertificationApi, deleteCoverLetterApi, deleteEducationApi, deleteLanguageTestApi, readCareerDescriptionApi, readCareerDescriptionsApi, readCareersApi, readCertificationsApi, readCoverLetterApi, readCoverLettersApi, readEducationsApi, readLanguageTestsApi, updateCareerApi, updateCareerDescriptionApi, updateCertificationApi, updateCoverLetterApi, updateEducationApi, updateLanguageTestApi } from "../../apis/MyPageForMemberApi";
 import type { CareerCreateDto, CareerDescriptionCreateDto, CareerDescriptionResponseDto, CareerDescriptionSummaryDto, CareerDescriptionUpdateDto, CareerResponseDto, CareerUpdateDto, CertificationCreateDto, CertificationResponseDto, CertificationUpdateDto, CoverLetterCreateDto, CoverLetterResponseDto, CoverLetterSummaryDto, CoverLetterUpdateDto, EducationCreateDto, EducationResponseDto, EducationUpdateDto, LanguageTestCreateDto, LanguageTestResponseDto, LanguageTestUpdateDto } from "../../props/myPageForMemberProps";
 import { useDocumentTabController } from "./useDocumentTabController";
 
@@ -29,43 +29,6 @@ export const useDocumentTabApi = () => {
         });
     };
 
-    const readCareerDescriptionSummaryDtos = async () => {
-        try {
-            const careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[] = (await readCareerDescriptionsApi()).data.content;
-            setCareerDescriptionSummaryDtos(careerDescriptionSummaryDtos);
-        } catch (err) {
-            printErrorInfo(err);
-        }
-    };
-
-
-    const readCareerDescriptionResponseDto = async (id : number) => {
-        try {
-            const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await readCareerDescriptionApi(id)).data.content;
-            setCareerDescriptionResponseDto(careerDescriptionResponseDto);
-        } catch (err) {
-            printErrorInfo(err);
-        }
-    };
-
-    const readCoverLetterSummaryDtos = async () => {
-        try {
-            const coverLetterSummaryDtos: CoverLetterSummaryDto[] = (await readCoverLettersApi()).data.content;
-            setCoverLetterSummaryDtos(coverLetterSummaryDtos);
-        } catch (err) {
-            printErrorInfo(err);
-        }
-    };
-
-    const readCoverLetterResponseDto = async () => {
-        try {
-            const coverLetterResponseDto: CoverLetterResponseDto = (await readCoverLettersApi()).data.content;
-            setCoverLetterResponseDto(coverLetterResponseDto);
-        } catch (err) {
-            printErrorInfo(err);
-        }
-    };
-
     const createEducation = async (educationCreateDto: EducationCreateDto) => {
         try {
             const educationResponseDto: EducationResponseDto = (await createEducationApi(educationCreateDto)).data.content;
@@ -77,6 +40,7 @@ export const useDocumentTabApi = () => {
             printErrorInfo(err);
         }
     };
+
 
     const updateEducation = async (educationUpdateDto: EducationUpdateDto) => {
         try {
@@ -199,6 +163,25 @@ export const useDocumentTabApi = () => {
         ]);
     };
 
+    const readCareerDescriptionSummaryDtos = async () => {
+        try {
+            const careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[] = (await readCareerDescriptionsApi()).data.content;
+            setCareerDescriptionSummaryDtos(careerDescriptionSummaryDtos);
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    };
+
+
+    const readCareerDescriptionResponseDto = async (id: number) => {
+        try {
+            const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await readCareerDescriptionApi(id)).data.content;
+            setCareerDescriptionResponseDto(careerDescriptionResponseDto);
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    };
+
     const updateCareerDescription = async (careerDescriptionUpdateDto: CareerDescriptionUpdateDto) => {
         const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await updateCareerDescriptionApi(careerDescriptionUpdateDto)).data.content;
         setCareerDescriptionResponseDto(careerDescriptionResponseDto);
@@ -213,6 +196,15 @@ export const useDocumentTabApi = () => {
         );
     };
 
+    const deleteCareerDescription = async (id: number) => {
+        try {
+            await deleteCareerDescriptionApi(id);
+            careerDescriptionSummaryDtos.filter(dto => dto.id !== id);
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    }
+
     const createCoverLetter = async (coverLetterCreateDto: CoverLetterCreateDto) => {
         const coverLetterResponseDto: CoverLetterResponseDto = (await createCoverLetterApi(coverLetterCreateDto)).data.content;
         setCoverLetterResponseDto(coverLetterResponseDto);
@@ -225,6 +217,25 @@ export const useDocumentTabApi = () => {
             },
         ]);
     };
+
+    const readCoverLetterSummaryDtos = async () => {
+        try {
+            const coverLetterSummaryDtos: CoverLetterSummaryDto[] = (await readCoverLettersApi()).data.content;
+            setCoverLetterSummaryDtos(coverLetterSummaryDtos);
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    };
+
+    const readCoverLetterResponseDto = async (id: number) => {
+        try {
+            const coverLetterResponseDto: CoverLetterResponseDto = (await readCoverLetterApi(id)).data.content;
+            setCoverLetterResponseDto(coverLetterResponseDto);
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    };
+
 
     const updateCoverLetter = async (coverLetterUpdateDto: CoverLetterUpdateDto) => {
         const coverLetterResponseDto: CoverLetterResponseDto = (await updateCoverLetterApi(coverLetterUpdateDto)).data.content;
@@ -240,13 +251,22 @@ export const useDocumentTabApi = () => {
         );
     };
 
+    const deleteCoverLetter = async (id: number) => {
+        try {
+            await deleteCoverLetterApi(id);
+            coverLetterSummaryDtos.filter(dto => dto.id !== id);
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    }
+
+
+
+
+
 
     return {
         readResume,
-        readCareerDescriptionSummaryDtos,
-        readCareerDescriptionResponseDto,
-        readCoverLetterSummaryDtos,
-        readCoverLetterResponseDto,
         createEducation,
         updateEducation,
         deleteEducation,
@@ -260,9 +280,15 @@ export const useDocumentTabApi = () => {
         updateLanguageTest,
         deleteLanguageTest,
         createCareerDescription,
+        readCareerDescriptionSummaryDtos,
+        readCareerDescriptionResponseDto,
         updateCareerDescription,
+        deleteCareerDescription,
         createCoverLetter,
+        readCoverLetterSummaryDtos,
+        readCoverLetterResponseDto,
         updateCoverLetter,
+        deleteCoverLetter
     }
 }
 

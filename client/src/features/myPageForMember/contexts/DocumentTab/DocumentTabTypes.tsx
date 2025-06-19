@@ -5,7 +5,7 @@ import type { CareerDescriptionSummaryDto, CareerDescriptionResponseDto, CoverLe
 
 
 export interface DocumentTabState {
-    showDocumentTab : "이력서" | "경력기술서" | "자기소개서";
+    showDocumentTab: "이력서" | "경력기술서" | "자기소개서";
     resume: Resume
     clickedCareerDescriptionId: number;
     careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[];
@@ -13,8 +13,9 @@ export interface DocumentTabState {
     clickedCoverLetterId: number;
     coverLetterSummaryDtos: CoverLetterSummaryDto[];
     coverLetterResponseDto: CoverLetterResponseDto;
-    showDetailModal: boolean;
-    showCreateModal: boolean;
+    showModal: boolean;
+    showModalType: "create" | "detail" | "update";
+
 }
 
 
@@ -27,5 +28,6 @@ export type DocumentTabAction =
     | { type: "SET_CLICKED_COVER_LETTER_ID"; payload: number }
     | { type: "SET_COVER_LETTER_SUMMARY_DTOS"; payload: CoverLetterSummaryDto[] }
     | { type: "SET_COVER_LETTER_RESPONSE_DTO"; payload: CoverLetterResponseDto }
-    | { type: "SET_SHOW_DETAIL_MODAL"; payload: boolean }
-    | { type: "SET_SHOW_CREATE_MODAL"; payload: boolean };
+    | { type: "SET_SHOW_MODAL"; payload: boolean }
+    | { type: "SET_SHOW_MODAL_TYPE"; payload: "create" | "detail" | "update" }
+

@@ -27,7 +27,7 @@ const CareerInfo = ({ careerResponseDtos }: CareerInfoProps) => {
                 </div>
                 <div className="flex">
                     <Input label="입사일" placeholder="" size="ibs" disabled={true} type="date" value={career.startDate} setValue={() => { }} />
-                    <Input label="퇴사일" placeholder="" size="ibs" disabled={true} type="date" value={career.endDate} setValue={() => { }} />
+                    <Input label="퇴사일" placeholder="" size="ibs" disabled={true} type="date" value={career.endDate || ""} setValue={() => { }} />
                 </div>
 
             </InternalBox>

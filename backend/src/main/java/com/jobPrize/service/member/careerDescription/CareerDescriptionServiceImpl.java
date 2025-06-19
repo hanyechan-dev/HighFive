@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentResponseDto;
-import com.jobPrize.dto.member.careerDescription.CareerDescriptionContentUpdateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionResponseDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionSummaryDto;
@@ -117,13 +116,17 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
 
 		careerDescription.updateCareerDescription(careerDescriptionUpdateDto);
-		List<CareerDescriptionContentUpdateDto> careerDescriptionContentUpdateDtos = careerDescriptionUpdateDto.getContents();
+		
+		careerDescription.getCareerDescriptionContents().clear();
+
+		
+		List<CareerDescriptionContentCreateDto> careerDescriptionContentCreateDtos = careerDescriptionUpdateDto.getContents();
 		List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();
-		for(CareerDescriptionContentUpdateDto careerDescriptionContentUpdateDto : careerDescriptionContentUpdateDtos) {
-			CareerDescriptionContentResponseDto careerDescriptionContentResponseDto = careerDescriptionContentService.updateCareerDescriptionContent(careerDescriptionContentUpdateDto);
+		for(CareerDescriptionContentCreateDto careerDescriptionContentCreateDto : careerDescriptionContentCreateDtos) {
+			CareerDescriptionContentResponseDto careerDescriptionContentResponseDto = careerDescriptionContentService.createCareerDescriptionContent(careerDescription, careerDescriptionContentCreateDto);
 			careerDescriptionContentResponseDtos.add(careerDescriptionContentResponseDto);
 		}
-		
+
 		return CareerDescriptionResponseDto.of(careerDescription,careerDescriptionContentResponseDtos);
 	}
 

@@ -132,7 +132,7 @@ public class ProposalServiceImpl implements ProposalService {
 	}
 
 	@Override
-	public void updateProposal(Long id, UserType userType, ProposalUpdateDto proposalUpdateDto) {
+	public ProposalResponseDto updateProposal(Long id, UserType userType, ProposalUpdateDto proposalUpdateDto) {
 		
 		String action = proposalUpdateDto.getProposalStatus();
 		
@@ -149,6 +149,8 @@ public class ProposalServiceImpl implements ProposalService {
 		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
 		proposal.changeStatus(ProposalStatus.valueOf(proposalUpdateDto.getProposalStatus()));
+		
+		return ProposalResponseDto.from(proposal);
 		
 	}
 	

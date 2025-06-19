@@ -26,7 +26,7 @@ const EducationInfo = ({ educationResponseDtos }: EducationInfoProps) => {
                     <Input label="소재지" placeholder="" size="ibm" disabled={true} type="text" value={education.location} setValue={() => { }} />
                     <div className="flex">
                         <Input label="입학일" placeholder="" size="ibs" disabled={true} type="date" value={education.enterDate} setValue={() => { }} />
-                        <Input label="졸업일" placeholder="" size="ibs" disabled={true} type="date" value={education.graduateDate} setValue={() => { }} />
+                        <Input label="졸업일" placeholder="" size="ibs" disabled={true} type="date" value={education.graduateDate || ""} setValue={() => { }} />
                     </div>
                 </div>
             </InternalBox>

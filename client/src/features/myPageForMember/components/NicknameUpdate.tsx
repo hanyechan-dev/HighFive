@@ -1,33 +1,43 @@
 import { useState } from "react";
-import { useMyPageForMemberPageController } from "../customHooks/useMyPageForMemberPageController";
 import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
+import type { MemberUpdateDto } from "../props/myPageForMemberProps";
 
-const NicknameUpdate = () => {
+interface NicknameUpdateProps {
+    setShowModal: (showModal: boolean) => void;
+    onUpdate: (memberUpdateDto: MemberUpdateDto) => void;
+}
 
-    const {
-        setMemberUpdateDto,
-        setShowMemberInfoUpdateModal,
-    } = useMyPageForMemberPageController();
+const NicknameUpdate = ({
+    setShowModal,
+    onUpdate
+}: NicknameUpdateProps) => {
 
-    const [nickname, setNickname] = useState("");
+    const [memberUpdateDto, setMemberUpdateDto] = useState<MemberUpdateDto>({
+        nickname: ""
+    });
+
+    const setNickname = (nickname: string) => {
+        setMemberUpdateDto({
+            ...memberUpdateDto,
+            nickname
+        })
+    }
 
     const onClickUpdate = () => {
-        if (nickname === "") {
+        if (memberUpdateDto.nickname === "") {
             alert("닉네임을 입력해주세요.");
             return;
         }
-        setMemberUpdateDto({
-            nickname
-        })
-        setShowMemberInfoUpdateModal(false);
+        onUpdate(memberUpdateDto)
+        setShowModal(false);
     } 
 
 
 
     return (
         <div>
-            <Input label={"닉네임"} placeholder={"닉네임을 입력해주세요."} size={"m"} disabled={false} type={"text"} value={nickname} setValue={setNickname} />
+            <Input label={"닉네임"} placeholder={"닉네임을 입력해주세요."} size={"m"} disabled={false} type={"text"} value={memberUpdateDto.nickname} setValue={setNickname} />
             <Button color={"theme"} size={"l"} disabled={false} text={"수정"} onClick={onClickUpdate} type={"button"} />
         </div>
     )

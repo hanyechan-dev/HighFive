@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 		
 
 		
-		if (UserType.일반회원.equals(userSignUpDto.getType())||UserType.관리자.equals(userSignUpDto.getType())) {
+		if (UserType.일반회원.equals(UserType.valueOf(userSignUpDto.getType()))||UserType.관리자.equals(UserType.valueOf(userSignUpDto.getType()))) {
 			user.approve();
 		}
 		
@@ -106,11 +106,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto) {
+	public MyPageResponseDto updateUserMyPageInfo(Long id, MyPageUpdateDto myPageUpdateDto) {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		user.updateAddress(myPageUpdateDto.getAddress());
 		user.updatePhone(myPageUpdateDto.getPhone());
+		
+		return MyPageResponseDto.from(user);
+		
 
 	}
 

@@ -1,12 +1,12 @@
 
 import ResumeTab from "./ResumeTab";
 import CareerDescriptionTab from "./CareerDescriptionTab";
-import CoverLetterTab from "./CoverLetterTab";
 import { useDocumentTabApi } from "../../customHooks/DocumentTab/useDocumentTabApi";
 import { BigExternalBox, PageBox } from "../../../../common/components/box/Box";
 import RadioButton from "../../../../common/components/button/RadioButton";
 import ModalTitle from "../../../../common/components/title/ModalTitle";
 import { useDocumentTabController } from "../../customHooks/DocumentTab/useDocumentTabController";
+import CoverLetterTab from "./CoverLetterTab";
 
 const documentTextList = [
     { label: "이력서", value: "이력서" },
@@ -59,11 +59,6 @@ const DocumentTab = () => {
                     {showDocumentTab === "이력서" && <ResumeTab />}
                     {showDocumentTab === "경력기술서" && <CareerDescriptionTab />}
                     {showDocumentTab === "자기소개서" && <CoverLetterTab />}
-
-
-
-
-
                 </ BigExternalBox>
 
             </PageBox>
