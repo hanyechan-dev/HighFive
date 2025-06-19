@@ -1,46 +1,23 @@
 import { listRowClass } from "../../common/listStyles";
 import type { ProposalSummary } from "../props/ProposalProps";
 import Badge from "../../common/components/Badge";
+import { getAge } from "../../utils/DateUtil";
 
 interface ProposalSummaryRowProps {
   proposal: ProposalSummary;
   onClick: (id: number) => void;
 }
 
-function getAge(birthDate: string): number {
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  return age;
-}
-
-function getStatusColor(status: string): string {
-  switch (status) {
-    case 'WAITING':
-      return 'bg-yellow-50 text-yellow-600 border-yellow-100';
-    case 'APPROVED':
-      return 'bg-green-50 text-green-600 border-green-100';
-    case 'REJECTED':
-      return 'bg-red-50 text-red-600 border-red-100';
-    default:
-      return 'bg-gray-50 text-gray-600 border-gray-100';
-  }
-}
-
 function getStatusText(status: string): string {
   switch (status) {
     case 'WAITING':
-      return '대기';
+      return '대기중';
     case 'APPROVED':
       return '승인';
     case 'REJECTED':
-      return '거부';
+      return '거절';
     default:
-      return status;
+      return '알 수 없음';
   }
 }
 

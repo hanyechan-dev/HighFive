@@ -1,35 +1,25 @@
 import Badge from "../../common/components/Badge";
 import { listRowClass } from "../../common/listStyles";
 import type { ApplicationSummaryForCompany } from "../props/ApplicationProps";
-
-function getAge(birthDate: string): number {
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  return age;
-}
+import { getAge } from "../../utils/DateUtil";
 
 interface ApplicationSummaryRowProps {
   application: ApplicationSummaryForCompany;
+  onClick: (applicationId: number) => void;
 }
 
-const ApplicationSummaryRow = ({ application }: ApplicationSummaryRowProps) => (
-  <div className={listRowClass}>
+const ApplicationSummaryRow = ({ application, onClick }: ApplicationSummaryRowProps) => (
+  <div 
+    className={listRowClass + " gap-10 cursor-pointer"}
+    onClick={() => onClick(application.id)}
+  >
     <div className="w-[200px] flex items-center justify-center">{application.name}</div>
     <div className="w-[200px] flex items-center justify-center">
       <Badge label={application.genderType} color={application.genderType === '남성' ? 'male' : 'female'} />
     </div>
     <div className="w-[120px] flex items-center justify-center">{getAge(application.birthDate)}</div>
-    <div className="w-[200px] flex items-center justify-center">
-      <Badge label={application.hasCareer ? '경력' : '신입'} color={application.hasCareer ? 'career' : 'newbie'} />
-    </div>
-    <div className="w-[200px] flex items-center justify-center">
-      <Badge label={application.educationLevel} color="info" />
-    </div>
+    <div className="w-[200px] flex items-center justify-center">{application.hasCareer ? '경력' : '신입'}</div>
+    <div className="w-[200px] flex items-center justify-center">{application.educationLevel}</div>
     <div className="w-[200px] flex items-center justify-center">{application.createdDate}</div>
   </div>
 );

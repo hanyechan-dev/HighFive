@@ -1,7 +1,7 @@
 import { listHeaderClass } from "../../common/listStyles";
 
 const ApplicationJobPostingListHeader = () => (
-    <div className={listHeaderClass +" gap-3"}>
+    <div className={listHeaderClass  }>
     <div className="w-[121px] flex items-center justify-start">기업명</div>
     <div className="w-[110px] flex items-center justify-start">기업형태</div>
     <div className="w-[270px] flex items-center justify-start">공고명</div>
@@ -10,7 +10,7 @@ const ApplicationJobPostingListHeader = () => (
     <div className="w-[120px] flex items-center justify-center">경력구분</div>
     <div className="w-[120px] flex items-center justify-center">학력</div>
     <div className="w-[120px] flex items-center justify-center">등록 일자</div>
-    <div className="flex-1 flex items-center justify-end pr-6">지원자 보러가기</div>
+    <div className="flex-1 flex items-center "></div>
   </div>
 );
 

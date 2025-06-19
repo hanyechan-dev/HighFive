@@ -1,7 +1,7 @@
 import { listHeaderClass } from "../../common/listStyles";
 
 const ApplicationListHeader = () => (
-  <div className={listHeaderClass}>
+  <div className={listHeaderClass + " gap-10"}>
     <div className="w-[200px] flex items-center justify-center">이름</div>
     <div className="w-[200px] flex items-center justify-center">성별</div>
     <div className="w-[120px] flex items-center justify-center">나이</div>

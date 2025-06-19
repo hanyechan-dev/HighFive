@@ -4,21 +4,11 @@ import { listRowClass } from "../../common/listStyles";
 import SimilarityScore from "./SimilarityScore";
 import type { MemberPoolSummary } from "../props/MemberPoolProps";
 import Badge from "../../common/components/Badge";
+import { getAge } from "../../utils/DateUtil";
 
 interface MemberPoolSummaryRowProps {
   member: MemberPoolSummary;
   onClick: (id: number) => void;
-}
-
-function getAge(birthDate: string): number {
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  return age;
 }
 
 export default function MemberPoolSummaryRow({ member, onClick }: MemberPoolSummaryRowProps) {

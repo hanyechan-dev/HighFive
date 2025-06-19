@@ -4,4 +4,8 @@ export const ApplicationListApi = (jobPostingId: number, page: number, size: num
   return api(true).post('/appliers/applications', { id: jobPostingId }, {
     params: { page, size },
   });
+};
+
+export const ApplicationDetailApi = (applicationId: number) => {
+  return api(true).post('/appliers/applications/detail', { id: applicationId });
 }; 

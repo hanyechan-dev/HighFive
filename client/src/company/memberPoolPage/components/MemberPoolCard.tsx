@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import SimilarityScore from './SimilarityScore';
 import Badge from '../../common/components/Badge';
+import { getAge } from '../../utils/DateUtil';
 
 interface MemberPoolSummary {
     id: number;
@@ -19,10 +20,9 @@ interface MemberPoolCardProps {
     onClick: (id: number) => void;
 }
 
-
-
 const MemberPoolCard: FC<MemberPoolCardProps> = ({ member, onClick }) => {
     const [isHovered, setIsHovered] = useState(false);
+
     return (
         <div
             className="bg-white rounded-2xl shadow-lg border border-gray-100 p-7 flex flex-col gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative min-h-[220px] group cursor-pointer font-roboto"
@@ -58,17 +58,3 @@ const MemberPoolCard: FC<MemberPoolCardProps> = ({ member, onClick }) => {
 };
 
 export default MemberPoolCard; 
-
-
-
-
-function getAge(birthDate: string) {
-    const today = new Date();
-    const birth = new Date(birthDate);
-    let age = today.getFullYear() - birth.getFullYear();
-    const m = today.getMonth() - birth.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-        age--;
-    }
-    return age;
-}

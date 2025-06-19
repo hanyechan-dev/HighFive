@@ -1,14 +1,15 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
 import CompanyEmptyState from "../../common/components/CompanyEmptyState";
 import Pagination from "../../../common/components/pagination/Pagination";
 import { usePagination } from "../../../common/customHooks/usePagination";
+import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import type { JobPostingSummary } from "../../jobPostingPage/props/JobPostingProps";
 import ApplicationJobPostingListHeader from "../components/ApplicationJobPostingListHeader";
 import ApplicationJobPostingSummaryRow from "../components/ApplicationJobPostingSummaryRow";
+import { JobPostingListApi } from "../../jobPostingPage/apis/JobPostingApi";
 
 // 임시 mock 데이터
 const mockJobPostings: JobPostingSummary[] = [
@@ -37,9 +38,9 @@ const mockJobPostings: JobPostingSummary[] = [
 ];
 
 export default function ApplicationJobPostingPage() {
-  const [jobPostings] = useState<JobPostingSummary[]>(mockJobPostings);
-  const [totalElements] = useState(mockJobPostings.length);
-  const [isLoading] = useState(false);
+  const [jobPostings, setJobPostings] = useState<JobPostingSummary[]>(mockJobPostings);
+  const [totalElements, setTotalElements] = useState(mockJobPostings.length);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -58,8 +59,28 @@ export default function ApplicationJobPostingPage() {
     pagesPerBlock: 10,
   });
 
+  useEffect(() => {
+    const fetchJobPostings = async () => {
+      setIsLoading(true);
+      try {
+        const res = await JobPostingListApi(clickedPage - 1, 10);
+        if (res && res.data) {
+          setJobPostings(res.data.content || []);
+          setTotalElements(res.data.totalElements || 0);
+        }
+      } catch (err) {
+        printErrorInfo(err);
+        setJobPostings(mockJobPostings);
+        setTotalElements(mockJobPostings.length);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchJobPostings();
+  }, [clickedPage]);
+
   const handleShowApplicants = (jobPostingId: number) => {
-    navigate(`/appliers/${jobPostingId}/applicants`);
+    navigate(`/job-posting/${jobPostingId}/applicants`);
   };
 
   return (
@@ -71,23 +92,26 @@ export default function ApplicationJobPostingPage() {
             description="채용공고별 지원자를 확인하세요"
           />
         </div>
+        
         {isLoading ? (
           <div className="text-center py-12 text-gray-400">로딩 중...</div>
-        ) : jobPostings.length === 0 ? (
-          <CompanyEmptyState
-            title="등록된 채용공고가 없습니다."
-            text="채용공고를 먼저 등록하세요."
-          />
         ) : (
           <>
             <ApplicationJobPostingListHeader />
-            {jobPostings.map((job) => (
-              <ApplicationJobPostingSummaryRow
-                key={job.id}
-                job={job}
-                onShowApplicants={handleShowApplicants}
+            {jobPostings.length === 0 ? (
+              <CompanyEmptyState
+                title="등록된 채용공고가 없습니다."
+                text="채용공고를 먼저 등록하세요."
               />
-            ))}
+            ) : (
+              jobPostings.map((job) => (
+                <ApplicationJobPostingSummaryRow
+                  key={job.id}
+                  job={job}
+                  onShowApplicants={handleShowApplicants}
+                />
+              ))
+            )}
           </>
         )}
         <div className="mt-8 flex justify-center">
