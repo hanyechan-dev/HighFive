@@ -66,10 +66,33 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		
 	}
 	
-	// 사용자 유형에 따른 구독자 조회
+	// 사용자 유형에 따른 구독자 정보 조회
 	@Override
 	@Transactional(readOnly = true)
 	public List<SubscriptionResponseDto> readSubscriberListByUserType(UserType userType, UserType targetUserType) {
+
+		String action = "조회";
+		
+		assertUtil.assertUserType(userType, UserType.관리자, ENTITY_NAME, action);
+		
+		List<Subscription> subscribers = subscriptionRepository.findAllByUserType(targetUserType);
+		
+		return subscribers.stream()
+			.map(subs -> SubscriptionResponseDto.builder()
+					.id(subs.getUser().getId())
+					.name(subs.getUser().getName())
+					.userType(subs.getUser().getType())
+					.startDate(subs.getStartDate())
+					.endDate(subs.getEndDate())
+					.build()
+				)
+			.collect(Collectors.toList());
+	}
+	
+	// 사용자 유형에 따른 구독자 수 조회
+	@Override
+	@Transactional(readOnly = true)
+	public List<SubscriptionResponseDto> ReadSubscribersCountByUserType(UserType userType, UserType targetUserType) {
 
 		String action = "조회";
 		
@@ -108,8 +131,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 			
 			userRepository.save(user);
 		}
-		
 	}
+	
+	// 사용자가 자신의 마지막 구독 정보 조회
 	@Override
 	@Transactional(readOnly = true)
 	public SubscriptionResponseDto readSubscription(Long id) { 
@@ -131,7 +155,5 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		        .startDate(subscription.getStartDate())
 	            .endDate(subscription.getEndDate())
 	            .build();
-
 		}
-	
 }

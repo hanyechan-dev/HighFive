@@ -1,5 +1,6 @@
 package com.jobPrize.repository.common.subscription;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,6 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 	@Override
 	public List<Subscription> findAll() {
 		QSubscription subscription = QSubscription.subscription;
-
-
 
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)
@@ -46,6 +45,25 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 				.fetch();
 		
 		return results;
+	}
+	
+	// UserType에 따른 구독자 수 조회
+	@Override
+	public Long countSubsByUserType(UserType userType){
+		QSubscription subscription = QSubscription.subscription;
+		LocalDate today = LocalDate.now();
+		
+		Long result = queryFactory
+				.select(subscription.count())
+				.from(subscription)
+				.leftJoin(subscription.user)
+				.where(
+						subscription.user.type.eq(userType)
+						.and(subscription.user.subscribed.eq(true))
+						)
+				.fetchOne();
+		
+		return result;
 	}
 
 	@Override

@@ -19,15 +19,15 @@ import { Button } from "../../../components/ui/button"
 
 // 목업 데이터 1
 const userTypeData = [
-  { name: "일반회원", value: 65 },
-  { name: "기업회원", value: 25 },
-  { name: "컨설턴트", value: 10 },
+  { userType: "일반회원", value: 65 },
+  { userType: "기업회원", value: 25 },
+  { userType: "컨설턴트", value: 10 },
 ]
 
 // 목업 데이터 2
 const subscriptionData = [
-  { name: "일반회원", 구독비율: 35, 비구독비율: 65 },
-  { name: "기업회원", 구독비율: 70, 비구독비율: 30 },
+  { userType: "일반회원", subs: 35, unSubs: 65 },
+  { userType: "기업회원", subs: 70, unSubs: 30 },
 ]
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28"]
@@ -126,7 +126,6 @@ const renderActiveShape = (props: any) => {
 export default function StatisticsPage() {
   const [activeTab, setActiveTab] = useState("users")
   const [periodType, setPeriodType] = useState("30")
-  // const [activeIndex, setActiveIndex] = useState(0)
 
   // 단위 기간에 따른 통계 생성
   const getCurrentData = (baseValue: number, variance: number) => {
@@ -154,10 +153,6 @@ export default function StatisticsPage() {
     setPeriodType(period)
   }
 
-  // const onPieEnter = (_: any, index: number) => {
-  //   setActiveIndex(index)
-  // }
-
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-[#EE57CD]">서비스 통계</h1>
@@ -182,9 +177,10 @@ export default function StatisticsPage() {
                       cx="50%"
                       cy="50%"
                       labelLine={true}
-                      label={({ name, percent }) => `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`}
+                      label={({ userType, percent }) => `${userType}: ${((percent ?? 0) * 100).toFixed(0)}%`}
                       outerRadius={100}
                       fill="#8884d8"
+                      nameKey="userType"
                       dataKey="value"
                     >
                       {userTypeData.map((entry, index) => (
@@ -301,8 +297,8 @@ export default function StatisticsPage() {
                         //   activeIndex={activeIndex}
                           activeShape={renderActiveShape}
                           data={[
-                            { name: "구독", value: subscriptionData[0].구독비율, fill: "#EE57CD" },
-                            { name: "비구독", value: subscriptionData[0].비구독비율, fill: "#FFB6E1" },
+                            { name: "구독", value: subscriptionData[0].subs, fill: "#EE57CD" },
+                            { name: "비구독", value: subscriptionData[0].unSubs, fill: "#FFB6E1" },
                           ]}
                           cx="50%"
                           cy="50%"
@@ -330,18 +326,16 @@ export default function StatisticsPage() {
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
-                        //   activeIndex={activeIndex + 2}
                           activeShape={renderActiveShape}
                           data={[
-                            { name: "구독", value: subscriptionData[1].구독비율, fill: "#8884d8" },
-                            { name: "비구독", value: subscriptionData[1].비구독비율, fill: "#B8B5E1" },
+                            { name: "구독", value: subscriptionData[1].subs, fill: "#8884d8" },
+                            { name: "비구독", value: subscriptionData[1].unSubs, fill: "#B8B5E1" },
                           ]}
                           cx="50%"
                           cy="50%"
                           innerRadius={60}
                           outerRadius={80}
                           dataKey="value"
-                          // onMouseEnter={(_, index) => setActiveIndex(index + 2)}
                         />
                         <Tooltip />
                       </PieChart>

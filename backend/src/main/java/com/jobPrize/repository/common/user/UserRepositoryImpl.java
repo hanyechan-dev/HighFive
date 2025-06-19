@@ -108,10 +108,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return results;
 	}
 	
-	
-	
-	
-	
 	private long countUserByUserType(UserType userType) {
 		QUser user = QUser.user;
 
@@ -134,9 +130,5 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 				.fetchOne()
 				).orElse(0L);
 	}
-
-
-
-
 
 }
