@@ -16,7 +16,7 @@ import BuildingIcon from "../../../common/icons/BuildingIcon";
 import { CheckCircleIcon, HourglassIcon, MegaphoneIcon } from "lucide-react";
 import JobIcon from "../../../common/icons/JobIcon";
 import CalenderIcon from "../../../common/icons/CalenderIcon";
-
+import dayjs from "dayjs"; //  타입스크립트 경고 문제 없음
 
 interface ApplicationDetailModalProps {
     applicationResponseDto: ApplicationResponseDto;
@@ -72,7 +72,7 @@ const ApplicationDetailModal = ({ applicationResponseDto, onClose }: Application
 
                 <div className="flex ml-6 mb-3">
                     <CalenderIcon />
-                    <div className="ml-3 font-roboto">{new Date(applicationResponseDto.createdDate).toLocaleDateString()}</div>
+                    <div className="ml-3 font-roboto">{dayjs(applicationResponseDto.createdDate).format('YYYY-MM-DD')}</div>
                 </div>
             </div>
 

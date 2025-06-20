@@ -1,5 +1,5 @@
 import type { ProposalSummaryForMemberDto } from "../props/myPageForMemberProps";
-
+import dayjs from "dayjs"; //  타입스크립트 경고 문제 없음
 interface ProposalListItemProps {
     proposalSummaryDto: ProposalSummaryForMemberDto;
     onClick: (id: number) => void
@@ -14,15 +14,12 @@ const ProposalListItem = ({ proposalSummaryDto, onClick }: ProposalListItemProps
             <div>{proposalSummaryDto.proposalTitle}</div>
             <div>{proposalSummaryDto.companyName}</div>
             <div>{proposalSummaryDto.proposalStatus}</div>
-            <div>{proposalSummaryDto.proposalDate}</div>
+            <div>{dayjs(proposalSummaryDto.proposalDate).format('YYYY-MM-DD')}</div>
         </div>
 
     )
 }
 export default ProposalListItem
-
-
-
 
 
 

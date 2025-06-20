@@ -1,4 +1,5 @@
 import type { ApplicationSummaryForMemberDto } from "../props/myPageForMemberProps";
+import dayjs from "dayjs"; //  타입스크립트 경고 문제 없음
 
 interface ApplicationListItemProps {
     applicationSummaryDto: ApplicationSummaryForMemberDto;
@@ -15,7 +16,7 @@ const ApplicationListItem = ({ applicationSummaryDto, onClick }: ApplicationList
             <div>{applicationSummaryDto.companyName}</div>
             <div>{applicationSummaryDto.job}</div>
             <div>{applicationSummaryDto.isPassed}</div>
-            <div>{applicationSummaryDto.createdDate}</div>
+            <div>{dayjs(applicationSummaryDto.createdDate).format('YYYY-MM-DD')}</div>
         </div>
 
     )
