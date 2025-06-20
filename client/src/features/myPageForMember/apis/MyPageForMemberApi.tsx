@@ -181,4 +181,13 @@ export const readMyApplicationApi = (id: number) => {
     });
 }
 
+export const readMyPaymentsApi = (page: number, size: number) => {
+    return api(true).get("/payments", {
+        params: {
+            page,
+            size,
+        }
+    });
+}
+
 

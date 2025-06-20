@@ -7,7 +7,6 @@ export const useProposalTapApi = () => {
     const { 
         proposalSummaryForMemberDtos,
         setProposalSummaryForMemberDtos,
-        totalElements,
         setTotalElements,
         setProposalResponseDto,
     } = useProposalTapController();
@@ -64,7 +63,6 @@ export const useProposalTapApi = () => {
         readProposals,
         readProposal,
         updateProposal,
-        totalElements,
     }
 
 
