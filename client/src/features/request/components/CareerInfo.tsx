@@ -7,31 +7,30 @@ import type { CareerResponseDto } from "../../myPageForMember/props/myPageForMem
 
 
 interface CareerInfoProps {
-    careerResponseDtos: CareerResponseDto[];
+    careerResponseDto: CareerResponseDto;
 }
 
 
 
-const CareerInfo = ({ careerResponseDtos }: CareerInfoProps) => {
+const CareerInfo = ({ careerResponseDto }: CareerInfoProps) => {
     return (
-        careerResponseDtos.map((career,index) => (
 
-            <InternalBox key={index}>
+
+            <InternalBox>
                 <div className="flex">
-                    <Input label="회사명" placeholder="" size="ibm" disabled={true} type="text" value={career.companyName} setValue={() => { }} />
-                    <Input label="직무" placeholder="" size="ibm" disabled={true} type="text" value={career.job} setValue={() => { }} />
+                    <Input label="회사명" placeholder="" size="ibm" disabled={true} type="text" value={careerResponseDto.companyName} setValue={() => { }} />
+                    <Input label="직무" placeholder="" size="ibm" disabled={true} type="text" value={careerResponseDto.job} setValue={() => { }} />
                 </div>
                 <div className="flex">
-                    <Input label="부서" placeholder="" size="ibm" disabled={true} type="text" value={career.department} setValue={() => { }} />
-                    <Input label="직급" placeholder="" size="ibm" disabled={true} type="text" value={career.position} setValue={() => { }} />
+                    <Input label="부서" placeholder="" size="ibm" disabled={true} type="text" value={careerResponseDto.department} setValue={() => { }} />
+                    <Input label="직급" placeholder="" size="ibm" disabled={true} type="text" value={careerResponseDto.position} setValue={() => { }} />
                 </div>
                 <div className="flex">
-                    <Input label="입사일" placeholder="" size="ibs" disabled={true} type="date" value={career.startDate} setValue={() => { }} />
-                    <Input label="퇴사일" placeholder="" size="ibs" disabled={true} type="date" value={career.endDate || ""} setValue={() => { }} />
+                    <Input label="입사일" placeholder="" size="ibs" disabled={true} type="date" value={careerResponseDto.startDate} setValue={() => { }} />
+                    <Input label="퇴사일" placeholder="" size="ibs" disabled={true} type="date" value={careerResponseDto.endDate || ""} setValue={() => { }} />
                 </div>
 
             </InternalBox>
-        ))
     )
 };
 

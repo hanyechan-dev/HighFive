@@ -1,5 +1,5 @@
 import TextArea from "../../../common/components/input/TextArea"
-import { ExternalBox } from "../../../common/components/box/Box"
+import { InternalBox } from "../../../common/components/box/Box"
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import type { CareerDescriptionResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 
@@ -14,7 +14,7 @@ const CareerDescriptionInfo = ({careerDescriptionResponseDto
     return (
         <>
             <ModalTitle title={careerDescriptionResponseDto.title} />
-            <ExternalBox>
+            <InternalBox>
                 {careerDescriptionResponseDto.contents.map((content) =>
                 (<TextArea 
                     key={content.id}
@@ -23,8 +23,8 @@ const CareerDescriptionInfo = ({careerDescriptionResponseDto
                     disabled={true}
                     value={content.content}
                     setValue={() => { }}
-                    size={"ml"} />))}
-            </ExternalBox>
+                    size={"ibl"} />))}
+            </InternalBox>
         </>
 
     )

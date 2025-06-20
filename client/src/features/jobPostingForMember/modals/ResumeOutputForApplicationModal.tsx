@@ -8,7 +8,7 @@ import { resumeTypeEnum } from "../../../common/enum/Enum";
 import EducationInfo from "../../request/components/EducationInfo";
 import CareerInfo from "../../request/components/CareerInfo";
 import CertificationInfo from "../../request/components/CertificationInfo";
-import LanguageTest from "../../request/components/LanguageTest";
+import LanguageTest from "../../request/components/LanguageTestInfo";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
 
 

@@ -1,5 +1,5 @@
 import type { ProposalSummaryForMemberDto, ProposalResponseDto } from "../../props/myPageForMemberProps";
-import { useProposalTapContext } from "./useMyPageForMemberPageContext";
+import { useProposalTapContext } from "./useProposalTapContext";
 
 
 
@@ -15,10 +15,7 @@ export const useProposalTapController = () => {
     const setProposalSummaryForMemberDtos = (proposalSummaryForMemberDtos: ProposalSummaryForMemberDto[]) => {
         dispatch({ type: "SET_PROPOSAL_SUMMARY_FOR_MEMBER_DTOS", payload: proposalSummaryForMemberDtos });
     };
-    const clickedProposalId = state.clickedProposalId;
-    const setClickedProposalId = (clickedProposalId: number) => {
-        dispatch({ type: "SET_CLICKED_PROPOSAL_ID", payload: clickedProposalId });
-    };
+    
     const proposalResponseDto = state.proposalResponseDto;
     const setProposalResponseDto = (proposalResponseDto: ProposalResponseDto) => {
         dispatch({ type: "SET_PROPOSAL_RESPONSE_DTO", payload: proposalResponseDto });
@@ -34,8 +31,6 @@ export const useProposalTapController = () => {
         setShowModal,
         proposalSummaryForMemberDtos,
         setProposalSummaryForMemberDtos,
-        clickedProposalId,
-        setClickedProposalId,
         proposalResponseDto,
         setProposalResponseDto,
         totalElements,

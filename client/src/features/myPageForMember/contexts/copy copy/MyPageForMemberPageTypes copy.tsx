@@ -1,5 +1,5 @@
 
-import type { Resume } from "../../jobPostingForMember/props/JobPostingForMemberProps";
+
 import type { CareerDescriptionSummaryDto, CareerDescriptionResponseDto, CoverLetterSummaryDto, CoverLetterResponseDto, MemberMyPageResponseDto, MyPageUpdateDto, MemberUpdateDto, PasswordUpdateDto, CareerCreateDto, CareerUpdateDto, CertificationCreateDto, CertificationUpdateDto, EducationCreateDto, EducationUpdateDto, LanguageTestCreateDto, LanguageTestUpdateDto, CareerDescriptionCreateDto, CareerDescriptionUpdateDto, CoverLetterCreateDto, CoverLetterUpdateDto, ProposalResponseDto, ProposalSummaryForMemberDto, ProposalUpdateDto, PaymentResponseDto, ApplicationResponseDto, ApplicationSummaryForMemberDto } from "../props/myPageForMemberProps";
 
 

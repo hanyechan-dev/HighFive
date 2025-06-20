@@ -67,10 +67,9 @@ function App() {
 
     return (
         <>
-            {/* <MyPageForMemberPageProvider>
+            <MyPageForMemberPageProvider>
                 <MyPageForMemberPage />
-            </MyPageForMemberPageProvider> */}
-            <AuthModal />
+            </MyPageForMemberPageProvider>
         </>
     )
 

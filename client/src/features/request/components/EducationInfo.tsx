@@ -5,32 +5,30 @@ import type { EducationResponseDto } from "../../myPageForMember/props/myPageFor
 
 
 interface EducationInfoProps {
-    educationResponseDtos: EducationResponseDto[];
+    educationResponseDto: EducationResponseDto;
 }
 
-const EducationInfo = ({ educationResponseDtos }: EducationInfoProps) => {
+const EducationInfo = ({ educationResponseDto }: EducationInfoProps) => {
 
 
     return (
-        educationResponseDtos.map((education, index) => (
-            <InternalBox key={index}>
+            <InternalBox>
                 <div className="flex">
-                    <Input label="학교명" placeholder="" size="ibm" disabled={true} type="text" value={education.schoolName} setValue={() => { }} />
-                    <Input label="전공" placeholder="" size="ibm" disabled={true} type="text" value={education.major} setValue={() => { }} />
+                    <Input label="학교명" placeholder="" size="ibm" disabled={true} type="text" value={educationResponseDto.schoolName} setValue={() => { }} />
+                    <Input label="전공" placeholder="" size="ibm" disabled={true} type="text" value={educationResponseDto.major} setValue={() => { }} />
                 </div>
                 <div className="flex">
-                    <Input label="학위" placeholder="" size="ibm" disabled={true} type="text" value={education.educationLevel} setValue={() => { }} />
-                    <Input label="학점" placeholder="" size="ibm" disabled={true} type="text" value={education.gpa.toString()} setValue={() => { }} />
+                    <Input label="학위" placeholder="" size="ibm" disabled={true} type="text" value={educationResponseDto.educationLevel} setValue={() => { }} />
+                    <Input label="학점" placeholder="" size="ibm" disabled={true} type="text" value={educationResponseDto.gpa.toString()} setValue={() => { }} />
                 </div>
                 <div className="flex">
-                    <Input label="소재지" placeholder="" size="ibm" disabled={true} type="text" value={education.location} setValue={() => { }} />
+                    <Input label="소재지" placeholder="" size="ibm" disabled={true} type="text" value={educationResponseDto.location} setValue={() => { }} />
                     <div className="flex">
-                        <Input label="입학일" placeholder="" size="ibs" disabled={true} type="date" value={education.enterDate} setValue={() => { }} />
-                        <Input label="졸업일" placeholder="" size="ibs" disabled={true} type="date" value={education.graduateDate || ""} setValue={() => { }} />
+                        <Input label="입학일" placeholder="" size="ibs" disabled={true} type="date" value={educationResponseDto.enterDate} setValue={() => { }} />
+                        <Input label="졸업일" placeholder="" size="ibs" disabled={true} type="date" value={educationResponseDto.graduateDate || ""} setValue={() => { }} />
                     </div>
                 </div>
             </InternalBox>
-        ))
     )
 };
 

@@ -1,9 +1,9 @@
 import { printErrorInfo } from "../../../../common/utils/ErrorUtil";
-import { deactivateAccountApi, readMyPageApi, updateMyNickNameApi, updateMyPageApi, updatePasswordApi } from "../../apis/MyPageForMemberApi";
 import type { MemberMyPageResponseDto, MemberResponseDto, MemberUpdateDto, MyPageResponseDto, MyPageUpdateDto, PasswordUpdateDto } from "../../props/myPageForMemberProps";
 import { useMemberInfoTabController } from "./useMemberInfoTabController";
 import { store } from "../../../../common/store/store";
 import AuthUtil from "../../../../common/utils/AuthUtil";
+import { deactivateAccountApi, readMyPageApi, updateMyNickNameApi, updateMyPageApi, updatePasswordApi } from "../../apis/MyPageForMemberApi";
 
 export const useMemberInfoTabApi = () => {
     const { memberMyPageResponseDto,

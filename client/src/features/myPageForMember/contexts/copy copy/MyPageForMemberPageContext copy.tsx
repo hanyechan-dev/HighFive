@@ -1,6 +1,7 @@
 import { createContext } from "react";
+import type { MyPageForMemberPageAction, MyPageForMemberPageState } from "./MyPageForMemberPageTypes copy";
 
-import type { MyPageForMemberPageAction, MyPageForMemberPageState } from "./MyPageForMemberPageTypes";
+
 
 export const MyPageForMemberPageContext = createContext<{
     state: MyPageForMemberPageState;

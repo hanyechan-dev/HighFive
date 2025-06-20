@@ -165,3 +165,20 @@ export const readMyProposalApi = (id: number) => {
 export const updateProposalApi = (proposalUpdateDto: ProposalUpdateDto) => {
     return api(true).put('/members/proposals', proposalUpdateDto);
 }
+
+export const readMyApplicationsApi = (page: number, size: number) => {
+    return api(true).get('/members/applications', {
+        params: {
+            page,
+            size,
+        }
+    });
+}
+
+export const readMyApplicationApi = (id: number) => {
+    return api(true).post('/members/applications/detail', {
+        id,
+    });
+}
+
+

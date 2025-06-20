@@ -1,4 +1,4 @@
-import { ExternalBox } from "../../../common/components/box/Box";
+import { InternalBox } from "../../../common/components/box/Box";
 import TextArea from "../../../common/components/input/TextArea";
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import type { CoverLetterResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
@@ -14,7 +14,7 @@ const CoverLetterInfo = ( { coverLetterResponseDto } : CoverLetterInfoProps) => 
     return (
         <>
             <ModalTitle title={coverLetterResponseDto.title} />
-            <ExternalBox>
+            <InternalBox>
                 {coverLetterResponseDto.contents.map((content) =>
                 (<TextArea
                     key={content.id}
@@ -23,8 +23,8 @@ const CoverLetterInfo = ( { coverLetterResponseDto } : CoverLetterInfoProps) => 
                     disabled={true}
                     value={content.content}
                     setValue={() => { }}
-                    size={"ml"} />))}
-            </ExternalBox>
+                    size={"ibl"} />))}
+            </InternalBox>
         </>
 
     )

@@ -1,7 +1,7 @@
 import { printErrorInfo } from "../../../../common/utils/ErrorUtil";
 import { readMyProposalApi, readMyProposalsApi, updateProposalApi } from "../../apis/MyPageForMemberApi";
 import type { ProposalResponseDto, ProposalSummaryForMemberDto, ProposalUpdateDto } from "../../props/myPageForMemberProps";
-import { useProposalTapController } from "./useMyPageForMemberPageController";
+import { useProposalTapController } from "./useProposalTapController";
 
 export const useProposalTapApi = () => {
     const { 

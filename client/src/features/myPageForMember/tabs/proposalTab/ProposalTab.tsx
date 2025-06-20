@@ -2,8 +2,8 @@ import { PageBox } from "../../../../common/components/box/Box"
 import ModalTitle from "../../../../common/components/title/ModalTitle"
 import ProposalListTop from "../../components/ProposalListTop"
 import ProposalListItem from "../../components/ProposalListItem"
-import { useProposalTapController } from "../../customHooks/ProposalTap/useMyPageForMemberPageController";
-import { useProposalTapApi } from "../../customHooks/ProposalTap/useMemberInfoTabApi";
+import { useProposalTapController } from "../../customHooks/ProposalTap/useProposalTapController";
+import { useProposalTapApi } from "../../customHooks/ProposalTap/useProposalTapApi";
 import { useEffect } from "react";
 import { usePagination } from "../../../../common/customHooks/usePagination";
 import Pagination from "../../../../common/components/pagination/Pagination";
@@ -14,7 +14,7 @@ import EmptyState from "../../../../common/components/emptyState/EmptyState";
 const elementsPerPage = 10;
 const pagesPerBlock = 10;
 
-const ProposalTap = () => {
+const ProposalTab = () => {
 
     const { showModal, setShowModal, proposalSummaryForMemberDtos, proposalResponseDto, totalElements } = useProposalTapController();
 
@@ -93,4 +93,4 @@ const ProposalTap = () => {
     )
 }
 
-export default ProposalTap
+export default ProposalTab

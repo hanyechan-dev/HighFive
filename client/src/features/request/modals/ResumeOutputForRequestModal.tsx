@@ -9,7 +9,7 @@ import BasicInfo from "../components/BasicInfo";
 import CareerInfo from "../components/CareerInfo";
 import EducationInfo from "../components/EducationInfo";
 import CertificationInfo from "../components/CertificationInfo";
-import LanguageTest from "../components/LanguageTest";
+import LanguageTest from "../components/LanguageTestInfo";
 import { useRequestController } from "../customHooks/useRequestController";
 
 
@@ -57,22 +57,30 @@ const ResumeOutputForRequestModal = () => {
             <div className="flex">
                 {clickedResume == "학력사항" && (
                     <ExternalBox>
-                        <EducationInfo educationResponseDtos={resume.educationResponseDtos} />
+                        {resume.educationResponseDtos.length > 0 && resume.educationResponseDtos.map((educationResponseDto) => (
+                            <EducationInfo educationResponseDto={educationResponseDto} key={educationResponseDto.id} />
+                        ))}
                     </ExternalBox>
                 )}
                 {clickedResume == "경력사항" && (
                     <ExternalBox>
-                        <CareerInfo careerResponseDtos={resume.careerResponseDtos} />
+                        {resume.careerResponseDtos.length > 0 && resume.careerResponseDtos.map((careerResponseDto) => (
+                            <CareerInfo careerResponseDto={careerResponseDto} key={careerResponseDto.id} />
+                        ))}
                     </ExternalBox>
                 )}
                 {clickedResume == "자격증" && (
                     <ExternalBox>
-                        <CertificationInfo certificationResponseDtos={resume.certificationResponseDtos} />
+                        {resume.certificationResponseDtos.length > 0 && resume.certificationResponseDtos.map((certificationResponseDto) => (
+                            <CertificationInfo certificationResponseDto={certificationResponseDto} key={certificationResponseDto.id} />
+                        ))}
                     </ExternalBox>
                 )}
                 {clickedResume == "어학" && (
                     <ExternalBox>
-                        <LanguageTest languageTestResponseDtos={resume.languageTestResponseDtos} />
+                        {resume.languageTestResponseDtos.length > 0 && resume.languageTestResponseDtos.map((languageTestResponseDto) => (
+                            <LanguageTest languageTestResponseDto={languageTestResponseDto} key={languageTestResponseDto.id} />
+                        ))}
                     </ExternalBox>
                 )}
             </div>

@@ -13,7 +13,7 @@ import BasicInfo from "../components/BasicInfo";
 import CareerInfo from "../components/CareerInfo";
 import CertificationInfo from "../components/CertificationInfo";
 import EducationInfo from "../components/EducationInfo";
-import LanguageTest from "../components/LanguageTest";
+import LanguageTest from "../components/LanguageTestInfo";
 import { parseStringToJson } from "../../../common/utils/JsonParseUtil";
 import { useRequestController } from "../customHooks/useRequestController";
 
@@ -82,10 +82,23 @@ const CompletedRequestDetailModal = () => {
             {checkedDocument === "이력서" &&
                 <ExternalBox>
                     <RadioButton name={""} textList={resumeTypeEnum} checkedText={checkedResume} setCheckedText={setCheckedResume} size="internalResume" />
-                    {checkedResume === "학력사항" && <EducationInfo educationResponseDtos={educationResponseDtos} />}
-                    {checkedResume === "경력사항" && <CareerInfo careerResponseDtos={careerResponseDtos} />}
-                    {checkedResume === "자격증" && <CertificationInfo certificationResponseDtos={certificationResponseDtos} />}
-                    {checkedResume === "어학" && <LanguageTest languageTestResponseDtos={languageTestResponseDtos} />}
+
+                    {checkedResume === "학력사항" &&
+                        educationResponseDtos.length > 0 && educationResponseDtos.map((educationResponseDto) => (
+                            <EducationInfo educationResponseDto={educationResponseDto} key={educationResponseDto.id} />
+                        ))}
+                    {checkedResume === "경력사항" &&
+                        careerResponseDtos.length > 0 && careerResponseDtos.map((careerResponseDto) => (
+                            <CareerInfo careerResponseDto={careerResponseDto} key={careerResponseDto.id} />
+                        ))}
+                    {checkedResume === "자격증" &&
+                        certificationResponseDtos.length > 0 && certificationResponseDtos.map((certificationResponseDto) => (
+                            <CertificationInfo certificationResponseDto={certificationResponseDto} key={certificationResponseDto.id} />
+                        ))}
+                    {checkedResume === "어학" &&
+                        languageTestResponseDtos.length > 0 && languageTestResponseDtos.map((languageTestResponseDto) => (
+                            <LanguageTest languageTestResponseDto={languageTestResponseDto} key={languageTestResponseDto.id} />
+                        ))}
                 </ExternalBox>}
 
             {checkedDocument === "경력기술서" &&

@@ -1,6 +1,7 @@
 import { useReducer, type ReactNode } from "react";
-import { MyPageForMemberPageContext } from "./MyPageForMemberPageContext";
-import { initialState, reducer } from "./MyPageForMemberPageReducer";
+import { MyPageForMemberPageContext } from "./MyPageForMemberPageContext copy";
+import { reducer, initialState } from "./MyPageForMemberPageReducer copy";
+
 
 export const MyPageForMemberPageProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
