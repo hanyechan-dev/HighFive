@@ -25,7 +25,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	
 	// 지정된 기간 내 발생한 회원가입, 회원탈퇴 수를 사용자 유형에 따라 날짜(day)별로 조회
 	@Override
-	public List<CountByDayDto> countSignUpAndWithDrawByDay(int days, UserType userType) {
+	public List<CountByDayDto> countSignUpAndWithDrawalByDay(int days, UserType userType) {
 	    QUser user = QUser.user;
 	    LocalDate endDate = LocalDate.now();
 	    LocalDate startDate = endDate.minusDays(days);
@@ -85,7 +85,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	
 	// 지정된 기간 내 발생한 회원가입, 회원탈퇴 수를 사용자 유형에 따라 월(month)별로 조회
 	@Override
-	public List<CountByMonthDto> countSignUpAndWithDrawByMonth(int months, UserType userType) {
+	public List<CountByMonthDto> countSignUpAndWithDrawalByMonth(int months, UserType userType) {
 	    QUser user = QUser.user;
 	    LocalDate now = LocalDate.now();
 	    LocalDate startDate = now.minusMonths(months);
@@ -150,57 +150,6 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	    return monthlyResults;
 	}
 	
-//	// 지정된 기간 내 발생한 회원가입 수를 날짜별로 사용자 유형에 따라 조회
-//	@Override
-//	public List<CountByDateDto> findSignUpByPeriod(LocalDate date, UserType userType) {
-//		QUser user = QUser.user;
-//		LocalDate today = LocalDate.now();
-//		
-//		List<CountByDateDto> result = queryFactory
-//				.select(
-//						Projections.constructor(CountByDateDto.class,
-//								user.createdDate,
-//								user.count())
-//						)
-//				.from(user)
-//				.where(
-//						user.type.eq(userType)
-//						.and(user.createdDate.goe(date))
-//						.and(user.createdDate.loe(today))
-//						)
-//				.groupBy(user.createdDate)
-//				.orderBy(user.createdDate.asc())
-//				.fetch();
-//		
-//		return result;
-//	}
-//	
-//	// 지정된 기간 내 발생한 회원탈퇴 수를 날짜별로 사용자 유형에 따라 조회
-//	@Override
-//	public List<CountByDateDto> findWithdrawByPeriod(LocalDate date, UserType userType) {
-//		QUser user = QUser.user;
-//		LocalDate today = LocalDate.now();
-//		
-//		List<CountByDateDto> result = queryFactory
-//				.select(
-//						Projections.constructor(CountByDateDto.class,
-//								user.deletedDate,
-//								user.count())
-//						)
-//				.from(user)
-//				.where(
-//						user.type.eq(userType)
-//						.and(user.deletedDate.isNotNull())
-//						.and(user.deletedDate.goe(date))
-//						.and(user.deletedDate.loe(today))
-//						)
-//				.groupBy(user.deletedDate)
-//				.orderBy(user.deletedDate.asc())
-//				.fetch();
-//		
-//		return result;
-//	}
-	
 	// 사용자 유형에 따른 구독자 및 비구독자 조회
 	@Override
 	public SubsCountDto countSubsByUserType(UserType userType) {
@@ -221,7 +170,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 		return result;
 	}
 	
-	// 사용자 유형에 따른 총 회원 수 조회
+	// 각 UserType에 대한 총 회원을 List로 취합하여 반환
 	@Override
 	public UserCountDto countUsersByUserType(UserType userType) {
 		QUser user = QUser.user;

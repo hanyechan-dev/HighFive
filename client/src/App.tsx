@@ -4,6 +4,7 @@ import SignUpModal from './features/auth/SignUpModal';
 import AdminService from './features/admin/dashboard/AdminService';
 import { Route, Routes } from 'react-router-dom';
 import DashboardLayout from './features/admin/DashboardLayout';
+import LoginModal from './features/auth/LoginModal';
 
 const App = () => {
     return (

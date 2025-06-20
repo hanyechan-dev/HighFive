@@ -52,15 +52,15 @@ public class AdminServiceImpl implements AdminService {
 	
 	// 지정된 기간 내 발생한 회원가입, 회원탈퇴 수를 사용자 유형에 따라 날짜(day)별로 조회
 	@Override
-	public List<CountByDayDto> countAllSignUpsAndWithdrawsByDay(int days, UserType userType){
-		List<CountByDayDto> dtoList = serviceRepository.countSignUpAndWithDrawByDay(days, userType);
+	public List<CountByDayDto> countAllSignUpAndWithdrawalByDay(int days, UserType userType){
+		List<CountByDayDto> dtoList = serviceRepository.countSignUpAndWithDrawalByDay(days, userType);
 		return dtoList;
 	}
 	
 	// 지정된 기간 내 발생한 회원가입, 회원탈퇴 수를 사용자 유형에 따라 월(month)별로 조회
 	@Override
-	public List<CountByMonthDto> countAllSignUpsAndWithdrawsByMonth(int months, UserType userType){
-		List<CountByMonthDto> dtoList = serviceRepository.countSignUpAndWithDrawByMonth(months, userType);
+	public List<CountByMonthDto> countAllSignUpAndWithdrawalByMonth(int months, UserType userType){
+		List<CountByMonthDto> dtoList = serviceRepository.countSignUpAndWithDrawalByMonth(months, userType);
 		return dtoList;
 	}
 	
@@ -73,7 +73,7 @@ public class AdminServiceImpl implements AdminService {
 		return List.of(userDto, companyDto);
 	}
 	
-	// 사용자 유형에 따른 총 회원 수 조회
+	// 각 UserType에 대한 총 회원을 List로 취합하여 반환
 	@Override
 	public List<UserCountDto> countAllUsersWithUserType(){
 		UserCountDto userDto = serviceRepository.countUsersByUserType(UserType.일반회원);

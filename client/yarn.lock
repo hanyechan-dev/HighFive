@@ -2911,6 +2911,7 @@ __metadata:
     react-hot-toast: ^2.5.2
     react-redux: ^9.1.2
     react-router-dom: ^6.22.3
+    react-spinners: ^0.17.0
     recharts: 3.0.0-beta.1
     redux: ^4.2.1
     redux-persist: ^6.0.0
@@ -5019,6 +5020,16 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 909305d40bae79a011ff21a10c4bc7ddadc87ac5ff093b4a5f827f730f093ec4e044c4330688d29b3ad2db83aab8997c3bb1bae550a9c66de74521b8ed52cc53
+  languageName: node
+  linkType: hard
+
+"react-spinners@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "react-spinners@npm:0.17.0"
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 5790462437cae07763657cc32e7ebd2252465df70b1ee822a34c92191496219e8c77a2a10f55b9a9f804ec6d79c690c6dedfefd96333228b0a4ffd6d9dcf3d04
   languageName: node
   linkType: hard
 

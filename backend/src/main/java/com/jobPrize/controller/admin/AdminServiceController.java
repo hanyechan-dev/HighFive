@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jobPrize.dto.admin.service.CountByDayDto;
+import com.jobPrize.dto.admin.service.CountByMonthDto;
 import com.jobPrize.dto.admin.service.SubsCountDto;
 import com.jobPrize.dto.admin.service.UserCountDto;
-import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.admin.admin.AdminService;
-import com.jobPrize.service.common.subscription.SubscriptionService;
 import com.jobPrize.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -24,22 +24,32 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/service")
 @RequiredArgsConstructor
 public class AdminServiceController {
-    private final SubscriptionService subscriptionService;
     private final AdminService adminService;
     
-    // 구독자 조회
-    @GetMapping
-    public ResponseEntity<List<SubscriptionResponseDto>> getSubscription(@RequestParam UserType targetUserType){
-    	UserType userType = SecurityUtil.getUserType();
+    // 지정된 기간 내 발생한 회원가입, 회원탈퇴 수를 사용자 유형에 따라 날짜(day)별로 조회
+    @GetMapping("/reg-and-cancel/day")
+    public ResponseEntity<List<CountByDayDto>> getSignUpAndWithdrawalByDay(@RequestParam("days") int days, @RequestParam("userType") UserType userType){
+    	UserType adminCheck = SecurityUtil.getUserType();
     	
-    	if(userType == UserType.관리자) {
-            List<SubscriptionResponseDto> subs = subscriptionService.readSubscriberListByUserType(userType, targetUserType);
-            return ResponseEntity.status(HttpStatus.OK).body(subs);
+    	if(adminCheck == UserType.관리자) {
+    		List<CountByDayDto> dtoList = adminService.countAllSignUpAndWithdrawalByDay(days, userType);
+    		return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+    	} else { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList()); }
+    }
+    
+    // 지정된 기간 내 발생한 회원가입, 회원탈퇴 수를 사용자 유형에 따라 월(month)별로 조회
+    @GetMapping("/reg-and-cancel/month")
+    public ResponseEntity<List<CountByMonthDto>> getSignUpAndWithdrawalByMonth(@RequestParam("months") int months, @RequestParam("userType") UserType userType){
+    	UserType adminCheck = SecurityUtil.getUserType();
+    	
+    	if(adminCheck == UserType.관리자) {
+    		List<CountByMonthDto> dtoList = adminService.countAllSignUpAndWithdrawalByMonth(months, userType);
+    		return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     	} else { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList()); }
     }
     
     // 각 사용자 유형에 따른 구독자, 비구독자를 List로 취합하여 반환
-    @GetMapping("/count/subs")
+    @GetMapping("/count-subs")
     public ResponseEntity<List<SubsCountDto>> getAllSubsByUserType(){
     	UserType userType = SecurityUtil.getUserType();
     	
@@ -51,8 +61,8 @@ public class AdminServiceController {
     	}
     }
     
-    // 각 사용자 유형의 총 회원을 List로 취합하여 반환
-    @GetMapping("/count/users")
+    // 각 UserType에 대한 총 회원을 List로 취합하여 반환
+    @GetMapping("/count-users")
     public ResponseEntity<List<UserCountDto>> getAllUsersWithUserType(){
     	UserType userType = SecurityUtil.getUserType();
     	
@@ -63,5 +73,4 @@ public class AdminServiceController {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
     	}
     }
-    
 }
