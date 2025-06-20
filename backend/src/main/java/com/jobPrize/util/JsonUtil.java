@@ -8,6 +8,8 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.career.CareerResponseDto;
@@ -172,4 +174,62 @@ public class JsonUtil {
 		
 		return careerDescriptionJson;
 	}
+	
+	public Map<String, List<?>> parseResumeMapFromResumeJson(String resumeJson) {
+	    try {
+	        JsonNode root = objectMapper.readTree(resumeJson);
+
+	        List<EducationResponseDto> educationResponseDtos = objectMapper.readValue(
+	            root.get("educationResponseDtos").toString(),
+	            new TypeReference<List<EducationResponseDto>>() {}
+	        );
+
+	        List<CareerResponseDto> careerResponseDtos = objectMapper.readValue(
+	            root.get("careerResponseDtos").toString(),
+	            new TypeReference<List<CareerResponseDto>>() {}
+	        );
+
+	        List<CertificationResponseDto> certificationResponseDtos = objectMapper.readValue(
+	            root.get("certificationResponseDtos").toString(),
+	            new TypeReference<List<CertificationResponseDto>>() {}
+	        );
+
+	        List<LanguageTestResponseDto> languageTestResponseDtos = objectMapper.readValue(
+	            root.get("languageTestResponseDtos").toString(),
+	            new TypeReference<List<LanguageTestResponseDto>>() {}
+	        );
+
+	        Map<String, List<?>> resumeMap = new HashMap<>();
+	        resumeMap.put("educationResponseDtos", educationResponseDtos);
+	        resumeMap.put("careerResponseDtos", careerResponseDtos);
+	        resumeMap.put("certificationResponseDtos", certificationResponseDtos);
+	        resumeMap.put("languageTestResponseDtos", languageTestResponseDtos);
+
+	        return resumeMap;
+
+	    } catch (Exception e) {
+	        throw new IllegalStateException("이력서 JSON 파싱 실패", e);
+	    }
+	}
+
+	public CoverLetterResponseDto parseCoverLetterJson(String json) {
+	    try {
+	        JsonNode root = objectMapper.readTree(json);
+	        return objectMapper.treeToValue(root.get("coverLetterResponseDto"), CoverLetterResponseDto.class);
+	    } catch (JsonProcessingException e) {
+	        throw new IllegalStateException("자기소개서 JSON 파싱 실패", e);
+	    }
+	}
+
+	public CareerDescriptionResponseDto parseCareerDescriptionJson(String json) {
+	    try {
+	        JsonNode root = objectMapper.readTree(json);
+	        return objectMapper.treeToValue(root.get("careerDescriptionResponseDto"), CareerDescriptionResponseDto.class);
+	    } catch (JsonProcessingException e) {
+	        throw new IllegalStateException("경력기술서 JSON 파싱 실패", e);
+	    }
+	}
+
+	
+	
 }
