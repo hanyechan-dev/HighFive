@@ -184,8 +184,8 @@ export default function MemberPoolPage() {
         const fetchMembers = async () => {
             try {
                 const res = await MemberPoolPageApi(filter, clickedPage);
-                if (res) {
-                    setMembers(res);
+                if (res && res.data) {
+                    setMembers(res.data);   
                     // API 응답이 있으면 전체 개수로 설정 (실제로는 API에서 totalElements를 받아야 함)
                     setTotalElements(mockMemberPoolSummary.length);
                 } else {

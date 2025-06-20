@@ -76,9 +76,9 @@ export default function ProposalPage() {
       setIsLoading(true);
       try {
         const res = await ProposalListApi(clickedPage - 1, 10);
-        if (res && res.content) {
-          setProposals(res.content);
-          setTotalElements(res.totalElements);
+        if (res && res.data.content) {
+          setProposals(res.data.content);
+          setTotalElements(res.data.totalElements);
         } else {
           setProposals(mockProposals);
           setTotalElements(mockProposals.length);

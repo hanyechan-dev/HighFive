@@ -149,9 +149,9 @@ export default function ApplicationPage() {
       setIsLoading(true);
       try {
         const res = await ApplicationListApi(Number(jobPostingId), clickedPage - 1, 10);
-        if (res && res.content) {
-          setApplications(res.content);
-          setTotalElements(res.totalElements);
+        if (res && res.data. content) {
+          setApplications(res.data.content);
+          setTotalElements(res.data.totalElements);
         } else {
           setApplications(currentMockApplications);
           setTotalElements(currentMockApplications.length);

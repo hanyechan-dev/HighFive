@@ -1,4 +1,4 @@
-import { Request } from "../../api/Request";
+import { api } from "../../../common/Axios";
 import type { ProposalSummary, ProposalDetail } from "../props/ProposalProps";
 
 interface ProposalListResponse {
@@ -8,12 +8,12 @@ interface ProposalListResponse {
 }
 
 export const ProposalListApi = (page: number, size: number = 10) => {
-  return Request.post<ProposalListResponse>('/companies/proposals', {
+  return api(true).post<ProposalListResponse>('/companies/proposals', {
     page,
     size
   });
 };
 
 export const ProposalDetailApi = (id: number) => {
-  return Request.post<ProposalDetail>('/companies/proposals/detail', { id });
+  return api(true).post<ProposalDetail>('/companies/proposals/detail', { id });
 }; 
