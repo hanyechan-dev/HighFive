@@ -68,9 +68,12 @@ export default function JobPostingManagementPage() {
       setIsLoading(true);
       try {
         const res = await JobPostingListApi(clickedPage - 1, 10);
-        if (res && res.data) {
-          setJobPostings(res.data.content || []);
-          setTotalElements(res.data.totalElements || 0);
+        if (res && res.content) {
+          setJobPostings(res.content);
+          setTotalElements(res.totalElements);
+        } else {
+          setJobPostings(mockJobPostings);
+          setTotalElements(mockJobPostings.length);
         }
       } catch (err) {
         printErrorInfo(err);

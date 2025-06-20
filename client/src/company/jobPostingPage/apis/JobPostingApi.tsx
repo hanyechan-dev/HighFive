@@ -1,19 +1,24 @@
-import { api } from "../../../common/Axios";
-import type { JobPostingCreateRequest, JobPostingUpdateRequest } from "../props/JobPostingProps";
+import { apiForm } from "../../../common/Axios";
+import { Request } from "../../api/Request";
+import type { JobPostingCreateRequest, JobPostingUpdateRequest, JobPostingSummary, JobPostingDetail } from "../props/JobPostingProps";
+
+interface JobPostingListResponse {
+  content: JobPostingSummary[];
+  totalElements: number;
+  totalPages: number;
+}
 
 // 채용공고 목록 조회 (페이지네이션)
 export const JobPostingListApi = (page: number, size: number) => {
-  return api(true).get('/companies/jobPostings', {
-    params: {
-      page,
-      size
-    },
+  return Request.post<JobPostingListResponse>('/companies/jobPostings', {
+    page,
+    size
   });
 };
 
 // 채용공고 상세 조회
 export const JobPostingDetailApi = (id: number) => {
-  return api(true).post('/companies/jobPostings/detail', { id });
+  return Request.post<JobPostingDetail>('/companies/jobPostings/detail', { id });
 };
 
 // 채용공고 생성 (FormData 사용 - 이미지 업로드 포함)
@@ -32,11 +37,7 @@ export const JobPostingCreateApi = (data: JobPostingCreateRequest, images?: File
     });
   }
   
-  return api(true).post('/companies/jobPostings', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return apiForm(true).post('/companies/jobPostings', formData);
 };
 
 // 채용공고 수정 (FormData 사용 - 이미지 업로드 포함)
@@ -55,19 +56,10 @@ export const JobPostingUpdateApi = (data: JobPostingUpdateRequest, images?: File
     });
   }
   
-  return api(true).put('/companies/jobPostings', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return apiForm(true).put('/companies/jobPostings', formData);
 };
 
 // 채용공고 삭제
 export const JobPostingDeleteApi = (id: number) => {
-  return api(true).post('/companies/jobPostings/deletion', { id });
-};
-
-// 채용공고 상태 변경 (진행중/마감)
-export const JobPostingStatusUpdateApi = (id: number, status: string) => {
-  return api(true).patch(`/companies/job-postings/${id}/status`, { status });
+  return Request.post<void>('/companies/jobPostings/deletion', { id });
 }; 

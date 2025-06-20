@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import ApplicationJobPostingPage from "./company/applicationPage/pages/ApplicationJobPostingPage";
 import ApplicationPage from "./company/applicationPage/pages/ApplicationPage";
-import ProposalListHeader from "./company/proposalPage/components/ProposalListHeader";
 
 function App() {
     
@@ -15,11 +14,11 @@ function App() {
     // 상기 유즈이펙트 수정 절대 금지
 
     return (
-        <ProposalListHeader/>
-        // <Routes>
-        //     <Route path="/" element={<ApplicationJobPostingPage />} />
-        //     <Route path="/job-posting/:jobPostingId/applicants" element={<ApplicationPage />} />
-        // </Routes>
+       
+         <Routes>
+            <Route path="/" element={<ApplicationJobPostingPage />} />
+            <Route path="/job-posting/:jobPostingId/applicants" element={<ApplicationPage />} />
+         </Routes>
     )
 }
 

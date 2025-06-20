@@ -24,8 +24,8 @@ export default function ProposalDetailModal({ isOpen, onClose, proposalId }: Pro
     setIsLoading(true);
     try {
       const res = await ProposalDetailApi(proposalId);
-      if (res && res.data) {
-        setProposal(res.data);
+      if (res) {
+        setProposal(res);
       }
     } catch (err) {
       console.error(err);

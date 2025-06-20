@@ -149,9 +149,12 @@ export default function ApplicationPage() {
       setIsLoading(true);
       try {
         const res = await ApplicationListApi(Number(jobPostingId), clickedPage - 1, 10);
-        if (res && res.data) {
-          setApplications(res.data.content || currentMockApplications);
-          setTotalElements(res.data.totalElements || currentMockApplications.length);
+        if (res && res.content) {
+          setApplications(res.content);
+          setTotalElements(res.totalElements);
+        } else {
+          setApplications(currentMockApplications);
+          setTotalElements(currentMockApplications.length);
         }
       } catch (err) {
         console.log("API 에러:", err);

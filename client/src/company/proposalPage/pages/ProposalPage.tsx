@@ -76,9 +76,12 @@ export default function ProposalPage() {
       setIsLoading(true);
       try {
         const res = await ProposalListApi(clickedPage - 1, 10);
-        if (res && res.data) {
-          setProposals(res.data.content || []);
-          setTotalElements(res.data.totalElements || 0);
+        if (res && res.content) {
+          setProposals(res.content);
+          setTotalElements(res.totalElements);
+        } else {
+          setProposals(mockProposals);
+          setTotalElements(mockProposals.length);
         }
       } catch (err) {
         printErrorInfo(err);

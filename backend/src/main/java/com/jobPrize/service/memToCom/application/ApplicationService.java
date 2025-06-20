@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.dto.memToCom.application.ApplicationCreateDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
+import com.jobPrize.dto.memToCom.application.ApplicationResponseForCompanyDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForMemberDto;
 import com.jobPrize.enumerate.UserType;
@@ -15,5 +16,5 @@ public interface ApplicationService {
 	Page<ApplicationSummaryForCompanyDto> readApplicationForCompanyPage(Long id,Long jobPostingId, Pageable pageable);
 	Page<ApplicationSummaryForCompanyDto> readPassedApplicationPage(Long id, Long jobPostingId, Pageable pageable);
 	ApplicationResponseDto readApplication(Long id, UserType userType, Long applicationId);
-	
+	ApplicationResponseForCompanyDto readApplicationForCompany(Long id, UserType userType, Long applicationId);	
 }

@@ -44,7 +44,8 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
         setError(null);
         JobPostingDetailApi(jobPostingId)
             .then(res => {
-                const data: JobPostingDetail = res.data;
+                if (!res) throw new Error("데이터를 불러올 수 없습니다.");
+                const data: JobPostingDetail = res;
                 setFormData({
                     id: data.id,
                     title: data.title,

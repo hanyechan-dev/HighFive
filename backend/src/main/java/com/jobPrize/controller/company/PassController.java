@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
+import com.jobPrize.dto.memToCom.application.ApplicationResponseForCompanyDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
+import com.jobPrize.enumerate.ApprovalStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.company.jobPosting.JobPostingService;
 import com.jobPrize.service.memToCom.application.ApplicationService;
@@ -52,15 +54,15 @@ public class PassController {
 	}
 	
 	@PostMapping("/applications/detail")
-	public ResponseEntity<ApplicationResponseDto> readMyApplication(@RequestBody @Valid IdDto idDto) {
+	public ResponseEntity<ApplicationResponseForCompanyDto> readMyApplication(@RequestBody @Valid IdDto idDto) {
 
 		Long id = SecurityUtil.getId();
 
 		UserType userType = SecurityUtil.getUserType();
 
-		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(id, userType,idDto.getId());
+		ApplicationResponseForCompanyDto applicationResponseForCompanyDto = applicationService.readApplicationForCompany(id, userType, idDto.getId());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseDto);
+		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseForCompanyDto);
 	}
 
 	
