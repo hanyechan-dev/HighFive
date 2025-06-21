@@ -112,7 +112,7 @@ public class EditPromptServiceImpl implements EditPromptService {
 		
 		String action = "조회";
 
-		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, UserType.일반회원, ENTITY_NAME, action);
+		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
 		EditPrompt editPrompt = editPromptRepository.findAppliedPrompt()
 			       .orElseThrow(() -> new CustomEntityNotFoundException("적용된 " + ENTITY_NAME));

@@ -3,6 +3,7 @@ package com.jobPrize.service.memToCon.request;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.dto.admin.editPrompt.EditPromptResponseDto;
+import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingContentResponseDto;
 import com.jobPrize.dto.memToCon.aiConsulting.AiConsultingResponseDto;
 import com.jobPrize.dto.memToCon.consultantConsulting.ConsultantConsultingContentResponseDto;
@@ -32,9 +35,12 @@ import com.jobPrize.enumerate.RequestStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCon.request.RequestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
+import com.jobPrize.service.admin.editPrompt.EditPromptService;
+import com.jobPrize.service.admin.feedbackPrompt.FeedbackPromptService;
 import com.jobPrize.service.consultant.aiConsulting.AiConsultingService;
 import com.jobPrize.util.AssertUtil;
 import com.jobPrize.util.JsonUtil;
+import com.jobPrize.util.PromptBuilder;
 import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -50,15 +56,22 @@ public class RequestServiceImpl implements RequestService {
 	
 	private final AiConsultingService aiConsultingService;
 	
+	private final EditPromptService editPromptService;
+	
+	private final FeedbackPromptService feedbackPromptService;
+	
 	private final JsonUtil jsonUtil;
 
 	private final AssertUtil assertUtil;
 	
 	private final WebClientUtil webClientUtil;
+	
+	private final PromptBuilder promptBuilder;
 
 	private final static String ENTITY_NAME = "컨설팅 요청";
 
 	private final static UserType ALLOWED_USER_TYPE = UserType.일반회원;
+
 
 	@Override
 	public void createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto) {
@@ -177,9 +190,26 @@ public class RequestServiceImpl implements RequestService {
 	
 	private void postRequestToPython(Request request) {
 		
+		ConsultingType consultingType = request.getConsultingType();
+		
 		RequestResponseDto requestResponseDto = RequestResponseDto.from(request);
 		
-		AiConsultingCreateDto aiConsultingCreateDto = webClientUtil.postRequestToPython(requestResponseDto);
+		List<Map<String, String>> promptList;
+		
+		if(ConsultingType.첨삭.equals(consultingType)) {
+			EditPromptResponseDto editPromptResponseDto = editPromptService.readAppliedEditPrompt(UserType.관리자);
+			String guidePrompt = editPromptResponseDto.getContent();
+			promptList = promptBuilder.getEditPrompt(requestResponseDto, guidePrompt);
+		}
+		
+		else{
+			FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.readAppliedFeedbackPrompt(UserType.관리자);
+			String guidePrompt = feedbackPromptResponseDto.getContent();
+			promptList = promptBuilder.getFeedbackPrompt(requestResponseDto, guidePrompt);
+		}
+		
+		
+		AiConsultingCreateDto aiConsultingCreateDto = webClientUtil.postRequestToPython(promptList, consultingType);
     	
 		aiConsultingService.createAiConsulting(aiConsultingCreateDto, requestResponseDto.getId());
 		

@@ -1,15 +1,13 @@
 package com.jobPrize.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.jobPrize.dto.memToCon.request.RequestResponseDto;
 import com.jobPrize.dto.member.aiConsulting.AiConsultingCreateDto;
+import com.jobPrize.enumerate.ConsultingType;
 
 @Component
 public class WebClientUtil {
@@ -20,23 +18,9 @@ public class WebClientUtil {
 		this.webClient = builder.baseUrl("http://localhost:9000").build();
 	}
 
-	public AiConsultingCreateDto postRequestToPython(RequestResponseDto requestResponseDto) {
-		
-		String type = requestResponseDto.getConsultingType();
+	public AiConsultingCreateDto postRequestToPython(List<Map<String, String>> promptList, ConsultingType consultingType) {
 
-		String path = type.equals("첨삭") ? "/guide/edit" : "/guide/feedback";
-		
-		Map<String, Object> systemPropmt = new HashMap<>();
-		Map<String, Object> userPropmt = new HashMap<>();
-		List<Map<String, Object>> promptList = new ArrayList<>();
-		
-		
-		systemPropmt.put("role", "system");
-		systemPropmt.put("content", "너는 컨설팅 전문가야 앞으로 들어온 회원의 정보 및 희망하는 기업과 직무를 보고 판단해서" + type + "을 해줘");
-		userPropmt.put("role", "user");
-		userPropmt.put("content", requestResponseDto);
-		promptList.add(systemPropmt);
-		promptList.add(userPropmt);
+		String path = ConsultingType.첨삭.equals(consultingType) ? "/edits" : "/feedbacks";
 		
 		try {
 		    return webClient
