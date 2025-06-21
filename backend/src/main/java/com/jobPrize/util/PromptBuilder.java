@@ -24,96 +24,112 @@ public class PromptBuilder {
 	private final JsonUtil jsonUtil;
 
 	public List<Map<String, String>> getFeedbackPrompt(RequestResponseDto requestResponseDto, String guidePrompt) {
-		
+
 		String inputString = getInputStringFromRequestResponseDto(requestResponseDto);
-		
-        Map<String, String> system = Map.of(
-            "role", "system",
-            "content", """ 
-            		다음과 같은 JSON 형태로 출력해줘:
-            		{
-            		"피드백": [
-            			{
-            				"item": "성장과정",
-            				"comment": "내용이 추상적입니다. 구체적인 사례를 추가하면 좋겠습니다."
-            				"documentType" : "경력기술서"
-            			},
-            			{
-            				"item": "입사 후 포부",
-            				"comment": "회사에 기여하고 싶은 방향이 드러나지 않습니다."
-            				"documentType" : "경력기술서"
-            			}
-            			]
-            		}
-            		
-            		규칙:
-            		- documentType은 각 블록 제목인 [경력기술서], [자기소개서]에 따라 명시해
-            		- item은 유저 데이터의 item 값과 정확히 일치시켜
-            		- 각 리스트 수는 입력과 동일하게 맞춰줘
-            		- 다음은 피드백을 생성할 때 반드시 참고해야 하는 가이드라인이야:
-            		""" + guidePrompt
-        );
 
-        Map<String, String> user = Map.of(
-            "role", "user",
-            "content", inputString
-        );
+		Map<String, String> system = Map.of("role", "system", "content", """
+				다음과 같은 JSON 형식으로 출력하십시오:
+				{
+				    "피드백": [
+				        {
+				            "item": "성장과정",
+				            "comment": "내용이 추상적입니다. 구체적인 사례를 추가하면 좋겠습니다.",
+				            "documentType": "경력기술서"
+				        },
+				        {
+				            "item": "입사 후 포부",
+				            "comment": "회사에 기여하고 싶은 방향이 드러나지 않습니다.",
+				            "documentType": "경력기술서"
+				        }
+				    ]
+				}
 
-        return List.of(system, user);
-    }
-	
+				※ 규칙
+				- `documentType`은 각 블록 제목인 [경력기술서], [자기소개서]에 따라 정확히 명시합니다.
+				- `item`은 유저가 작성한 원본 데이터의 `item` 필드와 완전히 일치해야 합니다.
+				- 리스트의 길이(객체 수)는 입력과 반드시 동일해야 합니다.
+				---
+				※ 주의사항
+				이후 입력되는 데이터는 사용자가 실제로 작성한 이력서, 자기소개서, 경력기술서 항목들입니다.
+				해당 데이터를 꼼꼼히 분석한 뒤, 각 항목에 대해 다음 요소들을 기반으로 정밀한 피드백을 작성하십시오:
+
+				- 내용의 논리성
+				- 문법 및 맞춤법 오류
+				- 구체성 부족 여부
+				- 지원한 직무 및 회사와의 적합성
+				- 내용 중복 또는 어색한 표현
+
+				단순히 출력 형식만 맞추는 것이 목적이 아니라,
+				지원자에게 실질적으로 도움이 될 수 있도록 **개별 항목을 실제로 읽고 평가**하여 내용 있는 피드백을 생성해야 합니다.
+
+				또한, 아래 제공된 자기소개서/경력기술서 작성 가이드라인을 반드시 참고하여
+				가이드에 위반된 점이 있다면 정확히 지적하고 개선 방향을 제안하십시오.
+				""" + "\n" + guidePrompt);
+
+		Map<String, String> user = Map.of("role", "user", "content", inputString);
+
+		return List.of(system, user);
+	}
+
 	public List<Map<String, String>> getEditPrompt(RequestResponseDto requestResponseDto, String guidePrompt) {
-		
+
 		String inputString = getInputStringFromRequestResponseDto(requestResponseDto);
-		
-        Map<String, String> system = Map.of(
-            "role", "system",
-            "content", """ 
-            		다음과 같은 JSON 형태로 출력해줘:
-            		{
-            		"첨삭": [
-            			{
-            				"item": "성장과정",
-            				"comment": "내용이 추상적입니다. 구체적인 사례를 추가하면 좋겠습니다."
-            				"documentType" : "경력기술서"
-            			},
-            			{
-            				"item": "입사 후 포부",
-            				"comment": "회사에 기여하고 싶은 방향이 드러나지 않습니다."
-            				"documentType" : "경력기술서"
-            			}
-            			]
-            		}
-            		
-            		규칙:
-            		- documentType은 각 블록 제목인 [경력기술서], [자기소개서]에 따라 명시해
-            		- item은 유저 데이터의 item 값과 정확히 일치시켜
-            		- 각 리스트 수는 입력과 동일하게 맞춰줘
-            		- 다음은 첨삭을 생성할 때 반드시 참고해야 하는 가이드라인이야:
-            		""" + guidePrompt
-        );
 
-        Map<String, String> user = Map.of(
-            "role", "user",
-            "content", inputString
-        );
+		Map<String, String> system = Map.of("role", "system", "content", """
+				다음과 같은 JSON 형식으로 출력하십시오:
+				{
+				    "첨삭": [
+				        {
+				            "item": "성장과정",
+				            "comment": "내용이 추상적입니다. 구체적인 사례를 추가하면 좋겠습니다.",
+				            "documentType": "경력기술서"
+				        },
+				        {
+				            "item": "입사 후 포부",
+				            "comment": "회사에 기여하고 싶은 방향이 드러나지 않습니다.",
+				            "documentType": "경력기술서"
+				        }
+				    ]
+				}
 
-        return List.of(system, user);
-    }
-	
-	
-	
-	
-	
+				※ 규칙
+				- `documentType`은 각 블록 제목인 [경력기술서], [자기소개서]에 따라 정확히 명시합니다.
+				- `item`은 유저가 작성한 원본 데이터의 `item` 필드와 완전히 일치해야 합니다.
+				- 리스트의 길이(객체 수)는 입력과 반드시 동일해야 합니다.
+				---
+				※ 주의사항
+				이후 입력되는 데이터는 사용자가 실제로 작성한 이력서, 자기소개서, 경력기술서 항목들입니다.
+				해당 데이터를 꼼꼼히 분석한 뒤, 각 항목에 대해 다음 요소들을 기반으로 정밀한 첨삭을 작성하십시오:
+
+				- 내용의 논리성
+				- 문법 및 맞춤법 오류
+				- 구체성 부족 여부
+				- 지원한 직무 및 회사와의 적합성
+				- 내용 중복 또는 어색한 표현
+
+				단순히 출력 형식만 맞추는 것이 목적이 아니라,
+				지원자에게 실질적으로 도움이 될 수 있도록 **개별 항목을 실제로 읽고 평가**하여 내용 있는 첨삭을 생성해야 합니다.
+
+				또한, 아래 제공된 자기소개서/경력기술서 작성 가이드라인을 반드시 참고하여
+				가이드에 위반된 점이 있다면 정확히 지적하고 개선 방향을 제안하십시오.
+				""" + "\n" + guidePrompt);
+
+		Map<String, String> user = Map.of("role", "user", "content", inputString);
+
+		return List.of(system, user);
+	}
 
 	private String getInputStringFromRequestResponseDto(RequestResponseDto requestResponseDto) {
 
 		Map<String, List<?>> resumeMap = jsonUtil.parseResumeMapFromResumeJson(requestResponseDto.getResumeJson());
 
-		List<EducationResponseDto> educationResponseDtos = (List<EducationResponseDto>) resumeMap.get("educationResponseDtos");
+		List<EducationResponseDto> educationResponseDtos = (List<EducationResponseDto>) resumeMap
+				.get("educationResponseDtos");
 		List<CareerResponseDto> careerResponseDtos = (List<CareerResponseDto>) resumeMap.get("careerResponseDtos");
-		List<CertificationResponseDto> certificationResponseDtos = (List<CertificationResponseDto>) resumeMap.get("certificationResponseDtos");
-		List<LanguageTestResponseDto> languageTestResponseDtos = (List<LanguageTestResponseDto>) resumeMap.get("languageTestResponseDtos");
+		List<CertificationResponseDto> certificationResponseDtos = (List<CertificationResponseDto>) resumeMap
+				.get("certificationResponseDtos");
+		List<LanguageTestResponseDto> languageTestResponseDtos = (List<LanguageTestResponseDto>) resumeMap
+				.get("languageTestResponseDtos");
 		CareerDescriptionResponseDto careerDescriptionResponseDto = jsonUtil
 				.parseCareerDescriptionJson(requestResponseDto.getCareerDescriptionJson());
 		CoverLetterResponseDto coverLetterResponseDto = jsonUtil
