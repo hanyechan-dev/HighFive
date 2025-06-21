@@ -22,11 +22,13 @@ public class WebClientUtil {
 
 		String path = ConsultingType.첨삭.equals(consultingType) ? "/edits" : "/feedbacks";
 		
+		Map<String, Object> body = Map.of("prompt_list", promptList);
+		
 		try {
 		    return webClient
 		        .post()
 		        .uri(path)
-		        .bodyValue(promptList)
+		        .bodyValue(body)
 		        .retrieve()
 		        .bodyToMono(AiConsultingCreateDto.class)
 		        .block();
