@@ -1,7 +1,5 @@
 package com.jobPrize.dto.admin.service;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CountByMonthDto {
-	private int month;
+	private Integer month;
 	private Long signUps;
 	private Long withdraws;
 }

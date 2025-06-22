@@ -4,18 +4,24 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.dto.admin.service.ConsultingCountDto;
 import com.jobPrize.dto.admin.service.CountByDayDto;
 import com.jobPrize.dto.admin.service.CountByMonthDto;
+import com.jobPrize.dto.admin.service.PaymentCountDto;
 import com.jobPrize.dto.admin.service.SubsCountDto;
 import com.jobPrize.dto.admin.service.UserCountDto;
 import com.jobPrize.entity.admin.Admin;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.admin.admin.AdminRepository;
-import com.jobPrize.repository.common.service.ServiceRepository;
+import com.jobPrize.repository.admin.service.ServiceRepository;
+import com.jobPrize.repository.common.payment.PaymentRepository;
 import com.jobPrize.repository.common.user.UserRepository;
+import com.jobPrize.repository.consultant.consultantConsulting.ConsultantConsultingRepository;
 import com.jobPrize.util.AssertUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -26,15 +32,12 @@ import lombok.RequiredArgsConstructor;
 public class AdminServiceImpl implements AdminService {
 	
 	private final UserRepository userRepository;
-	
 	private final AdminRepository adinRepository;
-	
 	private final ServiceRepository serviceRepository;
-
+	private final PaymentRepository paymentRepository;
+	private final ConsultantConsultingRepository consultantConsultingRepository;
 	private final AssertUtil assertUtil;
-
 	private final static String ENTITY_NAME = "관리자";
-
 	private final static UserType ALLOWED_USER_TYPE = UserType.관리자;
 
 	@Override
@@ -81,5 +84,19 @@ public class AdminServiceImpl implements AdminService {
 		UserCountDto consultantDto = serviceRepository.countUsersByUserType(UserType.컨설턴트회원);
 		
 		return List.of(userDto, companyDto, consultantDto);
+	}
+	
+	// 지정된 기간 내 발생한 매출을 사용자 유형에 따라 단위기간별로 조회
+	@Override
+	public List<PaymentCountDto> countPaymentByPeriod(int period, UserType userType){
+		List<PaymentCountDto> dtoList = paymentRepository.countPaymentByPeriod(period, userType);
+		return dtoList;
+	}
+	
+	// 지정된 기간 내 작업 완료된 컨설팅 수를 단위기간별로 조회
+	@Override
+	public List<ConsultingCountDto> countConsultingByPeriod(int period){
+		List<ConsultingCountDto> dtoList = consultantConsultingRepository.countConsultingByPeriod(period);
+		return dtoList;
 	}
 }

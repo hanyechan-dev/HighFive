@@ -1,4 +1,4 @@
-package com.jobPrize.repository.common.service;
+package com.jobPrize.repository.admin.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

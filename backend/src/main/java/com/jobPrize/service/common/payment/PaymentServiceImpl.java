@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.dto.admin.service.PaymentCountDto;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.entity.common.Payment;
@@ -97,5 +98,4 @@ public class PaymentServiceImpl implements PaymentService {
 			
 			.collect(Collectors.toList());
 	}
-	
 }

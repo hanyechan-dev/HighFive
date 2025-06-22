@@ -8,9 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.dto.admin.service.PaymentCountDto;
 import com.jobPrize.entity.common.Payment;
 import com.jobPrize.entity.common.QPayment;
 import com.jobPrize.enumerate.UserType;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.DateTemplate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -47,6 +51,42 @@ public class PaymentRepositoryImpl implements PaymentRepositoryCustom{
 				.where(payment.createdTime.between(start, end),
 						payment.user.type.eq(userType))
 				.orderBy(payment.createdTime.asc())
+				.fetch();
+		
+		return results;
+	}
+	
+	// 지정된 기간 내 발생한 매출을 사용자 유형에 따라 단위기간별로 조회
+	public List<PaymentCountDto> countPaymentByPeriod(int period, UserType userType){
+		QPayment payment = QPayment.payment;
+		
+		LocalDateTime endDate = LocalDateTime.now();
+		LocalDateTime startDate;
+		DateTemplate<java.sql.Date> dateTemplate = Expressions.dateTemplate(
+				java.sql.Date.class, "DATE({0})", payment.createdTime); 
+		
+		if(period == 7 || period == 30) {
+			startDate = endDate.minusDays(period);
+		} else if(period == 6 || period == 12) {
+			startDate = endDate.minusMonths(period);
+		} else {
+			startDate = endDate;
+		}
+		
+		List<PaymentCountDto> results = queryFactory
+				.select(
+					Projections.constructor(PaymentCountDto.class,
+						dateTemplate,
+						payment.paymentAmount.count()
+					)
+				)
+				.from(payment)
+				.where(
+						payment.user.type.eq(userType)
+						.and(payment.createdTime.between(startDate, endDate))
+				)
+				.groupBy(dateTemplate)
+				.orderBy(dateTemplate.asc())
 				.fetch();
 		
 		return results;

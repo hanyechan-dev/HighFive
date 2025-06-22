@@ -39,6 +39,22 @@ interface MonthState {
   withdraws: number;
 }
 
+interface DataFormat {
+  date: string;
+  value: number;
+  leave: number;
+}
+
+interface PaymentData {
+  date: string;
+  payAmount: number;
+}
+
+interface consultingData {
+  date: string;
+  consultCount: number; 
+}
+
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28"]
 
 /*
@@ -153,13 +169,27 @@ export default function StatisticsPage() {
 
   const [userTypeData, setUserTypeData] = useState([])
   const [subscriptionData, setSubscriptionData] = useState<SubsCount[]>([])
+
   const [userDayState, setUserDayState] = useState<DayState[]>([])
   const [userMonthState, setUserMonthState] = useState<MonthState[]>([])
   const [companyDayState, setCompanyDayState] = useState<DayState[]>([])
   const [companyMonthState, setCompanyMonthState] = useState<MonthState[]>([])
+  const [userPaymentState, setUserPaymentState] = useState<PaymentData[]>([])
+  const [companyPaymentState, setCompanyPaymentState] = useState<PaymentData[]>([])
+  const [consultingState, setConsultingState] = useState<consultingData[]>([])
+
+  const [userStateData, setUserStateData] = useState<DataFormat[]>([])
+  const [companyStateData, setCompanyStateData] = useState<DataFormat[]>([])
+  const [userPaymentData, setUserPaymentData] = useState<DataFormat[]>([])
+  const [companyPaymentData, setCompanyPaymentData] = useState<DataFormat[]>([])
+  const [consultingData, setConsultingData] = useState<DataFormat[]>([])
+
   const [activeTab, setActiveTab] = useState("users")
   const [periodType, setPeriodType] = useState<number>(30)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  const [subsStateIsLoading, setSubsStateIsLoading] = useState<boolean>(true)
+  const [userStateIsLoading, setUserStateIsLoading] = useState<boolean>(true)
+  const [companyStateIsLoading, setCompanyStateIsLoading] = useState<boolean>(true)
 
   const handlePeriodChange = (period: number) => {
     setPeriodType(period)
@@ -191,17 +221,16 @@ export default function StatisticsPage() {
       } catch (error) {
         console.log("UserType별 구독자 현황 불러오기 실패: ", error);
       } finally {
-        setIsLoading(false);
+        setSubsStateIsLoading(false);
       }
     }
     fetchUserCount();
     fetchSubsCount();
   }, [])
 
-  // 단위 기간 선택 가능한 통계 데이터 불러오기
+  // 일반회원, 기업회원 가입 및 탈퇴 통계
   useEffect(() => {
-    // 일반회원 가입 및 탈퇴 통계
-    const fetchUserState = async (period: number) => {
+    const fetchSignUpAndWithdrawal = async (period: number) => {
       try { // 단위기간이 일(day) 단위일 시
         if (period == 7 || period == 30) {
           const userData = await axios.get(`http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=일반회원`, {
@@ -232,17 +261,29 @@ export default function StatisticsPage() {
       } catch (error) {
         console.log("일반회원 가입 및 탈퇴 통계 데이터 불러오기 실패: ", error);
       } finally {
-        const userStateData = generateUserDailyData(periodType);  // 일반회원 가입 및 탈퇴 통계 데이터 생성
-        const companyStateData = generateCompanyDailyData(periodType); // 기업회원 가입 및 탈퇴 통계 데이터 생성
+        setUserStateData(generateUserDailyData(periodType));  // 일반회원 가입 및 탈퇴 통계 데이터 생성
+        setCompanyStateData(generateCompanyDailyData(periodType)); // 기업회원 가입 및 탈퇴 통계 데이터 생성
       }
     }
-    fetchUserState(periodType);
+    fetchSignUpAndWithdrawal(periodType);
   }, [periodType])
 
+  // 상기 통계 데이터 상태 반영 완료 시, 로딩을 종료하고 화면에 통계 출력
+  useEffect(() => {
+    if(userStateData != undefined && userStateData != null){
+      setUserStateIsLoading(false);
+    }
+    if(companyStateData != undefined && companyStateData != null){
+      setCompanyStateIsLoading(false);
+    }
+  }, [userStateData, companyStateData])
+
+  type DataExtractor<T> = (entry: T) => { value: number, leave: number };
+
   // 일반회원 가입 및 탈퇴 통계 데이터 생성
-  const generateUserDailyData = (period: number) => {
+  const generateUserDailyData = (period: number) : DataFormat[] => {
     try {
-      const data = [];
+      const data : DataFormat[] = [];
       const today = new Date();
 
       if (period == 7 || period == 30) { // 선택된 단위기간의 단위가 일(day)일 때
@@ -294,15 +335,14 @@ export default function StatisticsPage() {
       return data;
     } catch (error) {
       console.log("일반회원 가입 및 탈퇴 통계 데이터 생성 실패 :", error)
-    } finally {
-      setIsLoading(false);
-    } 
+      return [];
+    }
   }
 
     // 기업회원 가입 및 탈퇴 통계 데이터 생성
-  const generateCompanyDailyData = (period: number) => {
+  const generateCompanyDailyData = (period: number) : DataFormat[] => {
     try {
-      const data = [];
+      const data : DataFormat[] = [];
       const today = new Date();
 
       if (period == 7 || period == 30) { // 선택된 단위기간의 단위가 일(day)일 때
@@ -354,10 +394,34 @@ export default function StatisticsPage() {
       return data;
     } catch (error) {
       console.log("기업회원 가입 및 탈퇴 통계 데이터 생성 실패 :", error)
-    } finally {
-      setIsLoading(false);
-    } 
+      return [];
+    }
   }
+
+  // 일반회원, 기업회원 매출 통계
+  useEffect(() => {
+    const fetchSales = async (period: number) => {
+      try {
+          const userData = await axios.get(`http://localhost:8090/admin/service/count-payment?period=${period}&userType=일반회원`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const companyData = await axios.get(`http://localhost:8090/admin/service/count-payment?period=${period}&userType=기업회원`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          console.log(userData.data);
+          console.log(companyData.data);
+
+          setUserPaymentState(userData.data);
+          setCompanyPaymentState(companyData.data);
+      } catch (error) {
+        console.log("일반회원, 기업회원 매출 통계 데이터 불러오기 실패: ", error);
+      } finally {
+        setUserPaymentData(generateUserDailyData(periodType));  // 일반회원 가입 및 탈퇴 통계 데이터 생성
+        setCompanyPaymentData(generateCompanyDailyData(periodType)); // 기업회원 가입 및 탈퇴 통계 데이터 생성
+      }
+    }
+    fetchSales(periodType);
+  }, [periodType])
 
   return (
     <div className="space-y-6">
@@ -436,7 +500,7 @@ export default function StatisticsPage() {
                   </Button>
                 </div>
               </div>
-              {isLoading ? <BeatLoader /> :
+              {userStateIsLoading ? <BeatLoader /> :
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
@@ -465,11 +529,11 @@ export default function StatisticsPage() {
           <Card>
             <CardContent className="pt-6">
               <h2 className="text-xl font-semibold mb-4 text-[#666666]">기업회원 가입 및 탈퇴 통계</h2>
-              {isLoading ? <BeatLoader /> :
+              {companyStateIsLoading ? <BeatLoader /> :
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
-                      data={corporateUserData}
+                      data={companyStateData}
                       margin={{
                         top: 5,
                         right: 30,
@@ -499,7 +563,7 @@ export default function StatisticsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="h-[400px] flex flex-col">
                   <h3 className="text-lg font-medium text-center mb-2 text-[#666666]">일반회원 구독 현황</h3>
-                  {isLoading ? <BeatLoader /> :
+                  {subsStateIsLoading ? <BeatLoader /> :
                     <div className="flex-grow">
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -532,7 +596,7 @@ export default function StatisticsPage() {
                 </div>
                 <div className="h-[400px] flex flex-col">
                   <h3 className="text-lg font-medium text-center mb-2 text-[#666666]">기업회원 구독 현황</h3>
-                  {isLoading ? <BeatLoader /> :
+                  {subsStateIsLoading ? <BeatLoader /> :
                     <div className="flex-grow">
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
