@@ -45,7 +45,7 @@ interface DataFormat {
   leave: number;
 }
 
-interface PaymentData {
+interface SalesData {
   date: string;
   payAmount: number;
 }
@@ -56,65 +56,6 @@ interface consultingData {
 }
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28"]
-
-/*
-// 목업 데이터 1
-const userTypeData = [
-  { userType: "일반회원", value: 65 },
-  { userType: "기업회원", value: 25 },
-  { userType: "컨설턴트", value: 10 },
-]
-
-// 목업 데이터 2
-const subscriptionData = [
-  { userType: "일반회원", subs: 35, unSubs: 65 },
-  { userType: "기업회원", subs: 70, unSubs: 30 },
-]
-
-// 일 단위 목업 데이터 생성
-const generateUserDailyData = (days: number, baseValue: number, variance: number) => {
-  const data = []
-  const today = new Date()
-
-  for (let i = days - 1; i >= 0; i--) {
-    const date = new Date()
-    date.setDate(today.getDate() - i)
-
-    const value = baseValue + Math.floor(Math.random() * variance * 2) - variance
-    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
-
-    data.push({
-      date: formattedDate,
-      value: Math.max(0, value),
-      leave: Math.max(0, baseValue / 5 + Math.floor(Math.random() * variance) - variance / 2),
-    })
-  }
-
-  return data
-}
-
-// 월 단위 목업 데이터 생성
-const generateMonthlyData = (months: number, baseValue: number, variance: number) => {
-  const data = []
-  const today = new Date()
-
-  for (let i = months - 1; i >= 0; i--) {
-    const date = new Date()
-    date.setMonth(today.getMonth() - i)
-
-    const value = baseValue + Math.floor(Math.random() * variance * 2) - variance
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
-
-    data.push({
-      date: formattedDate,
-      value: Math.max(0, value),
-      leave: Math.max(0, baseValue / 5 + Math.floor(Math.random() * variance) - variance / 2),
-    })
-  }
-
-  return data
-}
-*/
 
 // 활성 항목 상태를 위한 함수
 const renderActiveShape = (props: any) => {
@@ -165,7 +106,7 @@ const renderActiveShape = (props: any) => {
 
 export default function StatisticsPage() {
 
-  const token = useSelector((state: RootState) => state.auth.accessToken);
+  const token = useSelector((state: RootState) => state.auth.accessToken)
 
   const [userTypeData, setUserTypeData] = useState([])
   const [subscriptionData, setSubscriptionData] = useState<SubsCount[]>([])
@@ -174,15 +115,9 @@ export default function StatisticsPage() {
   const [userMonthState, setUserMonthState] = useState<MonthState[]>([])
   const [companyDayState, setCompanyDayState] = useState<DayState[]>([])
   const [companyMonthState, setCompanyMonthState] = useState<MonthState[]>([])
-  const [userPaymentState, setUserPaymentState] = useState<PaymentData[]>([])
-  const [companyPaymentState, setCompanyPaymentState] = useState<PaymentData[]>([])
+  const [userSalesState, setUserSalesState] = useState<SalesData[]>([])
+  const [companySalesState, setCompanySalesState] = useState<SalesData[]>([])
   const [consultingState, setConsultingState] = useState<consultingData[]>([])
-
-  const [userStateData, setUserStateData] = useState<DataFormat[]>([])
-  const [companyStateData, setCompanyStateData] = useState<DataFormat[]>([])
-  const [userPaymentData, setUserPaymentData] = useState<DataFormat[]>([])
-  const [companyPaymentData, setCompanyPaymentData] = useState<DataFormat[]>([])
-  const [consultingData, setConsultingData] = useState<DataFormat[]>([])
 
   const [activeTab, setActiveTab] = useState("users")
   const [periodType, setPeriodType] = useState<number>(30)
@@ -190,6 +125,15 @@ export default function StatisticsPage() {
   const [subsStateIsLoading, setSubsStateIsLoading] = useState<boolean>(true)
   const [userStateIsLoading, setUserStateIsLoading] = useState<boolean>(true)
   const [companyStateIsLoading, setCompanyStateIsLoading] = useState<boolean>(true)
+  const [userSalesIsLoading, setUserSalesIsLoading] = useState<boolean>(true)
+  const [companySalesIsLoading, setCompanySalesIsLoading] = useState<boolean>(true)
+  const [consultingIsLoading, setConsultingIsLoading] = useState<boolean>(true)
+
+  let userStateData
+  let companyStateData
+  let userSalesData
+  let companySalesData
+  let consultingData
 
   const handlePeriodChange = (period: number) => {
     setPeriodType(period)
@@ -197,6 +141,7 @@ export default function StatisticsPage() {
 
   // 통계 데이터 불러오기
   useEffect(() => {
+
     // 회원 유형별 이용자 비율
     const fetchUserCount = async () => {
       try {
@@ -228,17 +173,17 @@ export default function StatisticsPage() {
     fetchSubsCount();
   }, [])
 
-  // 일반회원, 기업회원 가입 및 탈퇴 통계
+  // 일반회원, 기업회원 가입 및 탈퇴 데이터 불러오기
   useEffect(() => {
     const fetchSignUpAndWithdrawal = async (period: number) => {
       try { // 단위기간이 일(day) 단위일 시
         if (period == 7 || period == 30) {
-          const userData = await axios.get(`http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=일반회원`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          const companyData = await axios.get(`http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=기업회원`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          const [userData, companyData] = await Promise.all([
+            axios.get(`http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=일반회원`,
+            { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=기업회원`,
+            { headers: { Authorization: `Bearer ${token}` } })
+          ])
           console.log(userData.data);
           console.log(companyData.data);
 
@@ -246,12 +191,12 @@ export default function StatisticsPage() {
           setCompanyDayState(companyData.data);
 
         } else {  // 단위기간이 월(month) 단위일 시
-          const userData = await axios.get(`http://localhost:8090/admin/service/reg-and-cancel/month?month=${period}$userType=일반회원`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          const companyData = await axios.get(`http://localhost:8090/admin/service/reg-and-cancel/month?month=${period}$userType=일반회원`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          const [userData, companyData] = await Promise.all([
+            axios.get(`http://localhost:8090/admin/service/reg-and-cancel/month?month=${period}&userType=일반회원`,
+            { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`http://localhost:8090/admin/service/reg-and-cancel/month?month=${period}&userType=기업회원`,
+            { headers: { Authorization: `Bearer ${token}` } })
+          ])
           console.log(userData.data);
           console.log(companyData.data);
 
@@ -259,29 +204,18 @@ export default function StatisticsPage() {
           setCompanyMonthState(companyData.data);
         }
       } catch (error) {
+        setUserDayState([]);
+        setCompanyDayState([]);
+        setUserStateIsLoading(false);
+        setCompanyStateIsLoading(false);
         console.log("일반회원 가입 및 탈퇴 통계 데이터 불러오기 실패: ", error);
-      } finally {
-        setUserStateData(generateUserDailyData(periodType));  // 일반회원 가입 및 탈퇴 통계 데이터 생성
-        setCompanyStateData(generateCompanyDailyData(periodType)); // 기업회원 가입 및 탈퇴 통계 데이터 생성
       }
     }
     fetchSignUpAndWithdrawal(periodType);
   }, [periodType])
 
-  // 상기 통계 데이터 상태 반영 완료 시, 로딩을 종료하고 화면에 통계 출력
-  useEffect(() => {
-    if(userStateData != undefined && userStateData != null){
-      setUserStateIsLoading(false);
-    }
-    if(companyStateData != undefined && companyStateData != null){
-      setCompanyStateIsLoading(false);
-    }
-  }, [userStateData, companyStateData])
-
-  type DataExtractor<T> = (entry: T) => { value: number, leave: number };
-
   // 일반회원 가입 및 탈퇴 통계 데이터 생성
-  const generateUserDailyData = (period: number) : DataFormat[] => {
+  const generateUserStateData = (period: number) : DataFormat[] => {
     try {
       const data : DataFormat[] = [];
       const today = new Date();
@@ -339,8 +273,8 @@ export default function StatisticsPage() {
     }
   }
 
-    // 기업회원 가입 및 탈퇴 통계 데이터 생성
-  const generateCompanyDailyData = (period: number) : DataFormat[] => {
+  // 기업회원 가입 및 탈퇴 통계 데이터 생성
+  const generateCompanyStateData = (period: number) : DataFormat[] => {
     try {
       const data : DataFormat[] = [];
       const today = new Date();
@@ -373,7 +307,7 @@ export default function StatisticsPage() {
           const date = new Date()
           date.setMonth(today.getMonth() - i)
 
-          const combinedData = `${date.getFullYear()}-${userMonthState[period - (i + 1)].month.toString().padStart(2, "0")}`;
+          const combinedData = `${date.getFullYear()}-${companyMonthState[period - (i + 1)].month.toString().padStart(2, "0")}`;
           const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
 
           if (combinedData !== formattedDate) {
@@ -398,30 +332,269 @@ export default function StatisticsPage() {
     }
   }
 
-  // 일반회원, 기업회원 매출 통계
+  // 상기 통계 데이터 상태 반영 완료 시, 로딩을 종료하고 화면에 통계 출력(일반회원 기준)
+  useEffect(() => {
+    userStateData = generateUserStateData(periodType);
+
+    if(userStateData != undefined && userStateData != null){
+      setUserStateIsLoading(false);
+    }
+  }, [userDayState, userMonthState, periodType])
+
+  // 상기 통계 데이터 상태 반영 완료 시, 로딩을 종료하고 화면에 통계 출력(기업회원 기준)
+  useEffect(() => {
+    companyStateData = generateCompanyStateData(periodType);
+
+    if(companyStateData != undefined && companyStateData != null){
+      setCompanyStateIsLoading(false);
+    }
+  }, [companyDayState, companyMonthState, periodType])
+
+  // 일반회원, 기업회원 매출 데이터 불러오기
   useEffect(() => {
     const fetchSales = async (period: number) => {
       try {
-          const userData = await axios.get(`http://localhost:8090/admin/service/count-payment?period=${period}&userType=일반회원`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          const companyData = await axios.get(`http://localhost:8090/admin/service/count-payment?period=${period}&userType=기업회원`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+        const [userData, companyData] = await Promise.all([
+          axios.get(`http://localhost:8090/admin/service/count-payment?period=${period}&userType=일반회원`,
+            { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get(`http://localhost:8090/admin/service/count-payment?period=${period}&userType=기업회원`,
+            { headers: { Authorization: `Bearer ${token}` } })
+        ])
           console.log(userData.data);
           console.log(companyData.data);
 
-          setUserPaymentState(userData.data);
-          setCompanyPaymentState(companyData.data);
+          setUserSalesState(userData.data);
+          setCompanySalesState(companyData.data);
       } catch (error) {
         console.log("일반회원, 기업회원 매출 통계 데이터 불러오기 실패: ", error);
-      } finally {
-        setUserPaymentData(generateUserDailyData(periodType));  // 일반회원 가입 및 탈퇴 통계 데이터 생성
-        setCompanyPaymentData(generateCompanyDailyData(periodType)); // 기업회원 가입 및 탈퇴 통계 데이터 생성
       }
     }
     fetchSales(periodType);
   }, [periodType])
+
+  // 일반회원 매출 통계 데이터 생성
+  const generateUserSalesData = (period: number) : DataFormat[] => {
+    try {
+      const data : DataFormat[] = [];
+      const today = new Date();
+
+      if (period == 7 || period == 30) { // 선택된 단위기간의 단위가 일(day)일 때
+        for (let i = period - 1; i >= 0; i--) {
+          const date = new Date()
+          date.setDate(today.getDate() - i)
+
+          const [, month, day] = userSalesState[period - (i + 1)].date.split("-");
+          const splittedDate = `${parseInt(month)}/${parseInt(day)}`; // 서버로부터 받은 데이터를 화면에 출력할 수 있게 포매팅
+          const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
+
+          if (splittedDate !== formattedDate) {
+            data.push({
+              date: formattedDate,
+              value: 0,
+              leave: 0
+            });
+          } else {
+            data.push({
+              date: splittedDate,
+              value: userSalesState[period - (i + 1)].payAmount,
+              leave: 0
+            });
+          }
+        }
+      } else {  // 선택된 단위기간의 단위가 달(month)일 때
+        for (let i = period - 1; i >= 0; i--) {
+          const date = new Date()
+          date.setMonth(today.getMonth() - i)
+
+          const [year, month, ] = userSalesState[period - (i + 1)].date.split("-");
+          const splittedDate = `${year}-${month}`;
+          const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+
+          if (splittedDate !== formattedDate) {
+            data.push({
+              date: formattedDate,
+              value: 0,
+              leave: 0
+            })
+          } else {
+            data.push({
+              date: splittedDate,
+              value: userSalesState[period - (i + 1)].payAmount,
+              leave: 0
+            })
+          }
+        }
+      }
+      return data;
+    } catch (error) {
+      console.log("일반회원 매출 통계 데이터 생성 실패 :", error)
+      return [];
+    }
+  }
+
+  // 기업회원 매출 통계 데이터 생성
+  const generateCompanySalesData = (period: number) : DataFormat[] => {
+    try {
+      const data : DataFormat[] = [];
+      const today = new Date();
+
+      if (period == 7 || period == 30) { // 선택된 단위기간의 단위가 일(day)일 때
+        for (let i = period - 1; i >= 0; i--) {
+          const date = new Date()
+          date.setDate(today.getDate() - i)
+
+          const [, month, day] = companySalesState[period - (i + 1)].date.split("-");
+          const splittedDate = `${parseInt(month)}/${parseInt(day)}`; // 서버로부터 받은 데이터를 화면에 출력할 수 있게 포매팅
+          const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
+
+          if (splittedDate !== formattedDate) {
+            data.push({
+              date: formattedDate,
+              value: 0,
+              leave: 0
+            });
+          } else {
+            data.push({
+              date: splittedDate,
+              value: companySalesState[period - (i + 1)].payAmount,
+              leave: 0
+            });
+          }
+        }
+      } else {  // 선택된 단위기간의 단위가 달(month)일 때
+        for (let i = period - 1; i >= 0; i--) {
+          const date = new Date()
+          date.setMonth(today.getMonth() - i)
+
+          const [year, month, ] = companySalesState[period - (i + 1)].date.split("-");
+          const splittedDate = `${year}-${month}`;
+          const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+
+          if (splittedDate !== formattedDate) {
+            data.push({
+              date: formattedDate,
+              value: 0,
+              leave: 0
+            })
+          } else {
+            data.push({
+              date: splittedDate,
+              value: companySalesState[period - (i + 1)].payAmount,
+              leave: 0
+            })
+          }
+        }
+      }
+      return data;
+    } catch (error) {
+      console.log("일반회원 매출 통계 데이터 생성 실패 :", error)
+      return [];
+    }
+  }
+
+  // 상기 통계 데이터 상태 반영 완료 시, 로딩을 종료하고 화면에 통계 출력
+  useEffect(() => {
+    userSalesData = generateUserSalesData(periodType);
+    
+    if(userSalesData != undefined && userSalesData != null){
+      setUserSalesIsLoading(false);
+    }
+  }, [userSalesState, periodType])
+
+    // 상기 통계 데이터 상태 반영 완료 시, 로딩을 종료하고 화면에 통계 출력
+  useEffect(() => {
+    companySalesData = generateCompanySalesData(periodType);
+
+    if(companySalesData != undefined && companySalesData != null){
+      setCompanySalesIsLoading(false);
+    }
+  }, [companySalesState, periodType])
+
+  // 컨설팅 집계 데이터 불러오기
+  useEffect(() => {
+    const fetchConsulting = async (period: number) => {
+      try {
+          const consultings = await axios.get(`http://localhost:8090/admin/service/count-consulting?period=${period}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          console.log(consultings.data);
+
+          setConsultingState(consultings.data);
+      } catch (error) {
+        console.log("컨설팅 통계 데이터 불러오기 실패: ", error);
+      }
+    }
+    fetchConsulting(periodType);
+  }, [periodType])
+
+  // 컨설팅 통계 데이터 생성
+  const generateConsultingData = (period: number) : DataFormat[] => {
+    try {
+      const data : DataFormat[] = [];
+      const today = new Date();
+
+      if (period == 7 || period == 30) { // 선택된 단위기간의 단위가 일(day)일 때
+        for (let i = period - 1; i >= 0; i--) {
+          const date = new Date()
+          date.setDate(today.getDate() - i)
+
+          const [, month, day] = consultingState[period - (i + 1)].date.split("-");
+          const splittedDate = `${parseInt(month)}/${parseInt(day)}`; // 서버로부터 받은 데이터를 화면에 출력할 수 있게 포매팅
+          const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
+
+          if (splittedDate !== formattedDate) {
+            data.push({
+              date: formattedDate,
+              value: 0,
+              leave: 0
+            });
+          } else {
+            data.push({
+              date: splittedDate,
+              value: consultingState[period - (i + 1)].consultCount,
+              leave: 0
+            });
+          }
+        }
+      } else {  // 선택된 단위기간의 단위가 달(month)일 때
+        for (let i = period - 1; i >= 0; i--) {
+          const date = new Date()
+          date.setMonth(today.getMonth() - i)
+
+          const [year, month, ] = consultingState[period - (i + 1)].date.split("-");
+          const splittedDate = `${year}-${month}`;
+          const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+
+          if (splittedDate !== formattedDate) {
+            data.push({
+              date: formattedDate,
+              value: 0,
+              leave: 0
+            })
+          } else {
+            data.push({
+              date: splittedDate,
+              value: consultingState[period - (i + 1)].consultCount,
+              leave: 0
+            })
+          }
+        }
+      }
+      return data;
+    } catch (error) {
+      console.log("컨설팅 통계 데이터 생성 실패 :", error)
+      return [];
+    }
+  }
+
+  // 상기 통계 데이터 상태 반영 완료 시, 로딩을 종료하고 화면에 통계 출력
+  useEffect(() => {
+    consultingData = generateConsultingData(periodType);
+
+    if(consultingData != undefined && consultingData != null){
+      setConsultingIsLoading(false);
+    }
+  }, [consultingState, periodType])
 
   return (
     <div className="space-y-6">
@@ -587,7 +760,7 @@ export default function StatisticsPage() {
 
                   <div className="text-center mt-4">
                     <p className="text-sm text-[#666666]">
-                      총 일반회원 수: <span className="font-semibold">{(subscriptionData[0]?.subs ?? 0) + (subscriptionData[0]?.subs ?? 0)}명</span>
+                      총 일반회원 수: <span className="font-semibold">{(subscriptionData[0]?.subs ?? 0) + (subscriptionData[0]?.unSubs ?? 0)}명</span>
                     </p>
                     <p className="text-sm text-[#666666]">
                       구독 회원 수: <span className="font-semibold">{(subscriptionData[0]?.subs ?? 0)}명</span>
@@ -668,53 +841,56 @@ export default function StatisticsPage() {
                   </Button>
                 </div>
               </div>
-
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={regularRevenueData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => [`₩${value.toLocaleString()}`, "매출"]} />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" name="매출" stroke="#EE57CD" activeDot={{ r: 8 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              {userSalesIsLoading ? <BeatLoader /> :
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={userSalesData}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => [`₩${value.toLocaleString()}`, "매출"]} />
+                      <Legend />
+                      <Line type="monotone" dataKey="value" name="매출" stroke="#EE57CD" activeDot={{ r: 8 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              }
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="pt-6">
               <h2 className="text-xl font-semibold mb-4 text-[#666666]">기업회원 매출 통계</h2>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={corporateRevenueData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => [`₩${value.toLocaleString()}`, "매출"]} />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" name="매출" stroke="#EE57CD" activeDot={{ r: 8 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              {companySalesIsLoading ? <BeatLoader /> :
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={companySalesData}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => [`₩${value.toLocaleString()}`, "매출"]} />
+                      <Legend />
+                      <Line type="monotone" dataKey="value" name="매출" stroke="#EE57CD" activeDot={{ r: 8 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -755,27 +931,28 @@ export default function StatisticsPage() {
                   </Button>
                 </div>
               </div>
-
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={consultingCountData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" name="컨설팅 수" stroke="#EE57CD" activeDot={{ r: 8 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              {consultingIsLoading ? <BeatLoader /> :
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={consultingData}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Line type="monotone" dataKey="value" name="컨설팅 수" stroke="#EE57CD" activeDot={{ r: 8 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              }
             </CardContent>
           </Card>
         </TabsContent>
