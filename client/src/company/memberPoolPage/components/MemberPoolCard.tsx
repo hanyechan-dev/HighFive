@@ -43,15 +43,15 @@ const MemberPoolCard: FC<MemberPoolCardProps> = ({ member, onClick }) => {
             </div>
             {/* 메인 정보 */}
             <div className="flex flex-col items-center justify-center mt-10">
-                <div className="font-bold text-xl text-gray-900 mb-1 text-center truncate w-full tracking-tight" style={{ fontFamily: 'inherit' }}>{member.name}</div>
-                <div className="text-gray-700 font-semibold mb-1 text-center truncate w-full tracking-tight" style={{ fontFamily: 'inherit' }}>{member.job}</div>
+                <div className="font-bold text-xl text-gray-900 mb-1 text-center truncate w-full tracking-tight">{member.name}</div>
+                <div className="text-gray-700 font-semibold mb-1 text-center truncate w-full tracking-tight">{member.job}</div>
             </div>
             {/* 서브 정보 */}
-            <div className="flex flex-wrap justify-center gap-3 mt-2">
+            <div className="flex flex-wrap justify-center items-center gap-3 mt-2">
                 <Badge label={member.hasCareer ? '경력' : '신입'} color={member.hasCareer ? 'career' : 'newbie'} />
                 <Badge label={member.educationLevel} color="info" />
                 <Badge label={member.genderType} color={member.genderType === '남성' ? 'male' : 'female'} />
-                <span className="text-gray-400 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{getAge(member.birthDate)}세</span>
+                <span className="text-gray-400 text-sm tracking-tight">{getAge(member.birthDate)}세</span>
             </div>
         </div>
     );

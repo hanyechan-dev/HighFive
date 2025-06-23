@@ -12,39 +12,14 @@ import Button from "../../../common/components/button/Button";
 import Pagination from "../../../common/components/pagination/Pagination";
 import JobPostingUpdateModal from "../modals/JobPostingUpdateModal";
 import JobPostingCreateModal from "../modals/JobPostingCreateModal";
+import { mockJobPostings } from "../../common/mockData/CompanyMockData";
 
-// 임시 mock 데이터 (백엔드 DTO 구조에 맞춤)
-const mockJobPostings: JobPostingSummary[] = [
-  {
-    id: 1,
-    title: "프론트엔드 개발자 모집",
-    companyName: "테크컴퍼니",
-    type: "대기업",
-    job: "프론트엔드 개발자",
-    workLocation: "서울특별시",
-    careerType: "1~3년",
-    educationLevel: "학사",
-    createdDate: "2024-01-15"
-  },
-  {
-    id: 2,
-    title: "백엔드 개발자 모집",
-    companyName: "스타트업",
-    type: "중소기업",
-    job: "백엔드 개발자",
-    workLocation: "서울특별시",
-    careerType: "신입",
-    educationLevel: "석사",
-    createdDate: "2024-01-10"
-  }
-];
-
-export default function JobPostingManagementPage() {
+const JobPostingPage = () => {
   const [jobPostings, setJobPostings] = useState<JobPostingSummary[]>(mockJobPostings);
   const [totalElements, setTotalElements] = useState(0);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [isCreateOpen, setCreateOpen] = useState(false);
-  const [isEditOpen, setEditOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -88,7 +63,7 @@ export default function JobPostingManagementPage() {
 
   const handleEdit = (id: number) => {
     setSelectedId(id);
-    setEditOpen(true);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = async (id: number) => {
@@ -104,12 +79,12 @@ export default function JobPostingManagementPage() {
   };
 
   const handleCreate = () => {
-    setCreateOpen(true);
+    setIsCreateModalOpen(true);
   };
 
   const handleModalSuccess = () => {
-    setEditOpen(false);
-    setCreateOpen(false);
+    setIsEditModalOpen(false);
+    setIsCreateModalOpen(false);
 
   };
 
@@ -173,19 +148,21 @@ export default function JobPostingManagementPage() {
         {/* 모달들 */}
         {selectedId && (
           <JobPostingUpdateModal
-            isOpen={isEditOpen}
-            onClose={() => setEditOpen(false)}
+            isOpen={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
             jobPostingId={selectedId}
             onSuccess={handleModalSuccess}
           />
         )}
 
         <JobPostingCreateModal
-          isOpen={isCreateOpen}
-          onClose={() => setCreateOpen(false)}
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
           onSuccess={handleModalSuccess}
         />
       </div>
     </CommonPage>
   );
-} 
+};
+
+export default JobPostingPage; 

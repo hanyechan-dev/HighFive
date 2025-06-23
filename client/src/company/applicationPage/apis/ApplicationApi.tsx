@@ -1,24 +1,10 @@
 import { api } from "../../../common/Axios";
-import type { ApplicationSummaryForCompany } from "../props/ApplicationProps";
+import type { ApplicationSummaryForCompany, ApplicationDetail } from "../props/ApplicationProps";
 
 interface ApplicationListResponse {
   content: ApplicationSummaryForCompany[];
   totalElements: number;
   totalPages: number;
-}
-
-interface ApplicationDetailResponse {
-  id: number;
-  jobPostingId: number;
-  jobPostingTitle: string;
-  name: string;
-  genderType: string;
-  birthDate: string;
-  hasCareer: boolean;
-  job: string;
-  educationLevel: string;
-  createdDate: string;
-  isPassed: boolean;
 }
 
 export const ApplicationListApi = (jobPostingId: number, page: number, size: number) => {
@@ -30,7 +16,7 @@ export const ApplicationListApi = (jobPostingId: number, page: number, size: num
 };
 
 export const ApplicationDetailApi = (applicationId: number) => {
-  return api(true).post<ApplicationDetailResponse>('/appliers/applications/detail', { id: applicationId });
+  return api(true).post<ApplicationDetail>('/appliers/applications/detail', { id: applicationId });
 };
 
 /**

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
-import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
+
 import com.jobPrize.dto.memToCom.application.ApplicationResponseForCompanyDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
-import com.jobPrize.enumerate.ApprovalStatus;
+
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.company.jobPosting.JobPostingService;
 import com.jobPrize.service.memToCom.application.ApplicationService;
@@ -30,9 +30,9 @@ import lombok.RequiredArgsConstructor;
 public class PassController {
 
 	private final ApplicationService applicationService;
-	
+
 	private final JobPostingService jobPostingService;
-	
+
 	@GetMapping
 	public ResponseEntity<Page<JobPostingSummaryDto>> readMyJobPostings(Pageable pageable) {
 
@@ -42,17 +42,19 @@ public class PassController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(jobPostingSummaryDtos);
 	}
-	
-	@GetMapping("/applications")
-	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readPassedApplications(@Valid IdDto IdDto, Pageable pageable){
-		
+
+	@PostMapping("/applications")
+	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readPassedApplications(@Valid IdDto IdDto,
+			Pageable pageable) {
+
 		Long id = SecurityUtil.getId();
-		
-		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = applicationService.readPassedApplicationPage(id,IdDto.getId(), pageable);
-		
+
+		Page<ApplicationSummaryForCompanyDto> applicationSummaryForCompanyDtos = applicationService
+				.readPassedApplicationPage(id, IdDto.getId(), pageable);
+
 		return ResponseEntity.status(HttpStatus.OK).body(applicationSummaryForCompanyDtos);
 	}
-	
+
 	@PostMapping("/applications/detail")
 	public ResponseEntity<ApplicationResponseForCompanyDto> readMyApplication(@RequestBody @Valid IdDto idDto) {
 
@@ -60,12 +62,10 @@ public class PassController {
 
 		UserType userType = SecurityUtil.getUserType();
 
-		ApplicationResponseForCompanyDto applicationResponseForCompanyDto = applicationService.readApplicationForCompany(id, userType, idDto.getId());
-		
+		ApplicationResponseForCompanyDto applicationResponseForCompanyDto = applicationService
+				.readApplicationForCompany(id, userType, idDto.getId());
+
 		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseForCompanyDto);
 	}
-
-	
-
 
 }

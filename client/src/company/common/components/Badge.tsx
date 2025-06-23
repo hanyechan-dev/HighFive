@@ -17,8 +17,8 @@ const colorMap: Record<BadgeColor, string> = {
   approved: "bg-green-100 text-green-700 border-green-300",
   rejected: "bg-red-100 text-red-700 border-red-300",
   waiting: "bg-yellow-100 text-yellow-800 border-yellow-300",
-  career: "bg-indigo-100 text-indigo-700 border-indigo-200",
-  newbie: "bg-gray-100 text-gray-700 border-gray-200",
+  career: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  newbie: "bg-orange-100 text-orange-700 border-orange-200",
   info: "bg-sky-100 text-sky-700 border-sky-200",
   default: "bg-gray-50 text-gray-500 border-gray-100",
 };
@@ -43,8 +43,7 @@ const Badge: React.FC<BadgeProps> = ({
       transition-all duration-200
     `}
     style={{
-      letterSpacing: "0.01em",
-      fontFamily: "inherit",
+      letterSpacing: "0.01em"
     }}
   >
     {label}

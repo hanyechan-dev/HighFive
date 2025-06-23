@@ -4,10 +4,10 @@ import { listRowClass } from "../../common/listStyles";
 
 interface Props {
   job: JobPostingSummary;
-  onShowApplicants: (jobPostingId: number) => void;
+  onShowPasses: (jobPostingId: number) => void;
 }
 
-const ApplicationJobPostingSummaryRow = ({ job, onShowApplicants }: Props) => (
+const PassJobPostingSummaryRow = ({ job, onShowPasses }: Props) => (
   <div className={listRowClass}>
     <div className="w-[121px] flex items-center justify-start">{job.companyName}</div>
     <div className="w-[110px] flex items-center justify-start">{job.type}</div>
@@ -21,13 +21,13 @@ const ApplicationJobPostingSummaryRow = ({ job, onShowApplicants }: Props) => (
       <Button
         color="theme"
         size="s"
-        text="지원자 확인"
+        text="합격자 확인"
         type="button"
-        onClick={() => onShowApplicants(job.id)}
+        onClick={() => onShowPasses(job.id)}
         disabled={false}
       />
     </div>
   </div>
 );
 
-export default ApplicationJobPostingSummaryRow; 
+export default PassJobPostingSummaryRow; 

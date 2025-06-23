@@ -6,7 +6,7 @@ import CompanyEmptyState from "../../common/components/CompanyEmptyState";
 import Pagination from "../../../common/components/pagination/Pagination";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
-import type { JobPostingSummary } from "../../jobPostingPage/props/JobPostingProps";
+import type { JobPostingSummary } from "../../common/types/JobPostingTypes";
 import ApplicationJobPostingListHeader from "../components/ApplicationJobPostingListHeader";
 import ApplicationJobPostingSummaryRow from "../components/ApplicationJobPostingSummaryRow";
 import { JobPostingListApi } from "../../jobPostingPage/apis/JobPostingApi";
@@ -37,7 +37,7 @@ const mockJobPostings: JobPostingSummary[] = [
   }
 ];
 
-export default function ApplicationJobPostingPage() {
+const ApplicationJobPostingPage = () => {
   const [jobPostings, setJobPostings] = useState<JobPostingSummary[]>(mockJobPostings);
   const [totalElements, setTotalElements] = useState(mockJobPostings.length);
   const [isLoading, setIsLoading] = useState(false);
@@ -134,4 +134,6 @@ export default function ApplicationJobPostingPage() {
       </div>
     </CommonPage>
   );
-} 
+};
+
+export default ApplicationJobPostingPage; 

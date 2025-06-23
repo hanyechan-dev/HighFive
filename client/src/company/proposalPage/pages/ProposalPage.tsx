@@ -10,45 +10,9 @@ import ProposalListHeader from "../components/ProposalListHeader";
 import ProposalSummaryRow from "../components/ProposalSummaryRow";
 import Pagination from "../../../common/components/pagination/Pagination";
 import ProposalDetailModal from "../modals/ProposalDetailModal";
+import { mockProposals } from "../../common/mockData/CompanyMockData";
 
-
-const mockProposals: ProposalSummary[] = [
-  {
-    id: 1,
-    name: "김철수",
-    genderType: "남성",
-    birthDate: "1990-05-15",
-    hasCareer: true,
-    job: "프론트엔드 개발자",
-    educationLevel: "학사",
-    proposalDate: "2024-01-15",
-    proposalStatus: "WAITING"
-  },
-  {
-    id: 2,
-    name: "이영희",
-    genderType: "여성",
-    birthDate: "1992-08-23",
-    hasCareer: false,
-    job: "백엔드 개발자",
-    educationLevel: "석사",
-    proposalDate: "2024-01-10",
-    proposalStatus: "APPROVED"
-  },
-  {
-    id: 3,
-    name: "박지민",
-    genderType: "남성",
-    birthDate: "1995-03-10",
-    hasCareer: true,
-    job: "UI/UX 디자이너",
-    educationLevel: "학사",
-    proposalDate: "2024-01-08",
-    proposalStatus: "REJECTED"
-  }
-];
-
-export default function ProposalPage() {
+const ProposalPage = () => {
   const [proposals, setProposals] = useState<ProposalSummary[]>(mockProposals);
   const [totalElements, setTotalElements] = useState(0);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -157,4 +121,6 @@ export default function ProposalPage() {
       </div>
     </CommonPage>
   );
-} 
+};
+
+export default ProposalPage; 

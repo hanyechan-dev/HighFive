@@ -1,15 +1,5 @@
 // 채용공고 관리 페이지에서 사용할 타입들 (백엔드 DTO 기반)
-export interface JobPostingSummary {
-  id: number;
-  title: string;
-  companyName: string;
-  type: string; 
-  job: string;
-  workLocation: string;
-  careerType: string;
-  educationLevel: string;
-  createdDate: string; 
-}
+import type { JobPostingSummary } from "../../common/types/JobPostingTypes";
 
 export interface JobPostingDetail {
   id: number;
@@ -51,4 +41,7 @@ export interface JobPostingUpdateRequest {
   content: string;
   requirement: string;
   companyType: string;
-} 
+}
+
+// 공통 타입을 다시 export
+export type { JobPostingSummary }; 
