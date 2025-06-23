@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public class PaymentCountDto {
 	private LocalDate date;
-	private Long payAmount;
+	private Integer payAmount;
 	
-	public PaymentCountDto(java.sql.Date date, Long payAmount) {
+	public PaymentCountDto(java.sql.Date date, Integer payAmount) {
 		this.date = date.toLocalDate();
 		this.payAmount = payAmount;
 	}

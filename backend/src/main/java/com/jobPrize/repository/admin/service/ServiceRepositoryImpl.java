@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.jobPrize.dto.admin.service.CountByDayDto;
 import com.jobPrize.dto.admin.service.CountByMonthDto;
@@ -88,7 +89,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	public List<CountByMonthDto> countSignUpAndWithDrawalByMonth(int months, UserType userType) {
 	    QUser user = QUser.user;
 	    LocalDate now = LocalDate.now();
-	    LocalDate startDate = now.minusMonths(months);
+	    LocalDate startDate = now.minusMonths(months).plusDays(1);
 
 	    // DB에서는 일(day) 단위로 그룹핑하여 데이터 조회
 	    List<Tuple> signUpTuples = queryFactory
@@ -113,17 +114,19 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	        .fetch();
 
 	    // 월별 결과를 저장할 Map
-	    Map<Integer, CountByMonthDto> monthlyResultMap = new HashMap<>();
+	    Map<String, CountByMonthDto> monthlyResultMap = new HashMap<>();
 
 	    // 회원가입 집계: 각 Tuple에서 날짜로부터 월 값을 추출 후 누적
 	    for (Tuple tuple : signUpTuples) {
 	        LocalDate createdDate = tuple.get(user.createdDate);
-	        int monthKey = createdDate.getMonthValue();  // 예: 1월이면 1, 2월이면 2, 등
+	        int year = createdDate.getYear();
+	        int month = createdDate.getMonthValue();
+	        String yearMonthKey = String.format("%d-%02d", year, month);
 	        Long count = tuple.get(user.count());
 
-	        CountByMonthDto dto = monthlyResultMap.get(monthKey);
+	        CountByMonthDto dto = monthlyResultMap.get(yearMonthKey);
 	        if (dto == null) {
-	            monthlyResultMap.put(monthKey, new CountByMonthDto(monthKey, count, 0L));
+	            monthlyResultMap.put(yearMonthKey, new CountByMonthDto(year, month, count, 0L));
 	        } else {
 	            dto.setSignUps(dto.getSignUps() + count);
 	        }
@@ -132,22 +135,26 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	    // 회원탈퇴 집계: 각 Tuple에서 날짜로부터 월 값을 추출 후 누적
 	    for (Tuple tuple : withdrawTuples) {
 	        LocalDate deletedDate = tuple.get(user.deletedDate);
-	        int monthKey = deletedDate.getMonthValue();
+	        int year = deletedDate.getYear();
+	        int month = deletedDate.getMonthValue();
+	        String yearMonthKey = String.format("%d-%02d", year, month);
 	        Long count = tuple.get(user.count());
 
-	        CountByMonthDto dto = monthlyResultMap.get(monthKey);
+	        CountByMonthDto dto = monthlyResultMap.get(yearMonthKey);
 	        if (dto == null) {
-	            monthlyResultMap.put(monthKey, new CountByMonthDto(monthKey, 0L, count));
+	            monthlyResultMap.put(yearMonthKey, new CountByMonthDto(year, month, 0L, count));
 	        } else {
 	            dto.setWithdraws(dto.getWithdraws() + count);
 	        }
 	    }
 
-	    // Map의 값들을 List로 변환 후, 월(숫자) 순서대로 정렬 ("1월", "2월", "3월" 등)
-	    List<CountByMonthDto> monthlyResults = new ArrayList<>(monthlyResultMap.values());
-	    monthlyResults.sort(Comparator.comparing(CountByMonthDto :: getMonth));
+	    // Map의 값들을 List로 변환 후, 월(1월, 2월, 3월 등) 순서대로 정렬
+	    List<CountByMonthDto> monthlyResults = monthlyResultMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
 
-	    return monthlyResults;
+    return monthlyResults;
 	}
 	
 	// 사용자 유형에 따른 구독자 및 비구독자 조회

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CountByMonthDto {
+	private Integer year;
 	private Integer month;
 	private Long signUps;
 	private Long withdraws;
