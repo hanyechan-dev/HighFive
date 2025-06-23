@@ -12,7 +12,6 @@ export const initialState: MemberInfoTabState = {
             genderType: "",
             phone: "",
             address: "",
-            type: ""
         }
     },
     showModal : false,
@@ -23,7 +22,13 @@ export const initialState: MemberInfoTabState = {
 export const reducer = (state: MemberInfoTabState, action: MemberInfoTabAction): MemberInfoTabState => {
     switch (action.type) {
         case "SET_MEMBER_MY_PAGE_RESPONSE_DTO":
-            return { ...state, memberMyPageResponseDto: action.payload };
+            return {
+                ...state,
+                memberMyPageResponseDto: {
+                    ...state.memberMyPageResponseDto,
+                    ...action.payload,
+                },
+            };
         case "SET_SHOW_MODAL":
             return { ...state, showModal: action.payload };
         case "SET_SHOW_MODAL_TYPE":

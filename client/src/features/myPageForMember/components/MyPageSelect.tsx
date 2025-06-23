@@ -29,6 +29,7 @@ const MyPageSelect = ({ careerOrCoverLetterSummaryDto, isClicked, onClickList }:
             onClickList()
         }
     }
+    console.log(careerOrCoverLetterSummaryDto);
 
 
     return (

@@ -9,12 +9,14 @@ import type { CoverLetterResponseDto } from "../props/myPageForMemberProps";
 interface CoverLetterDetailModalProps {
     coverLetterResponseDto: CoverLetterResponseDto;
     setShowModalType : ( modalType : string ) => void
+    setShowModal : (showModal : boolean) => void
     onClickDelete : (id : number) => void
 }
 
 const CoverLetterDetailModal = ({
     coverLetterResponseDto,
     setShowModalType,
+    setShowModal,
     onClickDelete
 }: CoverLetterDetailModalProps) => {
 
@@ -22,6 +24,7 @@ const CoverLetterDetailModal = ({
 
     const onClickDeleteButton =() =>{
         onClickDelete(coverLetterResponseDto.id)
+        setShowModal(false);
     }
 
     const onClickUpdateButton = () =>{
@@ -31,7 +34,7 @@ const CoverLetterDetailModal = ({
 
     return (
         <>
-            <ModalTitle title="경력기술서 상세보기" />
+            <ModalTitle title="자기소개서 상세보기" />
             <Input label={"제목"} placeholder={""} size={"l"} disabled={true} type={"text"} value={title} setValue={() => { }} />
             <ExternalBox>
                 {contents.map((content) => (

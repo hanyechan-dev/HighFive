@@ -31,7 +31,7 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 				.join(request.member).fetchJoin()
 				.where(
 					request.member.id.eq(id),
-					request.type.eq(type)
+					request.consultingType.eq(type)
 					)
 				.orderBy(request.createdDate.desc())
 				.offset(pageable.getOffset())

@@ -40,6 +40,6 @@ public class UserSignUpDto {
 	private String address;
 
 	@NotNull(message = "회원 유형은 필수입니다.")
-	private String type;
+	private String userType;
 
 }

@@ -24,9 +24,10 @@ const CareerDescriptionModal = () => {
         <CommonModal size={"l"} onClose={onClose}>
             {showModalType === "detail" &&
                 <CareerDescriptionDetailModal
-                    careerDescriptionResponseDto={careerDescriptionResponseDto}
-                    setShowModalType={setShowModalType}
-                    onClickDelete={deleteCareerDescription} />}
+                careerDescriptionResponseDto={careerDescriptionResponseDto}
+                setShowModalType={setShowModalType}
+                onClickDelete={deleteCareerDescription}
+                setShowModal={setShowModal} />}
 
 
             {showModalType === "update" &&

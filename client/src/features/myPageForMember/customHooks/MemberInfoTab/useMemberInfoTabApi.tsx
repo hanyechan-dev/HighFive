@@ -12,7 +12,7 @@ export const useMemberInfoTabApi = () => {
 
     const readMyPage = async () => {
         try {
-            const memberMyPageResponseDto: MemberMyPageResponseDto = (await readMyPageApi()).data.content;
+            const memberMyPageResponseDto = (await readMyPageApi()).data;
             setMemberMyPageResponseDto(memberMyPageResponseDto);
         } catch (err) {
             printErrorInfo(err);
@@ -22,13 +22,8 @@ export const useMemberInfoTabApi = () => {
 
     const updateNickName = async (memberUpdateDto: MemberUpdateDto) => {
         try {
-            const memberResponseDto: MemberResponseDto = (await updateMyNickNameApi(memberUpdateDto)).data.content;
-            setMemberMyPageResponseDto(
-                {
-                    ...memberMyPageResponseDto,
-                    memberResponseDto,
-                }
-            )
+            const memberResponseDto: MemberResponseDto = (await updateMyNickNameApi(memberUpdateDto)).data;
+            setMemberMyPageResponseDto({ memberResponseDto })
         } catch (err) {
             printErrorInfo(err);
         }
@@ -36,7 +31,7 @@ export const useMemberInfoTabApi = () => {
 
     const updateMyPage = async (myPageUpdateDto: MyPageUpdateDto) => {
         try {
-            const myPageResponseDto: MyPageResponseDto = (await updateMyPageApi(myPageUpdateDto)).data.content;
+            const myPageResponseDto: MyPageResponseDto = (await updateMyPageApi(myPageUpdateDto)).data;
             setMemberMyPageResponseDto(
                 {
                     ...memberMyPageResponseDto,
@@ -59,7 +54,7 @@ export const useMemberInfoTabApi = () => {
     const deactivateAccount = async () => {
         try {
             const accessToken = store.getState().auth.accessToken;
-    
+
             if (!accessToken) {
                 alert("로그인이 필요합니다.");
                 return;

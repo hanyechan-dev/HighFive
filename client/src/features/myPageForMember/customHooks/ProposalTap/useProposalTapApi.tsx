@@ -15,7 +15,7 @@ export const useProposalTapApi = () => {
         try {
 
             const response = await readMyProposalsApi(page, size);
-            const proposalSummaryForMemberDtos: ProposalSummaryForMemberDto[] = response.data.content;
+            const proposalSummaryForMemberDtos: ProposalSummaryForMemberDto[] = response.data;
             setProposalSummaryForMemberDtos(proposalSummaryForMemberDtos);
             setTotalElements(response.data.totalElements);
         } catch (err) {
@@ -26,7 +26,7 @@ export const useProposalTapApi = () => {
 
     const readProposal = async (id: number) => {
         try {
-            const proposalResponseDto: ProposalResponseDto = (await readMyProposalApi(id)).data.content;
+            const proposalResponseDto: ProposalResponseDto = (await readMyProposalApi(id)).data;
             setProposalResponseDto(proposalResponseDto);
         } catch (err) {
             printErrorInfo(err);
@@ -35,7 +35,7 @@ export const useProposalTapApi = () => {
 
     const updateProposal = async (proposalUpdateDto: ProposalUpdateDto) => {
         try {
-            const proposalResponseDto: ProposalResponseDto = (await updateProposalApi(proposalUpdateDto)).data.content;
+            const proposalResponseDto: ProposalResponseDto = (await updateProposalApi(proposalUpdateDto)).data;
 
             const updatedSummaryDto = {
                 id: proposalResponseDto.id,

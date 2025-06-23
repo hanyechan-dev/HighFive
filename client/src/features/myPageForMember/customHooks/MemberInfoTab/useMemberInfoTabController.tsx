@@ -7,8 +7,14 @@ export const useMemberInfoTabController = () => {
     const { state, dispatch } = useMemberInfoTabContext();
 
     const memberMyPageResponseDto = state.memberMyPageResponseDto;
-    const setMemberMyPageResponseDto = (memberMyPageResponseDto: MemberMyPageResponseDto) => {
-        dispatch({ type: "SET_MEMBER_MY_PAGE_RESPONSE_DTO", payload: memberMyPageResponseDto });
+    const setMemberMyPageResponseDto = (partial: Partial<MemberMyPageResponseDto>) => {
+        dispatch({
+            type: "SET_MEMBER_MY_PAGE_RESPONSE_DTO",
+            payload: {
+                ...state.memberMyPageResponseDto,
+                ...partial,
+            },
+        });
     };
     const showModal = state.showModal;
     const setShowModal = (showModal: boolean) => {

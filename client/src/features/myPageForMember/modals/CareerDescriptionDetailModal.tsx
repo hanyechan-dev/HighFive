@@ -9,12 +9,14 @@ import type { CareerDescriptionResponseDto } from "../props/myPageForMemberProps
 interface CareerDescriptionDetailModalProps {
     careerDescriptionResponseDto: CareerDescriptionResponseDto;
     setShowModalType : ( modalType : string ) => void
+    setShowModal : (showModal : boolean) => void
     onClickDelete : (id : number) => void
 }
 
 const CareerDescriptionDetailModal = ({
     careerDescriptionResponseDto,
     setShowModalType,
+    setShowModal,
     onClickDelete
 }: CareerDescriptionDetailModalProps) => {
 
@@ -22,6 +24,7 @@ const CareerDescriptionDetailModal = ({
 
     const onClickDeleteButton =() =>{
         onClickDelete(careerDescriptionResponseDto.id)
+        setShowModal(false);
     }
 
     const onClickUpdateButton = () =>{

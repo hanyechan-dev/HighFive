@@ -94,7 +94,7 @@ const EditRequestPage = () => {
                 const res = await readRequestsApi(clickedPage - 1, elementsPerPage, consultingType);
                 const totalElements = res.data.totalElements as number
                 setTotalElements(totalElements);
-                const requestSummaryDtos = res.data.content as RequestSummaryDto[];
+                const requestSummaryDtos = res.data as RequestSummaryDto[];
                 setRequestSummaryDtos(requestSummaryDtos);
 
             }
@@ -118,7 +118,7 @@ const EditRequestPage = () => {
         const fetchData = async () => {
             try {
                 const res = await readRequestApi(id);
-                const requestDetailDto = res.data.content as RequestDetailDto;
+                const requestDetailDto = res.data as RequestDetailDto;
                 setRequestDetailDto(requestDetailDto);
             } catch (err) {
                 printErrorInfo(err)
@@ -127,7 +127,7 @@ const EditRequestPage = () => {
         const fetchCompletedData = async () => {
             try {
                 const res = await readCompletedRequestApi(id);
-                const completedRequestDetailDto = res.data.content as CompletedRequestDetailDto;
+                const completedRequestDetailDto = res.data as CompletedRequestDetailDto;
                 setCompletedRequestDetailDto(completedRequestDetailDto);
             } catch (err) {
                 printErrorInfo(err)
@@ -162,10 +162,10 @@ const EditRequestPage = () => {
             const fetchData = async () => {
 
                 try {
-                    const educationResponseDtos = (await readEducationsApi()).data.content as EducationResponseDto[];
-                    const careerResponseDtos = (await readCareersApi()).data.content as CareerResponseDto[];
-                    const certificationResponseDtos = (await readCertificationsApi()).data.content as CertificationResponseDto[];
-                    const languageTestResponseDtos = (await readLanguageTestsApi()).data.content as LanguageTestResponseDto[];
+                    const educationResponseDtos = (await readEducationsApi()).data as EducationResponseDto[];
+                    const careerResponseDtos = (await readCareersApi()).data as CareerResponseDto[];
+                    const certificationResponseDtos = (await readCertificationsApi()).data as CertificationResponseDto[];
+                    const languageTestResponseDtos = (await readLanguageTestsApi()).data as LanguageTestResponseDto[];
                     setResume({ educationResponseDtos, careerResponseDtos, certificationResponseDtos, languageTestResponseDtos })
                 } catch (err) {
                     printErrorInfo(err);
@@ -183,7 +183,7 @@ const EditRequestPage = () => {
             const fetchData = async () => {
 
                 try {
-                    const careerDescriptionSummaryDtos = (await readCareerDescriptionsApi()).data.content;
+                    const careerDescriptionSummaryDtos = (await readCareerDescriptionsApi()).data;
                     setCareerDescriptionSummaryDtos(careerDescriptionSummaryDtos);
                 } catch (err) {
                     printErrorInfo(err);
@@ -196,7 +196,7 @@ const EditRequestPage = () => {
             const fetchData = async () => {
 
                 try {
-                    const coverLetterSummaryDtos = (await readCoverLettersApi()).data.content;
+                    const coverLetterSummaryDtos = (await readCoverLettersApi()).data;
                     setCoverLetterSummaryDtos(coverLetterSummaryDtos);
                 } catch (err) {
                     printErrorInfo(err);
@@ -233,7 +233,7 @@ const EditRequestPage = () => {
 
             <CommonPage>
                 <ModalTitle title={`AI + 컨설턴트 ${consultingType}`} />
-                <div className="flex justify-end">
+                <div className="flex justify-end mr-6 mb-[-24px]">
                     <Button color={"theme"} size={"m"} disabled={false} text={`새 ${consultingType} 요청하기`} type={"button"} onClick={onClickRequestModal} />
                 </div>
                 <RequestListTop />

@@ -23,7 +23,9 @@ export const deactivateAccountApi = (id: number) => {
 }
 
 export const readEducationsApi = () => {
-    return api(true).get('/educations');
+    const instance = api(true);
+    console.log("헤더 확인:", instance.defaults.headers); // Authorization 붙었는지 확인
+    return instance.get('/educations'); // instance 재사용해야 토큰도 동일하게 적용됨
 }
 
 export const createEducationApi = (educationCreateDto: EducationCreateDto) => {

@@ -91,7 +91,9 @@ const FeedbackRequestPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log("api 직전")
                 const res = await readRequestsApi(clickedPage - 1, elementsPerPage, consultingType);
+                console.log("api 직후")
                 const totalElements = res.data.totalElements as number
                 setTotalElements(totalElements);
                 const requestSummaryDtos = res.data.content as RequestSummaryDto[];
@@ -100,6 +102,7 @@ const FeedbackRequestPage = () => {
             }
             catch (err) {
                 printErrorInfo(err)
+                console.log("캐치")
             }
         }
 
@@ -160,7 +163,6 @@ const FeedbackRequestPage = () => {
 
         if (showModalNumber === 1) {
             const fetchData = async () => {
-
                 try {
                     const educationResponseDtos = (await readEducationsApi()).data.content as EducationResponseDto[];
                     const careerResponseDtos = (await readCareersApi()).data.content as CareerResponseDto[];
@@ -233,7 +235,7 @@ const FeedbackRequestPage = () => {
 
             <CommonPage>
                 <ModalTitle title={`AI + 컨설턴트 ${consultingType}`} />
-                <div className="flex justify-end">
+                <div className="flex justify-end mr-6 mb-[-24px]">
                     <Button color={"theme"} size={"m"} disabled={false} text={`새 ${consultingType} 요청하기`} type={"button"} onClick={onClickRequestModal} />
                 </div>
                 <RequestListTop />

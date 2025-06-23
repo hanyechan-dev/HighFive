@@ -15,7 +15,7 @@ export const useApplicationTabApi = () => {
         try {
 
             const response = await readMyProposalsApi(page, size);
-            const applicationSummaryForMemberDtos: ApplicationSummaryForMemberDto[] = response.data.content;
+            const applicationSummaryForMemberDtos: ApplicationSummaryForMemberDto[] = response.data;
             setApplicationSummaryForMemberDtos(applicationSummaryForMemberDtos);
             setTotalElements(response.data.totalElements);
         } catch (err) {
@@ -26,7 +26,7 @@ export const useApplicationTabApi = () => {
 
     const readApplication = async (id: number) => {
         try {
-            const applicationResponseDto: ApplicationResponseDto = (await readMyProposalApi(id)).data.content;
+            const applicationResponseDto: ApplicationResponseDto = (await readMyProposalApi(id)).data;
             setApplicationResponseDto(applicationResponseDto);
         } catch (err) {
             printErrorInfo(err);

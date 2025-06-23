@@ -42,8 +42,8 @@ public class CareerServiceImpl implements CareerService {
 		String action = "등록";
 
 		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
-		
-		if(careerCreateDto.getStartDate().isAfter(careerCreateDto.getEndDate())) {
+
+		if(careerCreateDto.getEndDate() != null && careerCreateDto.getStartDate() != null && careerCreateDto.getStartDate().isAfter(careerCreateDto.getEndDate())) {
 			throw new IllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
 		}
 

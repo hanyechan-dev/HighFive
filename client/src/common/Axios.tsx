@@ -14,6 +14,7 @@ export function api(withAuth: boolean) {
   if (withAuth) {
     const accessToken = store.getState().auth.accessToken;
     headers['Authorization'] = `Bearer ${accessToken}`;
+    console.log(accessToken)
   }
 
 

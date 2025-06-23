@@ -20,6 +20,7 @@ import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryFo
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import { usePagination } from "../../../common/customHooks/usePagination";
+import ModalTitle from "../../../common/components/title/ModalTitle";
 
 
 
@@ -80,11 +81,11 @@ const JobPostingForMemberPage = () => {
         const fetchData = async () => {
             try {
                 const resMain = await JobPostingMainCardForMemberApi();
-                const jobPostingMainCardDtos = resMain.data.content as JobPostingMainCardDto[];
+                const jobPostingMainCardDtos = resMain.data as JobPostingMainCardDto[];
                 setJobPostingMainCardDtos(jobPostingMainCardDtos);
 
                 const resUnder = await JobPostingUnderCardForMemberApi();
-                const jobPostingUnderCardDtos = resUnder.data.content as JobPostingUnderCardDto[];
+                const jobPostingUnderCardDtos = resUnder.data as JobPostingUnderCardDto[];
                 setJobPostingUnderCardDtos(jobPostingUnderCardDtos);
 
 
@@ -105,7 +106,7 @@ const JobPostingForMemberPage = () => {
                 const res = await JobPostingListForMemberApi(clickedPage - 1, elementsPerPage);
                 const totalElements = res.data.totalElements as number
                 setTotalElements(totalElements);
-                const jobPostingSummaryForMemberDtos = res.data.content as JobPostingSummaryForMemberDto[];
+                const jobPostingSummaryForMemberDtos = res.data as JobPostingSummaryForMemberDto[];
                 setJobPostingForMemberSummaryDtos(jobPostingSummaryForMemberDtos);
 
             }
@@ -125,10 +126,10 @@ const JobPostingForMemberPage = () => {
             const fetchData = async () => {
 
                 try {
-                    const educationResponseDtos = (await readEducationsApi()).data.content as EducationResponseDto[];
-                    const careerResponseDtos = (await readCareersApi()).data.content as CareerResponseDto[];
-                    const certificationResponseDtos = (await readCertificationsApi()).data.content as CertificationResponseDto[];
-                    const languageTestResponseDtos = (await readLanguageTestsApi()).data.content as LanguageTestResponseDto[];
+                    const educationResponseDtos = (await readEducationsApi()).data as EducationResponseDto[];
+                    const careerResponseDtos = (await readCareersApi()).data as CareerResponseDto[];
+                    const certificationResponseDtos = (await readCertificationsApi()).data as CertificationResponseDto[];
+                    const languageTestResponseDtos = (await readLanguageTestsApi()).data as LanguageTestResponseDto[];
                     setResume({ educationResponseDtos, careerResponseDtos, certificationResponseDtos, languageTestResponseDtos })
                 } catch (err) {
                     printErrorInfo(err);
@@ -141,7 +142,7 @@ const JobPostingForMemberPage = () => {
             const fetchData = async () => {
 
                 try {
-                    const careerDescriptionSummaryDtos = (await readCareerDescriptionsApi()).data.content;
+                    const careerDescriptionSummaryDtos = (await readCareerDescriptionsApi()).data;
                     setCareerDescriptionSummaryDtos(careerDescriptionSummaryDtos);
                 } catch (err) {
                     printErrorInfo(err);
@@ -155,7 +156,7 @@ const JobPostingForMemberPage = () => {
             const fetchData = async () => {
 
                 try {
-                    const coverLetterSummaryDtos = (await readCoverLettersApi()).data.content;
+                    const coverLetterSummaryDtos = (await readCoverLettersApi()).data;
                     setCoverLetterSummaryDtos(coverLetterSummaryDtos);
                 } catch (err) {
                     printErrorInfo(err);
@@ -193,7 +194,7 @@ const JobPostingForMemberPage = () => {
 
             try {
                 const res = await JobPostingDetailApi(id);
-                const jobPostingForMemberResponseDto = res.data.content as JobPostingForMemberResponseDto;
+                const jobPostingForMemberResponseDto = res.data as JobPostingForMemberResponseDto;
                 setJobPostingForMemberResponseDto(jobPostingForMemberResponseDto);
             }
             catch (err) {
@@ -212,6 +213,7 @@ const JobPostingForMemberPage = () => {
     return (
         <>
             <CommonPage >
+                <ModalTitle title={"채용 공고"} />
                 <div className="flex mt-2">
                     {jobPostingMainCardDtos.map(jobPostingMainCardDto => (
                         <div key={jobPostingMainCardDto.id}>
@@ -234,7 +236,7 @@ const JobPostingForMemberPage = () => {
                     ))}
                 </div>
 
-                <div className="flex justify-end mr-6">
+                <div className="flex justify-end mb-[-24px] mr-6">
                     <Button color={"theme"} size={"m"} disabled={false} text={"채용공고 필터"} type={"button"} onClick={onClickJobPostingFilterModal} />
                 </div>
 

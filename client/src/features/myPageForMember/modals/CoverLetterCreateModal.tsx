@@ -117,8 +117,8 @@ const CoverLetterDetailModal = ({
 
     return (
         <>
-            <ModalTitle title="경력기술서 작성" />
-            <Input label={"제목"} placeholder={""} size={"l"} disabled={false} type={"text"} value={createDto.title} setValue={setTitle} />
+            <ModalTitle title="자기소개서 작성하기" />
+            <Input label={"제목"} placeholder={"자기소개서 제목을 입력해주세요."} size={"l"} disabled={false} type={"text"} value={createDto.title} setValue={setTitle} />
             <ExternalBox>
                 {createDto.contents.map((content) => (
                     <div key={content.tempId}>
@@ -139,10 +139,10 @@ const CoverLetterDetailModal = ({
                 {isAddMode && (
                     <InternalBox >
                         <div className="mt-[-24px]">
-                            <Input label={""} placeholder={""} size={"ibl"} disabled={false} type={"text"} value={newContent.item} setValue={setNewItem} />
+                            <Input label={""} placeholder={"자기소개서 항목을 입력해주세요."} size={"ibl"} disabled={false} type={"text"} value={newContent.item} setValue={setNewItem} />
                         </div>
                         <div className="mt-[-24px]">
-                            <TextArea size={"ibl"} label={""} placeholder={""} disabled={false} value={newContent.content} setValue={setNewContentValue} />
+                            <TextArea size={"ibl"} label={""} placeholder={"자기소개서 내용을 입력해주세요."} disabled={false} value={newContent.content} setValue={setNewContentValue} />
                         </div>
                         <div className="flex justify-end mr-6">
                             <Button color={"white"} size={"s"} disabled={false} text={"확인"} type={"button"} onClick={onClickConfirmButton} />

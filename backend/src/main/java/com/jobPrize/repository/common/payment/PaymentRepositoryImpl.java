@@ -45,7 +45,7 @@ public class PaymentRepositoryImpl implements PaymentRepositoryCustom{
 				.selectFrom(payment)
 				.leftJoin(payment.user).fetchJoin()
 				.where(payment.createdTime.between(start, end),
-						payment.user.type.eq(userType))
+						payment.user.userType.eq(userType))
 				.orderBy(payment.createdTime.asc())
 				.fetch();
 		

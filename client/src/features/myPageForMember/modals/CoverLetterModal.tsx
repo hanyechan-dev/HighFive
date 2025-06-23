@@ -24,9 +24,10 @@ const CoverLetterModal = () => {
         <CommonModal size={"l"} onClose={onClose}>
             {showModalType === "detail" &&
                 <CoverLetterDetailModal
-                    coverLetterResponseDto={coverLetterResponseDto}
-                    setShowModalType={setShowModalType}
-                    onClickDelete={deleteCoverLetter} />}
+                coverLetterResponseDto={coverLetterResponseDto}
+                setShowModalType={setShowModalType}
+                onClickDelete={deleteCoverLetter}
+                setShowModal={setShowModal} />}
 
 
             {showModalType === "update" &&

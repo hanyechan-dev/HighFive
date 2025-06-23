@@ -160,7 +160,7 @@ public class User {
 			.genderType(GenderType.valueOf(userSignUpDto.getGenderType()))
 			.phone(userSignUpDto.getPhone())
 			.address(userSignUpDto.getAddress())
-			.userType(UserType.valueOf(userSignUpDto.getType()))
+			.userType(UserType.valueOf(userSignUpDto.getUserType()))
 			.build();
 	}
 	
@@ -172,7 +172,7 @@ public class User {
 				.genderType(GenderType.valueOf(kakaoUserSignUpDto.getGenderType()))
 				.phone(kakaoUserSignUpDto.getPhone())
 				.address(kakaoUserSignUpDto.getAddress())
-				.userType(UserType.valueOf(kakaoUserSignUpDto.getType()))
+				.userType(UserType.valueOf(kakaoUserSignUpDto.getUserType()))
 				.build();
 		
 	}

@@ -4,11 +4,11 @@ import { consultingRequest, listClick, consultingApprve } from "../../features/C
 import EmptyState from "../components/emptyState/EmptyState";
 import Pagination from "../components/pagination/Pagination";
 import ModalTitle from "../components/title/ModalTitle";
-import { usePagination } from "../coustomHooks/usePagination";
 import AiConsultingEditDetailModal from "../modals/AiConsultingEditDetailModal";
 import AiConsultingFeedbackDetailModal from "../modals/AiConsultingFeedbackDetailModal";
 import type { aiConsultingDetailProps } from "../props/AiConsultingProps";
 import CommonPage from "./CommonPage";
+import { usePagination } from "../customHooks/usePagination";
 
 
 interface consultingProps {

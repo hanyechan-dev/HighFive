@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 		
 
 		
-		if (UserType.일반회원.equals(UserType.valueOf(userSignUpDto.getType()))||UserType.관리자.equals(UserType.valueOf(userSignUpDto.getType()))) {
+		if (UserType.일반회원.equals(UserType.valueOf(userSignUpDto.getUserType()))||UserType.관리자.equals(UserType.valueOf(userSignUpDto.getUserType()))) {
 			user.approve();
 		}
 		
@@ -166,7 +166,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = User.from(kakaoUserSignUpDto);
 
-		if (UserType.일반회원.equals(kakaoUserSignUpDto.getType())) {
+		if (UserType.일반회원.equals(UserType.valueOf(kakaoUserSignUpDto.getUserType()))) {
 			user.approve();
 		}
 

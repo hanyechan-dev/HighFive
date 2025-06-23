@@ -39,7 +39,7 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 		List<Subscription> results = queryFactory
 				.selectFrom(subscription)
 				.leftJoin(subscription.user).fetchJoin()
-				.where(subscription.user.type.eq(userType),
+				.where(subscription.user.userType.eq(userType),
 						subscription.user.subscribed.eq(true))
 				.distinct()
 				.orderBy(subscription.startDate.desc())

@@ -17,10 +17,11 @@ export const useDocumentTabApi = () => {
     } = useDocumentTabController();
 
     const readResume = async () => {
-        const educationResponseDtos: EducationResponseDto[] = (await readEducationsApi()).data.content;
-        const careerResponseDtos: CareerResponseDto[] = (await readCareersApi()).data.content;
-        const certificationResponseDtos: CertificationResponseDto[] = (await readCertificationsApi()).data.content;
-        const languageTestResponseDtos: LanguageTestResponseDto[] = (await readLanguageTestsApi()).data.content;
+        const educationResponseDtos: EducationResponseDto[] = (await readEducationsApi()).data;
+        const careerResponseDtos: CareerResponseDto[] = (await readCareersApi()).data;
+        const certificationResponseDtos: CertificationResponseDto[] = (await readCertificationsApi()).data;
+        const languageTestResponseDtos: LanguageTestResponseDto[] = (await readLanguageTestsApi()).data;
+
         setResume({
             educationResponseDtos,
             careerResponseDtos,
@@ -31,7 +32,7 @@ export const useDocumentTabApi = () => {
 
     const createEducation = async (educationCreateDto: EducationCreateDto) => {
         try {
-            const educationResponseDto: EducationResponseDto = (await createEducationApi(educationCreateDto)).data.content;
+            const educationResponseDto: EducationResponseDto = (await createEducationApi(educationCreateDto)).data;
             setResume({
                 ...resume,
                 educationResponseDtos: [...resume.educationResponseDtos, educationResponseDto],
@@ -44,7 +45,7 @@ export const useDocumentTabApi = () => {
 
     const updateEducation = async (educationUpdateDto: EducationUpdateDto) => {
         try {
-            const responseDto: EducationResponseDto = (await updateEducationApi(educationUpdateDto)).data.content;
+            const responseDto: EducationResponseDto = (await updateEducationApi(educationUpdateDto)).data;
             setResume({
                 ...resume,
                 educationResponseDtos: resume.educationResponseDtos.map((educationResponseDto) => educationResponseDto.id === responseDto.id ? responseDto : educationResponseDto),
@@ -67,7 +68,7 @@ export const useDocumentTabApi = () => {
     };
 
     const createCareer = async (careerCreateDto: CareerCreateDto) => {
-        const careerResponseDto: CareerResponseDto = (await createCareerApi(careerCreateDto)).data.content;
+        const careerResponseDto: CareerResponseDto = (await createCareerApi(careerCreateDto)).data;
         setResume({
             ...resume,
             careerResponseDtos: [...resume.careerResponseDtos, careerResponseDto],
@@ -75,7 +76,7 @@ export const useDocumentTabApi = () => {
     };
 
     const updateCareer = async (careerUpdateDto: CareerUpdateDto) => {
-        const responseDto: CareerResponseDto = (await updateCareerApi(careerUpdateDto)).data.content;
+        const responseDto: CareerResponseDto = (await updateCareerApi(careerUpdateDto)).data;
         setResume({
             ...resume,
             careerResponseDtos: resume.careerResponseDtos.map((careerResponseDto) => careerResponseDto.id === responseDto.id ? responseDto : careerResponseDto),
@@ -95,7 +96,7 @@ export const useDocumentTabApi = () => {
     };
 
     const createCertification = async (certificationCreateDto: CertificationCreateDto) => {
-        const certificationResponseDto: CertificationResponseDto = (await createCertificationApi(certificationCreateDto)).data.content;
+        const certificationResponseDto: CertificationResponseDto = (await createCertificationApi(certificationCreateDto)).data;
         setResume({
             ...resume,
             certificationResponseDtos: [...resume.certificationResponseDtos, certificationResponseDto],
@@ -103,7 +104,7 @@ export const useDocumentTabApi = () => {
     };
 
     const updateCertification = async (certificationUpdateDto: CertificationUpdateDto) => {
-        const responseDto: CertificationResponseDto = (await updateCertificationApi(certificationUpdateDto)).data.content;
+        const responseDto: CertificationResponseDto = (await updateCertificationApi(certificationUpdateDto)).data;
         setResume({
             ...resume,
             certificationResponseDtos: resume.certificationResponseDtos.map((certificationResponseDto) => certificationResponseDto.id === responseDto.id ? responseDto : certificationResponseDto),
@@ -123,7 +124,7 @@ export const useDocumentTabApi = () => {
     };
 
     const createLanguageTest = async (languageTestCreateDto: LanguageTestCreateDto) => {
-        const languageTestResponseDto: LanguageTestResponseDto = (await createLanguageTestApi(languageTestCreateDto)).data.content;
+        const languageTestResponseDto: LanguageTestResponseDto = (await createLanguageTestApi(languageTestCreateDto)).data;
         setResume({
             ...resume,
             languageTestResponseDtos: [...resume.languageTestResponseDtos, languageTestResponseDto],
@@ -131,7 +132,7 @@ export const useDocumentTabApi = () => {
     };
 
     const updateLanguageTest = async (languageTestUpdateDto: LanguageTestUpdateDto) => {
-        const responseDto: LanguageTestResponseDto = (await updateLanguageTestApi(languageTestUpdateDto)).data.content;
+        const responseDto: LanguageTestResponseDto = (await updateLanguageTestApi(languageTestUpdateDto)).data;
         setResume({
             ...resume,
             languageTestResponseDtos: resume.languageTestResponseDtos.map((languageTestResponseDto) => languageTestResponseDto.id === responseDto.id ? responseDto : languageTestResponseDto),
@@ -151,7 +152,7 @@ export const useDocumentTabApi = () => {
     };
 
     const createCareerDescription = async (careerDescriptionCreateDto: CareerDescriptionCreateDto) => {
-        const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await createCareerDescriptionApi(careerDescriptionCreateDto)).data.content;
+        const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await createCareerDescriptionApi(careerDescriptionCreateDto)).data;
         setCareerDescriptionResponseDto(careerDescriptionResponseDto);
         setCareerDescriptionSummaryDtos([
             ...careerDescriptionSummaryDtos,
@@ -165,7 +166,7 @@ export const useDocumentTabApi = () => {
 
     const readCareerDescriptionSummaryDtos = async () => {
         try {
-            const careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[] = (await readCareerDescriptionsApi()).data.content;
+            const careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[] = (await readCareerDescriptionsApi()).data;
             setCareerDescriptionSummaryDtos(careerDescriptionSummaryDtos);
         } catch (err) {
             printErrorInfo(err);
@@ -175,7 +176,7 @@ export const useDocumentTabApi = () => {
 
     const readCareerDescriptionResponseDto = async (id: number) => {
         try {
-            const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await readCareerDescriptionApi(id)).data.content;
+            const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await readCareerDescriptionApi(id)).data;
             setCareerDescriptionResponseDto(careerDescriptionResponseDto);
         } catch (err) {
             printErrorInfo(err);
@@ -183,7 +184,7 @@ export const useDocumentTabApi = () => {
     };
 
     const updateCareerDescription = async (careerDescriptionUpdateDto: CareerDescriptionUpdateDto) => {
-        const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await updateCareerDescriptionApi(careerDescriptionUpdateDto)).data.content;
+        const careerDescriptionResponseDto: CareerDescriptionResponseDto = (await updateCareerDescriptionApi(careerDescriptionUpdateDto)).data;
         setCareerDescriptionResponseDto(careerDescriptionResponseDto);
         setCareerDescriptionSummaryDtos(
             careerDescriptionSummaryDtos.map((careerDescriptionSummaryDto) => careerDescriptionSummaryDto.id === careerDescriptionUpdateDto.id ?
@@ -206,7 +207,7 @@ export const useDocumentTabApi = () => {
     }
 
     const createCoverLetter = async (coverLetterCreateDto: CoverLetterCreateDto) => {
-        const coverLetterResponseDto: CoverLetterResponseDto = (await createCoverLetterApi(coverLetterCreateDto)).data.content;
+        const coverLetterResponseDto: CoverLetterResponseDto = (await createCoverLetterApi(coverLetterCreateDto)).data;
         setCoverLetterResponseDto(coverLetterResponseDto);
         setCoverLetterSummaryDtos([
             ...coverLetterSummaryDtos,
@@ -220,7 +221,7 @@ export const useDocumentTabApi = () => {
 
     const readCoverLetterSummaryDtos = async () => {
         try {
-            const coverLetterSummaryDtos: CoverLetterSummaryDto[] = (await readCoverLettersApi()).data.content;
+            const coverLetterSummaryDtos: CoverLetterSummaryDto[] = (await readCoverLettersApi()).data;
             setCoverLetterSummaryDtos(coverLetterSummaryDtos);
         } catch (err) {
             printErrorInfo(err);
@@ -229,7 +230,7 @@ export const useDocumentTabApi = () => {
 
     const readCoverLetterResponseDto = async (id: number) => {
         try {
-            const coverLetterResponseDto: CoverLetterResponseDto = (await readCoverLetterApi(id)).data.content;
+            const coverLetterResponseDto: CoverLetterResponseDto = (await readCoverLetterApi(id)).data;
             setCoverLetterResponseDto(coverLetterResponseDto);
         } catch (err) {
             printErrorInfo(err);
@@ -238,7 +239,7 @@ export const useDocumentTabApi = () => {
 
 
     const updateCoverLetter = async (coverLetterUpdateDto: CoverLetterUpdateDto) => {
-        const coverLetterResponseDto: CoverLetterResponseDto = (await updateCoverLetterApi(coverLetterUpdateDto)).data.content;
+        const coverLetterResponseDto: CoverLetterResponseDto = (await updateCoverLetterApi(coverLetterUpdateDto)).data;
         setCoverLetterResponseDto(coverLetterResponseDto);
         setCoverLetterSummaryDtos(
             coverLetterSummaryDtos.map((coverLetterSummaryDto) => coverLetterSummaryDto.id === coverLetterUpdateDto.id ?

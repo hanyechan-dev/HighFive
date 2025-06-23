@@ -118,7 +118,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return Optional.ofNullable( 
 				queryFactory.select(user.count())
 				.from(user)
-				.where(user.type.eq(userType))
+				.where(user.userType.eq(userType))
 				.fetchOne()
 				).orElse(0L);
 	}
@@ -130,7 +130,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 				queryFactory.select(user.count())
 				.from(user)
 				.where(user.approvalStatus.eq(ApprovalStatus.WAITING))
-				.where(user.type.eq(userType))
+				.where(user.userType.eq(userType))
 				.fetchOne()
 				).orElse(0L);
 	}

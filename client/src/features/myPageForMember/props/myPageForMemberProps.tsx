@@ -222,7 +222,6 @@ export interface MyPageResponseDto {
 	genderType: string;
 	phone: string;
 	address: string;
-	type: string;
 }
 
 export interface MyPageUpdateDto {

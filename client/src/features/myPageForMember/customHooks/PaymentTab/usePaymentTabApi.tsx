@@ -13,7 +13,9 @@ export const usePaymentTabApi = () => {
         try {
 
             const response = await readMyPaymentsApi(page, size);
-            const paymentResponseDtos: PaymentResponseDto[] = response.data.content;
+            console.log(response)
+            const paymentResponseDtos: PaymentResponseDto[] = response.data;
+            console.log(paymentResponseDtos)
             setPaymentResponseDtos(paymentResponseDtos);
             setTotalElements(response.data.totalElements);
         } catch (err) {

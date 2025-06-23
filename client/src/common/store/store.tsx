@@ -2,7 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import AuthSlice from '../../features/auth/AuthSlice';
+import AuthSlice from '../../features/auth/slices/AuthSlice';
 
 import jobPostingFilterSlice from '../../features/jobPostingForMember/slices/JobPostingSlice';
 import memberPoolFilterSlice from  '../../company/memberPoolPage/slices/MemberPoolSlice';

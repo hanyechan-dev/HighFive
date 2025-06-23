@@ -84,7 +84,7 @@ public class EducationServiceImpl implements EducationService {
 
 		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
-		if (educationUpdateDto.getEnterDate().isAfter(educationUpdateDto.getGraduateDate())) {
+		if (educationUpdateDto.getGraduateDate() != null && educationUpdateDto.getEnterDate() != null && educationUpdateDto.getEnterDate().isAfter(educationUpdateDto.getGraduateDate())) {
 			throw new IllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
 		}
 

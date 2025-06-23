@@ -10,8 +10,12 @@ import DocumentTab from "./features/myPageForMember/tabs/documentTab/DocumentTab
 import { DocumentTabProvider } from "./features/myPageForMember/contexts/DocumentTab/DocumentTabProvider";
 import MyPageForMemberPage from "./features/myPageForMember/pages/MyPageForMemberPage";
 import { MyPageForMemberPageProvider } from "./features/myPageForMember/contexts/MyPageForMemberPage/MyPageForMemberPagePageProvider";
-import SignUpModal from "./features/auth/SignUpModal";
-import AuthModal from "./features/auth/AuthModal";
+import SignUpModal from "./features/auth/modals/SignUpModal";
+import AuthModal from "./features/auth/modals/AuthModal";
+import Header from "./features/header/Header";
+import NavigationBar from "./features/navigationBar/NavigationBar";
+import { RouterProvider } from "react-router-dom";
+import router from "./features/routers/router";
 
 
 
@@ -67,9 +71,7 @@ function App() {
 
     return (
         <>
-            <MyPageForMemberPageProvider>
-                <MyPageForMemberPage />
-            </MyPageForMemberPageProvider>
+            <RouterProvider router={router} />
         </>
     )
 

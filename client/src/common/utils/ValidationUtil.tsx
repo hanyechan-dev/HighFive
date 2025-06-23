@@ -114,3 +114,16 @@ export const validateLanguageTest =(languageTest:LanguageTestCreateDto | Languag
         return "취득일은 과거 날짜여야 합니다.";
     return null; // 이상 없음
 }
+
+export const validateLogin = (email:string,password:string)=>{
+    if(!email || !password){
+        return "모든 필수 정보를 입력해주세요.";
+    }
+    if(email.length > 20){
+        return "이메일은 20자 이하로 입력해야합니다.";
+    }
+    if(password.length > 20){
+        return "비밀번호는 20자 이하로 입력해야합니다.";
+    }
+    return null; // 이상 없음
+}
