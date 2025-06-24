@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.jobPrize.dto.common.payment.KakaoReadyResponseDto;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.enumerate.UserType;
@@ -19,4 +20,8 @@ public interface PaymentService {
 	
 	// 전체 결제 내역 리스트 조회
 	List<PaymentResponseDto> readPaymentList();
+	
+	KakaoReadyResponseDto readyToKakaoPay(Long paymentId, Long id);
+	
+	
 }

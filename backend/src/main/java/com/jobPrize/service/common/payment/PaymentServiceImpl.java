@@ -6,10 +6,13 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.dto.common.payment.KakaoReadyResponseDto;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.entity.common.Payment;
@@ -28,6 +31,8 @@ public class PaymentServiceImpl implements PaymentService {
 	private final PaymentRepository paymentRepository;
 
 	private final UserRepository userRepository;
+	
+	private final RestTemplate restTemplate;
 	
 	private final AssertUtil assertUtil;
 
@@ -100,6 +105,15 @@ public class PaymentServiceImpl implements PaymentService {
 				)
 			
 			.collect(Collectors.toList());
+	}
+
+	@Override
+	public KakaoReadyResponseDto readyToKakaoPay(Long paymentId, Long id) {
+		HttpHeaders headers = new HttpHeaders();
+		
+		
+		
+		return null;
 	}
 	
 }
