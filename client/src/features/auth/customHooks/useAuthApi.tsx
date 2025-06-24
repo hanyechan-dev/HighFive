@@ -1,18 +1,18 @@
 import { useDispatch } from "react-redux";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
-import { kakaoLoginApi, loginApi, nicknameInputApi, SignUpApi } from "../apis/AuthApi";
+import { companyInfoInputApi, kakaoLoginApi, loginApi, nicknameInputApi, SignUpApi } from "../apis/AuthApi";
 import { setToken } from "../slices/AuthSlice";
 import { useAuthController } from "./useAuthController";
 import type { LogInDto, MemberCreateDto, UserSignUpDto } from "../props/AuthProps";
 import axios from "axios";
 
 interface KakaoAuthSuccess {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  refresh_token_expires_in: number;
-  scope: string;
-  token_type: string;
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    refresh_token_expires_in: number;
+    scope: string;
+    token_type: string;
 }
 
 
@@ -61,7 +61,7 @@ export const useAuthApi = () => {
                 const kakaoAccessToken = authObj.access_token;
 
                 try {
-                    const res = await kakaoLoginApi({kakaoAccessToken});
+                    const res = await kakaoLoginApi({ kakaoAccessToken });
 
                     if (res.status === 200 && res.data.accessToken) {
                         const { accessToken, refreshToken } = res.data;
@@ -69,17 +69,17 @@ export const useAuthApi = () => {
                     }
                 }
                 catch (err: unknown) {
-                    if(axios.isAxiosError(err)){
+                    if (axios.isAxiosError(err)) {
                         if (err.response?.status === 404) {
-                        const email = err.response.data;
-                        console.log(email)
-                        setKakaoEmail(email);
-                        setIsKakao(true);
-                        setShowModalType("signUp");
+                            const email = err.response.data;
+                            console.log(email)
+                            setKakaoEmail(email);
+                            setIsKakao(true);
+                            setShowModalType("signUp");
 
+                        }
                     }
-                    }
-                     else {
+                    else {
                         printErrorInfo(err);
                     }
                 }
@@ -92,11 +92,41 @@ export const useAuthApi = () => {
         });
     };
 
+    const companyInfoInput = async (
+        companyName: string,
+        businessNumber: string,
+        representativeName: string,
+        type: string,
+        companyAddress: string,
+        companyPhone: string,
+        industry: string,
+        employeeCount: string,
+        establishedDate: string,
+        introduction: string,
+        logoImageFile: File | null) => {
+        try {
+            await companyInfoInputApi(companyName,
+                businessNumber,
+                representativeName,
+                type,
+                companyAddress,
+                companyPhone,
+                industry,
+                employeeCount,
+                establishedDate,
+                introduction,
+                logoImageFile);
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    }
+
 
     return {
         login,
         nicknameInput,
         signUp,
         kakaoLogin,
+        companyInfoInput
     }
 }

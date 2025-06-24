@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { lazy } from "react";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Header from "../header/Header";
 import NavigationBar from "../navigationBar/NavigationBar";
 import { JobPostingForMemberPageProvider } from "../jobPostingForMember/contexts/JobPostingForMemberPageProvider";
@@ -14,74 +14,61 @@ const FeedbackRequestPage = lazy(() => import("../request/pages/FeedbackRequestP
 const EditRequestPage = lazy(() => import("../request/pages/EditRequestPage"));
 const MyPageForMemberPage = lazy(() => import("../myPageForMember/pages/MyPageForMemberPage"));
 
-const Loading = <div>Loading...</div>;
 const Layout = () => {
     return (
         <>
             <Header />
             <NavigationBar />
-            <Outlet />
+            <div className="ml-[210px] mt-6">
+                <Outlet />
+            </div>
         </>
     )
 
 }
 
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Layout />,
-        children: [
+const MemberRouter = () => {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route element={<Layout />}>
+                    <Route
+                        path="/job-postings"
+                        element={<JobPostingForMemberPageProvider>
+                                    <JobPostingForMemberPage />
+                                </JobPostingForMemberPageProvider>
+                        }
+                    />
+                    <Route
+                        path="/feedbacks"
+                        element={
+                           
+                                <RequestPageProvider>
+                                    <FeedbackRequestPage />
+                                </RequestPageProvider>
+                        }
+                    />
+                    <Route
+                        path="/edits"
+                        element={
+                           
+                                <RequestPageProvider>
+                                    <EditRequestPage />
+                                </RequestPageProvider>
+                        }
+                    />
+                    <Route
+                        path="/my"
+                        element={
+                                <MyPageForMemberPageProvider>
+                                    <MyPageForMemberPage />
+                                </MyPageForMemberPageProvider>
+                        }
+                    />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
+};
 
-            {
-                path: "job-postings",
-                element: (
-                    <Suspense fallback={Loading}>
-                        <div className="ml-[210px] mt-6">
-                            <JobPostingForMemberPageProvider>
-                                <JobPostingForMemberPage />
-                            </JobPostingForMemberPageProvider>
-                        </div>
-                    </Suspense>
-                ),
-            },
-            {
-                path: "feedbacks",
-                element: (
-                    <Suspense fallback={Loading}>
-                        <div className="ml-[210px] mt-6">
-                            <RequestPageProvider>
-                                <FeedbackRequestPage />
-                            </RequestPageProvider>
-                        </div>
-                    </Suspense>
-                ),
-            },
-            {
-                path: "edits",
-                element: (
-                    <Suspense fallback={Loading}>
-                        <div className="ml-[210px] mt-6">
-                            <RequestPageProvider>
-                                <EditRequestPage />
-                            </RequestPageProvider>
-                        </div>
-                    </Suspense>
-                ),
-            },
-            {
-                path: "my",
-                element: (
-                    <Suspense fallback={Loading}>
-                        <div className="ml-[210px] mt-6">
-                            <MyPageForMemberPageProvider>
-                                <MyPageForMemberPage />
-                            </MyPageForMemberPageProvider>
-                        </div>
-                    </Suspense>
-                ),
-            },
-        ],
-    },
-]);
-
-export default router;
+export default MemberRouter;

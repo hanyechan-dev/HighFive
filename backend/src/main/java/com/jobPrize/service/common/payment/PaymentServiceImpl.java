@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 	private final UserRepository userRepository;
 	
-	private final RestTemplate restTemplate;
+//	private final RestTemplate restTemplate;
 	
 	private final AssertUtil assertUtil;
 

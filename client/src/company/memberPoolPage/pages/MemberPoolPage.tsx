@@ -11,13 +11,10 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import MemberPoolCard from "../components/MemberPoolCard";
 import { usePagination } from "../../../common/customHooks/usePagination";
-<<<<<<< HEAD
-=======
 import PageTitle from "../../common/components/PageTitle";
 import MemberPoolListHeader from "../components/MemberPoolListHeader";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import { mockMembers } from "../../common/mockData/CompanyMockData";
->>>>>>> origin/COMPANY
 
 // AI 추천 mock 데이터 예시
 const aiRecommended: MemberPoolSummary[] = [

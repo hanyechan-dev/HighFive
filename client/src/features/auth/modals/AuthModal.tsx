@@ -4,6 +4,7 @@ import { useAuthController } from "../customHooks/useAuthController";
 import { useAuthApi } from "../customHooks/useAuthApi";
 import NicknameInputModal from "./NicknameInputModal";
 import CommonModal from "../../../common/modals/CommonModal";
+import CompanyInfoInputModal from "./CompanyInfoInputModal";
 
 
 interface AuthModalProps {
@@ -14,7 +15,7 @@ const AuthModal = ({ onClose }: AuthModalProps) => {
 
     const { showModalType, setShowModalType, kakaoEmail, isKakao } = useAuthController();
 
-    const { login, kakaoLogin, nicknameInput, signUp } = useAuthApi();
+    const { login, kakaoLogin, nicknameInput, signUp, companyInfoInput } = useAuthApi();
 
     const onCloseModal = () => {
         setShowModalType("logIn");
@@ -34,9 +35,9 @@ const AuthModal = ({ onClose }: AuthModalProps) => {
                 {showModalType === "nicknameInput" && (
                     <NicknameInputModal nicknameInput={nicknameInput} onClose={onCloseModal} />
                 )}
-                {/* {showModalType === "companyInfoInput" && (
-                <CompanyInfoInputModal onClose={()=>{setShowCompanyInfoInputModal(false)}} />
-            )} */}
+                {showModalType === "companyInfoInput" && (
+                    <CompanyInfoInputModal companyInfoInput={companyInfoInput} onClose={onCloseModal} />
+            )}
             </CommonModal>
     );
 };
