@@ -21,15 +21,9 @@ const ResumeOutputForRequestModal = () => {
         targetCompanyName,
         setShowModalNumber,
         resume
-
     } = useRequestController();
 
-
-
-
     const [clickedResume, setClickedResume] = useState(resumeTypeEnum[0].value);
-
-
 
     const onClickNext = () => {
         setShowModalNumber(2);
@@ -57,28 +51,28 @@ const ResumeOutputForRequestModal = () => {
             <div className="flex">
                 {clickedResume == "학력사항" && (
                     <ExternalBox>
-                        {resume.educationResponseDtos.length > 0 && resume.educationResponseDtos.map((educationResponseDto) => (
+                        {resume?.educationResponseDtos?.length > 0 && resume.educationResponseDtos.map((educationResponseDto) => (
                             <EducationInfo educationResponseDto={educationResponseDto} key={educationResponseDto.id} />
                         ))}
                     </ExternalBox>
                 )}
                 {clickedResume == "경력사항" && (
                     <ExternalBox>
-                        {resume.careerResponseDtos.length > 0 && resume.careerResponseDtos.map((careerResponseDto) => (
+                        {resume?.careerResponseDtos?.length > 0 && resume.careerResponseDtos.map((careerResponseDto) => (
                             <CareerInfo careerResponseDto={careerResponseDto} key={careerResponseDto.id} />
                         ))}
                     </ExternalBox>
                 )}
                 {clickedResume == "자격증" && (
                     <ExternalBox>
-                        {resume.certificationResponseDtos.length > 0 && resume.certificationResponseDtos.map((certificationResponseDto) => (
+                        {resume?.certificationResponseDtos?.length > 0 && resume.certificationResponseDtos.map((certificationResponseDto) => (
                             <CertificationInfo certificationResponseDto={certificationResponseDto} key={certificationResponseDto.id} />
                         ))}
                     </ExternalBox>
                 )}
                 {clickedResume == "어학" && (
                     <ExternalBox>
-                        {resume.languageTestResponseDtos.length > 0 && resume.languageTestResponseDtos.map((languageTestResponseDto) => (
+                        {resume?.languageTestResponseDtos?.length > 0 && resume.languageTestResponseDtos.map((languageTestResponseDto) => (
                             <LanguageTest languageTestResponseDto={languageTestResponseDto} key={languageTestResponseDto.id} />
                         ))}
                     </ExternalBox>

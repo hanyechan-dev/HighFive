@@ -2,6 +2,7 @@ package com.jobPrize.service.common.payment;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
@@ -14,7 +15,7 @@ public interface PaymentService {
 	void createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto);
 	
 	// ID별 결제 내역 리스트 조회
-	List<PaymentResponseDto> readPaymentListById(Long id, Pageable pageable);
+	Page<PaymentResponseDto> readPaymentPageById(Long id, Pageable pageable);
 	
 	// 전체 결제 내역 리스트 조회
 	List<PaymentResponseDto> readPaymentList();

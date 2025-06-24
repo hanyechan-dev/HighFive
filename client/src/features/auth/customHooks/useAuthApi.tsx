@@ -4,6 +4,16 @@ import { kakaoLoginApi, loginApi, nicknameInputApi, SignUpApi } from "../apis/Au
 import { setToken } from "../slices/AuthSlice";
 import { useAuthController } from "./useAuthController";
 import type { LogInDto, MemberCreateDto, UserSignUpDto } from "../props/AuthProps";
+import axios from "axios";
+
+interface KakaoAuthSuccess {
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  refresh_token_expires_in: number;
+  scope: string;
+  token_type: string;
+}
 
 
 
@@ -46,7 +56,7 @@ export const useAuthApi = () => {
         if (!window.Kakao.isInitialized()) return;
 
         window.Kakao.Auth.login({
-            success: async (authObj: any) => {
+            success: async (authObj: KakaoAuthSuccess) => {
                 console.log('카카오 로그인 성공:', authObj);
                 const kakaoAccessToken = authObj.access_token;
 
@@ -58,22 +68,25 @@ export const useAuthApi = () => {
                         dispatch(setToken({ accessToken, refreshToken }));
                     }
                 }
-                catch (err: any) {
-                    if (err.response?.status === 404) {
+                catch (err: unknown) {
+                    if(axios.isAxiosError(err)){
+                        if (err.response?.status === 404) {
                         const email = err.response.data;
                         console.log(email)
                         setKakaoEmail(email);
                         setIsKakao(true);
                         setShowModalType("signUp");
 
-                    } else {
+                    }
+                    }
+                     else {
                         printErrorInfo(err);
                     }
                 }
 
 
             },
-            fail: function (err: any) {
+            fail: function (err: unknown) {
                 console.error('카카오 로그인 실패:', err);
             }
         });

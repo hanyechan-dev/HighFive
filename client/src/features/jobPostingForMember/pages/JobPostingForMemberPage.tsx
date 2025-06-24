@@ -106,7 +106,7 @@ const JobPostingForMemberPage = () => {
                 const res = await JobPostingListForMemberApi(clickedPage - 1, elementsPerPage);
                 const totalElements = res.data.totalElements as number
                 setTotalElements(totalElements);
-                const jobPostingSummaryForMemberDtos = res.data as JobPostingSummaryForMemberDto[];
+                const jobPostingSummaryForMemberDtos = res.data.content as JobPostingSummaryForMemberDto[];
                 setJobPostingForMemberSummaryDtos(jobPostingSummaryForMemberDtos);
 
             }

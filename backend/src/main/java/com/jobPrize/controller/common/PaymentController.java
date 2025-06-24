@@ -1,7 +1,6 @@
 package com.jobPrize.controller.common;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +37,11 @@ public class PaymentController {
 
 	// ID별 결제 내역 리스트 조회
 	@GetMapping
-	public ResponseEntity<List<PaymentResponseDto>> getPaymentList(Pageable pageable) {
+	public ResponseEntity<Page<PaymentResponseDto>> getPaymentList(Pageable pageable) {
 		
 		Long id = SecurityUtil.getId();
 		
-		List<PaymentResponseDto> paymentListById = paymentService.readPaymentListById(id, pageable);
+		Page<PaymentResponseDto> paymentListById = paymentService.readPaymentPageById(id, pageable);
 		return ResponseEntity.status(HttpStatus.OK).body(paymentListById);
 
 	}

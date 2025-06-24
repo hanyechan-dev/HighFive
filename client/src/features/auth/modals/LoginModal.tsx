@@ -42,7 +42,6 @@ const LoginModal = ({ setShowModalType, login, kakaoLogin, onClose }: LoginModal
 
     const onClickKakaoLoginButton = () => {
         kakaoLogin();
-        onClose()
     }
 
 

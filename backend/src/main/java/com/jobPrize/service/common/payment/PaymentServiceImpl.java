@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,11 +63,12 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	// ID별 결제 내역 리스트 조회
 	@Override
-	public List<PaymentResponseDto> readPaymentListById(Long id, Pageable pageable) {
+	public Page<PaymentResponseDto> readPaymentPageById(Long id, Pageable pageable) {
 		Page<Payment> paymentPage = paymentRepository.findAllByUserId(id, pageable);
 		List<Payment> paymentList = paymentPage.getContent();
 		
-		return paymentList.stream()
+		
+		List<PaymentResponseDto> paymentResponseDtos = paymentList.stream()
 			.map(payment -> PaymentResponseDto.builder()
 				.paymentId(payment.getId())
 				.paymentAmount(payment.getPaymentAmount())
@@ -77,6 +79,8 @@ public class PaymentServiceImpl implements PaymentService {
 				)
 			
 			.collect(Collectors.toList());
+		 
+		 return new PageImpl<>(paymentResponseDtos,pageable, paymentPage.getTotalElements());
 	}
 	
 	// 전체 결제 내역 리스트 조회

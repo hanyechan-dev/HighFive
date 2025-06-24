@@ -94,7 +94,7 @@ const EditRequestPage = () => {
                 const res = await readRequestsApi(clickedPage - 1, elementsPerPage, consultingType);
                 const totalElements = res.data.totalElements as number
                 setTotalElements(totalElements);
-                const requestSummaryDtos = res.data as RequestSummaryDto[];
+                const requestSummaryDtos = res.data.content as RequestSummaryDto[];
                 setRequestSummaryDtos(requestSummaryDtos);
 
             }

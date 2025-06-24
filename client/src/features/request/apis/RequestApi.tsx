@@ -23,10 +23,8 @@ export const readRequestsApi = (
     size: number,
     type: string
 ) => {
-    console.log("분기 직전")
 
     if (type === '피드백') {
-        console.log("피드백 분기 직후")
         return api(true).get('/requests/feedbacks', {
             params: {
                 page,
@@ -49,9 +47,7 @@ export const readRequestApi = (
     id: number,
 
 ) => {
-    const instance = api(true);
-    console.log("헤더 확인:", instance.defaults.headers); // Authorization 붙었는지 확인
-    return instance.post('/requests/detail', {
+    return api(true).post('/requests/detail', {
         id
     });
 }
