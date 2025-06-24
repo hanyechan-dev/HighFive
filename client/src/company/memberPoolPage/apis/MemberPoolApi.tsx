@@ -10,9 +10,9 @@ export const MemberPoolPageApi = (
         hasCareer: filter.hasCareer,
         educationLevel: filter.educationLevel,
         address: filter.address,
-        job: filter.job,
-        page,
-        size: 10
+        job: filter.job
+    }, {
+        params: { page, size: 10 }
     });
 };
 

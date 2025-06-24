@@ -8,9 +8,8 @@ interface ProposalListResponse {
 }
 
 export const ProposalListApi = (page: number, size: number = 10) => {
-  return api(true).post<ProposalListResponse>('/companies/proposals', {
-    page,
-    size
+  return api(true).get<ProposalListResponse>('/companies/proposals', {
+    params: { page, size }
   });
 };
 

@@ -1,14 +1,14 @@
 import { useState, type ChangeEvent } from "react"
 
-import { companyInfoInputModalApi } from "./CompanyApi.tsx";
-import CommonModal from "../../common/modals/CommonModal.tsx";
-import ModalTitle from "../../common/components/title/ModalTitle.tsx";
-import Input from "../../common/components/input/Input.tsx";
-import Button from "../../common/components/button/Button.tsx";
-import TextArea from "../../common/components/input/TextArea.tsx";
-import RadioButton from "../../common/components/button/RadioButton.tsx";
-import { companyTypeEnum } from "../../common/enum/Enum.tsx";
-import ImageOutputArea from "../../common/components/image/ImageOutputArea.tsx";
+import { companyInfoInputModalApi } from "../apis/CompanyApi.tsx";
+import CommonModal from "../../../common/modals/CommonModal.tsx";
+import ModalTitle from "../../../common/components/title/ModalTitle.tsx";
+import Input from "../../../common/components/input/Input.tsx";
+import Button from "../../../common/components/button/Button.tsx";
+import TextArea from "../../../common/components/input/TextArea.tsx";
+import RadioButton from "../../../common/components/button/RadioButton.tsx";
+import { companyTypeEnum } from "../../../common/enum/Enum.tsx";
+import ImageOutputArea from "../../../common/components/image/ImageOutputArea.tsx";
 
 const CompanyInfoInputModal = () => {
     const [isModalOpen, setIsModalOpen] = useState(true);

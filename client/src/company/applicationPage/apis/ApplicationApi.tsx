@@ -1,5 +1,6 @@
 import { api } from "../../../common/Axios";
 import type { ApplicationSummaryForCompany, ApplicationDetail } from "../props/ApplicationProps";
+import type { JobPostingSummary } from "../../common/types/JobPostingTypes";
 
 interface ApplicationListResponse {
   content: ApplicationSummaryForCompany[];
@@ -7,11 +8,24 @@ interface ApplicationListResponse {
   totalPages: number;
 }
 
+interface JobPostingListResponse {
+  content: JobPostingSummary[];
+  totalElements: number;
+  totalPages: number;
+}
+
+// 지원자가 있는 채용공고 목록 조회
+export const JobPostingWithApplicantsApi = (page: number, size: number) => {
+  return api(true).get<JobPostingListResponse>('/appliers', {
+    params: { page, size }
+  });
+};
+
 export const ApplicationListApi = (jobPostingId: number, page: number, size: number) => {
   return api(true).post<ApplicationListResponse>('/appliers/applications', { 
-    id: jobPostingId,
-    page,
-    size,
+    id: jobPostingId
+  }, {
+    params: { page, size }
   });
 };
 

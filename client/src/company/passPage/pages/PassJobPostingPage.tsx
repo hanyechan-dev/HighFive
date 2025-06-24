@@ -5,61 +5,70 @@ import PageTitle from "../../common/components/PageTitle";
 import PassJobPostingListHeader from "../components/PassJobPostingListHeader";
 import PassJobPostingSummaryRow from "../components/PassJobPostingSummaryRow";
 import type { JobPostingSummary } from "../../common/types/JobPostingTypes";
+import { PassJobPostingListApi } from "../apis/PassApi";
+import { usePagination } from "../../../common/customHooks/usePagination";
+import { printErrorInfo } from "../../../common/utils/ErrorUtil";
+import Pagination from "../../../common/components/pagination/Pagination";
+import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import { mockJobPostings } from "../../common/mockData/CompanyMockData";
 
 const PassJobPostingPage = () => {
   const navigate = useNavigate();
   const [jobPostings, setJobPostings] = useState<JobPostingSummary[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [totalElements, setTotalElements] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    clickedPage,
+    setClickedPage,
+    lastPage,
+    pageBlockIndex,
+    lastPageBlockIndex,
+    onClickFirst,
+    onClickPrev,
+    onClickNext,
+    onClickLast,
+  } = usePagination({
+    totalElements,
+    elementsPerPage: 10,
+    pagesPerBlock: 10,
+  });
 
   useEffect(() => {
-    // TODO: 채용공고 목록 API 호출
     const fetchJobPostings = async () => {
+      setIsLoading(true);
       try {
-        // 임시 데이터
-        const mockData: JobPostingSummary[] = [
-          {
-            id: 1,
-            title: "프론트엔드 개발자",
-            companyName: "테크컴퍼니",
-            type: "IT",
-            job: "개발",
-            workLocation: "서울",
-            careerType: "경력",
-            educationLevel: "대졸",
-            createdDate: "2024-01-15"
-          },
-          {
-            id: 2,
-            title: "백엔드 개발자",
-            companyName: "스타트업",
-            type: "IT",
-            job: "개발",
-            workLocation: "부산",
-            careerType: "신입",
-            educationLevel: "대졸",
-            createdDate: "2024-01-10"
-          }
-        ];
-        setJobPostings(mockData);
-      } catch (error) {
-        console.error("채용공고 목록 조회 실패:", error);
+        const res = await PassJobPostingListApi(clickedPage - 1, 10);
+        if (res && res.data.content) {
+          setJobPostings(res.data.content);
+          setTotalElements(res.data.totalElements);
+        } else {
+          setJobPostings(mockJobPostings);
+          setTotalElements(mockJobPostings.length);
+        }
+      } catch (err) {
+        printErrorInfo(err);
+        setJobPostings(mockJobPostings);
+        setTotalElements(mockJobPostings.length);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchJobPostings();
-  }, []);
+  }, [clickedPage]);
 
   const handleShowPasses = (jobPostingId: number) => {
     navigate(`/job-posting/${jobPostingId}/passes`);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">로딩 중...</div>
-      </div>
+      <CommonPage>
+        <div className="w-[1452px] mx-auto font-roboto">
+          <div className="text-center py-12 text-gray-400">로딩 중...</div>
+        </div>
+      </CommonPage>
     );
   }
 
@@ -73,20 +82,38 @@ const PassJobPostingPage = () => {
           />
         </div>
         
-        <PassJobPostingListHeader />
-        {jobPostings.length > 0 ? (
-          jobPostings.map((jobPosting) => (
-            <PassJobPostingSummaryRow
-              key={jobPosting.id}
-              job={jobPosting}
-              onShowPasses={handleShowPasses}
-            />
-          ))
+        {jobPostings.length === 0 ? (
+          <CompanyEmptyState
+            title="합격자가 있는 채용공고가 없습니다."
+            text="아직 합격자가 있는 채용공고가 없습니다."
+          />
         ) : (
-          <div className="text-center py-12 text-gray-500">
-            등록된 채용공고가 없습니다.
-          </div>
+          <>
+            <PassJobPostingListHeader />
+            {jobPostings.map((jobPosting) => (
+              <PassJobPostingSummaryRow
+                key={jobPosting.id}
+                job={jobPosting}
+                onShowPasses={handleShowPasses}
+              />
+            ))}
+          </>
         )}
+        
+        <div className="mt-8 flex justify-center">
+          <Pagination
+            currentPageBlockIndex={pageBlockIndex}
+            lastPageBlockIndex={lastPageBlockIndex}
+            pagesPerBlock={10}
+            lastPage={lastPage}
+            clickedPage={clickedPage}
+            onClickFirst={onClickFirst}
+            onClickPrev={onClickPrev}
+            onClickNext={onClickNext}
+            onClickLast={onClickLast}
+            onClickPage={setClickedPage}
+          />
+        </div>
       </div>
     </CommonPage>
   );

@@ -9,33 +9,8 @@ import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import type { JobPostingSummary } from "../../common/types/JobPostingTypes";
 import ApplicationJobPostingListHeader from "../components/ApplicationJobPostingListHeader";
 import ApplicationJobPostingSummaryRow from "../components/ApplicationJobPostingSummaryRow";
-import { JobPostingListApi } from "../../jobPostingPage/apis/JobPostingApi";
-
-// 임시 mock 데이터
-const mockJobPostings: JobPostingSummary[] = [
-  {
-    id: 1,
-    title: "프론트엔드 개발자 모집",
-    companyName: "테크컴퍼니",
-    type: "대기업",
-    job: "프론트엔드 개발자",
-    workLocation: "서울특별시",
-    careerType: "1~3년",
-    educationLevel: "학사",
-    createdDate: "2024-01-15"
-  },
-  {
-    id: 2,
-    title: "백엔드 개발자 모집",
-    companyName: "스타트업",
-    type: "중소기업",
-    job: "백엔드 개발자",
-    workLocation: "서울특별시",
-    careerType: "신입",
-    educationLevel: "석사",
-    createdDate: "2024-01-10"
-  }
-];
+import { JobPostingWithApplicantsApi } from "../apis/ApplicationApi";
+import { mockJobPostings } from "../../common/mockData/CompanyMockData";
 
 const ApplicationJobPostingPage = () => {
   const [jobPostings, setJobPostings] = useState<JobPostingSummary[]>(mockJobPostings);
@@ -63,7 +38,7 @@ const ApplicationJobPostingPage = () => {
     const fetchJobPostings = async () => {
       setIsLoading(true);
       try {
-        const res = await JobPostingListApi(clickedPage - 1, 10);
+        const res = await JobPostingWithApplicantsApi(clickedPage - 1, 10);
         if (res && res.data.content) {
           setJobPostings(res.data.content); 
           setTotalElements(res.data.totalElements);

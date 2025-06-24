@@ -17,6 +17,7 @@ import PassJobPostingPage from "./passPage/pages/PassJobPostingPage";
 import MemberPoolPage from "./memberPoolPage/pages/MemberPoolPage";
 import ProposalPage from "./proposalPage/pages/ProposalPage";
 import SchedulePage from "./schedulePage/pages/SchedulePage";
+import MyPage from "./companyInfo/pages/MyPage";
 
 const CompanyRoutes = () => {
   const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
@@ -130,6 +131,9 @@ const CompanyRoutes = () => {
 
           {/* 일정 관리 */}
           <Route path="/schedule" element={<SchedulePage />} />
+
+          {/* 마이페이지 */}
+          <Route path="/mypage" element={<MyPage />} />
 
           {/* 404 페이지 */}
           <Route path="*" element={<Navigate to="/" replace />} />

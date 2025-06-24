@@ -10,9 +10,8 @@ interface JobPostingListResponse {
 
 // 채용공고 목록 조회 (페이지네이션)
 export const JobPostingListApi = (page: number, size: number) => {
-  return api(true).post<JobPostingListResponse>('/companies/jobPostings', {
-    page,
-    size
+  return api(true).get<JobPostingListResponse>('/companies/jobPostings', {
+    params: { page, size }
   });
 };
 

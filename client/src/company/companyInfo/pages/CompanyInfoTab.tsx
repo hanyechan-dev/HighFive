@@ -1,0 +1,113 @@
+import { useState, useEffect } from 'react';
+import type { ChangeEvent } from 'react';
+import Input from '../../../common/components/input/Input';
+import TextArea from '../../../common/components/input/TextArea';
+import Button from '../../../common/components/button/Button';
+import ImageOutputArea from '../../../common/components/image/ImageOutputArea';
+import Select from '../../../common/components/input/Select';
+import { companyTypeEnum } from '../../../common/enum/Enum';
+import { getCompanyInfoApi, updateCompanyInfoApi } from '../apis/CompanyApi';
+
+const CompanyInfoTab = () => {
+    const [companyName, setCompanyName] = useState('');
+    const [businessNumber, setBusinessNumber] = useState('');
+    const [representativeName, setRepresentativeName] = useState('');
+    const [establishedDate, setEstablishedDate] = useState('');
+    const [employeeCount, setEmployeeCount] = useState('');
+    const [industry, setIndustry] = useState('');
+    const [address, setAddress] = useState('');
+    const [phone, setPhone] = useState('');
+    const [introduction, setIntroduction] = useState('');
+    const [type, setType] = useState('');
+    const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        getCompanyInfoApi().then(res => {
+            const data = res.data.companyResponseDto;
+            setCompanyName(data.companyName ?? '');
+            setBusinessNumber(data.businessNumber ?? '');
+            setRepresentativeName(data.representativeName ?? '');
+            setEstablishedDate(data.establishedDate ?? '');
+            setEmployeeCount(data.employeeCount?.toString() ?? '');
+            setIndustry(data.industry ?? '');
+            setAddress(data.companyAddress ?? '');
+            setPhone(data.companyPhone ?? '');
+            setIntroduction(data.introduction ?? '');
+            setType(data.type ?? '');
+            if (data.imageUrl) setLogoPreviewUrl(data.imageUrl);
+        });
+    }, []);
+
+    const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        setLogoFile(file);
+        setLogoPreviewUrl(file ? URL.createObjectURL(file) : null);
+    };
+
+    const handleSave = async () => {
+        setLoading(true);
+        try {
+            await updateCompanyInfoApi(
+                companyName,
+                businessNumber,
+                representativeName,
+                type,
+                address,
+                phone,
+                industry,
+                employeeCount,
+                establishedDate,
+                introduction,
+                logoFile
+            );
+            alert('저장되었습니다.');
+        } catch (err) {
+            alert('저장에 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex flex-col gap-6 font-roboto">
+            <div className="gap-6 mb-6">
+                <div className="flex">
+                    <Input label="기업명" placeholder="기업명을 입력하세요" size="m" disabled={false} type="text" value={companyName} setValue={setCompanyName} />
+                    <Input label="대표자명" placeholder="대표자명을 입력하세요" size="m" disabled={false} type="text" value={representativeName} setValue={setRepresentativeName} />
+                </div>
+                <div className="flex">
+                    <Input label="사업자등록번호" placeholder="사업자등록번호 입력" size="m" disabled={false} type="text" value={businessNumber} setValue={setBusinessNumber} />
+                    <Input label="설립일" placeholder="설립일 입력" size="m" disabled={false} type="date" value={establishedDate} setValue={setEstablishedDate} />
+                </div>
+                <div className="flex">
+                    <Input label="직원수" placeholder="직원수 입력" size="m" disabled={false} type="text" value={employeeCount} setValue={setEmployeeCount} />
+                    <Input label="업종" placeholder="업종 입력" size="m" disabled={false} type="text" value={industry} setValue={setIndustry} />
+                </div>
+                <div className="flex">
+                    <Input label="주소" placeholder="주소 입력" size="m" disabled={false} type="text" value={address} setValue={setAddress} />
+                    <Select label="회사 유형" options={companyTypeEnum} size="m" disabled={false} value={type} setValue={setType} />
+                </div>
+                <div className="flex">
+                    <Input label="기업 전화" placeholder="전화번호 입력" size="m" disabled={false} type="text" value={phone} setValue={setPhone} />
+                </div>
+                <TextArea size="l" label="기업 소개" placeholder="기업 소개를 입력하세요" disabled={false} value={introduction} setValue={setIntroduction} />
+                <div className="mb-6">
+                    <label className="font-roboto text-base mb-2 inline-block ml-[24px]">기업 로고</label>
+                    <input type="file" accept="image/*" onChange={handleLogoChange} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ml-[24px]" />
+                    {logoPreviewUrl && (
+                        <div className="mt-4 ml-[24px]">
+                            <ImageOutputArea size="m" imageUrl={logoPreviewUrl} />
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div className="mt-4">
+                <Button color="theme" size="s" disabled={loading} text={loading ? '저장 중...' : '저장'} type="button" onClick={handleSave} />
+            </div>
+        </div>
+    );
+};
+
+export default CompanyInfoTab; 

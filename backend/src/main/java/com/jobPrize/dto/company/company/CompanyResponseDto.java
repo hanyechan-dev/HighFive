@@ -20,6 +20,7 @@ public class CompanyResponseDto {
 	private String representativeName;
 
 	private String businessNumber;
+	
 
 	private String companyAddress;
 

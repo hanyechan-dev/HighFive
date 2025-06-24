@@ -114,7 +114,7 @@ const SubscriptionManagementPage = () => {
           <div className="text-5xl font-bold mb-8">
             월 99,000원 <span className="text-2xl font-normal">(VAT 포함)</span>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-8">
             <div className="flex items-center space-x-3"><CheckIcon /><span>무제한 채용공고 등록</span></div>
             <div className="flex items-center space-x-3"><CheckIcon /><span>지원자 AI 분석</span></div>
@@ -126,12 +126,6 @@ const SubscriptionManagementPage = () => {
 
           <div className="text-center">
             <button className="bg-white text-theme font-bold py-3 px-8 rounded-lg text-lg hover:bg-gray-100 transition-colors mr-4">
-              구독 연장하기
-            </button>
-            <button 
-              onClick={handleCancelSubscription}
-              className="bg-gray-500 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-gray-600 transition-colors"
-            >
               구독 해지하기
             </button>
           </div>

@@ -25,4 +25,4 @@ export function TabButton({ label, isActive, onClick, variant = 'sub' }: TabButt
       {label}
     </button>
   )
-}
+} 
