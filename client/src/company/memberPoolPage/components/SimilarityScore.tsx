@@ -58,7 +58,7 @@ const SimilarityScore: FC<SimilarityScoreProps> = ({ score, size = 56, color = '
           style={{
             fontSize: size / 4,
             fontWeight: 600,
-            fontFamily: 'inherit',
+            
           }}
         >
           {score}%

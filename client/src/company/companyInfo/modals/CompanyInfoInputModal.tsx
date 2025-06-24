@@ -1,17 +1,17 @@
 import { useState, type ChangeEvent } from "react"
 
-import { companyInfoInputModalApi } from "./CompanyApi.tsx";
-import CommonModal from "../../common/modals/CommonModal.tsx";
-import ModalTitle from "../../common/components/title/ModalTitle.tsx";
-import Input from "../../common/components/input/Input.tsx";
-import Button from "../../common/components/button/Button.tsx";
-import TextArea from "../../common/components/input/TextArea.tsx";
-import RadioButton from "../../common/components/button/RadioButton.tsx";
-import { companyTypeEnum } from "../../common/enum/Enum.tsx";
-import ImageOutputArea from "../../common/components/image/ImageOutputArea.tsx";
+import { companyInfoInputModalApi } from "../apis/CompanyApi.tsx";
+import CommonModal from "../../../common/modals/CommonModal.tsx";
+import ModalTitle from "../../../common/components/title/ModalTitle.tsx";
+import Input from "../../../common/components/input/Input.tsx";
+import Button from "../../../common/components/button/Button.tsx";
+import TextArea from "../../../common/components/input/TextArea.tsx";
+import RadioButton from "../../../common/components/button/RadioButton.tsx";
+import { companyTypeEnum } from "../../../common/enum/Enum.tsx";
+import ImageOutputArea from "../../../common/components/image/ImageOutputArea.tsx";
 
 const CompanyInfoInputModal = () => {
-    const [showModal, setShowModal] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(true);
     const [companyName, setCompanyName] = useState('');
     const [businessNumber, setBusinessNumber] = useState('');
     const [representativeName, setRepresentativeName] = useState('');
@@ -24,7 +24,7 @@ const CompanyInfoInputModal = () => {
     const [logoImageFile, setLogoImageFile] = useState<File | null>(null);
     const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
     const [checkedCompanyType, setCheckedCompanyType] = useState(companyTypeEnum[0].value)
-    const onClose = () => { setShowModal(false) };
+    const onClose = () => { setIsModalOpen(false) };
 
     const handleLogoImageChange = (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files ? event.target.files[0] : null;
@@ -61,7 +61,7 @@ const CompanyInfoInputModal = () => {
         }
     };
 
-    if (!showModal) return null
+    if (!isModalOpen) return null
 
     return (
 

@@ -5,7 +5,7 @@ import ModalTitle from "../../../common/components/title/ModalTitle";
 import CommonModal from "../../../common/modals/CommonModal";
 
 import MemberInfoBox from "../components/MemberInfoBox";
-import { TabButton } from "../components/TabButton";
+import { TabButton } from "../../common/components/TabButton";
 import ProposalCreateModal from "./proposalCreateModal";
 import type { MemberPoolDetail } from "../props/MemberPoolProps";
 import { MemberPoolDetailApi } from "../apis/MemberPoolApi";
@@ -30,15 +30,15 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
         setProposalOpen(false);
     }
 
-    // 1. 데이터 불러오는 함수 useCallback으로 분리
+    
     const fetchDetail = useCallback(() => {
-        if (!memberId) return;
+        if (memberId == null) return;
         setLoading(true);
         setError(null);
         MemberPoolDetailApi(memberId)
             .then(res => {
-                if (!res) throw new Error("데이터를 불러올 수 없습니다.");
-                setDetail(res);
+                if (!res || !res.data) throw new Error("데이터를 불러올 수 없습니다.");
+                setDetail(res.data);
             })
             .catch(err => {
                 setError("멤버 정보를 불러오는데 실패했습니다. 다시 시도해주세요." + err);
@@ -46,7 +46,7 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
             .finally(() => setLoading(false));
     }, [memberId]);
 
-    // 2. useEffect에서 재사용
+    
     useEffect(() => {
         if (isOpen && memberId) {
             fetchDetail();

@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import SimilarityScore from './SimilarityScore';
+import Badge from '../../common/components/Badge';
+import { getAge } from '../../utils/DateUtil';
 
 interface MemberPoolSummary {
     id: number;
@@ -18,10 +20,9 @@ interface MemberPoolCardProps {
     onClick: (id: number) => void;
 }
 
-
-
 const MemberPoolCard: FC<MemberPoolCardProps> = ({ member, onClick }) => {
     const [isHovered, setIsHovered] = useState(false);
+
     return (
         <div
             className="bg-white rounded-2xl shadow-lg border border-gray-100 p-7 flex flex-col gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative min-h-[220px] group cursor-pointer font-roboto"
@@ -42,32 +43,18 @@ const MemberPoolCard: FC<MemberPoolCardProps> = ({ member, onClick }) => {
             </div>
             {/* 메인 정보 */}
             <div className="flex flex-col items-center justify-center mt-10">
-                <div className="font-bold text-xl text-gray-900 mb-1 text-center truncate w-full tracking-tight" style={{ fontFamily: 'inherit' }}>{member.name}</div>
-                <div className="text-gray-700 font-semibold mb-1 text-center truncate w-full tracking-tight" style={{ fontFamily: 'inherit' }}>{member.job}</div>
+                <div className="font-bold text-xl text-gray-900 mb-1 text-center truncate w-full tracking-tight">{member.name}</div>
+                <div className="text-gray-700 font-semibold mb-1 text-center truncate w-full tracking-tight">{member.job}</div>
             </div>
             {/* 서브 정보 */}
-            <div className="flex flex-wrap justify-center gap-3 mt-2">
-                <span className="text-gray-500 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{member.hasCareer ? `경력` : `신입`}</span>
-                <span className="text-gray-400 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{member.educationLevel}</span>
-                <span className="text-gray-400 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{member.genderType}</span>
-                <span className="text-gray-400 text-sm tracking-tight" style={{ fontFamily: 'inherit' }}>{getAge(member.birthDate)}세</span>
+            <div className="flex flex-wrap justify-center items-center gap-3 mt-2">
+                <Badge label={member.hasCareer ? '경력' : '신입'} color={member.hasCareer ? 'career' : 'newbie'} />
+                <Badge label={member.educationLevel} color="info" />
+                <Badge label={member.genderType} color={member.genderType === '남성' ? 'male' : 'female'} />
+                <span className="text-gray-400 text-sm tracking-tight">{getAge(member.birthDate)}세</span>
             </div>
         </div>
     );
 };
 
 export default MemberPoolCard; 
-
-
-
-
-function getAge(birthDate: string) {
-    const today = new Date();
-    const birth = new Date(birthDate);
-    let age = today.getFullYear() - birth.getFullYear();
-    const m = today.getMonth() - birth.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-        age--;
-    }
-    return age;
-}

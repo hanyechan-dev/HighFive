@@ -69,7 +69,7 @@ public class ScheduleController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMyJobPosting(@RequestBody @Valid ScheduleUpdateDto scheduleUpdateDto) {
+	public ResponseEntity<Void> updateMySchedule(@RequestBody @Valid ScheduleUpdateDto scheduleUpdateDto) {
 
 		Long id = SecurityUtil.getId();
 
@@ -85,7 +85,7 @@ public class ScheduleController {
 	}
 
 	@PostMapping("/deletion")
-	public ResponseEntity<Void> deletMyJobPosting(@RequestBody @Valid IdDto IdDto) {
+	public ResponseEntity<Void> deletMySchedule(@RequestBody @Valid IdDto IdDto) {
 
 		Long id = SecurityUtil.getId();
 

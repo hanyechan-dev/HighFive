@@ -5,6 +5,10 @@ import { CreateApplicationApi, JobPostingDetailApi, JobPostingListForMemberApi, 
 import JobPostingMainCard from "../components/JobPostingMainCard";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/COMPANY
 import JobPostingUnderCard from "../components/JobPostingUnderCard";
 import Pagination from "../../../common/components/pagination/Pagination";
 import JobPostingListTop from "../components/JobPostingListTop";
@@ -20,8 +24,11 @@ import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryFo
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import { usePagination } from "../../../common/customHooks/usePagination";
+<<<<<<< HEAD
 import ModalTitle from "../../../common/components/title/ModalTitle";
 
+=======
+>>>>>>> origin/COMPANY
 
 
 

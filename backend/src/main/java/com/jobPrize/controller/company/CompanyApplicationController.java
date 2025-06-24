@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
+import com.jobPrize.dto.memToCom.application.ApplicationResponseForCompanyDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
 import com.jobPrize.enumerate.ApprovalStatus;
 import com.jobPrize.enumerate.UserType;
@@ -58,15 +59,16 @@ public class CompanyApplicationController {
 	
 	
 	@PostMapping("/applications/detail")
-	public ResponseEntity<ApplicationResponseDto> readDetailApplication(@RequestBody @Valid IdDto idDto){
+	public ResponseEntity<ApplicationResponseForCompanyDto> readDetailApplication(@RequestBody @Valid IdDto idDto){
 
 		Long id = SecurityUtil.getId();
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		ApplicationResponseDto applicationResponseDto = applicationService.readApplication(id, userType, idDto.getId());
+		ApplicationResponseForCompanyDto applicationResponseForCompanyDto = applicationService.readApplicationForCompany(id, userType, idDto.getId());
 		
-		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseDto);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(applicationResponseForCompanyDto);
 		
 	}
 	
