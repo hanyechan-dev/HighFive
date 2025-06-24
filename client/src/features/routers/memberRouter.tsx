@@ -1,10 +1,9 @@
 import { lazy } from "react";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import Header from "../header/Header";
-import NavigationBar from "../navigationBar/NavigationBar";
+import { Route, Routes } from "react-router-dom";
 import { JobPostingForMemberPageProvider } from "../jobPostingForMember/contexts/JobPostingForMemberPageProvider";
 import { RequestPageProvider } from "../request/contexts/RequestPageProvider";
 import { MyPageForMemberPageProvider } from "../myPageForMember/contexts/MyPageForMemberPage/MyPageForMemberPagePageProvider";
+import Layout from "../layout/Layout";
 
 
 
@@ -14,24 +13,14 @@ const FeedbackRequestPage = lazy(() => import("../request/pages/FeedbackRequestP
 const EditRequestPage = lazy(() => import("../request/pages/EditRequestPage"));
 const MyPageForMemberPage = lazy(() => import("../myPageForMember/pages/MyPageForMemberPage"));
 
-const Layout = () => {
-    return (
-        <>
-            <Header />
-            <NavigationBar />
-            <div className="ml-[210px] mt-6">
-                <Outlet />
-            </div>
-        </>
-    )
-
+interface MemberRouterProps{
+    userType: string
 }
 
-const MemberRouter = () => {
+const MemberRouter = ({userType}:MemberRouterProps) => {
     return (
-        <BrowserRouter>
             <Routes>
-                <Route element={<Layout />}>
+                <Route element={<Layout userType={userType} />}>
                     <Route
                         path="/job-postings"
                         element={<JobPostingForMemberPageProvider>
@@ -67,7 +56,6 @@ const MemberRouter = () => {
                     />
                 </Route>
             </Routes>
-        </BrowserRouter>
     );
 };
 
