@@ -69,26 +69,27 @@ const ProposalTab = () => {
                 <ProposalListTop />
                 {proposalSummaryForMemberDtos.length > 0 ? proposalSummaryForMemberDtos.map((proposalSummaryDto) => (
                     <ProposalListItem key={proposalSummaryDto.id} proposalSummaryDto={proposalSummaryDto} onClick={() => onClickListItem(proposalSummaryDto.id)} />
-                )) : <EmptyState title={"채용 제안이 없습니다."} text={""}/>}
-
-                <Pagination
-                    currentPageBlockIndex={pageBlockIndex}
-                    lastPageBlockIndex={lastPageBlockIndex}
-                    pagesPerBlock={pagesPerBlock}
-                    lastPage={lastPage}
-                    clickedPage={clickedPage}
-                    onClickFirst={onClickFirst}
-                    onClickPrev={onClickPrev}
-                    onClickNext={onClickNext}
-                    onClickLast={onClickLast}
-                    onClickPage={setClickedPage} />
+                )) : <EmptyState title={"채용 제안이 없습니다."} text={""} />}
+                <div className="flex justify-center">
+                    <Pagination
+                        currentPageBlockIndex={pageBlockIndex}
+                        lastPageBlockIndex={lastPageBlockIndex}
+                        pagesPerBlock={pagesPerBlock}
+                        lastPage={lastPage}
+                        clickedPage={clickedPage}
+                        onClickFirst={onClickFirst}
+                        onClickPrev={onClickPrev}
+                        onClickNext={onClickNext}
+                        onClickLast={onClickLast}
+                        onClickPage={setClickedPage} />
+                </div>
             </PageBox>
 
-            {showModal && <ProposalModal 
-            proposalResponseDto={proposalResponseDto} 
-            onClose={() => setShowModal(false)} 
-            onClickAccept={onClickAccept} 
-            onClickReject={onClickReject} />}
+            {showModal && <ProposalModal
+                proposalResponseDto={proposalResponseDto}
+                onClose={() => setShowModal(false)}
+                onClickAccept={onClickAccept}
+                onClickReject={onClickReject} />}
         </>
     )
 }

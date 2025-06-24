@@ -136,9 +136,7 @@ const ConsultingRequestPage = () => {
                     }
 
 
-                    <div className="flex justify-center mt-6">
-
-
+                    <div className="flex justify-center">
                         <Pagination currentPageBlockIndex={pageBlockIndex}
                             lastPageBlockIndex={lastPageBlockIndex}
                             pagesPerBlock={pagesPerBlock}

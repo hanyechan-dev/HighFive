@@ -51,18 +51,21 @@ const PaymentTab = () => {
                 <PaymentListItem key={paymentResponseDto.paymentId} paymentResponseDto={paymentResponseDto} />
             )) : <EmptyState title={"결제 내역이 없습니다."} text={""} />}
 
-            <Pagination
-                currentPageBlockIndex={pageBlockIndex}
-                lastPageBlockIndex={lastPageBlockIndex}
-                pagesPerBlock={pagesPerBlock}
-                lastPage={lastPage}
-                clickedPage={clickedPage}
-                onClickFirst={onClickFirst}
-                onClickPrev={onClickPrev}
-                onClickNext={onClickNext}
-                onClickLast={onClickLast}
-                onClickPage={setClickedPage} />
+            <div className="flex justify-center">
+                <Pagination
+                    currentPageBlockIndex={pageBlockIndex}
+                    lastPageBlockIndex={lastPageBlockIndex}
+                    pagesPerBlock={pagesPerBlock}
+                    lastPage={lastPage}
+                    clickedPage={clickedPage}
+                    onClickFirst={onClickFirst}
+                    onClickPrev={onClickPrev}
+                    onClickNext={onClickNext}
+                    onClickLast={onClickLast}
+                    onClickPage={setClickedPage} />
+            </div>
         </PageBox>
+
     )
 }
 

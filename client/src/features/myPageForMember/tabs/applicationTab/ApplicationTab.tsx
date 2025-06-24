@@ -64,17 +64,20 @@ const ApplicationTab = () => {
                         onClick={onClickListItem}
                     />
                 )) : <EmptyState title={"지원 내역이 없습니다."} text={""} />}
-                <Pagination
-                    currentPageBlockIndex={pageBlockIndex}
-                    lastPageBlockIndex={lastPageBlockIndex}
-                    pagesPerBlock={pagesPerBlock}
-                    lastPage={lastPage}
-                    clickedPage={clickedPage}
-                    onClickFirst={onClickFirst}
-                    onClickPrev={onClickPrev}
-                    onClickNext={onClickNext}
-                    onClickLast={onClickLast}
-                    onClickPage={setClickedPage} />
+                
+                <div className="flex justify-center">
+                    <Pagination
+                        currentPageBlockIndex={pageBlockIndex}
+                        lastPageBlockIndex={lastPageBlockIndex}
+                        pagesPerBlock={pagesPerBlock}
+                        lastPage={lastPage}
+                        clickedPage={clickedPage}
+                        onClickFirst={onClickFirst}
+                        onClickPrev={onClickPrev}
+                        onClickNext={onClickNext}
+                        onClickLast={onClickLast}
+                        onClickPage={setClickedPage} />
+                </div>
             </PageBox>
 
             {showModal && <ApplicationDetailModal
