@@ -1,6 +1,8 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { User } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { startNewChat } from "./ChatControlSlice";
 
 const TempMember = () => {
 
@@ -11,6 +13,7 @@ const TempMember = () => {
         avatar: string
     }
 
+    const dispatch = useDispatch();
     const [selectedUser, setSelectedUser] = useState<MockUser | null>(null);
 
     const handleUserClick = (user: MockUser) => {
@@ -23,8 +26,7 @@ const TempMember = () => {
 
     const handleChatClick = () => {
         if (selectedUser) {
-            // 여기에서 해당 회원과의 채팅 로직을 연결
-            console.log(`채팅 시작: ${selectedUser.name}`);
+            dispatch(startNewChat({ targetId: 1, name: "샘숭맨" }));
             closeModal();
         }
     };

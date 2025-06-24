@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { IMessage } from '@stomp/stompjs';
 import { type RootState } from '../common/store/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MessageCircle, X, Send, User } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
@@ -9,8 +9,10 @@ import * as ScrollArea from '@radix-ui/react-scroll-area';
 import AuthUtil from '../common/utils/AuthUtil';
 import { Button } from '@radix-ui/themes/dist/cjs/components/button';
 import ChatInput from '../common/components/input/ChatInput';
+import { getStompClient, publishMessage, registerMessageCallback, subscribeToTopic, unregisterMessageCallbacks } from './StompClient';
+import { clearNewChatTarget } from './ChatControlSlice';
 
-interface ChatRoomList {
+interface ChatRoom {
     chatRoomId: number;
     contentId?: number;
     senderId?: number;
@@ -67,7 +69,11 @@ const mockUsers: MockUser[] = [
 
 // SockJS와 Stomp를 이용해서 웹 소켓 서버로 연결하고 메시지를 주고 받는 기능 구현
 const Chat = () => {
-    const [chatRoomList, setChatRoomList] = useState<ChatRoomList[]>([]);
+    const token = useSelector((state: RootState) => state.auth.accessToken); // 토큰 획득
+    const chatTarget = useSelector((state: RootState) => state.chat.newChatTarget); // 채팅 상대 정보 획득(id, name)
+    const dispatch = useDispatch();
+
+    const [chatRoomList, setChatRoomList] = useState<ChatRoom[]>([]);
     const [chatRoomId, setChatRoomId] = useState<number | null>(null);
     const [chatRoomName, setChatRoomName] = useState<string | null>('');
     const [senderId, setSenderId] = useState<number | null>(null);
@@ -78,31 +84,21 @@ const Chat = () => {
     const [selectedChat, setSelectedChat] = useState<boolean>(false)
 
     const scrollViewportRef = useRef<HTMLDivElement | null>(null);
-
-    const stompClient = useSelector((state: RootState) => state.websocket.client); // 웹소켓 객체 획득
-    const token = useSelector((state: RootState) => state.auth.accessToken); // 토큰 획득
+    const stompClient = getStompClient();
 
     // 토큰에서 ID 추출
     useEffect(() => {
         const id = AuthUtil.getIdFromToken(token); // ID 추출
         if (id != null) {
             setSenderId(id);
-            setTargetId(1); // 채팅 대상 회원 ID 추출 (테스트를 위해 여기에 임시 작성함)
         }
     }, [token])
-
-    // targetId가 들어오면 채팅 시작
-    useEffect(() => {
-        if (senderId != null && targetId != null) {
-            createChatRoom();
-        }
-    }, [senderId, targetId])
 
     // 채팅방 생성 또는 기존 채팅방 참여
     const createChatRoom = async () => {
         if (senderId != null && targetId != null) {
             try {
-                const response = await fetch("https://localhost:9000/chats", {
+                const response = await fetch("https://localhost:8090/chats", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -112,46 +108,45 @@ const Chat = () => {
                         id: targetId
                     })
                 })
-                    const data = await response.json(); // JSON -> Javascript 객체로 변환
-                    const roomId = data.chatRoomId; // useState의 비동기 이슈로 인한 roomId 변수 생성
-                    setChatRoomId(data.chatRoomId);
+                const data = await response.json(); // JSON -> Javascript 객체로 변환
+                const roomId = data.chatRoomId; // useState의 비동기 이슈로 인한 roomId 변수 생성
+                setChatRoomId(data.chatRoomId);
 
-                // 채팅방 구독 후, 채팅 대상 또한 동일한 채팅방을 구독하도록 서버에 요청
-                if (stompClient != null) {
-                    stompClient.subscribe(`/topic/${roomId}`, receiveMessage);
-                    stompClient.publish({
-                        destination: "app/chat/subscribe",
-                        body: JSON.stringify({ targetId, chatRoomId: roomId })
-                    })
-                }
-            } catch(error) {
+                subscribeToTopic(roomId); // 채팅방 구독
+                publishMessage( // 채팅 대상이 동일한 채팅방을 구독하도록 서버에 요청
+                    "app/chat/subscribe",
+                    { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    { targetId, chatRoomId: roomId }
+                );
+            } catch (error) {
                 console.log("chatRoomId를 가져오지 못했습니다: ", error);
             }
+        } else {
+            console.log("채팅방 생성 실패: senderId 또는 targetId가 null입니다.")
         }
     }
 
     // "전송" 버튼 클릭 시, 메시지 전송
     const handleSendMessage = () => {
-        if (content.trim() && selectedChat && stompClient) {
+        if (content.trim() && selectedChat && stompClient && token) {
             const message: ChatMessage = {
                 chatRoomId: chatRoomId!,
                 contentId: Date.now(), // 프론트 내 임시적인 데이터 처리이므로 임의의 숫자 할당
                 senderId: senderId!,
-                name: "me", // 상기와 마찬가지로 임의의 데이터 할당
+                name: "", // 상기와 동일한 이유로 임의 데이터 할당
                 content: content,
                 createdAt: String(new Date())
             }
             setChatHistory((prev) => [...prev, message])
             setContent("")
 
-            stompClient.publish({
-                destination: '/app/chat/send',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ senderId, targetId, chatRoomId, content })
-            });
+            publishMessage(
+                '/app/chat/send',
+                { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                { senderId, targetId, chatRoomId, content }
+            );
+        } else {
+            console.log("메시지 전송 실패.");
         }
     }
 
@@ -162,11 +157,23 @@ const Chat = () => {
         }
     }
 
-    // 메시지 수신
-    const receiveMessage = (payload: IMessage) => {
+    // 메시지 수신 기능
+    const receiveMessage = useCallback((payload: IMessage) => {
         const receivedMessage: ChatMessage = JSON.parse(payload.body);
-        setChatHistory(prevHistory => [...prevHistory, receivedMessage]);
-    };
+
+        if(receivedMessage.chatRoomId === chatRoomId){
+            setChatHistory(prevHistory => [...prevHistory, receivedMessage]);
+        } else {
+            console.log("TEST: 읽지 않은 메시지가 있습니다.")
+        }
+        
+    }, [chatRoomId]);   
+
+    // 상기 메소드를 웹소켓에 콜백 함수로 등록하여 stompClient.ts에서 메시지 수발신 관리
+    useEffect(() => {
+        registerMessageCallback(receiveMessage);
+        return unregisterMessageCallbacks();
+    }, [receiveMessage])
 
     // 채팅방 리스트 불러오기
     const getChatRoomList = async () => {
@@ -177,7 +184,7 @@ const Chat = () => {
                     "Authorization": `Bearer ${token}`
                 }
             });
-            const tempChatRoomList: ChatRoomList[] = await response.json();
+            const tempChatRoomList: ChatRoom[] = await response.json();
             setChatRoomList(tempChatRoomList);
         } catch (error) {
             console.log("채팅방 리스트 불러오기 실패: ", error);
@@ -185,7 +192,7 @@ const Chat = () => {
     }
 
     // 채팅 내역 불러오기
-    const getHistory = async(chatRoomId : number) => { // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
+    const getHistory = async (chatRoomId: number) => { // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
         try {
 
             const response = await fetch(`http://localhost:8090/chats/detail`, {
@@ -206,7 +213,21 @@ const Chat = () => {
         }
     }
 
-    // 다른 사용자로 로그인 또는 메시지 수발신 시 채팅방 리스트 자동 렌더링
+    // 채팅 아이콘 클릭 시, 채팅 리스트 출력
+    const handleChatIconClick = () => {
+        setShowChatList(!showChatList)
+    }
+
+    // 채팅방 클릭 시, 채팅 메시지 출력
+    const handleChatSelect = (chatRoom: ChatRoom) => {
+        getHistory(chatRoom.chatRoomId)
+        setChatRoomId(chatRoom.chatRoomId)
+        setChatRoomName(chatRoom.name)
+        setShowChatList(false)
+        setSelectedChat(true)
+    }
+
+    // 메시지 수발신 또는 다른 사용자로 로그인 시, 채팅방 리스트 자동 렌더링
     useEffect(() => {
         getChatRoomList();
     }, [chatHistory, token])
@@ -221,20 +242,33 @@ const Chat = () => {
         }
     }, [chatHistory]);
 
-    // 채팅 아이콘 클릭 시, 채팅 리스트 출력
-    const handleChatIconClick = () => {
-        setShowChatList(!showChatList)
-    }
+    // 로그인 시, 채팅방 순회하면서 모든 채팅방 구독
+    useEffect(() => {
+        if(chatRoomList.length > 0){
+            chatRoomList.forEach(chatRoom => {
+                subscribeToTopic(chatRoom.chatRoomId);
+            })
+        } else {
+            console.log("구독할 채팅방이 존재하지 않습니다.")
+        }
+    }, [chatRoomList])
 
-    // 채팅방 클릭 시, 채팅 메시지 출력
-    const handleChatSelect = (chatRoom: ChatRoomList) => {
-        // 여기서 targetId를 설정하면, useEffect문에 의해 채팅방이 자동 생성됨.
-        setChatRoomId(chatRoom.chatRoomId)
-        getHistory(chatRoom.chatRoomId);
-        setShowChatList(false)
-        setSelectedChat(true);
-        setChatRoomName(chatRoom.name);
-    }
+    // "채팅하기" 버튼 클릭 시, 상태 반영 및 채팅방 입장
+    useEffect(() => {
+        if(chatTarget != null && chatTarget != undefined){
+            setTargetId(chatTarget.id); // 채팅 대상 회원 ID 추출
+            createChatRoom();
+        } else {
+            console.log("TargetId를 획득하지 못했습니다.")
+        }
+        
+        if(chatTarget != null && chatRoomId != null){
+            getHistory(chatRoomId)
+            setChatRoomName(chatTarget?.name)
+            setSelectedChat(true)
+        }
+        dispatch(clearNewChatTarget());
+    }, [chatTarget, chatRoomId])
 
     return (
         <div className="fixed bottom-6 right-6 z-50">

@@ -1,35 +1,28 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-// 다른 컴포넌트에서 넘어올 유저 정보의 타입
-interface TargetUser {
-    id: number;
-    name: string;
-    avatar: string;
+interface ChatState {
+  // 새로 채팅을 시작할 대상 유저 정보를 담을 상태
+  newChatTarget: { id: number; name: string } | null;
 }
 
-interface ChatControlState {
-    // 채팅을 시작할 대상 유저 정보. 없으면 null
-    pendingTargetUser: TargetUser | null;
-}
-
-const initialState: ChatControlState = {
-    pendingTargetUser: null,
+const initialState: ChatState = {
+  newChatTarget: null,
 };
 
-const chatControlSlice = createSlice({
-    name: 'chatControl',
-    initialState,
-    reducers: {
-        // 채팅 시작 요청 액션. 다른 컴포넌트에서 이 액션을 호출함
-        requestChat: (state, action: PayloadAction<TargetUser>) => {
-            state.pendingTargetUser = action.payload;
-        },
-        // 채팅 요청 처리 완료 액션. Chat 컴포넌트에서 요청을 처리한 뒤 호출함
-        clearChatRequest: (state) => {
-            state.pendingTargetUser = null;
-        },
+const chatSlice = createSlice({
+  name: 'chat',
+  initialState,
+  reducers: {
+    // 채팅 시작을 요청하는 액션
+    startNewChat: (state, action: PayloadAction<{ id: number; name: string }>) => {
+      state.newChatTarget = action.payload;
     },
+    // 채팅방이 만들어진 후, 상태를 초기화하는 액션
+    clearNewChatTarget: (state) => {
+      state.newChatTarget = null;
+    },
+  },
 });
 
-export const { requestChat, clearChatRequest } = chatControlSlice.actions;
-export default chatControlSlice.reducer;
+export const { startNewChat, clearNewChatTarget } = chatSlice.actions;
+export default chatSlice.reducer;

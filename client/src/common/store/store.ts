@@ -9,13 +9,14 @@ import ChatControlSlice from '../../chat/ChatControlSlice';
 const rootReducer = combineReducers({
   auth: AuthSlice,
   jobPostingFilter: jobPostingFilterSlice,
-  chatControl: ChatControlSlice
+  chatControl: ChatControlSlice,
+  chat: ChatControlSlice
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'jobPostingFilter', 'chatControl'],
+  whitelist: ['auth', 'jobPostingFilter', 'chatControl', 'chat'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
