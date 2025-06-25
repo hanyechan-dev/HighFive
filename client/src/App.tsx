@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Button from "./common/components/button/Button";
 import { api } from "./common/Axios";
 import AppRouter from "./features/AppRoutes";
+import SubscriptionPlansForMemberPage from "./features/subscription/pages/SubscriptionPlansForMemberPage";
 
 
 
@@ -35,6 +36,7 @@ function App() {
     return (
         <>
             <AppRouter />
+            {/* <SubscriptionPlansForMemberPage /> */}
         </>
     )
 
