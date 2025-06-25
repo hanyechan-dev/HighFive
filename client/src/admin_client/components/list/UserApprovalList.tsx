@@ -1,53 +1,43 @@
+import { useEffect, useState } from "react";
 import Button from "../../../common/components/button/Button";
-
-interface UserInfoProps {
-  id: number;
-  email: string;
-  name: string;
-  phone: string;
-  address: string;
-  createdDate: string;
-}
-
-interface consultantInfoProps {
-  userManagementSummaryDto: UserInfoProps;
-}
-
-interface companyInfoProps {
-  userManagementSummaryDto: UserInfoProps;
-  companyName: string;
-}
+import { companysWatingSummaryList, consultantsWatingSummaryList } from "../features/UserPageClick";
+import type { companyInfoProps, consultantInfoProps } from "../union/UserInfoUnion";
+import Pagination from "../../../common/components/pagination/Pagination";
+import { usePagination } from "../../../common/coustomHooks/usePagination";
 
 interface approvalListItemProps {
-  approvalType: "WATTING" | "APPROVED" | "REJECTED";
   userType: "기업회원" | "컨설턴트회원";
   companyInfo?: companyInfoProps;
   consultantInfo?: consultantInfoProps;
+  onSelect: (id: number, checked: boolean) => void;
+  onDetailClick: (id: number) => void;
+
 }
 
-// 리스트 아이템 컴포넌트
 const ListItem = ({
   userType,
   companyInfo,
   consultantInfo,
+  onSelect,
+  onDetailClick,
 }: approvalListItemProps) => {
-  let email = "";
-  let name = "";
-  let companyName = "";
-  let phone = "";
-  let address = "";
-  let createdDate = "";
+  let email = "", name = "", phone = "", address = "", createdDate = "", companyName = "";
+  let id: number | null = null;
 
   if (userType === "기업회원" && companyInfo) {
     const { userManagementSummaryDto } = companyInfo;
+    id = userManagementSummaryDto.id;
     email = userManagementSummaryDto.email;
     name = userManagementSummaryDto.name;
     companyName = companyInfo.companyName;
     phone = userManagementSummaryDto.phone;
     address = userManagementSummaryDto.address;
     createdDate = userManagementSummaryDto.createdDate;
-  } else if (userType === "컨설턴트회원" && consultantInfo) {
+  }
+
+  if (userType === "컨설턴트회원" && consultantInfo) {
     const { userManagementSummaryDto } = consultantInfo;
+    id = userManagementSummaryDto.id;
     email = userManagementSummaryDto.email;
     name = userManagementSummaryDto.name;
     phone = userManagementSummaryDto.phone;
@@ -56,12 +46,13 @@ const ListItem = ({
   }
 
   return (
-    <div className="grid grid-cols-7 items-center px-4 py-3 border-b text-sm font-roboto">
-      <div className="px-5">{email}</div>
-      <div className="px-10">{name}</div>
-      <div className="px-10">
-        {userType === "기업회원" ? companyName : "-"}
+    <div className="grid grid-cols-8 items-center px-4 py-3 border-b text-sm font-roboto">
+      <div className="px-6">
+        <input type="checkbox" onChange={(e) => onSelect(id as number, e.target.checked)} />
       </div>
+      <div className="mr-1">{email}</div>
+      <div className="px-10">{name}</div>
+      <div className="px-10">{userType === "기업회원" ? companyName : "-"}</div>
       <div className="px-5">{phone}</div>
       <div className="px-4">{address}</div>
       <div className="px-8">{createdDate}</div>
@@ -72,140 +63,123 @@ const ListItem = ({
           disabled={false}
           text={"상세"}
           type={"button"}
+          onClick={function (): void {
+            onDetailClick(id as number);
+          }}
         />
       </div>
     </div>
   );
 };
 
-// 샘플 유저 데이터
-const userList = [
-  {
-    userType: "컨설턴트회원",
-    userManagementSummaryDto: {
-      email: "user2@example.com",
-      name: "홍길동",
-      phone: "010-2222-2222",
-      address: "서울시 서초구",
-      createdDate: "2023-01-05",
-      id: 2,
-    },
-  },
-  {
-    userType: "기업회원",
-    companyName: "정우무역",
-    userManagementSummaryDto: {
-      email: "user3@example.com",
-      name: "정우",
-      phone: "010-3333-3333",
-      address: "서울시 마포구",
-      createdDate: "2023-01-10",
-      id: 3,
-    },
-  },
-  {
-    userType: "기업회원",
-    companyName: "민수컴퍼니",
-    userManagementSummaryDto: {
-      email: "user5@example.com",
-      name: "최민수",
-      phone: "010-5555-5555",
-      address: "서울시 중구",
-      createdDate: "2023-02-05",
-      id: 5,
-    },
-  },
-  {
-    userType: "컨설턴트회원",
-    userManagementSummaryDto: {
-      email: "user6@example.com",
-      name: "한지현",
-      phone: "010-6666-6666",
-      address: "서울시 용산구",
-      createdDate: "2023-02-10",
-      id: 6,
-    },
-  },
-  {
-    userType: "기업회원",
-    companyName: "하늘식품",
-    userManagementSummaryDto: {
-      email: "user7@example.com",
-      name: "박하늘",
-      phone: "010-7777-7777",
-      address: "서울시 강서구",
-      createdDate: "2023-03-01",
-      id: 7,
-    },
-  },
-  {
-    userType: "컨설턴트회원",
-    userManagementSummaryDto: {
-      email: "user9@example.com",
-      name: "이도윤",
-      phone: "010-9999-9999",
-      address: "서울시 송파구",
-      createdDate: "2023-03-10",
-      id: 9,
-    },
-  },
-];
-
 interface UserListProps {
-  userType: string;
+  userType: "기업회원" | "컨설턴트회원";
+  onSelect: (id: number, checked: boolean) => void;
+  onDetailClick: (id: number) => void;
+  listReset: number;
 }
 
-// 전체 유저 리스트 컴포넌트
-const UserApprovalList = ({ userType }: UserListProps) => {
-  const output = userType === "기업회원" ? "기업명" : "-";
+const elementsPerPage = 10;
+const pagesPerBlock = 10;
+
+const UserApprovalList = ({ userType, onSelect, onDetailClick: handleDetail,  listReset }: UserListProps) => {
+  const [companyList, setCompanyList] = useState<companyInfoProps[]>([]);
+  const [consultantList, setConsultantList] = useState<consultantInfoProps[]>([]);
+  const [totalElements, setTotalElements] = useState(0);
+
+  const {
+    clickedPage,
+    pageBlockIndex,
+    lastPage,
+    lastPageBlockIndex,
+    onClickFirst,
+    onClickPrev,
+    onClickNext,
+    onClickLast,
+    setClickedPage,
+  } = usePagination({
+    totalElements: totalElements,
+    elementsPerPage: elementsPerPage,
+    pagesPerBlock: pagesPerBlock,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (userType === "기업회원") {
+          const res = await companysWatingSummaryList(clickedPage - 1, elementsPerPage);
+          setCompanyList(res.data.content);
+          setTotalElements(res.data.totalElements);
+        } else if (userType === "컨설턴트회원") {
+          const res = await consultantsWatingSummaryList(clickedPage - 1, elementsPerPage);
+          console.log("컨설턴트 승인 리스트 응답:", res.data);
+          setConsultantList(res.data.content);
+          setTotalElements(res.data.totalElements);
+        }
+      } catch (err) {
+        console.error("회원 목록 조회 실패:", err);
+      }
+    };
+
+    fetchData();
+  }, [userType, clickedPage, listReset]);
+
+
 
   return (
-    <div className="w-[1452px] border border-gray-300 rounded-xl font-roboto shadow-sm overflow-hidden text-sm">
-      {/* 헤더 */}
-      <div className="grid grid-cols-7 bg-gray-100 text-gray-700 font-roboto px-4 py-2 border-b">
-        <div className="px-16">이메일</div>
-        <div className="px-11">이름</div>
-        <div className="px-10">{output}</div>
-        <div className="px-12">연락처</div>
-        <div className="px-10">주소</div>
-        <div className="px-11">가입일</div>
+    <>
+      <div className="w-[1452px] border border-gray-300 rounded-xl font-roboto shadow-sm overflow-hidden text-sm">
+        <div className="grid grid-cols-8 bg-gray-100 text-gray-700 font-roboto px-4 py-2 border-b">
+          <div className="px-4">선택</div>
+          <div className="px-10">이메일</div>
+          <div className="px-11">이름</div>
+          <div className="px-10">{userType === "기업회원" ? "기업명" : "-"}</div>
+          <div className="px-12">연락처</div>
+          <div className="px-10">주소</div>
+          <div className="px-11">신청일</div>
+          <div className="px-4"> </div>
+        </div>
+
+        {userType === "기업회원" &&
+          companyList.map(company => (
+            <ListItem
+              key={company.userManagementSummaryDto.id}
+              userType="기업회원"
+              companyInfo={company}
+              onSelect={onSelect}
+              onDetailClick={handleDetail}
+            />
+          ))}
+
+        {userType === "컨설턴트회원" &&
+          consultantList.map(consultant => (
+            <ListItem
+              key={consultant.userManagementSummaryDto.id}
+              userType="컨설턴트회원"
+              consultantInfo={consultant}
+              onSelect={onSelect}
+              onDetailClick={handleDetail}
+            />
+          ))}
       </div>
 
-      {/* 데이터 행 */}
-      {userList && userList
-        .filter((user) => user.userType === userType)
-        .map((user) => {
-          if (user.userType === "기업회원") {
-            const companyData: companyInfoProps = {
-              companyName: user.companyName ?? "",
-              userManagementSummaryDto: user.userManagementSummaryDto,
-            };
-            return (
-              <ListItem
-                key={companyData.userManagementSummaryDto.id}
-                userType="기업회원"
-                companyInfo={companyData}
-                approvalType="WATTING"
-              />
-            );
-          } else if (user.userType === "컨설턴트회원") {
-            const consultantData: consultantInfoProps = {
-              userManagementSummaryDto: user.userManagementSummaryDto,
-            };
-            return (
-              <ListItem
-                key={consultantData.userManagementSummaryDto.id}
-                userType="컨설턴트회원"
-                consultantInfo={consultantData}
-                approvalType="WATTING"
-              />
-            );
-          } else {
-            return null;
-          }
-        })}
+      <div className="flex justify-center">
+        <Pagination
+          currentPageBlockIndex={pageBlockIndex}
+          lastPageBlockIndex={lastPageBlockIndex}
+          pagesPerBlock={pagesPerBlock}
+          lastPage={lastPage}
+          clickedPage={clickedPage}
+          onClickFirst={onClickFirst}
+          onClickPrev={onClickPrev}
+          onClickNext={onClickNext}
+          onClickLast={onClickLast}
+          onClickPage={setClickedPage}
+        />
+      </div>
 
-    </div>
+
+    </>
   );
 };
 

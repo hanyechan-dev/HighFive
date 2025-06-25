@@ -2,6 +2,7 @@
 
 export interface UserInfoBase {
   userManagementSummaryDto: {
+    deletedDate: null;
     id: number;
     email: string;
     name: string;

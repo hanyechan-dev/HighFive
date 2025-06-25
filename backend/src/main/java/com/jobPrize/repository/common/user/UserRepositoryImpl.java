@@ -31,6 +31,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			results = queryFactory
 					.selectFrom(user)
 					.join(user.member).fetchJoin()
+					.where(user.deletedDate.isNull())
 					.orderBy(user.createdDate.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
@@ -41,6 +42,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			results = queryFactory
 					.selectFrom(user)
 					.join(user.company).fetchJoin()
+					.where(user.deletedDate.isNull())
 					.orderBy(user.createdDate.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
@@ -51,6 +53,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			results = queryFactory
 					.selectFrom(user)
 					.join(user.consultant).fetchJoin()
+					.where(user.deletedDate.isNull())
 					.orderBy(user.createdDate.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
@@ -71,7 +74,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			results = queryFactory
 					.selectFrom(user)
 					.join(user.company).fetchJoin()
-					.where(user.approvalStatus.eq(ApprovalStatus.WAITING))
+					.where(
+							user.approvalStatus.eq(ApprovalStatus.WAITING),
+							user.deletedDate.isNull()
+							)
 					.orderBy(user.createdDate.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
@@ -82,7 +88,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			results = queryFactory
 					.selectFrom(user)
 					.join(user.consultant).fetchJoin()
-					.where(user.approvalStatus.eq(ApprovalStatus.WAITING))
+					.where(
+							user.approvalStatus.eq(ApprovalStatus.WAITING),
+							user.deletedDate.isNull()
+							)
 					.orderBy(user.createdDate.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
