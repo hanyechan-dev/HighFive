@@ -20,7 +20,7 @@ import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryFo
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import { usePagination } from "../../../common/customHooks/usePagination";
-import ModalTitle from "../../../common/components/title/ModalTitle";
+import PageTitle from "../../../company/common/components/PageTitle";
 
 
 
@@ -213,7 +213,9 @@ const JobPostingForMemberPage = () => {
     return (
         <>
             <CommonPage >
-                <ModalTitle title={"채용 공고"} />
+                <PageTitle
+                    title="채용 공고"
+                    description="회원님에게 알맞는 채용 공고를 확인하세요." />
                 <div className="flex mt-2">
                     {jobPostingMainCardDtos.map(jobPostingMainCardDto => (
                         <div key={jobPostingMainCardDto.id}>

@@ -28,12 +28,12 @@ public class PaymentController {
 
 	// 결제
 	@PostMapping
-	public ResponseEntity<KakaoReadyResponseDto> createPayment(@RequestBody PaymentRequestDto paymentRequestDto) {
+	public ResponseEntity<Void> createPayment(@RequestBody PaymentRequestDto paymentRequestDto) {
 		Long id = SecurityUtil.getId();
 		UserType userType = SecurityUtil.getUserType();
 
-		KakaoReadyResponseDto kakaoReadyResponseDto = paymentService.createPayment(id, userType, paymentRequestDto);
-		return ResponseEntity.status(HttpStatus.OK).body(kakaoReadyResponseDto);
+		paymentService.createPayment(id, userType, paymentRequestDto);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	// ID별 결제 내역 리스트 조회

@@ -14,14 +14,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.jobPrize.handler.CustomAccessDeniedHandler;
 import com.jobPrize.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-	private final AuthenticationEntryPoint customAuthenticationEntryPoint;
-	private final AccessDeniedHandler customAccessDeniedHandler;
+	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -55,7 +54,7 @@ public class SecurityConfig {
 				})
 			.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 안쓸거라 세션 안쓴다고 명시함
 			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/auth/**", "/users").permitAll() 
+					.requestMatchers("/auth/**", "/users", "/users/kakao").permitAll() 
 					.requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
 					 //안에 들어있는 URL로 들어온 요청에 대해선 인증검사안함(프로젝트시	수정필요) 
 					// 여기서 수행하는 인증 절차는 스프링이 제공하는 각 filter 및 아래에 명시한 jwtAuthenticationFilter등이 포함됨

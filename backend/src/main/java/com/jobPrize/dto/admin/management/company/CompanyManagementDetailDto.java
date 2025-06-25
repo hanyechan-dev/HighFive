@@ -29,7 +29,7 @@ public class CompanyManagementDetailDto {
 
 	private String introduction;
 
-	private String type;
+	private String companyType;
 
 	private int employeeCount;
 
@@ -46,7 +46,7 @@ public class CompanyManagementDetailDto {
 			.companyAddress(company.getCompanyAddress())
 			.companyPhone(company.getCompanyPhone())
 			.introduction(company.getIntroduction())
-			.type(company.getType().name())
+			.companyType(company.getCompanyType().name())
 			.employeeCount(company.getEmployeeCount())
 			.establishedDate(company.getEstablishedDate())
 			.build();

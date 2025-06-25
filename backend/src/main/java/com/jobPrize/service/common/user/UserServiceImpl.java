@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.jobPrize.customException.CustomEmailDuplicateException;
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.dto.common.myPage.MyPageResponseDto;
 import com.jobPrize.dto.common.myPage.MyPageUpdateDto;
 import com.jobPrize.dto.common.myPage.PasswordUpdateDto;
@@ -50,10 +52,12 @@ public class UserServiceImpl implements UserService {
 	public TokenDto createUser(UserSignUpDto userSignUpDto) {
 
 		boolean isExistEmail = isExistEmail(userSignUpDto.getEmail());
-
+		
 		if (isExistEmail) {
-			throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+			throw new CustomEmailDuplicateException();
 		}
+		
+		System.out.println("에러 직후");
 
 		String encodedPassword = passwordEncoder.encode(userSignUpDto.getPassword());
 
@@ -87,7 +91,7 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
 		if (!passwordEncoder.matches(logInDto.getPassword(), user.getPassword())) {
-			throw new IllegalStateException("이메일 또는 비밀번호가 일치하지 않습니다.");
+			throw new CustomIllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.");
 		}
 		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getUserType(), user.getApprovalStatus(),
 				user.isSubscribed());
@@ -122,11 +126,11 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 		if (!passwordEncoder.matches(passwordUpdateDto.getPassword(), user.getPassword())) {
-			throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+			throw new CustomIllegalArgumentException("비밀번호가 일치하지 않습니다.");
 		}
 
 		if (!passwordUpdateDto.getNewPassword().equals(passwordUpdateDto.getNewPasswordCheck())) {
-			throw new IllegalStateException("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
+			throw new CustomIllegalArgumentException("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
 		}
 
 		String encodedPassword = passwordEncoder.encode(passwordUpdateDto.getNewPassword());
@@ -161,7 +165,7 @@ public class UserServiceImpl implements UserService {
 		boolean isExistEmail = isExistEmail(email);
 		
 		if (isExistEmail) {
-			throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+			throw new CustomEmailDuplicateException();
 		}
 
 		User user = User.from(kakaoUserSignUpDto);

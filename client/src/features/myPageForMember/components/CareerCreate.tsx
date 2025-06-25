@@ -5,6 +5,8 @@ import Input from "../../../common/components/input/Input";
 import type { CareerCreateDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
 import { validateCareer } from "../../../common/utils/ValidationUtil";
+import Select from "../../../common/components/input/Select";
+import { jobTypeEnum } from "../../../common/enum/Enum";
 
 interface CareerCreateProps {
     setIsAddCareerMode : ( isAddCareerMode : boolean ) => void
@@ -63,7 +65,7 @@ const CareerCreate = ({setIsAddCareerMode }: CareerCreateProps) => {
         <BigIntenalBox>
             <div className="flex">
                 <Input label={"기업명"} placeholder={""} size={"bibm"} disabled={!isChangeButtonClicked} type={"text"} value={companyName} setValue={setCareerField("companyName")} />
-                <Input label={"직무"} placeholder={""} size={"bibm"} disabled={!isChangeButtonClicked} type={"text"} value={job} setValue={setCareerField("job")} />
+                <Select label={"직무"} options={jobTypeEnum} size={"bibm"} disabled={!isChangeButtonClicked} value={job} setValue={setCareerField("job")} />
             </div>
             <div className="flex">
                 <Input label={"부서"} placeholder={""} size={"bibm"} disabled={!isChangeButtonClicked} type={"text"} value={department} setValue={setCareerField("department")} />

@@ -1,5 +1,5 @@
-import ModalTitle from "../../../common/components/title/ModalTitle";
 import CommonPage from "../../../common/pages/CommonPage";
+import PageTitle from "../../../company/common/components/PageTitle";
 import MyPageTap from "../components/MyPageTap";
 import { ApplicationTabProvider } from "../contexts/ApplicationTab/ApplicationTabProvider";
 import { DocumentTabProvider } from "../contexts/DocumentTab/DocumentTabProvider";
@@ -31,8 +31,9 @@ const MyPageForMemberPage = () => {
     return (
         <div>
             <CommonPage>
-                <ModalTitle title={`${showMyPageTab} 관리`} />
-                <div className="flex">
+                <PageTitle
+                    title={`${showMyPageTab} 관리`} />
+                <div className="flex mt-6">
                     <MyPageTap textList={myPageTabList} checkedText={showMyPageTab} setCheckedText={setShowMyPageTab} />
 
                     {showMyPageTab == "회원정보" &&

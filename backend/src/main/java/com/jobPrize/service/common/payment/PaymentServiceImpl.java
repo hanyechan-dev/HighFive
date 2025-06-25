@@ -53,7 +53,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Transactional
 	@Override
-	public KakaoReadyResponseDto createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
+	public void createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
 
 		String action = "수행";
 
@@ -72,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 		paymentRepository.save(payment);
 		
-		return readyToKakaoPay(payment, id);
+//		return readyToKakaoPay(payment, id);
 
 	}
 
@@ -106,33 +106,34 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 
-	private KakaoReadyResponseDto readyToKakaoPay(Payment payment, Long id) {
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "KakaoAK " + kakaoSecretKey);
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("cid", kakaoCid);
-		params.add("partner_order_id", String.valueOf(payment.getId()));
-		params.add("partner_user_id", id.toString());
-		params.add("item_name", payment.getContent());
-		params.add("quantity", "1");
-		params.add("total_amount", String.valueOf(payment.getPaymentAmount()));
-		params.add("tax_free_amount", "0");
-		params.add("approval_url", "http://localhost:5137/payment/success"); // 수정 필요
-		params.add("cancel_url", "http://localhost:5137/payment/cancel");
-		params.add("fail_url", "http://localhost:5137/payment/fail");
-
-		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
-
-	    ResponseEntity<KakaoReadyResponseDto> response = restTemplate.postForEntity(
-	        "https://kapi.kakao.com/v1/payment/ready",
-	        entity,
-	        KakaoReadyResponseDto.class
-	    );
-
-	    return response.getBody();
-	}
+//	private KakaoReadyResponseDto readyToKakaoPay(Payment payment, Long id) {
+//		
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.set("Authorization", "SECRET_KEY " + kakaoSecretKey);
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//		System.out.println(kakaoSecretKey);
+//
+//		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+//		params.add("cid", kakaoCid);
+//		params.add("partner_order_id", String.valueOf(payment.getId()));
+//		params.add("partner_user_id", id.toString());
+//		params.add("item_name", payment.getContent());
+//		params.add("quantity", "1");
+//		params.add("total_amount", String.valueOf(payment.getPaymentAmount()));
+//		params.add("tax_free_amount", "0");
+//		params.add("approval_url", "http://localhost:5173/payment/success"); // 수정 필요
+//		params.add("cancel_url", "http://localhost:5173/payment/cancel");
+//		params.add("fail_url", "http://localhost:5173/payment/fail");
+//
+//		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+//
+//	    ResponseEntity<KakaoReadyResponseDto> response = restTemplate.postForEntity(
+//	        "https://kapi.kakao.com/v1/payment/ready",
+//	        entity,
+//	        KakaoReadyResponseDto.class
+//	    );
+//
+//	    return response.getBody();
+//	}
 
 }

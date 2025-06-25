@@ -1,6 +1,5 @@
 package com.jobPrize.entity.member;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.jobPrize.dto.member.education.EducationCreateDto;
@@ -51,7 +50,7 @@ public class Education {
 	private String major;
 	
 	@Column(name="GPA")
-	private BigDecimal gpa;
+	private String gpa;
 	
 	@Column(name="LOCATION", nullable = false)
 	private String location;

@@ -88,5 +88,29 @@ export const resumeTypeEnum = [
   {label: '어학', value: '어학'}
 ]
 
+export const jobTypeEnum = [
+    {label: '기획·전략', value: '기획·전략'},
+    {label: '마케팅·홍보·조사', value: '마케팅·홍보·조사'},
+    {label: '회계·세무·재무', value: '회계·세무·재무'},
+    {label: '인사·노무·HRD', value: '인사·노무·HRD'},
+    {label: '총무·법무·사무', value: '총무·법무·사무'},
+    {label: 'IT개발·데이터', value: 'IT개발·데이터'},
+    {label: '디자인', value: '디자인'},
+    {label: '영업·판매·무역', value: '영업·판매·무역'},
+    {label: '고객상담·TM', value: '고객상담·TM'},
+    {label: '구매·자재·물류', value: '구매·자재·물류'},
+    {label: '상품기획·MD', value: '상품기획·MD'},
+    {label: '운전·운송·배송', value: '운전·운송·배송'},
+    {label: '서비스', value: '서비스'},
+    {label: '건설·건축', value: '건설·건축'},
+    {label: '의료·보건', value: '의료·보건'},
+    {label: '교육', value: '교육'},
+    {label: '금융·보험', value: '금융·보험'},
+    {label: '연구·개발', value: '연구·개발'},
+    {label: '미디어·문화·스포츠', value: '미디어·문화·스포츠'},
+    {label: '공공·복지', value: '공공·복지'},
+    {label: '기타', value: '기타'}
+]
+
 export type consultingTypeEnum = "첨삭" | "피드백"
 

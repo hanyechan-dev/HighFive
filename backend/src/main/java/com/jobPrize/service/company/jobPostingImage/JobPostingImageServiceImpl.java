@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.company.JobPostingImage;
 import com.jobPrize.enumerate.ImageType;
@@ -40,7 +41,7 @@ public class JobPostingImageServiceImpl implements JobPostingImageService {
     		String uuidName = fileUtil.saveImageAndGetUUIDName(file,ImageType.JOBPOSTING_IMAGE);
     		
     		if(uuidName==null) {
-    			throw new IllegalArgumentException("채용 공고 이미지가 없습니다.");
+    			throw new CustomIllegalArgumentException("채용 공고 이미지가 없습니다.");
     		}
 
             JobPostingImage jobPostingImage = JobPostingImage.builder()

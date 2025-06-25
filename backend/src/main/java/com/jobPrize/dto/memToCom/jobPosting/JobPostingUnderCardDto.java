@@ -42,7 +42,7 @@ public class JobPostingUnderCardDto {
 				.title(jobPosting.getTitle())
 				.companyName(jobPosting.getCompany().getCompanyName())
 				.job(jobPosting.getJob())
-				.companyType(jobPosting.getCompany().getType().name())
+				.companyType(jobPosting.getCompany().getCompanyType().name())
 				.workLocation(jobPosting.getWorkLocation())
 				.careerType(jobPosting.getCareerType())
 				.educationLevel(jobPosting.getEducationLevel().name())

@@ -3,6 +3,7 @@ package com.jobPrize.service.consultant.consultantConsultingContent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.consultant.consultantConsultingContent.ConsultantContentUpdateDto;
 import com.jobPrize.entity.consultant.ConsultantConsulting;
 import com.jobPrize.entity.consultant.ConsultantConsultingContent;
@@ -36,7 +37,7 @@ public class ConsultantConsultingContentServiceImpl implements ConsultantConsult
 		Long consultantConsultingContentId=consultantContentUpdateDto.getId();
 		
 		ConsultantConsultingContent consultantConsultingContent=consultantConsultingContentRepository.findById(consultantConsultingContentId)
-				.orElseThrow(()-> new IllegalArgumentException("해당 컨설턴트 컨설팅 내용이 존재하지 않습니다."));
+				.orElseThrow(()-> new CustomEntityNotFoundException("컨설턴트 컨설팅 내용"));
 
 		consultantConsultingContent.updateContent(consultantContentUpdateDto.getItem(), consultantContentUpdateDto.getContent());
 		

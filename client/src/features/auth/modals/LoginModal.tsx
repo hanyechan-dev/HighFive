@@ -8,7 +8,7 @@ import type { LogInDto } from "../props/AuthProps";
 
 interface LoginModalProps {
     setShowModalType: (showModalType: string) => void;
-    login: (loginDto: LogInDto) => void;
+    login: (loginDto: LogInDto) => Promise<boolean>;
     kakaoLogin: () => void;
     onClose: () => void;
 }
@@ -35,9 +35,11 @@ const LoginModal = ({ setShowModalType, login, kakaoLogin, onClose }: LoginModal
         })
     }
 
-    const onClickloginButton = () => {
-        login(loginDto);
-        onClose()
+    const onClickloginButton = async () => {
+        const result = await login(loginDto);
+        if (result) {
+            onClose()
+        }
     }
 
     const onClickKakaoLoginButton = () => {

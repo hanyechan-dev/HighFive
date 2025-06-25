@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.dto.member.career.CareerCreateDto;
 import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.career.CareerUpdateDto;
@@ -44,7 +45,7 @@ public class CareerServiceImpl implements CareerService {
 		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 
 		if(careerCreateDto.getEndDate() != null && careerCreateDto.getStartDate() != null && careerCreateDto.getStartDate().isAfter(careerCreateDto.getEndDate())) {
-			throw new IllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
+			throw new CustomIllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
 		}
 
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
@@ -78,7 +79,7 @@ public class CareerServiceImpl implements CareerService {
 		String action = "수정";
 		
 		if(careerUpdateDto.getStartDate().isAfter(careerUpdateDto.getEndDate())) {
-			throw new IllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
+			throw new CustomIllegalArgumentException("퇴사일은 입사일보다 빠를 수 없습니다.");
 		}
 		
 		Long careerId = careerUpdateDto.getId();

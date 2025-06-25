@@ -46,7 +46,7 @@ public class CompanyCreateDto {
 	private String introduction;
 	
 	@NotNull
-	private String type;
+	private String companyType;
 	
 	@NotNull(message = "직원수는 필수로 입력해야합니다.")
 	@MinForString(value = 0, message = "직원수는 0 이상을 입력하야합니다.")

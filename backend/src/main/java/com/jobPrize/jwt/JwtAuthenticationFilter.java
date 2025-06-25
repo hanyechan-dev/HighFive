@@ -27,6 +27,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+    	if (request.getRequestURI().equals("/users") && request.getMethod().equals("POST")) {
+    	    // 회원가입은 토큰 무시
+    	    filterChain.doFilter(request, response);
+    	    return;
+    	}
     	
 
         String token = resolveToken(request);

@@ -8,7 +8,7 @@ interface PageTitleProps {
 
 export default function PageTitle({ title, description, children }: PageTitleProps) {
   return (
-    <div>
+    <div className="ml-6">
       <h1 className="text-3xl font-bold bg-gradient-to-r from-theme to-pink-500 bg-clip-text text-transparent font-roboto">
         {title}
       </h1>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.dto.member.education.EducationCreateDto;
 import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
@@ -45,7 +46,7 @@ public class EducationServiceImpl implements EducationService {
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
         if(educationCreateDto.getEnterDate().isAfter(educationCreateDto.getGraduateDate())) {
-            throw new IllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
+            throw new CustomIllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
         }
 
         Education education = Education.of(member,educationCreateDto);
@@ -85,7 +86,7 @@ public class EducationServiceImpl implements EducationService {
 		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
 		if (educationUpdateDto.getGraduateDate() != null && educationUpdateDto.getEnterDate() != null && educationUpdateDto.getEnterDate().isAfter(educationUpdateDto.getGraduateDate())) {
-			throw new IllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
+			throw new CustomIllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
 		}
 
 		education.updateEducation(educationUpdateDto);

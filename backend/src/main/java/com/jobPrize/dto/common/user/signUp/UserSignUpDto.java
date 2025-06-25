@@ -2,6 +2,7 @@ package com.jobPrize.dto.common.user.signUp;
 
 import java.time.LocalDate;
 
+import com.jobPrize.validation.password.Password;
 import com.jobPrize.validation.phone.Phone;
 
 import jakarta.validation.constraints.Email;
@@ -18,7 +19,7 @@ public class UserSignUpDto {
 	@Size(max=30, message = "이메일은 30자 이하로 입력해야합니다.")
 	private String email;
 
-//	@Password
+    @Password
 	private String password;
 	
 	@NotBlank(message = "이름은 필수로 입력해야합니다")

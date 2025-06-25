@@ -26,17 +26,19 @@ const Header = () => {
 
     return (
         <>
-            <div className="flex justify-between w-[1920px] h-[100px] items-center">
-                <img src="/jobPrize.png" alt="jobPrize" className="ml-[234px] h-[50px]" />
-                <div className="mr-[234px] font-bold font-roboto cursor-pointer">
-                    {!isLogin && <div className="hover:text-theme" onClick={onClickLogin}>로그인</div>}
-                    {isLogin &&
-                        <div className="flex gap-5 items-center">
-                            <Link to={"/my"}>
-                                <CircleUserIcon className="hover:text-theme" size={50} />
-                            </Link>
-                            <div className="hover:text-theme" onClick={onClickLogout}>로그아웃</div>
-                        </div>}
+            <div className="w-full">
+                <div className="w-[1920px] h-[100px] flex justify-between items-center mx-auto">
+                    <img src="/jobPrize.png" alt="jobPrize" className="ml-[234px] h-[50px]" />
+                    <div className="mr-[234px] font-bold font-roboto cursor-pointer">
+                        {!isLogin && <div className="hover:text-theme" onClick={onClickLogin}>로그인</div>}
+                        {isLogin &&
+                            <div className="flex gap-5 items-center">
+                                <Link to={"/my"}>
+                                    <CircleUserIcon className="hover:text-theme" size={30} />
+                                </Link>
+                                <div className="hover:text-theme" onClick={onClickLogout}>로그아웃</div>
+                            </div>}
+                    </div>
                 </div>
             </div>
 

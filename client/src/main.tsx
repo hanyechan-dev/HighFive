@@ -10,13 +10,13 @@ import { persistor, store } from './common/store/store.tsx'
 
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        {/* <BrowserRouter> */}
-          <App />
-        {/* </BrowserRouter> */}
-      </PersistGate>
-    </Provider>
-  </StrictMode>
+    <StrictMode>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </PersistGate>
+        </Provider>
+    </StrictMode>
 )

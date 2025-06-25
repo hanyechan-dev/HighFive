@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.common.user.UserRepository;
@@ -36,7 +37,7 @@ public class ApproveServiceImpl implements ApproveService {
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
 		if (UserType.일반회원.equals(user.getUserType()) || UserType.관리자.equals(user.getUserType())) {
-			throw new IllegalArgumentException("승인 할 수 없는 회원입니다");
+			throw new CustomIllegalArgumentException("승인 할 수 없는 회원입니다");
 			
 		}
 		
@@ -57,7 +58,7 @@ public class ApproveServiceImpl implements ApproveService {
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 
 		if (UserType.일반회원.equals(user.getUserType()) || UserType.관리자.equals(user.getUserType())) {
-			throw new IllegalArgumentException("거절 할 수 없는 회원입니다");
+			throw new CustomIllegalArgumentException("거절 할 수 없는 회원입니다");
 		}
 		
 		user.reject();

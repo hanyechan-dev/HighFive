@@ -1,14 +1,12 @@
 package com.jobPrize.dto.member.education;
 
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
@@ -28,9 +26,11 @@ public class EducationUpdateDto {
 	@Size(max = 20,message = "전공명은 20자 이하로 입력해야합니다.")
 	private String major;
 	
-	@DecimalMin(value="0.0", message = "학점은 0.0 이상으로 입력해야합니다.")
-	@DecimalMax(value="4.5", message = "학점은 4.5 이하로 입력해야합니다.")
-	private BigDecimal gpa;
+	@Pattern(
+		    regexp = "^(?:[0-3](?:\\.\\d{1,2})?|4(?:\\.([0-4]|5{0,1}))?)$",
+		    message = "학점은 0.0 이상 4.5 이하로 입력해야합니다."
+		)
+	private String gpa;
 	
 	@Size(max = 10,message = "지역은 10자 이하로 입력해야합니다.")
 	@NotBlank(message = "지역은 필수로 입력해야합니다")

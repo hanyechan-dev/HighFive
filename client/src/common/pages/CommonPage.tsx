@@ -5,7 +5,7 @@ interface CommonPageProps {
 const CommonPage = ({children}: CommonPageProps) => {
     return (
 
-            <div className="w-[1500px]">
+            <div className="w-[1500px] mx-auto">
                 {children}
             </div>
 

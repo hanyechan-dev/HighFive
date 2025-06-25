@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.dto.company.company.CompanyCreateDto;
 import com.jobPrize.dto.company.company.CompanyResponseDto;
 import com.jobPrize.dto.company.company.CompanyUpdateDto;
@@ -55,7 +56,7 @@ public class CompanyServiceImpl implements CompanyService {
 		if (logoImageFile != null && !logoImageFile.isEmpty()) {
 			uuidName = fileUtil.saveImageAndGetUUIDName(logoImageFile, ImageType.LOGO_IMAGE);
 			if (uuidName == null) {
-				throw new IllegalArgumentException("회사 로고 이미지 저장에 실패했습니다.");
+				throw new CustomIllegalArgumentException("회사 로고 이미지 저장에 실패했습니다.");
 			}
 		}
 
@@ -88,7 +89,7 @@ public class CompanyServiceImpl implements CompanyService {
 			}
 			uuidName = fileUtil.saveImageAndGetUUIDName(logoImageFile, ImageType.LOGO_IMAGE);
 			if (uuidName == null) {
-				throw new IllegalArgumentException("회사 로고 이미지 저장에 실패했습니다.");
+				throw new CustomIllegalArgumentException("회사 로고 이미지 저장에 실패했습니다.");
 			}
 		}
 		company.updateCompanyInfo(companyUpdateDto, uuidName);

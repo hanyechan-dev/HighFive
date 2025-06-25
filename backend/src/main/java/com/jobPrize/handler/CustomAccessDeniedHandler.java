@@ -1,4 +1,4 @@
-package com.jobPrize.config;
+package com.jobPrize.handler;
 
 import java.io.IOException;
 

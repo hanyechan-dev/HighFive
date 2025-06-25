@@ -24,7 +24,7 @@ interface CompanyInfoInputModalProps {
         employeeCount: string,
         establishedDate: string,
         introduction: string,
-        logoImageFile: File | null) => void
+        logoImageFile: File | null) => Promise<boolean>;
     onClose: () => void;
 }
 
@@ -55,8 +55,8 @@ const CompanyInfoInputModal = ({ companyInfoInput, onClose }: CompanyInfoInputMo
         }
     };
 
-    const onClickSaveButton = () => {
-        companyInfoInput(companyName,
+    const onClickSaveButton = async () => {
+        const result = await companyInfoInput(companyName,
             businessNumber,
             representativeName,
             type,
@@ -67,7 +67,11 @@ const CompanyInfoInputModal = ({ companyInfoInput, onClose }: CompanyInfoInputMo
             establishedDate,
             introduction,
             logoImageFile);
-        onClose();
+
+        if(result){
+            onClose();
+        }
+        
     }
 
     const onClickAddressButton = () => {

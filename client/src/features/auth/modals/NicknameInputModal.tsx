@@ -6,7 +6,7 @@ import type { MemberCreateDto } from "../props/AuthProps";
 
 
 interface NicknameInputModalProps {
-    nicknameInput: (nicknameInputDto: MemberCreateDto) => void;
+    nicknameInput: (nicknameInputDto: MemberCreateDto) => Promise<boolean>;
     onClose: () => void;
 }
 
@@ -23,14 +23,18 @@ const NicknameInputModal = ({ nicknameInput, onClose }: NicknameInputModalProps)
         })
     }
 
-    const onClickNicknameInputButton = () => {
-        nicknameInput(memberCreateDto);
-        onClose();
+    const onClickNicknameInputButton = async () => {
+        const result = await nicknameInput(memberCreateDto);
+
+        if (result) {
+            onClose();
+        }
+
     }
 
 
 
-    
+
 
     return (
         <>

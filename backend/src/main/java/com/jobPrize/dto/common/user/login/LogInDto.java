@@ -1,5 +1,7 @@
 package com.jobPrize.dto.common.user.login;
 
+import com.jobPrize.validation.password.Password;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,6 +14,6 @@ public class LogInDto {
 	@Size(max=30, message = "이메일은 30자 이하로 입력해야합니다.")
 	private String email;
 
-//	@Password
+	@Password
 	private String password;
 }

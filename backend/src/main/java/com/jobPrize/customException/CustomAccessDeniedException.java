@@ -12,4 +12,6 @@ public class CustomAccessDeniedException extends RuntimeException{
 		super(allowedUserType.name()+" 및 "+allowedUserType2.name()+"만 "+ entityName +"을 "+ action +" 할 수 있습니다.");
 	}
 
+	
+
 }

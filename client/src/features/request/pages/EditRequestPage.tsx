@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Button from "../../../common/components/button/Button";
 import EmptyState from "../../../common/components/emptyState/EmptyState";
 import Pagination from "../../../common/components/pagination/Pagination";
-import ModalTitle from "../../../common/components/title/ModalTitle";
 import CommonPage from "../../../common/pages/CommonPage";
 
 import RequestListItem from "../components/RequestListItem";
@@ -20,6 +19,7 @@ import { readRequestsApi, readRequestApi, readCompletedRequestApi, createConsult
 import { readCareerDescriptionsApi, readCareersApi, readCertificationsApi, readCoverLettersApi, readEducationsApi, readLanguageTestsApi } from "../../myPageForMember/apis/MyPageForMemberApi";
 import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 import { usePagination } from "../../../common/customHooks/usePagination";
+import PageTitle from "../../../company/common/components/PageTitle";
 
 const consultingType = '첨삭'
 const elementsPerPage = 10;
@@ -232,7 +232,9 @@ const EditRequestPage = () => {
 
 
             <CommonPage>
-                <ModalTitle title={`AI + 컨설턴트 ${consultingType}`} />
+                <PageTitle
+                    title={`AI + 컨설턴트 ${consultingType}`}
+                    description="회원님이 요청하신 첨삭을 확인할 수 있습니다." />
                 <div className="flex justify-end mr-6 mb-[-24px]">
                     <Button color={"theme"} size={"m"} disabled={false} text={`새 ${consultingType} 요청하기`} type={"button"} onClick={onClickRequestModal} />
                 </div>

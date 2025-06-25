@@ -19,7 +19,7 @@ interface SignUpModalProps {
     isKakao: boolean;
     kakaoEmail: string;
     setShowModalType: (showModalType: string) => void;
-    signUp: (signUpDto: UserSignUpDto) => void;
+    signUp: (signUpDto: UserSignUpDto) => Promise<boolean>;
     onClose: () => void;
 }
 
@@ -60,34 +60,38 @@ const SignUpModal = ({ isKakao, kakaoEmail, setShowModalType, signUp, onClose }:
         }));
     };
 
-    const onClickSignUpButton = () => {
-        signUp(signUpDto);
-        if (signUpDto.userType === "기업회원") {
-            setShowModalType("companyInfoInput");
+    const onClickSignUpButton = async () => {
+        const result = await signUp(signUpDto);
+
+        if (result) {
+            if (signUpDto.userType === "기업회원") {
+                setShowModalType("companyInfoInput");
+            }
+            else if (signUpDto.userType === "일반회원") {
+                setShowModalType("nicknameInput");
+            }
+            else {
+                onClose();
+            }
         }
-        else if (signUpDto.userType === "일반회원") {
-            setShowModalType("nicknameInput");
-        }
-        else {
-            onClose();
-        }
+
     }
 
     const onClickAddressButton = () => {
-        if(showAddressModal){
+        if (showAddressModal) {
             setShowAddressModal(false);
-        }else{
+        } else {
             setShowAddressModal(true);
         }
 
     }
 
-    const onCompleteAddress = (data : AddressData) => {
+    const onCompleteAddress = (data: AddressData) => {
         setSignUpField("address")(data.roadAddress);
 
     }
 
-    const onCloseAddress = (state : string) => {
+    const onCloseAddress = (state: string) => {
         if (state === 'FORCE_CLOSE') {
             setShowAddressModal(false);
         } else if (state === 'COMPLETE_CLOSE') {
@@ -107,7 +111,7 @@ const SignUpModal = ({ isKakao, kakaoEmail, setShowModalType, signUp, onClose }:
             <Input label={'전화번호'} placeholder={'전화번호를 입력해주세요.'} size={'m'} disabled={false} type={'text'} value={signUpDto.phone} setValue={setSignUpField("phone")} />
             <Input label={'주소'} placeholder={'주소를 입력해주세요.'} size={'m'} disabled={true} type={'text'} value={signUpDto.address} setValue={() => { }} />
             <Button color={"white"} size={"l"} disabled={false} text={"주소검색"} onClick={onClickAddressButton} type={"button"} />
-            {showAddressModal && <DaumPostcode className="mb-6" style={{height: "445px"}}  onComplete={onCompleteAddress} onClose={onCloseAddress}/>}
+            {showAddressModal && <DaumPostcode className="mb-6" style={{ height: "445px" }} onComplete={onCompleteAddress} onClose={onCloseAddress} />}
             <Button color={"theme"} size={"l"} disabled={false} text={"회원가입"} onClick={onClickSignUpButton} type={"button"} />
 
 

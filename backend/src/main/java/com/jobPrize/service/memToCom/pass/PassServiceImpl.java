@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.Pass;
 import com.jobPrize.enumerate.ApprovalStatus;
@@ -35,7 +36,7 @@ public class PassServiceImpl implements PassService {
 		assertUtil.assertForCompany(userType, approvalStatus, isSubscribed, ENTITY_NAME, action);
 
 		if (passRepository.existsByApplicationId(applicationId)) {
-			throw new IllegalArgumentException("이미 합격된 지원서입니다.");
+			throw new CustomIllegalArgumentException("이미 합격된 지원서입니다.");
 		}
 
 		Application application = applicationRepository.findById(applicationId)

@@ -13,7 +13,7 @@ import com.jobPrize.enumerate.UserType;
 public interface PaymentService {
 	
 	// 결제 기능
-	KakaoReadyResponseDto createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto);
+	void createPayment(Long id, UserType userType, PaymentRequestDto paymentRequestDto);
 	
 	// ID별 결제 내역 리스트 조회
 	Page<PaymentResponseDto> readPaymentPageById(Long id, Pageable pageable);

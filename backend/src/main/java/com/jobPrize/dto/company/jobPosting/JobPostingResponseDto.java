@@ -39,7 +39,7 @@ public class JobPostingResponseDto {
 		return JobPostingResponseDto.builder()
 			.id(jobPosting.getId())
 			.title(jobPosting.getTitle())
-			.companyType(jobPosting.getCompany().getType().name())
+			.companyType(jobPosting.getCompany().getCompanyType().name())
 			.workingHours(jobPosting.getWorkingHours())
 			.workLocation(jobPosting.getWorkLocation())
 			.job(jobPosting.getJob())

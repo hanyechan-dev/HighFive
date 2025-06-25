@@ -34,7 +34,6 @@ public class UserController {
 	public ResponseEntity<TokenDto> signUp(@RequestBody @Valid UserSignUpDto userSignUpDto) {
 		
 		TokenDto tokenDto = userService.createUser(userSignUpDto);
-		
 		return ResponseEntity.status(HttpStatus.CREATED).body(tokenDto);
 		
 	}
@@ -43,7 +42,6 @@ public class UserController {
 	public ResponseEntity<TokenDto> signUpForKakao(@RequestBody @Valid KakaoUserSignUpDto kakaoUserSignUpDto) {
 		
 		TokenDto tokenDto = userService.createUserForKakao(kakaoUserSignUpDto);
-		
 		return ResponseEntity.status(HttpStatus.CREATED).body(tokenDto);
 		
 	}

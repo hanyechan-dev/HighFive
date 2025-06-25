@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingDetailResponseDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingSummaryDto;
 import com.jobPrize.dto.consultant.consultantConsulting.ConsultantConsultingUpdateDto;
@@ -71,7 +72,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 
 
 	    if (aiConsulting.getConsultantConsulting() != null) {
-	        throw new IllegalStateException("이미 승인된 컨설팅입니다.");
+	        throw new CustomIllegalArgumentException("이미 승인된 컨설팅입니다.");
 	    }
 
 	    ConsultantConsulting consultantConsulting = ConsultantConsulting
@@ -127,7 +128,7 @@ public class ConsultantConsultingServiceImpl implements ConsultantConsultingServ
 	    assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 
 	    if (consultantConsulting.getCompletedDate() != null) {
-	        throw new IllegalStateException("이미 완료된 컨설팅입니다.");
+	        throw new CustomIllegalArgumentException("이미 완료된 컨설팅입니다.");
 	    }
 	    
 	    consultantConsulting.getAiConsulting().getRequest().updateRequestStatus(RequestStatus.완료);

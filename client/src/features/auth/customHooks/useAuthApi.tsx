@@ -25,19 +25,22 @@ export const useAuthApi = () => {
     const login = async (loginDto: LogInDto) => {
         try {
             const res = await loginApi(loginDto);
-            console.log(res)
             const { accessToken, refreshToken } = res.data;
             dispatch(setToken({ accessToken, refreshToken }));
+            return true
         } catch (err) {
             printErrorInfo(err);
+            return false
         }
     };
 
     const nicknameInput = async (nicknameInputDto: MemberCreateDto) => {
         try {
             await nicknameInputApi(nicknameInputDto);
+            return true
         } catch (err) {
             printErrorInfo(err);
+            return false
         }
 
     }
@@ -47,9 +50,12 @@ export const useAuthApi = () => {
             const res = await SignUpApi(signUpDto);
             const { accessToken, refreshToken } = res.data;
             dispatch(setToken({ accessToken, refreshToken }));
+            return true
         } catch (err) {
             printErrorInfo(err);
+            return false
         }
+ 
     }
 
     const kakaoLogin = () => {
@@ -116,8 +122,11 @@ export const useAuthApi = () => {
                 establishedDate,
                 introduction,
                 logoImageFile);
+
+            return true
         } catch (err) {
             printErrorInfo(err);
+            return false
         }
     }
 

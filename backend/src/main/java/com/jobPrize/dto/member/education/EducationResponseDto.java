@@ -1,7 +1,6 @@
 package com.jobPrize.dto.member.education;
 
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.member.Education;
@@ -21,7 +20,7 @@ public class EducationResponseDto {
 	
 	private String major;
 	
-	private BigDecimal gpa;
+	private String gpa;
 	
 	private String location;
 	

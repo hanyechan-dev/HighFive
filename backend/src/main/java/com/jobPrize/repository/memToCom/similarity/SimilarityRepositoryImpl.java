@@ -160,10 +160,10 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	    QJobPosting jobPosting = QJobPosting.jobPosting;
 	    BooleanBuilder builder = new BooleanBuilder();
 
-	    if (condition.getCareerType() != null) {
+	    if (condition.getCareerType() != null ) {
 	        builder.and(jobPosting.careerType.like("%" + condition.getCareerType().toString() + "%"));
 	    }
-	    if (condition.getEducationLevel() != null) {
+	    if (condition.getEducationLevel() != null && !condition.getEducationLevel().isBlank()) {
 	        builder.and(jobPosting.educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
 	    }
 	    if (condition.getJob() != null) {

@@ -7,6 +7,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jobPrize.customException.CustomDateFormatException;
+import com.jobPrize.customException.CustomEnumMismatchException;
+import com.jobPrize.customException.CustomNumberFormatException;
 import com.jobPrize.dto.company.company.CompanyCreateDto;
 import com.jobPrize.dto.company.company.CompanyUpdateDto;
 import com.jobPrize.entity.common.User;
@@ -69,7 +72,7 @@ public class Company {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type", nullable = false)
-	private CompanyType type;
+	private CompanyType companyType;
 
 	@Column(name = "employee_count")
 	private int employeeCount;
@@ -96,21 +99,21 @@ public class Company {
 	    try {
 	        establishedDate = LocalDate.parse(companyUpdateDto.getEstablishedDate());
 	    } catch (DateTimeParseException e) {
-	        throw new IllegalArgumentException("설립일 형식이 잘못되었습니다. yyyy-MM-dd 형식이어야 합니다.");
+	        throw new CustomDateFormatException("설립일");
 	    }
 
 	    int employeeCount;
 	    try {
 	        employeeCount = Integer.parseInt(companyUpdateDto.getEmployeeCount());
 	    } catch (NumberFormatException e) {
-	        throw new IllegalArgumentException("직원 수는 숫자 형식이어야 합니다.");
+	        throw new CustomNumberFormatException("직원 수");
 	    }
 
 	    CompanyType type;
 	    try {
-	        type = CompanyType.valueOf(companyUpdateDto.getType());
+	        type = CompanyType.valueOf(companyUpdateDto.getCompanyType());
 	    } catch (IllegalArgumentException e) {
-	        throw new IllegalArgumentException("존재하지 않는 CompanyType입니다: " + companyUpdateDto.getType());
+	        throw new CustomEnumMismatchException("CompanyType");
 	    }
 		
 		this.companyName = companyUpdateDto.getCompanyName();
@@ -118,7 +121,7 @@ public class Company {
 		this.establishedDate = establishedDate;
 		this.businessNumber = companyUpdateDto.getBusinessNumber();
 		this.companyAddress = companyUpdateDto.getCompanyAddress();
-		this.type = type;
+		this.companyType = type;
 		this.industry = companyUpdateDto.getIndustry();
 		this.companyPhone = companyUpdateDto.getCompanyPhone();
 		this.introduction = companyUpdateDto.getIntroduction();
@@ -131,21 +134,21 @@ public class Company {
 	    try {
 	        establishedDate = LocalDate.parse(dto.getEstablishedDate());
 	    } catch (DateTimeParseException e) {
-	        throw new IllegalArgumentException("설립일 형식이 잘못되었습니다. yyyy-MM-dd 형식이어야 합니다.");
+	        throw new CustomDateFormatException("설립일");
 	    }
 
 	    int employeeCount;
 	    try {
 	        employeeCount = Integer.parseInt(dto.getEmployeeCount());
 	    } catch (NumberFormatException e) {
-	        throw new IllegalArgumentException("직원 수는 숫자 형식이어야 합니다.");
+	        throw new CustomNumberFormatException("직원 수");
 	    }
 
 	    CompanyType type;
 	    try {
-	        type = CompanyType.valueOf(dto.getType());
+	        type = CompanyType.valueOf(dto.getCompanyType());
 	    } catch (IllegalArgumentException e) {
-	        throw new IllegalArgumentException("존재하지 않는 CompanyType입니다: " + dto.getType());
+	        throw new CustomEnumMismatchException("CompanyType");
 	    }
 
 	    return Company.builder()
@@ -155,7 +158,7 @@ public class Company {
 	        .establishedDate(establishedDate)
 	        .businessNumber(dto.getBusinessNumber())
 	        .companyAddress(dto.getCompanyAddress())
-	        .type(type)
+	        .companyType(type)
 	        .industry(dto.getIndustry())
 	        .companyPhone(dto.getCompanyPhone())
 	        .introduction(dto.getIntroduction())
