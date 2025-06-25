@@ -8,9 +8,10 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import TextArea from "../../../common/components/input/TextArea";
 import MemberInfoBox from "../../memberPoolPage/components/MemberInfoBox";
-import { TabButton } from "../../memberPoolPage/components/TabButton";
+
 import CompanyEmptyState from "../../common/components/CompanyEmptyState";
 import { parseResumeFromJsonStrings } from "../../utils/ResumeParseUtil";
+import { TabButton } from "../../common/components/TabButton";
 
 interface ApplicationDetailModalProps {
   isOpen: boolean;

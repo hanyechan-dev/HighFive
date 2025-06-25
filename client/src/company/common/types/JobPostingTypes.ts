@@ -3,7 +3,7 @@ export type JobPostingSummary = {
   id: number;
   title: string;
   companyName: string;
-  type: string;
+  companyType: string;
   job: string;
   workLocation: string;
   careerType: string;

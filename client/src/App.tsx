@@ -3,6 +3,8 @@ import Button from "./common/components/button/Button";
 import { api } from "./common/Axios";
 import AppRouter from "./features/AppRoutes";
 import SubscriptionPlansForMemberPage from "./features/subscription/pages/SubscriptionPlansForMemberPage";
+import ProposalPage from "./company/proposalPage/pages/ProposalPage";
+import SchedulePage from "./company/schedulePage/pages/SchedulePage";
 
 
 
@@ -35,7 +37,7 @@ function App() {
 
     return (
         <>
-            <AppRouter />
+            <SchedulePage />
             {/* <SubscriptionPlansForMemberPage /> */}
         </>
     )

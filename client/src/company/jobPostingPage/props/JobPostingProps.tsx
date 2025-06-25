@@ -26,7 +26,6 @@ export interface JobPostingCreateRequest {
   salary: number;
   content: string;
   requirement: string;
-  companyType: string;
 }
 
 export interface JobPostingUpdateRequest {
@@ -40,8 +39,7 @@ export interface JobPostingUpdateRequest {
   salary: number;
   content: string;
   requirement: string;
-  companyType: string;
 }
 
-// 공통 타입을 다시 export
+
 export type { JobPostingSummary }; 

@@ -3,7 +3,6 @@ package com.jobPrize.dto.company.company;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.company.Company;
-import com.jobPrize.enumerate.CompanyType;
 
 import lombok.Builder;
 import lombok.Getter;

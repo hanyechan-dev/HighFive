@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePagination } from "../../../common/customHooks/usePagination";
-import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import type { ApplicationSummaryForCompany } from "../props/ApplicationProps";
 import { ApplicationListApi } from "../apis/ApplicationApi";
 import CommonPage from "../../../common/pages/CommonPage";

@@ -3,7 +3,7 @@ import { listRowClass } from "../../common/listStyles";
 
 import SimilarityScore from "./SimilarityScore";
 import type { MemberPoolSummary } from "../props/MemberPoolProps";
-import Badge from "../../common/components/Badge";
+import Badge, { getGenderBadgeColor } from "../../common/components/Badge";
 import { getAge } from "../../utils/DateUtil";
 
 interface MemberPoolSummaryRowProps {
@@ -34,7 +34,7 @@ export default function MemberPoolSummaryRow({ member, onClick }: MemberPoolSumm
       <div className="w-[200px] flex items-center justify-center">
         <Badge
           label={member.genderType}
-          color={member.genderType === '남성' ? 'male' : 'female'}
+          color={getGenderBadgeColor(member.genderType)}
         />
       </div>
       {/* 매칭률 */}

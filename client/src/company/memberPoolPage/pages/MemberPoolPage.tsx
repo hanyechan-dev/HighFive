@@ -55,9 +55,8 @@ const MemberPoolPage = () => {
             try {
                 const res = await MemberPoolPageApi(filter, clickedPage);
                 if (res && res.data) {
-                    setMembers(res.data);   
-                    // API 응답이 있으면 전체 개수로 설정 (실제로는 API에서 totalElements를 받아야 함)
-                    setTotalElements(mockMembers.length);
+                    setMembers(res.data.content);   // Page 객체의 content 배열 사용
+                    setTotalElements(res.data.totalElements);  // 실제 전체 요소 수 사용
                 } else {
                     // API 응답이 없으면 mock 데이터 사용
                     setMembers(mockMembers);

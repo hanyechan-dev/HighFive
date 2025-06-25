@@ -70,21 +70,32 @@ export default function ScheduleCalendar({ events, onDateClick, onEventClick }: 
           /* 날짜 칸 높이 조정 */
           .fc-daygrid-day {
             min-height: 120px !important;
+            cursor: pointer !important;
           }
           
           .fc-daygrid-day-frame {
             min-height: 120px !important;
+            cursor: pointer !important;
           }
           
           /* 날짜 숫자 위치 조정 */
           .fc-daygrid-day-top {
             padding: 8px 8px 4px 8px !important;
+            cursor: pointer !important;
           }
           
           /* 이벤트 영역 여백 조정 */
           .fc-daygrid-day-events {
             margin-top: 4px !important;
             min-height: 60px !important;
+            cursor: pointer !important;
+          }
+          
+          /* 이벤트에 마우스 오버 시 커서 변경 */
+          .fc-event {
+            background-color: #EE57CD !important;
+            border-color: #EE57CD !important;
+            cursor: pointer !important;
           }
         `}
       </style>

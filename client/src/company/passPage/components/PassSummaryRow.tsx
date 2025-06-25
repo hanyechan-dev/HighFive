@@ -1,4 +1,4 @@
-import Badge from "../../common/components/Badge";
+import Badge, { getGenderBadgeColor } from "../../common/components/Badge";
 import { listRowClass } from "../../common/listStyles";
 import type { ApplicationSummaryForCompany } from "../props/PassProps";
 import { getAge } from "../../utils/DateUtil";
@@ -15,7 +15,10 @@ const PassSummaryRow = ({ application, onClick }: PassSummaryRowProps) => (
   >
     <div className="w-[200px] flex items-center justify-center">{application.name}</div>
     <div className="w-[200px] flex items-center justify-center">
-      <Badge label={application.genderType} color={application.genderType === '남성' ? 'male' : 'female'} />
+      <Badge 
+        label={application.genderType} 
+        color={getGenderBadgeColor(application.genderType)} 
+      />
     </div>
     <div className="w-[120px] flex items-center justify-center">{getAge(application.birthDate)}</div>
     <div className="w-[200px] flex items-center justify-center">{application.hasCareer ? '경력' : '신입'}</div>

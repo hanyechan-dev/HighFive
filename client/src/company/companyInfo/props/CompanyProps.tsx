@@ -17,7 +17,7 @@ export interface CompanyResponseDto {
   companyAddress: string;
   companyPhone: string;
   introduction: string;
-  type: string;
+  companyType: string;
   employeeCount: number;
   establishedDate: string;
   imageUrl: string;

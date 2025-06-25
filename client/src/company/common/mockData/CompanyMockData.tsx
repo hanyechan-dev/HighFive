@@ -6,7 +6,7 @@ export const mockJobPostings = [
     id: 1,
     title: "프론트엔드 개발자 모집",
     companyName: "테크컴퍼니",
-    type: "대기업",
+    companyType: "대기업",
     job: "프론트엔드 개발자",
     workLocation: "서울특별시",
     careerType: "1~3년",
@@ -17,7 +17,7 @@ export const mockJobPostings = [
     id: 2,
     title: "백엔드 개발자 모집",
     companyName: "스타트업",
-    type: "중소기업",
+    companyType: "중소기업",
     job: "백엔드 개발자",
     workLocation: "서울특별시",
     careerType: "신입",
@@ -30,10 +30,9 @@ export const mockJobPostings = [
 export const getMockApplications = (jobPostingId: number) => [
   {
     id: 1,
-    jobPostingId: jobPostingId,
     jobPostingTitle: "프론트엔드 개발자 모집",
     name: "김철수",
-    genderType: "남성",
+    genderType: "남자",
     birthDate: "1990-05-15",
     hasCareer: true,
     job: "프론트엔드 개발자",
@@ -43,10 +42,9 @@ export const getMockApplications = (jobPostingId: number) => [
   },
   {
     id: 2,
-    jobPostingId: jobPostingId,
     jobPostingTitle: "백엔드 개발자 모집",
     name: "이영희",
-    genderType: "여성",
+    genderType: "여자",
     birthDate: "1992-08-23",
     hasCareer: false,
     job: "백엔드 개발자",
@@ -60,10 +58,9 @@ export const getMockApplications = (jobPostingId: number) => [
 export const getMockPasses = (jobPostingId: number) => [
   {
     id: 1,
-    jobPostingId: jobPostingId,
     jobPostingTitle: "프론트엔드 개발자 모집",
     name: "이영희",
-    genderType: "여성",
+    genderType: "여자",
     birthDate: "1992-08-23",
     hasCareer: false,
     job: "프론트엔드 개발자",
@@ -73,10 +70,9 @@ export const getMockPasses = (jobPostingId: number) => [
   },
   {
     id: 2,
-    jobPostingId: jobPostingId,
     jobPostingTitle: "백엔드 개발자 모집",
     name: "정민수",
-    genderType: "남성",
+    genderType: "남자",
     birthDate: "1988-11-30",
     hasCareer: true,
     job: "백엔드 개발자",
@@ -91,7 +87,7 @@ export const mockProposals = [
   {
     id: 1,
     name: "김개발",
-    genderType: "남성",
+    genderType: "남자",
     birthDate: "1990-05-15",
     hasCareer: true,
     job: "프론트엔드 개발자",
@@ -102,7 +98,7 @@ export const mockProposals = [
   {
     id: 2,
     name: "이서버",
-    genderType: "여성",
+    genderType: "여자",
     birthDate: "1992-08-23",
     hasCareer: false,
     job: "백엔드 개발자",
@@ -117,7 +113,7 @@ export const mockMembers = [
   {
     id: 1,
     name: "김개발",
-    genderType: "남성",
+    genderType: "남자",
     birthDate: "1990-05-15",
     job: "프론트엔드 개발자",
     hasCareer: true,
@@ -127,7 +123,7 @@ export const mockMembers = [
   {
     id: 2,
     name: "이서버",
-    genderType: "여성",
+    genderType: "여자",
     birthDate: "1992-08-23",
     job: "백엔드 개발자",
     hasCareer: false,
