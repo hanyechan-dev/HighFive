@@ -1,5 +1,5 @@
 import { api } from "../../common/Axios.tsx";
-import { store } from "../../common/store/store.tsx";
+import { store } from "../../common/store/store.ts";
 
 export const JobPostingListForMemberApi = (
     page: number,

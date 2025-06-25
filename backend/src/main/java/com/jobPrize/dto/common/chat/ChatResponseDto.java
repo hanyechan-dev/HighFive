@@ -11,6 +11,7 @@ public class ChatResponseDto {
     private Long chatRoomId;
     private Long contentId;
     private Long senderId;
+    private Long receiverId;
     private String name;
     private String content;
     private LocalDateTime createdAt;

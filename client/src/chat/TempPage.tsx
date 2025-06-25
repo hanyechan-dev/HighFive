@@ -6,7 +6,6 @@ const TempPage = () => {
     return(
         <CommonPage>
             <TempMember />
-            <Chat />
         </CommonPage>
     )
 }

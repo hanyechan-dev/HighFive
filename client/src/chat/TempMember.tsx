@@ -26,7 +26,7 @@ const TempMember = () => {
 
     const handleChatClick = () => {
         if (selectedUser) {
-            dispatch(startNewChat({ targetId: 1, name: "샘숭맨" }));
+            dispatch(startNewChat({ id: selectedUser.id, name: selectedUser.name }));
             closeModal();
         }
     };
@@ -34,25 +34,25 @@ const TempMember = () => {
     // 임시 유저 리스트
     const mockUsers: MockUser[] = [
         {
-            id: 1,
+            id: 2,
             name: "샘숭맨",
             userType: "기업회원",
             avatar: "/placeholder.svg?height=40&width=40",
         },
         {
-            id: 2,
+            id: 3,
             name: "리짜이밍",
             userType: "일반회원",
             avatar: "/placeholder.svg?height=40&width=40",
         },
         {
-            id: 3,
+            id: 4,
             name: "준스톤",
             userType: "일반회원",
             avatar: "/placeholder.svg?height=40&width=40",
         },
         {
-            id: 4,
+            id: 5,
             name: "한화",
             userType: "기업회원",
             avatar: "/placeholder.svg?height=40&width=40",
