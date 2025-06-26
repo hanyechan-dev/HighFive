@@ -102,7 +102,7 @@ export const connectWebSocket = (token: string) => {
 
 // 채팅방 구독 기능 (메시지 수신 시 콜백 함수 실행)
 export const subscribeToTopic = (roomId: number) => {
-    const topic = `/topic/chat/${roomId}`;
+    const topic = `/topic/${roomId}`;
     // 이미 해당 토픽을 구독중이라면 중복 실행 방지
     if (stompClient?.active && !subscriptions[topic]) {
         console.log(`Subscribing to ${topic}`);

@@ -14,4 +14,3 @@ public class PaymentCountDto {
 		this.payAmount = payAmount;
 	}
 }
-

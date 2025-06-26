@@ -34,7 +34,7 @@ public class ChatContent {
 	@Column(name = "CHAT_CONTENT_ID", nullable = false)
 	private Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SENDER_ID", nullable = false)
     private User user;
 	
