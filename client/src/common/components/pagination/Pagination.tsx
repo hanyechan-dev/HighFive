@@ -11,7 +11,7 @@ interface PaginationProps {
     onClickPage: (page: number) => void,
 }
 
-const defaultSetting = 'w-[32px] h-[32px] rounded-lg border text-base font-roboto flex items-center justify-center m-2 cursor-pointer'
+const defaultSetting = 'w-[32px] h-[32px] rounded-lg border text-base font-roboto flex items-center justify-center m-2 cursor-pointer my-8'
 const unclickedPageSetting = 'hover:bg-semi_theme'
 const clickedPageSetting = 'bg-theme text-white'
 const emptyButton = <div className="w-[32px] h-[32px] m-2"></div>;

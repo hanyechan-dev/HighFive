@@ -9,8 +9,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MemberManagementSummaryDto {
-	
-    private Long id;
     
 	private UserManagementSummaryDto userManagementSummaryDto;
 
@@ -20,7 +18,6 @@ public class MemberManagementSummaryDto {
     	
         return MemberManagementSummaryDto
                 .builder()
-                .id(member.getId())
                 .nickName(member.getNickname())
                 .userManagementSummaryDto(userManagementSummaryDto)
                 .build();

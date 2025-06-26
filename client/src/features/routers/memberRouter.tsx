@@ -9,6 +9,7 @@ import FeedbackRequestPage from "../request/pages/FeedbackRequestPage"
 import EditRequestPage from "../request/pages/EditRequestPage"
 import MyPageForMemberPage from "../myPageForMember/pages/MyPageForMemberPage"
 import SubscriptionPlansForMemberPage from "../subscription/pages/SubscriptionPlansForMemberPage";
+import PostPage from "../post/pages/PostPage";
 
 interface MemberRouterProps {
     userType: string
@@ -55,6 +56,10 @@ const MemberRouter = ({ userType }: MemberRouterProps) => {
                             <MyPageForMemberPage />
                         </MyPageForMemberPageProvider>
                     }
+                />
+                <Route
+                    path="/community"
+                    element={ <PostPage />}
                 />
             </Route>
         </Routes>
