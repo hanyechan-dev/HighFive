@@ -4,6 +4,7 @@ import PageTitle from "../../common/components/PageTitle";
 import CreditCardIcon from "../components/CreditCardIcon";
 import DocumentTextIcon from "../components/DocumentTextIcon";
 import PeopleIcon from "../components/PeopleIcon";
+import PaymentModal from "../../../features/subscription/modals/PaymentModal";
 
 const CheckIcon = () => (
   <svg className="w-6 h-6 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -12,13 +13,13 @@ const CheckIcon = () => (
 );
 
 const SubscriptionPlansPage = () => {
-  // 결제 모달 상태 관리 (결제 모달 추가 시 사용)
+  // 결제 모달 상태 관리
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState({
+  const selectedPlan = {
     name: "프리미엄 구독",
     price: 99000,
     period: "월"
-  });
+  };
 
   const handleSubscribe = () => {
     // 결제 모달 열기
@@ -100,17 +101,14 @@ const SubscriptionPlansPage = () => {
           </div>
         </div>
 
-        {/* 결제 모달 - 나중에 추가할 예정 */}
-        {/* 
+        {/* 결제 모달 */}
         {isPaymentModalOpen && (
           <PaymentModal
-            isOpen={isPaymentModalOpen}
+            paymentAmount={selectedPlan.price}
+            onClick={handlePaymentSuccess}
             onClose={handlePaymentCancel}
-            onSuccess={handlePaymentSuccess}
-            plan={selectedPlan}
           />
         )}
-        */}
       </div>
     </CommonPage>
   );
