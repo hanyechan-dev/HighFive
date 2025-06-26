@@ -11,6 +11,7 @@ import lombok.Getter;
 @Builder
 public class PostSummaryDto {
 	private Long id;
+	private Long authorId;
 	private String nicknameOrName;
 	private String title;
 	private int commentCount;
@@ -20,6 +21,7 @@ public class PostSummaryDto {
 		return PostSummaryDto
 				.builder()
 				.id(post.getId())
+				.authorId(post.getUser().getId())
 				.nicknameOrName(nicknameOrName)
 				.title(post.getTitle())
 				.commentCount(post.getComments().size())

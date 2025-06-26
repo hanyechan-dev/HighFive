@@ -14,6 +14,7 @@ import lombok.Getter;
 public class PostResponseDto {
 	
 	private Long id;
+	private Long author_id;
 	private String nicknameOrName;
 	private String title;
 	private String content;
@@ -26,6 +27,7 @@ public class PostResponseDto {
 		return PostResponseDto
 				.builder()
 				.id(post.getId())
+				.author_id(post.getUser().getId())
 				.nicknameOrName(nicknameOrName)
 				.title(post.getTitle())
 				.content(post.getContent())
