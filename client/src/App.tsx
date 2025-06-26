@@ -5,6 +5,8 @@ import AppRouter from "./features/AppRoutes";
 import SubscriptionPlansForMemberPage from "./features/subscription/pages/SubscriptionPlansForMemberPage";
 import ProposalPage from "./company/proposalPage/pages/ProposalPage";
 import SchedulePage from "./company/schedulePage/pages/SchedulePage";
+import MyPage from "./company/companyInfo/pages/MyPage";
+import PaymentTab from "./company/companyInfo/pages/PaymentTab";
 
 
 
@@ -37,7 +39,7 @@ function App() {
 
     return (
         <>
-            <SchedulePage />
+            <MyPage/>
             {/* <SubscriptionPlansForMemberPage /> */}
         </>
     )

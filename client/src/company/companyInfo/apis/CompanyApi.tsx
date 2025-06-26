@@ -1,10 +1,20 @@
 import { apiForm } from "../../../common/Axios.tsx";
 import { api } from "../../../common/Axios.tsx";
-import type { CompanyInfoResponse } from "../props/CompanyProps.tsx";
+import type { CompanyInfoResponse, PaymentListResponse } from "../props/CompanyProps.tsx";
 
 // 기업정보 조회 API
 export const getCompanyInfoApi = () => {
   return api(true).get<CompanyInfoResponse>('/companies');
+};
+
+// 결제내역 조회 API
+export const getCompanyPaymentsApi = (page: number, size: number) => {
+  return api(true).get<PaymentListResponse>('/payments', {
+    params: {
+      page,
+      size,
+    }
+  });
 };
 
 // 기업정보 생성 API

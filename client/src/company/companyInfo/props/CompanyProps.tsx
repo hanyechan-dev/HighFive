@@ -26,4 +26,22 @@ export interface CompanyResponseDto {
 export interface CompanyInfoResponse {
   myPageResponseDto: MyPageResponseDto;
   companyResponseDto: CompanyResponseDto;
+}
+
+// 결제내역 관련 타입들
+export interface PaymentResponseDto {
+  paymentId: number;
+  id: number;
+  paymentAmount: number;
+  content: string;
+  createdTime: string;
+  method: string;
+}
+
+export interface PaymentListResponse {
+  content: PaymentResponseDto[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
 } 
