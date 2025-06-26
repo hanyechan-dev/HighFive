@@ -32,7 +32,7 @@ interface EducationInfo {
   schoolName: string;
   educationLevel: string;
   major: string;
-  gpa: number;
+  gpa: string;
   location: string;
   enterDate: string;
   graduateDate: string;
@@ -115,7 +115,7 @@ const parseEducation = (educationResponseDtos: EducationResponseDto[]): Educatio
     schoolName: schoolName ?? "",
     educationLevel: educationLevel ?? "",
     major: major ?? "",
-    gpa: gpa ?? 0,
+    gpa: gpa ?? "",
     location: location ?? "",
     enterDate: enterDate ?? "",
     graduateDate: graduateDate ?? ""

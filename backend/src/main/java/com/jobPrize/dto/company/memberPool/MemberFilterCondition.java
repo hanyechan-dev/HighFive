@@ -1,7 +1,5 @@
 package com.jobPrize.dto.company.memberPool;
 
-import java.time.LocalDate;
-
 import lombok.Getter;
 
 @Getter
@@ -14,9 +12,5 @@ public class MemberFilterCondition {
 	private String address;
 	
 	private String job;
-	
-	private String genderType;
-	
-	private LocalDate birthDate;
 	
 }

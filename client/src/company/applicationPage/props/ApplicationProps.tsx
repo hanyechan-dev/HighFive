@@ -1,7 +1,6 @@
 // 지원자 리스트(기업용) DTO 타입
 export type ApplicationSummaryForCompany = {
-  id: number;
-  jobPostingId: number;
+  id: number;  
   jobPostingTitle: string;
   name: string;
   genderType: string;

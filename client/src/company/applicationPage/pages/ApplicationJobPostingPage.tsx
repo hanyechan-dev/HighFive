@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import Pagination from "../../../common/components/pagination/Pagination";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
@@ -11,6 +11,7 @@ import ApplicationJobPostingListHeader from "../components/ApplicationJobPosting
 import ApplicationJobPostingSummaryRow from "../components/ApplicationJobPostingSummaryRow";
 import { JobPostingWithApplicantsApi } from "../apis/ApplicationApi";
 import { mockJobPostings } from "../../common/mockData/CompanyMockData";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 const ApplicationJobPostingPage = () => {
   const [jobPostings, setJobPostings] = useState<JobPostingSummary[]>(mockJobPostings);
@@ -58,7 +59,7 @@ const ApplicationJobPostingPage = () => {
   }, [clickedPage]);
 
   const handleShowApplicants = (jobPostingId: number) => {
-    navigate(`/job-posting/${jobPostingId}/applicants`);
+    navigate(`/job-posting/${jobPostingId}/applications`);
   };
 
   return (
@@ -72,14 +73,14 @@ const ApplicationJobPostingPage = () => {
         </div>
         
         {isLoading ? (
-          <div className="text-center py-12 text-gray-400">로딩 중...</div>
+          <LoadingSpinner message="지원자 관리 채용공고를 불러오는 중..." />
         ) : (
           <>
             <ApplicationJobPostingListHeader />
             {jobPostings.length === 0 ? (
-              <CompanyEmptyState
-                title="등록된 채용공고가 없습니다."
-                text="채용공고를 먼저 등록하세요."
+              <EmptyState
+                title="지원자가 있는 채용공고가 없습니다."
+                text="아직 지원자가 있는 채용공고가 없습니다."
               />
             ) : (
               jobPostings.map((job) => (

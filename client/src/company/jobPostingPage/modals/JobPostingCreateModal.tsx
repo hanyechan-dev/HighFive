@@ -10,7 +10,7 @@ import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import type { JobPostingCreateRequest } from "../props/JobPostingProps";
 import { JobPostingCreateApi } from "../apis/JobPostingApi";
 import Select from "../../../common/components/input/Select";
-import { educationLevelEnum, careerTypeEnum, companyTypeEnum } from "../../../common/enum/Enum";
+import { educationLevelEnum, careerTypeEnum } from "../../../common/enum/Enum";
 
 
 interface JobPostingCreateModalProps {
@@ -35,9 +35,8 @@ export default function JobPostingCreateModal({
         educationLevel: "",
         salary: 0,
         content: "",
-        requirement: "",
-        companyType: ""
-    } as any);
+        requirement: ""
+    });
     const [images, setImages] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
@@ -65,7 +64,7 @@ export default function JobPostingCreateModal({
 
     const handleSave = async () => {
         // 유효성 검사
-        if (!formData.title || !formData.companyType || !formData.workingHours || !formData.workLocation || !formData.job || !formData.careerType || !formData.educationLevel || !formData.salary || !formData.content || !formData.requirement) {
+        if (!formData.title || !formData.workingHours || !formData.workLocation || !formData.job || !formData.careerType || !formData.educationLevel || !formData.salary || !formData.content || !formData.requirement) {
             alert("모든 필수 항목을 입력해주세요.");
             return;
         }
@@ -84,9 +83,8 @@ export default function JobPostingCreateModal({
                 educationLevel: "",
                 salary: 0,
                 content: "",
-                requirement: "",
-                companyType: ""
-            } as any);
+                requirement: ""
+            });
             setImages([]);
             setImagePreviews([]);
         } catch (err) {
@@ -104,7 +102,6 @@ export default function JobPostingCreateModal({
             <ModalTitle title="채용공고 작성" />
             <div className="flex gap-1 mb-4">
                 <Input label="공고명" placeholder="공고명을 입력하세요" size="m" disabled={false} type="text" value={formData.title} setValue={v => setFormData(f => ({ ...f, title: v }))} />
-                <Select label="기업형태" options={companyTypeEnum} size="m" disabled={false} value={formData.companyType || ""} setValue={v => setFormData(f => ({ ...f, companyType: v }))} />
             </div>
             <div className="flex gap-1 mb-4">
                 <Input label="근무 시간" placeholder="근무 시간을 입력하세요" size="m" disabled={false} type="text" value={formData.workingHours} setValue={v => setFormData(f => ({ ...f, workingHours: v }))} />

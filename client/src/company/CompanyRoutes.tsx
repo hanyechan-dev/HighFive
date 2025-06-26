@@ -122,7 +122,6 @@ const CompanyRoutes = () => {
                     <Route path="/job-postings/passes" element={<PassJobPostingPage />} />
                     <Route path="/job-postings/:jobPostingId/passes" element={<PassPage />} />
 
-
                     {/* 인재풀 */}
                     <Route path="/member-pool" element={<MemberPoolPage />} />
 

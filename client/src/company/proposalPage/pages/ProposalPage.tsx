@@ -5,12 +5,13 @@ import type { ProposalSummary } from "../props/ProposalProps";
 import { ProposalListApi } from "../apis/ProposalApi";
 import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import ProposalListHeader from "../components/ProposalListHeader";
 import ProposalSummaryRow from "../components/ProposalSummaryRow";
 import Pagination from "../../../common/components/pagination/Pagination";
 import ProposalDetailModal from "../modals/ProposalDetailModal";
 import { mockProposals } from "../../common/mockData/CompanyMockData";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 const ProposalPage = () => {
   const [proposals, setProposals] = useState<ProposalSummary[]>(mockProposals);
@@ -74,14 +75,14 @@ const ProposalPage = () => {
         </div>
         
         {isLoading ? (
-          <div className="text-center py-12 text-gray-400">로딩 중...</div>
+          <LoadingSpinner message="제안 내역을 불러오는 중..." />
         ) : (
           <>
             <ProposalListHeader />
             {proposals.length === 0 ? (
-              <CompanyEmptyState
-                title="보낸 제안서가 없습니다."
-                text="보낸 제안서가 없습니다."
+              <EmptyState
+                title="제안 내역이 없습니다."
+                text="아직 제안한 내역이 없습니다."
               />
             ) : (
               proposals.map((proposal) => (

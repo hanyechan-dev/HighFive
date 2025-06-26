@@ -10,7 +10,7 @@ interface Props {
 const PassJobPostingSummaryRow = ({ job, onShowPasses }: Props) => (
   <div className={listRowClass}>
     <div className="w-[121px] flex items-center justify-start">{job.companyName}</div>
-    <div className="w-[110px] flex items-center justify-start">{job.type}</div>
+    <div className="w-[110px] flex items-center justify-start">{job.companyType}</div>
     <div className="w-[270px] flex items-center justify-start">{job.title}</div>
     <div className="w-[270px] flex items-center justify-start">{job.job}</div>
     <div className="w-[121px] flex items-center justify-start">{job.workLocation}</div>

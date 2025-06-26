@@ -9,8 +9,9 @@ import { PassJobPostingListApi } from "../apis/PassApi";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import Pagination from "../../../common/components/pagination/Pagination";
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import { mockJobPostings } from "../../common/mockData/CompanyMockData";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 const PassJobPostingPage = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const PassJobPostingPage = () => {
     return (
       <CommonPage>
         <div className="w-[1452px] mx-auto font-roboto">
-          <div className="text-center py-12 text-gray-400">로딩 중...</div>
+          <LoadingSpinner message="합격자 관리 채용공고를 불러오는 중..." />
         </div>
       </CommonPage>
     );
@@ -82,9 +83,11 @@ const PassJobPostingPage = () => {
           />
         </div>
         
-        {jobPostings.length === 0 ? (
-          <CompanyEmptyState
-            title="합격자가 있는 채용공고가 없습니다."
+        {isLoading ? (
+          <LoadingSpinner message="합격자 관리 채용공고를 불러오는 중..." />
+        ) : jobPostings.length === 0 ? (
+          <EmptyState
+            title="합격자 관리할 채용공고가 없습니다."
             text="아직 합격자가 있는 채용공고가 없습니다."
           />
         ) : (

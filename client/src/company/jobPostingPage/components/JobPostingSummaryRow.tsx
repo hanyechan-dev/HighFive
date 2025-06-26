@@ -14,7 +14,7 @@ export default function JobPostingSummaryRow({ job, onEdit, onDelete }: Props) {
       onClick={() => onEdit(job.id)}
     >
       <div className="w-[121px] flex items-center justify-start ">{job.companyName}</div>
-      <div className="w-[110px] flex items-center justify-start">{job.type}</div>
+      <div className="w-[110px] flex items-center justify-start">{job.companyType}</div>
       <div className="w-[270px] flex items-center justify-start">{job.title}</div>
       <div className="w-[270px] flex items-center justify-start">{job.job}</div>
       <div className="w-[121px] flex items-center justify-start">{job.workLocation}</div>

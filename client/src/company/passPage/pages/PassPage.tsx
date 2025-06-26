@@ -8,10 +8,11 @@ import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
 import Pagination from "../../../common/components/pagination/Pagination";
 import { usePagination } from "../../../common/customHooks/usePagination";
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import Button from "../../../common/components/button/Button";
 import PassDetailModal from "../modals/PassDetailModal";
 import { getMockPasses } from "../../common/mockData/CompanyMockData";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 const PassPage = () => {
   const { jobPostingId } = useParams<{ jobPostingId: string }>();
@@ -91,11 +92,11 @@ const PassPage = () => {
           />
         </div>
         {isLoading ? (
-          <div className="text-center py-12 text-gray-400">로딩 중...</div>
+          <LoadingSpinner message="합격자 내역을 불러오는 중..." />
         ) : passes.length === 0 ? (
-          <CompanyEmptyState
-            title="합격자가 없습니다."
-            text="아직 합격자가 없습니다."
+          <EmptyState
+            title="합격자 내역이 없습니다."
+            text="아직 합격한 지원자가 없습니다."
           />
         ) : (
           <>

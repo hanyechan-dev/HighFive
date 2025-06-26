@@ -3,11 +3,13 @@ import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
 import MyInfoTab from "./MyInfoTab";
 import CompanyInfoTab from "./CompanyInfoTab";
+import PaymentTab from "./PaymentTab";
 import { TabButton } from "../../common/components/TabButton";
 
 const TABS = [
   { label: "내 정보", value: "my" },
   { label: "기업 정보", value: "company" },
+  { label: "결제내역", value: "payment" },
 ];
 
 const MyPage = () => {
@@ -40,6 +42,11 @@ const MyPage = () => {
           <>
            
             <CompanyInfoTab />
+          </>
+        )}
+        {selectedTab === "payment" && (
+          <>
+            <PaymentTab />
           </>
         )}
       </div>

@@ -18,7 +18,7 @@ const CompanyInfoTab = () => {
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [introduction, setIntroduction] = useState('');
-    const [type, setType] = useState('');
+    const [companyType, setCompanyType] = useState('');
     const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
     const [logoFile, setLogoFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ const CompanyInfoTab = () => {
             setAddress(data.companyAddress ?? '');
             setPhone(data.companyPhone ?? '');
             setIntroduction(data.introduction ?? '');
-            setType(data.type ?? '');
+            setCompanyType(data.companyType ?? '');
             if (data.imageUrl) setLogoPreviewUrl(data.imageUrl);
         });
     }, []);
@@ -53,7 +53,7 @@ const CompanyInfoTab = () => {
                 companyName,
                 businessNumber,
                 representativeName,
-                type,
+                companyType,
                 address,
                 phone,
                 industry,
@@ -87,7 +87,7 @@ const CompanyInfoTab = () => {
                 </div>
                 <div className="flex">
                     <Input label="주소" placeholder="주소 입력" size="m" disabled={false} type="text" value={address} setValue={setAddress} />
-                    <Select label="회사 유형" options={companyTypeEnum} size="m" disabled={false} value={type} setValue={setType} />
+                    <Select label="회사 유형" options={companyTypeEnum} size="m" disabled={false} value={companyType} setValue={setCompanyType} />
                 </div>
                 <div className="flex">
                     <Input label="기업 전화" placeholder="전화번호 입력" size="m" disabled={false} type="text" value={phone} setValue={setPhone} />

@@ -12,7 +12,7 @@ export interface MemberPoolSummary{
 export interface MemberPoolDetail {
     name: string;
     email: string;
-    gender: string;
+    genderType: string;
     birthDate: string;
     hasCareer: boolean;
     job: string;

@@ -8,7 +8,7 @@ import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import type { JobPostingUpdateRequest, JobPostingDetail, JobPostingSummary } from "../props/JobPostingProps";
 import { JobPostingDetailApi } from "../apis/JobPostingApi";
 import Select from "../../../common/components/input/Select";
-import { educationLevelEnum, careerTypeEnum, companyTypeEnum } from "../../../common/enum/Enum";
+import { educationLevelEnum, careerTypeEnum } from "../../../common/enum/Enum";
 
 
 interface JobPostingUpdateModalProps {
@@ -32,8 +32,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
         educationLevel: "",
         salary: 0,
         content: "",
-        requirement: "",
-        companyType: ""
+        requirement: ""
     });
     const [images, setImages] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -45,7 +44,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
         JobPostingDetailApi(jobPostingId)
             .then(res => {
                 if (!res) throw new Error("데이터를 불러올 수 없습니다.");
-                const data: JobPostingDetail = res;
+                const data: JobPostingDetail = res.data;
                 setFormData({
                     id: data.id,
                     title: data.title,
@@ -56,8 +55,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
                     educationLevel: data.educationLevel,
                     salary: data.salary,
                     content: data.content,
-                    requirement: data.requirement,
-                    companyType: data.companyType
+                    requirement: data.requirement
                 });
                 setImagePreviews(data.imageUrls || []);
                 setImages([]);
@@ -89,7 +87,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
     };
 
     const handleSave = async () => {
-        if (!formData.title || !formData.companyType || !formData.workingHours || !formData.workLocation || !formData.job || !formData.careerType || !formData.educationLevel || !formData.salary || !formData.content || !formData.requirement) {
+        if (!formData.title || !formData.workingHours || !formData.workLocation || !formData.job || !formData.careerType || !formData.educationLevel || !formData.salary || !formData.content || !formData.requirement) {
             alert("모든 필수 항목을 입력해주세요.");
             return;
         }
@@ -99,8 +97,8 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
             const updatedSummary: JobPostingSummary = {
                 id: formData.id,
                 title: formData.title,
-                companyName: formData.companyType,
-                type: formData.companyType,
+                companyName: "",
+                companyType: "",
                 job: formData.job,
                 workLocation: formData.workLocation,
                 careerType: formData.careerType,
@@ -125,7 +123,6 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
             <ModalTitle title="채용공고 수정" />
             <div className="flex gap-1 mb-4">
                 <Input label="공고명" placeholder="공고명을 입력하세요" size="m" disabled={false} type="text" value={formData.title} setValue={v => setFormData(f => ({ ...f, title: v }))} />
-                <Select label="기업형태" options={companyTypeEnum} size="m" disabled={false} value={formData.companyType || ""} setValue={v => setFormData(f => ({ ...f, companyType: v }))} />
             </div>
             <div className="flex gap-1 mb-4">
                 <Input label="근무 시간" placeholder="근무 시간을 입력하세요" size="m" disabled={false} type="text" value={formData.workingHours} setValue={v => setFormData(f => ({ ...f, workingHours: v }))} />

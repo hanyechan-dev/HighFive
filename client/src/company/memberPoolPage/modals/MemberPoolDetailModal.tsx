@@ -177,7 +177,7 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
                         <MemberInfoBox items={[
                             { label: "이름", value: detail.name },
                             { label: "이메일", value: detail.email },
-                            { label: "성별", value: detail.gender },
+                            { label: "성별", value: detail.genderType },
                             { label: "생년월일", value: detail.birthDate },
                             { label: "연락처", value: detail.phone },
                             { label: "직무", value: detail.job }]} />
