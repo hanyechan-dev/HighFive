@@ -8,6 +8,7 @@ import { readPostPage } from "../apis/PostApi";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import PostList from "../components/PostList";
 import PageTitle from "../../../company/common/components/PageTitle";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 
 interface PostSummaryDto {
     id: number;
@@ -100,7 +101,7 @@ function PostPage() {
                 </div>
 
                 <div className="space-y-4">
-                    {posts.map((post) => (
+                    {posts.length > 0 ? (posts.map((post) => (
                         <PostList
                             key={post.id}
                             title={post.title}
@@ -109,7 +110,8 @@ function PostPage() {
                             createdDate={post.createdDate}
                             onClick={() => handlePostClick(post.id, post.authorId, post.nicknameOrName)}
                         />
-                    ))}
+                    ))):
+                <EmptyState title={"등록된 게시글이 없습니다."} text={"게시글을 등록해보세요."} />}
                 </div>
 
                 <div className="flex justify-center">
