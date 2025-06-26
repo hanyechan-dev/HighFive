@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 interface MyJwtPayload extends JwtPayload {
   userType: string; // 커스텀 클레임 타입 정의
+  isSubscribe : boolean;
 }
 
 // 토큰에서 ID 획득
@@ -31,6 +32,18 @@ const getUserTypeFromToken = (token: string | null): string | null => {
   }
 }
 
+const isSubscribeFromToken = (token: string | null): boolean | null => {
+  if (!token) return null;
+  try {
+    const decodePayload = jwtDecode<MyJwtPayload>(token);
+    const isSubscribe = decodePayload.isSubscribe;
+    return isSubscribe ?? null;
+  } catch (error) {
+    console.log("토큰으로부터 UserType 획득 실패: ", error);
+    return null;
+  }
+}
+
 const isLogin = (token:string): boolean => {
   if (!token) return false;
 
@@ -47,4 +60,4 @@ const isLogin = (token:string): boolean => {
 };
 
 
-export default { getIdFromToken, getUserTypeFromToken, isLogin };
+export default { getIdFromToken, getUserTypeFromToken, isSubscribeFromToken, isLogin };

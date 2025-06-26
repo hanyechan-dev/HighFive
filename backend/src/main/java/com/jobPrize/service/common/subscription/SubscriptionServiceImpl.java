@@ -12,9 +12,11 @@ import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
+import com.jobPrize.dto.common.token.TokenDto;
 import com.jobPrize.entity.common.Subscription;
 import com.jobPrize.entity.common.User;
 import com.jobPrize.enumerate.UserType;
+import com.jobPrize.jwt.TokenProvider;
 import com.jobPrize.repository.common.subscription.SubscriptionRepository;
 import com.jobPrize.repository.common.user.UserRepository;
 import com.jobPrize.service.common.payment.PaymentService;
@@ -32,6 +34,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	private final UserRepository userRepository;
 
 	private final PaymentService paymentService;
+	
+	private final TokenProvider tokenProvider;
 
 	private final AssertUtil assertUtil;
 
@@ -39,7 +43,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	
 	// 구독자 생성
 	@Override
-	public void createSubscription(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
+	public TokenDto createSubscription(Long id, UserType userType, PaymentRequestDto paymentRequestDto) {
 
 		String action = "수행";
 		
@@ -64,6 +68,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		userRepository.save(user);
 		
 		paymentService.createPayment(id, userType, paymentRequestDto);
+		
+		String accessToken = tokenProvider.createAccessToken(user.getId(), user.getUserType(), user.getApprovalStatus(), user.isSubscribed());
+		String refreshToken = tokenProvider.createRefreshToken(user.getId(), user.getUserType(), user.getApprovalStatus(), user.isSubscribed());
+		
+		return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 		
 		
 	}

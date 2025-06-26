@@ -23,7 +23,7 @@ export const companyInfoInputApi = (
     companyName: string,
     businessNumber: string,
     representativeName: string,
-    type: string,
+    companyType: string,
     companyAddress: string,
     companyPhone: string,
     industry: string,
@@ -40,7 +40,7 @@ export const companyInfoInputApi = (
     formData.append("companyAddress", companyAddress);
     formData.append("companyPhone", companyPhone);
     formData.append("introduction", introduction);
-    formData.append("type", type);
+    formData.append("companyType", companyType);
     formData.append("employeeCount", employeeCount);
     formData.append("establishedDate", establishedDate);
     if (logoImageFile) {

@@ -8,8 +8,9 @@ import JobPostingForMemberPage from "../jobPostingForMember/pages/JobPostingForM
 import FeedbackRequestPage from "../request/pages/FeedbackRequestPage"
 import EditRequestPage from "../request/pages/EditRequestPage"
 import MyPageForMemberPage from "../myPageForMember/pages/MyPageForMemberPage"
-import SubscriptionPlansForMemberPage from "../subscription/pages/SubscriptionPlansForMemberPage";
+import SubscriptionPlansForMemberPage from "../subscriptionForMember/pages/SubscriptionPlansForMemberPage";
 import PostPage from "../post/pages/PostPage";
+import SubscriptionManagementForMemberPage from "../subscriptionForMember/pages/SubscriptionManagementForMemberPage";
 
 interface MemberRouterProps {
     userType: string
@@ -46,9 +47,15 @@ const MemberRouter = ({ userType }: MemberRouterProps) => {
                     }
                 />
                 <Route
-                    path="/subscriptions"
+                    path="/subscription/plans"
                     element={<SubscriptionPlansForMemberPage />}
                 />
+
+                <Route
+                    path="/subscription"
+                    element={<SubscriptionManagementForMemberPage />}
+                />
+
                 <Route
                     path="/my"
                     element={

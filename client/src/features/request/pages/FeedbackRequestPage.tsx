@@ -19,7 +19,7 @@ import { readRequestsApi, readRequestApi, readCompletedRequestApi, createConsult
 import { readEducationsApi, readCareersApi, readCertificationsApi, readLanguageTestsApi, readCareerDescriptionsApi, readCoverLettersApi } from "../../myPageForMember/apis/MyPageForMemberApi";
 import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 import { usePagination } from "../../../common/customHooks/usePagination";
-import PageTitle from "../../../company/common/components/PageTitle";
+import PageTitle from "../../../common/components/title/PageTitle";
 
 const consultingType = '피드백'
 const elementsPerPage = 10;

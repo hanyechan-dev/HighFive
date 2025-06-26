@@ -19,7 +19,7 @@ import { readRequestsApi, readRequestApi, readCompletedRequestApi, createConsult
 import { readCareerDescriptionsApi, readCareersApi, readCertificationsApi, readCoverLettersApi, readEducationsApi, readLanguageTestsApi } from "../../myPageForMember/apis/MyPageForMemberApi";
 import type { EducationResponseDto, CareerResponseDto, CertificationResponseDto, LanguageTestResponseDto } from "../../myPageForMember/props/myPageForMemberProps";
 import { usePagination } from "../../../common/customHooks/usePagination";
-import PageTitle from "../../../company/common/components/PageTitle";
+import PageTitle from "../../../common/components/title/PageTitle";
 
 const consultingType = '첨삭'
 const elementsPerPage = 10;

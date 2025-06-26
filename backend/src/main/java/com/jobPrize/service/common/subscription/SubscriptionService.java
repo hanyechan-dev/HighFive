@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
+import com.jobPrize.dto.common.token.TokenDto;
 import com.jobPrize.enumerate.UserType;
 
 public interface SubscriptionService {
 	
 	// 구독자 생성
-	void createSubscription(Long id, UserType userType, PaymentRequestDto paymentRequestDto);
+	TokenDto createSubscription(Long id, UserType userType, PaymentRequestDto paymentRequestDto);
 	
 	// 사용자 유형에 따른 구독자 조회
 	List<SubscriptionResponseDto> readSubscriberListByUserType(UserType userType, UserType targetUserType);

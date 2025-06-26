@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import AuthSlice from '../../features/auth/slices/AuthSlice';
 
 import jobPostingFilterSlice from '../../features/jobPostingForMember/slices/JobPostingSlice';
-import memberPoolFilterSlice from  '../../company/memberPoolPage/slices/MemberPoolSlice';
+import memberPoolFilterSlice from  '../../features/memberPool/slices/MemberPoolSlice';
 
 import WebSocketSlice from '../../chat/WebSocketSlice';
 

@@ -1,5 +1,5 @@
+import PageTitle from "../../../common/components/title/PageTitle";
 import CommonPage from "../../../common/pages/CommonPage";
-import PageTitle from "../../../company/common/components/PageTitle";
 import MyPageTap from "../components/MyPageTap";
 import { ApplicationTabProvider } from "../contexts/ApplicationTab/ApplicationTabProvider";
 import { DocumentTabProvider } from "../contexts/DocumentTab/DocumentTabProvider";

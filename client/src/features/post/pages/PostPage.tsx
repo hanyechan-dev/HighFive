@@ -7,8 +7,8 @@ import Pagination from "../../../common/components/pagination/Pagination";
 import { readPostPage } from "../apis/PostApi";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import PostList from "../components/PostList";
-import PageTitle from "../../../company/common/components/PageTitle";
 import EmptyState from "../../../common/components/emptyState/EmptyState";
+import PageTitle from "../../../common/components/title/PageTitle";
 
 interface PostSummaryDto {
     id: number;

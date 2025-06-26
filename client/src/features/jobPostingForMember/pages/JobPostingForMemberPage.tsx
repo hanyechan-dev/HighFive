@@ -20,7 +20,7 @@ import type { JobPostingMainCardDto, JobPostingUnderCardDto, JobPostingSummaryFo
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import { usePagination } from "../../../common/customHooks/usePagination";
-import PageTitle from "../../../company/common/components/PageTitle";
+import PageTitle from "../../../common/components/title/PageTitle";
 
 
 

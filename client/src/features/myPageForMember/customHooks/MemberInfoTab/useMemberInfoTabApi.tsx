@@ -1,5 +1,5 @@
 import { printErrorInfo } from "../../../../common/utils/ErrorUtil";
-import type { MemberMyPageResponseDto, MemberResponseDto, MemberUpdateDto, MyPageResponseDto, MyPageUpdateDto, PasswordUpdateDto } from "../../props/myPageForMemberProps";
+import type {  MemberResponseDto, MemberUpdateDto, MyPageResponseDto, MyPageUpdateDto, PasswordUpdateDto } from "../../props/myPageForMemberProps";
 import { useMemberInfoTabController } from "./useMemberInfoTabController";
 import { store } from "../../../../common/store/store";
 import AuthUtil from "../../../../common/utils/AuthUtil";
