@@ -9,8 +9,8 @@ interface TabButtonProps {
 
 export function TabButton({ label, isActive, onClick, variant = 'sub' }: TabButtonProps) {
   const styles = {
-    main: "px-6 py-3 text-lg font-semibold w-[317px]",
-    sub: "px-8 py-2 text-base rounded-lg font-medium w-[238px]",
+    main: "px-6 py-3 text-lg font-semibold w-[317px] font-roboto",
+    sub: "px-8 py-2 text-base rounded-lg font-medium w-[238px]  font-roboto",
   };
   
   return (

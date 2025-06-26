@@ -97,24 +97,40 @@ const SchedulePage = () => {
             onClick={handleCreate}
           />
         </div>
-        {isLoading ? (
-          <div className="text-center py-12 text-gray-400">로딩 중...</div>
-        ) : (
-          <>
-            {schedules.length === 0 ? (
-              <CompanyEmptyState
-                title="등록된 스케줄이 없습니다."
-                text="우측 상단의 + 작성 버튼을 눌러 스케줄을 등록해보세요."
-              />
-            ) : (
-              <ScheduleCalendar
-                events={calendarEvents}
-                onDateClick={handleDateClick}
-                onEventClick={handleEventClick}
-              />
-            )}
-          </>
-        )}
+        
+        {/* 개선된 캘린더 섹션 */}
+        <div className="relative">
+          {/* 배경 장식 요소 */}
+          <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-br from-pink-200/20 to-purple-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-gradient-to-br from-blue-200/20 to-cyan-200/20 rounded-full blur-3xl"></div>
+          
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="relative">
+                <div className="w-12 h-12 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin"></div>
+                <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-purple-500 rounded-full animate-spin" style={{ animationDelay: '0.2s' }}></div>
+              </div>
+              <span className="ml-4 text-gray-600 font-medium">스케줄을 불러오는 중...</span>
+            </div>
+          ) : (
+            <>
+              {schedules.length === 0 ? (
+                <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-12">
+                  <CompanyEmptyState
+                    title="등록된 스케줄이 없습니다."
+                    text="우측 상단의 + 작성 버튼을 눌러 스케줄을 등록해보세요."
+                  />
+                </div>
+              ) : (
+                <ScheduleCalendar
+                  events={calendarEvents}
+                  onDateClick={handleDateClick}
+                  onEventClick={handleEventClick}
+                />
+              )}
+            </>
+          )}
+        </div>
 
         {/* 모달들 */}
         <ScheduleCreateModal
