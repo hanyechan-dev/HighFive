@@ -4,6 +4,7 @@ import type { PaymentResponseDto } from "../props/CompanyProps";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import Pagination from "../../../common/components/pagination/Pagination";
 import EmptyState from "../../../common/components/emptyState/EmptyState";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 const elementsPerPage = 10;
 const pagesPerBlock = 10;
@@ -65,10 +66,7 @@ const PaymentTab = () => {
 
       {/* 결제내역 목록 */}
       {isLoading ? (
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
-          <span className="ml-3 text-gray-600">결제내역을 불러오는 중...</span>
-        </div>
+        <LoadingSpinner message="결제내역을 불러오는 중..." />
       ) : paymentResponseDtos.length > 0 ? (
         <>
           {paymentResponseDtos.map((paymentResponseDto) => (

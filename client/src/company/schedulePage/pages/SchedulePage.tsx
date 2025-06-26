@@ -4,7 +4,7 @@ import type { ScheduleSummary, CalendarEvent } from "../props/ScheduleProps";
 import { ScheduleListApi } from "../apis/ScheduleApi";
 import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import Button from "../../../common/components/button/Button";
 import ScheduleCalendar from "../components/ScheduleCalendar";
 import ScheduleCreateModal from "../modals/ScheduleCreateModal";
@@ -116,7 +116,7 @@ const SchedulePage = () => {
             <>
               {schedules.length === 0 ? (
                 <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-12">
-                  <CompanyEmptyState
+                  <EmptyState
                     title="등록된 스케줄이 없습니다."
                     text="우측 상단의 + 작성 버튼을 눌러 스케줄을 등록해보세요."
                   />

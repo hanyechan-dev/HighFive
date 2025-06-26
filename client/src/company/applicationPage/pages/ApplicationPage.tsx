@@ -5,13 +5,14 @@ import type { ApplicationSummaryForCompany } from "../props/ApplicationProps";
 import { ApplicationListApi } from "../apis/ApplicationApi";
 import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import ApplicationListHeader from "../components/ApplicationListHeader";
 import ApplicationSummaryRow from "../components/ApplicationSummaryRow";
 import Pagination from "../../../common/components/pagination/Pagination";
 import ApplicationDetailModal from "../modals/ApplicationDetailModal";
 import { getMockApplications } from "../../common/mockData/CompanyMockData";
 import Button from "../../../common/components/button/Button";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 const ApplicationPage = () => {
   const { jobPostingId } = useParams<{ jobPostingId: string }>();
@@ -91,10 +92,10 @@ const ApplicationPage = () => {
           />
         </div>
         {isLoading ? (
-          <div className="text-center py-12 text-gray-400">로딩 중...</div>
+          <LoadingSpinner message="지원 내역을 불러오는 중..." />
         ) : applications.length === 0 ? (
-          <CompanyEmptyState
-            title="지원자가 없습니다."
+          <EmptyState
+            title="지원 내역이 없습니다."
             text="아직 지원자가 없습니다."
           />
         ) : (

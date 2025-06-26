@@ -13,7 +13,7 @@ const CheckIcon = () => (
 );
 
 const SubscriptionPlansPage = () => {
-  // 결제 모달 상태 관리
+  
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const selectedPlan = {
     name: "프리미엄 구독",

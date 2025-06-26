@@ -7,6 +7,8 @@ import Badge, { getProposalStatusBadgeColor } from "../../common/components/Badg
 import { approvalStatusEnum } from "../../../common/enum/Enum";
 import { ProposalDetailApi } from "../apis/ProposalApi";
 import type { ProposalDetail } from "../props/ProposalProps";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 
 // 개발 중 모달 UI 형태 확인을 위한 Mock 데이터
 const mockProposalDetail: ProposalDetail = {
@@ -81,7 +83,7 @@ export default function ProposalDetailModal({ isOpen, onClose, proposalId }: Pro
     <CommonModal size="l" onClose={onClose}>
       <ModalTitle title="제안서 상세" />
       {isLoading ? (
-        <div className="text-center py-12 text-gray-400">로딩 중...</div>
+        <LoadingSpinner message="제안서 정보를 불러오는 중..." />
       ) : proposal ? (
         <div className="font-roboto">
           {/* 제목 */}
@@ -161,7 +163,7 @@ export default function ProposalDetailModal({ isOpen, onClose, proposalId }: Pro
          
         </div>
       ) : (
-        <div className="text-center py-12 text-gray-400">제안서 정보를 불러올 수 없습니다.</div>
+        <EmptyState title="제안서 정보를 불러올 수 없습니다." text="잠시 후 다시 시도해주세요." />
       )}
     </CommonModal>
   );

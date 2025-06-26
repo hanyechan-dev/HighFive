@@ -5,7 +5,7 @@ import type { JobPostingSummary } from "../props/JobPostingProps";
 import { JobPostingListApi, JobPostingDeleteApi } from "../apis/JobPostingApi";
 import CommonPage from "../../../common/pages/CommonPage";
 import PageTitle from "../../common/components/PageTitle";
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import JobPostingListHeader from "../components/JobPostingListHeader";
 import JobPostingSummaryRow from "../components/JobPostingSummaryRow";
 import Button from "../../../common/components/button/Button";
@@ -13,6 +13,7 @@ import Pagination from "../../../common/components/pagination/Pagination";
 import JobPostingUpdateModal from "../modals/JobPostingUpdateModal";
 import JobPostingCreateModal from "../modals/JobPostingCreateModal";
 import { mockJobPostings } from "../../common/mockData/CompanyMockData";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 const JobPostingPage = () => {
   const [jobPostings, setJobPostings] = useState<JobPostingSummary[]>(mockJobPostings);
@@ -109,12 +110,12 @@ const JobPostingPage = () => {
           />
           </div>
         {isLoading ? (
-          <div className="text-center py-12 text-gray-400">로딩 중...</div>
+          <LoadingSpinner message="채용공고를 불러오는 중..." />
         ) : (
           <>
             <JobPostingListHeader />
             {jobPostings.length === 0 ? (
-              <CompanyEmptyState
+              <EmptyState
                 title="등록된 채용공고가 없습니다."
                 text="우측 상단의 + 작성 버튼을 눌러 채용공고를 등록해보세요."
               />

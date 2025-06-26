@@ -8,6 +8,7 @@ import SchedulePage from "./company/schedulePage/pages/SchedulePage";
 import MyPage from "./company/companyInfo/pages/MyPage";
 import PaymentTab from "./company/companyInfo/pages/PaymentTab";
 import SubscriptionPlansPage from "./company/subscriptionPage/pages/SubscriptionPlansPage";
+import MainPage from "./company/mainPage/MainPage";
 
 
 
@@ -40,7 +41,7 @@ function App() {
 
     return (
         <>
-            <SubscriptionPlansPage/>
+            <MainPage/>
             {/* <SubscriptionPlansForMemberPage /> */}
         </>
     )

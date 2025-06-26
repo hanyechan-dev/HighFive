@@ -9,9 +9,11 @@ import Input from "../../../common/components/input/Input";
 import TextArea from "../../../common/components/input/TextArea";
 import MemberInfoBox from "../../memberPoolPage/components/MemberInfoBox";
 
-import CompanyEmptyState from "../../common/components/CompanyEmptyState";
+
 import { parseResumeFromJsonStrings } from "../../utils/ResumeParseUtil";
 import { TabButton } from "../../common/components/TabButton";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
+import LoadingSpinner from "../../common/components/LoadingSpinner";
 
 interface ApplicationDetailModalProps {
   isOpen: boolean;
@@ -161,7 +163,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
             </div>
           </>
         ) : (
-          <CompanyEmptyState title="학력 정보가 없습니다" text="지원자가 학력 정보를 입력하지 않았습니다" />
+          <EmptyState title="학력 정보가 없습니다" text="지원자가 학력 정보를 입력하지 않았습니다" />
         );
       }
 
@@ -182,7 +184,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
             </div>
           </>
         ) : (
-          <CompanyEmptyState title="경력 정보가 없습니다" text="지원자가 경력 정보를 입력하지 않았습니다" />
+          <EmptyState title="경력 정보가 없습니다" text="지원자가 경력 정보를 입력하지 않았습니다" />
         );
       }
 
@@ -203,7 +205,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
             </div>
           </>
         ) : (
-          <CompanyEmptyState title="자격증 정보가 없습니다" text="지원자가 자격증 정보를 입력하지 않았습니다" />
+          <EmptyState title="자격증 정보가 없습니다" text="지원자가 자격증 정보를 입력하지 않았습니다" />
         );
       }
 
@@ -224,7 +226,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
             </div>
           </>
         ) : (
-          <CompanyEmptyState title="어학 정보가 없습니다" text="지원자가 어학 정보를 입력하지 않았습니다" />
+          <EmptyState title="어학 정보가 없습니다" text="지원자가 어학 정보를 입력하지 않았습니다" />
         );
       }
     }
@@ -240,7 +242,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
           setValue={() => {}}
         />
       ) : (
-        <CompanyEmptyState title="경력기술서가 없습니다" text="지원자가 경력기술서를 입력하지 않았습니다" />
+        <EmptyState title="경력기술서가 없습니다" text="지원자가 경력기술서를 입력하지 않았습니다" />
       );
     }
 
@@ -255,7 +257,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
           setValue={() => {}}
         />
       ) : (
-        <CompanyEmptyState title="자기소개서가 없습니다" text="지원자가 자기소개서를 입력하지 않았습니다" />
+        <EmptyState title="자기소개서가 없습니다" text="지원자가 자기소개서를 입력하지 않았습니다" />
       );
     }
 
@@ -265,7 +267,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
   return (
     <CommonModal size="l" onClose={onClose}>
       {isLoading ? (
-        <div className="text-center py-12 text-gray-400">로딩 중...</div>
+        <LoadingSpinner message="지원자 정보를 불러오는 중..." />
       ) : application ? (
         <>
           <ModalTitle title="지원자 상세 정보" />
