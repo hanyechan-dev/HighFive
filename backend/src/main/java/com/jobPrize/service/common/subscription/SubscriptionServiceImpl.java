@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.customException.CustomIllegalArgumentException;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.subscription.SubscriptionResponseDto;
 import com.jobPrize.entity.common.Subscription;
@@ -53,6 +54,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 				.user(user)
 				.startDate(now)
 				.endDate(now.plusMonths(1))
+				.unsubscribeScheduled(false)
 				.build();
 		
 		subscriptionRepository.save(subscription);
@@ -95,7 +97,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public void updateStatus() {
 		LocalDate now = LocalDate.now();
 		
-		List<Subscription> subs = subscriptionRepository.findAll();
+		List<Subscription> subs = subscriptionRepository.findAllByUnsubscribeScheduledIsTrue(); // 구독 해지 플래그가 켜진 구독만 조회
 		
 		List<Subscription> expired = subs.stream()
 		.filter(expiredSub -> expiredSub.getEndDate().isBefore(now) || expiredSub.getEndDate().isEqual(now))
@@ -110,6 +112,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		}
 		
 	}
+	
 	@Override
 	@Transactional(readOnly = true)
 	public SubscriptionResponseDto readSubscription(Long id) { 
@@ -130,8 +133,41 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		        .userType(subscription.getUser().getUserType().name())
 		        .startDate(subscription.getStartDate())
 	            .endDate(subscription.getEndDate())
+	            .unsubscribeScheduled(subscription.isUnsubscribeScheduled())
 	            .build();
 
 		}
+
+	@Override
+	public SubscriptionResponseDto scheduleUnsubscribe(Long id) {
+		
+		String action = "구독 해지 예약";
+		
+		Long ownerId = subscriptionRepository.findUserIdBySubscriptionId(id)
+				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+		
+		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+		
+		Subscription subscription = subscriptionRepository.findLatestByUserId(id) 
+				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
+		
+		if(subscription.isUnsubscribeScheduled()) {
+			throw new CustomIllegalArgumentException("이미 구독 해지가 신청되었습니다.");
+		}
+		
+		subscription.scheduleUnsubscribe();
+		
+		return SubscriptionResponseDto.builder()
+				.id(subscription.getUser().getId())
+		        .name(subscription.getUser().getName())
+		        .userType(subscription.getUser().getUserType().name())
+		        .startDate(subscription.getStartDate())
+	            .endDate(subscription.getEndDate())
+	            .unsubscribeScheduled(subscription.isUnsubscribeScheduled())
+	            .build();
+		
+	}
+	
+	
 	
 }

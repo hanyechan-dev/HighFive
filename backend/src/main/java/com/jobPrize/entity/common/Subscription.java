@@ -38,5 +38,12 @@ public class Subscription {
 	
     @Column(name = "END_DATE", nullable = false)
     private LocalDate endDate;	//	구독 종료일
+    
+    @Column(name = "UNSUBSCRIBE_SCHEDULED", nullable = false)
+    private boolean unsubscribeScheduled;
+    
+    public void scheduleUnsubscribe() {
+    	this.unsubscribeScheduled = true;
+    }
 
 }

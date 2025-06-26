@@ -19,5 +19,8 @@ public interface SubscriptionService {
 	
 	// 자기자신 구독 조회
 	SubscriptionResponseDto readSubscription(Long id);
+	
+	
+	SubscriptionResponseDto scheduleUnsubscribe(Long id);
 
 }

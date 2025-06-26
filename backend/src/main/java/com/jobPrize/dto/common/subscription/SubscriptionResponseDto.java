@@ -13,4 +13,5 @@ public class SubscriptionResponseDto {
     private String userType;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean unsubscribeScheduled;
 }
