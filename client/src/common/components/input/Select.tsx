@@ -1,7 +1,7 @@
 interface SelectProps {
     label: string;
     options: {label: string; value: string}[];
-    size: 's' | 'm' | 'bibm' | 'l';
+    size: 's' | 'm' | 'pbm' | 'bibm' | 'l';
     disabled: boolean;
     value: string;
     setValue: (value: string) => void
@@ -11,6 +11,7 @@ interface SelectProps {
 const sizeClass = {
     s: 'w-[220px] h-[42px]',
     m: 'w-[464px] h-[42px]',
+    pbm : 'w-[548px] h-[42px]',
     bibm : 'w-[500px] h-[42px]',
     l: 'w-[952px] h-[42px]',
 };

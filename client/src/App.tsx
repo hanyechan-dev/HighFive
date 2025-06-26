@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import AppRouter from "./features/AppRoutes";
+import MyPage from "./features/companyInfo/pages/MyPage";
+import MainPage from "./common/pages/MainPage";
 
 
 
@@ -33,7 +35,7 @@ function App() {
 
     return (
         <>
-            <AppRouter />
+            <MainPage />
         </>
     )
 

@@ -4,7 +4,6 @@ import MyInfoTab from "./MyInfoTab";
 import CompanyInfoTab from "./CompanyInfoTab";
 import PaymentTab from "./PaymentTab";
 import PageTitle from "../../../common/components/title/PageTitle";
-import { TabButton } from "../../../common/components/button/TabButton";
 
 const TABS = [
   { label: "내 정보", value: "my" },
@@ -17,39 +16,32 @@ const MyPage = () => {
 
   return (
     <CommonPage>
-      <div className="font-roboto">
-      <PageTitle title="마이페이지" description="내 정보 및 기업 정보를 관리하세요" />
-      <div className="flex justify-center mb-8">
-        {TABS.map(tab => (
-          <TabButton
-            key={tab.value}
-            label={tab.label}
-            isActive={selectedTab === tab.value}
-            onClick={() => setSelectedTab(tab.value)}
-            variant="sub"
-          />
-        ))}
-      </div>
-      <div className="w-full max-w-[1070px] mx-auto px-4">
-        <div className="border-b border-gray-200 mb-8" />
-        {selectedTab === "my" && (
-          <>
-            
-            <MyInfoTab />
-          </>
-        )}
-        {selectedTab === "company" && (
-          <>
-           
-            <CompanyInfoTab />
-          </>
-        )}
-        {selectedTab === "payment" && (
-          <>
-            <PaymentTab />
-          </>
-        )}
-      </div>
+      <PageTitle title="마이페이지" />
+      <div className="flex mt-6">
+        {/* 사이드바 탭 */}
+        <div>
+          {TABS.map((tab) => (
+            <button
+              key={tab.value}
+              className={`${
+                selectedTab === tab.value 
+                  ? 'bg-semi_theme text-theme' 
+                  : 'text-black'
+              } w-[260px] h-[42px] text-base font-roboto rounded-lg ml-6 flex justify-start px-5 py-[10px]`}
+              onClick={() => setSelectedTab(tab.value)}
+              type="button"
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* 메인 콘텐츠 영역 */}
+        <div className="flex-1 ml-6">
+          {selectedTab === "my" && <MyInfoTab />}
+          {selectedTab === "company" && <CompanyInfoTab />}
+          {selectedTab === "payment" && <PaymentTab />}
+        </div>
       </div>
     </CommonPage>
   );
