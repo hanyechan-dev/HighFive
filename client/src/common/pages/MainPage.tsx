@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import AuthModal from "../../features/auth/modals/AuthModal";
 import { AuthProvider } from "../../features/auth/contexts/AuthProvider";
 
