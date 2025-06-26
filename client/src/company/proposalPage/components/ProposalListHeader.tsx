@@ -1,8 +1,8 @@
-import { listHeaderClass } from "../../common/listStyles";
+import { listHeaderClass } from '../../common/listStyles';
 
 export default function ProposalListHeader() {
   return (
-    <div className={listHeaderClass + " items-center"}>
+    <div className={listHeaderClass + ' items-center'}>
       <div className="w-[150px] flex items-center justify-center">이름</div>
       <div className="w-[150px] flex items-center justify-center">성별</div>
       <div className="w-[150px] flex items-center justify-center">나이</div>
@@ -13,4 +13,4 @@ export default function ProposalListHeader() {
       <div className="w-[150px] flex items-center justify-center">상태</div>
     </div>
   );
-} 
+}
