@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 // 페이지 컴포넌트들
 import SubscriptionManagementPage from "../subscription/pages/SubscriptionManagementPage";
@@ -54,7 +54,14 @@ const CompanyRouter = ({ isLogin, userType, isSubscribe }: CompanyRouterProps) =
 
                     </Route>
 
-                    <Route path="/subscription/plans" element={<SubscriptionPlansPage />} />
+                    <Route
+                        path="/subscription/plans"
+                        element={
+                            isSubscribe
+                                ? <Navigate to="/subscription" replace />
+                                : <SubscriptionPlansPage />
+                        }
+                    />
 
                     <Route path="/community" element={<PostPage />} />
 

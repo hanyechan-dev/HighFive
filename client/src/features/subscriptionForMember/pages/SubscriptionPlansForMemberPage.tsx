@@ -8,9 +8,12 @@ import PageTitle from "../../../common/components/title/PageTitle";
 import { createSubscriptionApi } from "../../../common/apis/SubscriptionApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../auth/slices/AuthSlice";
+import { useNavigate } from "react-router-dom";
+import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 
 const SubscriptionPlansForMemberPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [selectedPlan, setSelectedPlan] = useState({
         name: "프리미엄 구독",
@@ -25,12 +28,18 @@ const SubscriptionPlansForMemberPage = () => {
     }
 
     const onClickPaymentButton = async () => {
-        const res = await createSubscriptionApi(selectedPlan.price, selectedPlan.name, "카카오페이");
-        const { accessToken, refreshToken } = res.data;
-        dispatch(setToken({ accessToken, refreshToken }));
-        setShowPaymentModal(false)
-        window.location.href = '/subscription';
-        
+        try {
+            const res = await createSubscriptionApi(selectedPlan.price, selectedPlan.name, "카카오페이");
+            const { accessToken, refreshToken } = res.data;
+            dispatch(setToken({ accessToken, refreshToken }));
+
+        } catch (err) {
+            printErrorInfo(err);
+        } finally {
+            setShowPaymentModal(false);
+            navigate('/subscription');
+        }
+
     }
 
     return (

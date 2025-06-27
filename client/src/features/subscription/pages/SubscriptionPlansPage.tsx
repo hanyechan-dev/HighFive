@@ -8,6 +8,8 @@ import PageTitle from "../../../common/components/title/PageTitle";
 import { createSubscriptionApi } from "../../../common/apis/SubscriptionApi";
 import { setToken } from "../../auth/slices/AuthSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 
 const CheckIcon = () => (
     <svg className="w-6 h-6 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -17,6 +19,7 @@ const CheckIcon = () => (
 
 const SubscriptionPlansPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const selectedPlan = {
@@ -30,11 +33,18 @@ const SubscriptionPlansPage = () => {
     };
 
     const handlePaymentSuccess = async () => {
-        const res = await createSubscriptionApi(selectedPlan.price, selectedPlan.name, "카카오페이");
-        const { accessToken, refreshToken } = res.data;
-        dispatch(setToken({ accessToken, refreshToken }));
-        setIsPaymentModalOpen(false);
-        window.location.href = '/subscription';
+        try {
+            const res = await createSubscriptionApi(selectedPlan.price, selectedPlan.name, "카카오페이");
+            const { accessToken, refreshToken } = res.data;
+            dispatch(setToken({ accessToken, refreshToken }));
+            
+        } catch (err) {
+            printErrorInfo(err);
+        } finally{
+            setIsPaymentModalOpen(false);
+            navigate('/subscription');
+        }
+
     };
 
     const handlePaymentCancel = () => {

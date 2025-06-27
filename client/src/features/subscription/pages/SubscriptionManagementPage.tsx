@@ -43,11 +43,19 @@ const SubscriptionManagementPage = () => {
         return `${year}.${month}.${day}`;
     };
 
-    const handleCancelSubscription = () => {
+    const handleCancelSubscription = async () => {
         if (window.confirm('정말 구독을 취소하시겠습니까?')) {
-            scheduleUnsubscribeApi();
-            console.log('구독 취소됨');
-            alert('구독이 취소되었습니다.');
+            try {
+                const res = await scheduleUnsubscribeApi();
+                console.log('구독 취소됨');
+                alert('구독이 취소되었습니다.');
+                setSubscription(res.data);
+                
+            }
+            catch(err) {
+                printErrorInfo(err);
+            }
+
         }
     };
 

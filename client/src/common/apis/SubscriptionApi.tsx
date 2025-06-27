@@ -2,7 +2,7 @@ import { api } from "../Axios";
 import type { SubscriptionResponse } from "../../features/subscription/props/SubscriptionProps";
 
 export const SubscriptionApi = () => {
-    return api(true).get<SubscriptionResponse>('/subscriptions');
+    return api(true).get<SubscriptionResponse>('/subscriptions/me');
 };
 
 export const createSubscriptionApi = (paymentAmount: number, content: string, method: string) => {

@@ -43,11 +43,19 @@ const SubscriptionManagementForMemberPage = () => {
         return `${year}.${month}.${day}`;
     };
 
-    const handleCancelSubscription = () => {
+    const handleCancelSubscription = async () => {
         if (window.confirm('정말 구독을 취소하시겠습니까?')) {
-            scheduleUnsubscribeApi();
-            console.log('구독 취소됨');
-            alert('구독이 취소되었습니다.');
+            try {
+                const res = await scheduleUnsubscribeApi();
+                console.log('구독 취소됨');
+                alert('구독이 취소되었습니다.');
+                setSubscription(res.data);
+                
+            }
+            catch(err) {
+                printErrorInfo(err);
+            }
+
         }
     };
 
@@ -99,13 +107,13 @@ const SubscriptionManagementForMemberPage = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-8">
-                            <div className="flex items-center space-x-3"><CheckIcon /><span>무제한 AI 첨삭 + 피드백</span></div>
-                            <div className="flex items-center space-x-3"><CheckIcon /><span>무제한 컨설턴트 첨삭 + 피드백</span></div>
+                        <div className="flex items-center space-x-3"><CheckIcon /><span>무제한 AI 첨삭 + 피드백</span></div>
+                        <div className="flex items-center space-x-3"><CheckIcon /><span>무제한 컨설턴트 첨삭 + 피드백</span></div>
                     </div>
 
                     <div className="text-center">
                         <button className={`${subscription.unsubscribeScheduled ? disabledBgColer : defaultBgColer} text-theme font-bold py-3 px-8 rounded-lg text-lg  transition-colors mr-4`} onClick={handleCancelSubscription} disabled={subscription.unsubscribeScheduled}>
-                            {subscription.unsubscribeScheduled ? "구독 해지 예정":"구독 해지하기"}
+                            {subscription.unsubscribeScheduled ? "구독 해지 예정" : "구독 해지하기"}
                         </button>
                     </div>
                 </div>

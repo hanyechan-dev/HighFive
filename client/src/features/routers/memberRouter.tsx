@@ -65,9 +65,14 @@ const MemberRouter = ({ isLogin, userType, isSubscribe }: MemberRouterProps) => 
 
                     </Route>
 
+
                     <Route
                         path="/subscription/plans"
-                        element={<SubscriptionPlansForMemberPage />}
+                        element={
+                            isSubscribe
+                                ? <Navigate to="/subscription" replace />
+                                : <SubscriptionPlansForMemberPage />
+                        }
                     />
 
                     <Route
