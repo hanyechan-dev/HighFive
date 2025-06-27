@@ -258,11 +258,6 @@ const MainPage = () => {
         </div>
       </section>
 
-      {/* 푸터 */}
-      <footer className="py-12 px-6 bg-slate-100 text-center text-slate-500 text-base">
-        &copy; {new Date().getFullYear()} JobPrize. All rights reserved. | 이용약관 |
-        개인정보처리방침 | 고객센터
-      </footer>
 
       {/* 인증 모달 */}
       {showAuthModal && (
