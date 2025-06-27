@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.common.payment.KakaoReadyResponseDto;
+import com.jobPrize.dto.admin.service.PaymentCountDto;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.entity.common.Payment;

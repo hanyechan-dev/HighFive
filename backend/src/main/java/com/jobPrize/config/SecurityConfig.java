@@ -55,6 +55,7 @@ public class SecurityConfig {
 			.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 안쓸거라 세션 안쓴다고 명시함
 			.authorizeHttpRequests(auth -> auth
 					.requestMatchers("/auth/**", "/users", "/users/kakao").permitAll() 
+					.requestMatchers("/ws/**").permitAll()
 					.requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
 					 //안에 들어있는 URL로 들어온 요청에 대해선 인증검사안함(프로젝트시	수정필요) 
 					// 여기서 수행하는 인증 절차는 스프링이 제공하는 각 filter 및 아래에 명시한 jwtAuthenticationFilter등이 포함됨
@@ -73,8 +74,11 @@ public class SecurityConfig {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowedOrigins(List.of("http://localhost:5173")); // 허용할 프론트 주소, 실 배포중에는 실제 도메인 작성 (프로젝트시 수정 필요)
 		config.setAllowedMethods(List.of("GET", "POST", "PUT")); // 이 메소드만 허용
+		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 이 메소드만 허용
 		config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 헤더 정보 중, Content-Type(요청 데이터 형식)과 Authorization(JWT 토큰) 헤더만 허용
 		// 이 모든 허용은 모두 and로 3가지 조건 모두 만족 시 허용
+		config.setAllowCredentials(true);
+		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 위 cors 정책을 적용
 		return source;

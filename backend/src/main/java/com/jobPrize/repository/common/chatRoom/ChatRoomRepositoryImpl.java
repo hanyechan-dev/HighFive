@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.jobPrize.entity.common.ChatRoom;
 import com.jobPrize.entity.common.QChatContent;
 import com.jobPrize.entity.common.QChatRoom;
+import com.jobPrize.entity.common.QUser;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.JPAExpressions;
@@ -23,6 +24,9 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		QChatRoom chatRoom = QChatRoom.chatRoom;
 		QChatContent chatContent = QChatContent.chatContent;
 		
+		QUser user1 = new QUser("user1_alias");
+		QUser user2 = new QUser("user2_alias");
+		
 	    OrderSpecifier<?> orderByLatestChat = new OrderSpecifier<>(
 	            Order.DESC,
 	            JPAExpressions
@@ -33,8 +37,14 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 		
 		List<ChatRoom> results = queryFactory
 				.selectFrom(chatRoom)
-				.leftJoin(chatRoom.user1).fetchJoin()
-				.leftJoin(chatRoom.user2).fetchJoin()
+				.leftJoin(chatRoom.user1, user1).fetchJoin()
+				.leftJoin(chatRoom.user2, user2).fetchJoin()
+				.leftJoin(user1.member).fetchJoin()
+				.leftJoin(user2.member).fetchJoin()
+				.leftJoin(user1.company).fetchJoin()
+				.leftJoin(user2.company).fetchJoin()
+				.leftJoin(user1.consultant).fetchJoin()
+				.leftJoin(user2.consultant).fetchJoin()
 				.where(
 						chatRoom.user1.id.eq(id)
 						.or(chatRoom.user2.id.eq(id))

@@ -1,6 +1,8 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { User } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { startNewChat } from "./ChatControlSlice";
 
 const TempMember = () => {
 
@@ -11,6 +13,7 @@ const TempMember = () => {
         avatar: string
     }
 
+    const dispatch = useDispatch();
     const [selectedUser, setSelectedUser] = useState<MockUser | null>(null);
 
     const handleUserClick = (user: MockUser) => {
@@ -23,8 +26,7 @@ const TempMember = () => {
 
     const handleChatClick = () => {
         if (selectedUser) {
-            // 여기에서 해당 회원과의 채팅 로직을 연결
-            console.log(`채팅 시작: ${selectedUser.name}`);
+            dispatch(startNewChat({ id: selectedUser.id, name: selectedUser.name }));
             closeModal();
         }
     };
@@ -32,15 +34,9 @@ const TempMember = () => {
     // 임시 유저 리스트
     const mockUsers: MockUser[] = [
         {
-            id: 1,
+            id: 2,
             name: "샘숭맨",
             userType: "기업회원",
-            avatar: "/placeholder.svg?height=40&width=40",
-        },
-        {
-            id: 2,
-            name: "리짜이밍",
-            userType: "일반회원",
             avatar: "/placeholder.svg?height=40&width=40",
         },
         {
@@ -51,7 +47,13 @@ const TempMember = () => {
         },
         {
             id: 4,
-            name: "한화",
+            name: "리짜이밍",
+            userType: "일반회원",
+            avatar: "/placeholder.svg?height=40&width=40",
+        },
+        {
+            id: 5,
+            name: "빠따맨",
             userType: "기업회원",
             avatar: "/placeholder.svg?height=40&width=40",
         },

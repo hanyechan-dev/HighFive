@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.jobPrize.dto.common.payment.KakaoReadyResponseDto;
+import com.jobPrize.dto.admin.service.PaymentCountDto;
 import com.jobPrize.dto.common.payment.PaymentRequestDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.enumerate.UserType;

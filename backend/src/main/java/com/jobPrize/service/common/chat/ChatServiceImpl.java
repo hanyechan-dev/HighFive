@@ -1,5 +1,6 @@
 package com.jobPrize.service.common.chat;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,26 +122,58 @@ public class ChatServiceImpl implements ChatService {
         			.build();
         })
         .collect(Collectors.toList());
+        if(chatRooms != null) {
+	        return chatRooms.stream()
+	        		.map(chatRoom -> {
+	        	User otherUser = chatRoom.getUser1().getId().equals(id)
+	        			? chatRoom.getUser2()
+	        			: chatRoom.getUser1();
+	        	
+	        	String name;
+	        	
+	        	if(otherUser.getType() == UserType.기업회원) {
+	        		name = otherUser.getCompany().getCompanyName();
+	        	} else if(otherUser.getType() == UserType.컨설턴트회원) {
+	        		name = otherUser.getName();
+	        	} else {
+	        		name = otherUser.getMember().getNickname();
+	        	}
+	        	
+	        	return ChatResponseDto.builder()
+	        			.chatRoomId(chatRoom.getId())
+	        			.receiverId(otherUser.getId())
+	        			.name(name)
+	        			.build();
+	        })
+	        .collect(Collectors.toList());
+        } else {
+        	return Collections.emptyList();
+        }
     }
 	
     // 채팅 메세지 조회
     @Transactional(readOnly = true)
 	@Override
 	public List<ChatResponseDto> readMessagesList(Long roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findWithChatContentsByChatRoomId(roomId)
+        ChatRoom chatRooms = chatRoomRepository.findWithChatContentsByChatRoomId(roomId)
         		.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
-
-        return chatRoom.getChatContents().stream()
-            .map(chatContent -> ChatResponseDto.builder()
-                .chatRoomId(roomId)
-                .contentId(chatContent.getId())
-                .senderId(chatContent.getUser().getId())
-                .name(chatContent.getUser().getName())
-                .content(chatContent.getContent())
-                .createdAt(chatContent.getCreatedTime())
-                .build()
-            )
-            .collect(Collectors.toList());
+        
+        List<ChatResponseDto> dtoList;
+        
+        if(chatRooms != null) {
+        	dtoList = chatRooms.getChatContents().stream()
+                    .map(chatContent -> ChatResponseDto.builder()
+                            .chatRoomId(roomId)
+                            .contentId(chatContent.getId())
+                            .senderId(chatContent.getUser().getId())
+                            .name(chatContent.getUser().getName())
+                            .content(chatContent.getContent())
+                            .createdAt(chatContent.getCreatedTime())
+                            .build()
+                        )
+                        .collect(Collectors.toList());
+        } else { dtoList = Collections.emptyList(); }
+        return dtoList;
 	}
     
     @Override
