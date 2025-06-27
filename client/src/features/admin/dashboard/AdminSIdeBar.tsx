@@ -34,7 +34,7 @@ const navItems: NavItem[] = [
   },
   {
     title: "프롬프트 설정",
-    href: "/dashboard/prompts",
+    href: "/dashboard/prompt",
     icon: Settings,
   },
 ];

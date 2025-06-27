@@ -4,14 +4,13 @@ import { type RootState } from "../common/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { MessageCircle, X, Send, User } from "lucide-react";
 import AuthUtil from "../common/utils/AuthUtil";
-import ChatInput from "../common/components/input/ChatInput";
 import {
   getStompClient,
   publishMessage,
   registerMessageCallback,
   subscribeToTopic,
   unregisterMessageCallbacks,
-} from "./StompClient";
+} from "./stompClient";
 import { clearNewChatTarget } from "./ChatControlSlice";
 import { Button } from "../components/ui/button";
 import { ScrollArea } from "../components/ui/scroll-area";
@@ -83,18 +82,9 @@ const Chat = () => {
           }),
         });
         const roomId = await response.json(); // JSON -> Javascript 객체로 변환
-        setChatRoomId(roomId);
 
+        setChatRoomId(roomId);
         subscribeToTopic(roomId); // 채팅방 구독
-        publishMessage(
-          // 채팅 대상이 동일한 채팅방을 구독하도록 서버에 요청
-          "app/chat/subscribe",
-          {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          { targetId, chatRoomId: roomId }
-        );
         return roomId;
       } catch (error) {
         console.log("chatRoomId를 가져오지 못했습니다: ", error);
@@ -134,10 +124,6 @@ const Chat = () => {
   const receiveMessage = useCallback(
     (payload: IMessage) => {
       const receivedMessage: ChatMessage = JSON.parse(payload.body);
-      console.log("receivedMessage는 다음과 같습니다: " + receivedMessage)
-      console.log("receivedMessage.chatRoomId : " + receivedMessage.chatRoomId)
-      console.log("chatRoomId : " + chatRoomId)
-
       if (receivedMessage.chatRoomId === chatRoomId) {
         setChatHistory((prevHistory) => [...prevHistory, receivedMessage]);
       } else {
@@ -150,8 +136,14 @@ const Chat = () => {
   // 상기 메소드를 웹소켓에 콜백 함수로 등록하여 stompClient.ts에서 메시지 수발신 관리
   useEffect(() => {
     registerMessageCallback(receiveMessage);
-    return unregisterMessageCallbacks();
   }, [receiveMessage]);
+
+  // Chat 컴포넌트 언마운트 시 콜백 함수 해제
+  useEffect(() => {
+    return() => {
+        unregisterMessageCallbacks();
+    }
+  }, [])
 
   // 채팅방 리스트 불러오기
   const getChatRoomList = useCallback(async () => {
@@ -232,8 +224,7 @@ const Chat = () => {
   // 채팅 시 화면 자동 스크롤
   useEffect(() => {
     if (scrollViewportRef.current) {
-      scrollViewportRef.current.scroll({
-        top: scrollViewportRef.current.scrollHeight,
+      scrollViewportRef.current.scrollIntoView({
         behavior: "smooth",
       });
     }
@@ -351,7 +342,7 @@ const Chat = () => {
           </DialogHeader>
 
           {/* 메시지 영역 */}
-          <ScrollArea className="h-80 w-full pr-4" ref={scrollViewportRef}>
+          <ScrollArea className="h-80 w-full pr-4">
             <div className="space-y-3">
                             {chatHistory.map((message) => (
                                 <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
@@ -363,6 +354,7 @@ const Chat = () => {
                                     >
                                         <p className="text-sm">{message.content}</p>
                                     </div>
+                                    <div ref={scrollViewportRef}></div>
                                 </div>
                             ))}
                         </div>

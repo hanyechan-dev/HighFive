@@ -66,16 +66,5 @@ public class ChatController {
 		ChatResponseDto chatResponseDto = chatService.createMessage(chatRequestDto);
 		System.out.println("메시지 발송 시도 -> 목적지: " + destination + ", 내용: " + chatResponseDto.getContent());
 		simpMessagingTemplate.convertAndSend(destination, chatResponseDto);
-	}
-	
-	// 채팅방 자동 구독
-	@MessageMapping("/chat/subscribe")
-	public void inviteTarget(@RequestBody InviteTargetDto payload) {
-		String targetIdString = String.valueOf(payload.getTargetId());
-		
-		simpMessagingTemplate.convertAndSendToUser(
-				targetIdString, "/user/queue/chat", payload.getChatRoomId()
-		);
-	}
-	
+	}	
 }

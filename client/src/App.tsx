@@ -7,7 +7,7 @@ import DashboardLayout from './features/admin/DashboardLayout';
 import LoginModal from './features/auth/LoginModal';
 import { useSelector } from 'react-redux';
 import type { RootState } from './common/store/store';
-import { connectWebSocket } from './chat/StompClient';
+import { connectWebSocket } from './chat/stompClient';
 import { useEffect, useState } from 'react';
 import TempPage from './chat/TempPage';
 import Chat from './chat/Chat';
@@ -33,6 +33,7 @@ const App = () => {
                 {/* <Route path="/admin" element={<AdminMainPage />} />
                 <Route path="/dashboard" element={<DashboardLayout />}>
                     <Route path="service" element={<AdminService />} />
+                    <Route path="prompt" element={<AdminPrompt />} />
                 </Route> */}
             </Routes>
              <Chat />
