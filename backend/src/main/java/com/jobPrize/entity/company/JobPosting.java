@@ -71,7 +71,7 @@ public class JobPosting {
 	@Column(name = "salary")
 	private int salary;
 	
-	@Column(name = "job-posting-vector")
+	@Column(name = "job-posting-vector", columnDefinition = "MEDIUMTEXT")
 	private String jobPostingVector;
 
 	@Column(name = "created_date", nullable = false)

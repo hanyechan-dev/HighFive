@@ -1,12 +1,13 @@
 # src/gpt_api/main.py
 
 from fastapi import FastAPI
-from gpt_api.routers import prompt_router
+from gpt_api.routers import embedding_router, prompt_router
 import uvicorn
 
 app = FastAPI()
 
 app.include_router(prompt_router.router)
+app.include_router(embedding_router.router)
 
 
 def main():

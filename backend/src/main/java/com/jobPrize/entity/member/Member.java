@@ -44,7 +44,7 @@ public class Member {
 	@Column(nullable = false)
 	private String nickname;
 	
-	@Column(name = "member-vector")
+	@Column(name = "member-vector", columnDefinition = "MEDIUMTEXT")
 	private String memberVector;
 	
 	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)

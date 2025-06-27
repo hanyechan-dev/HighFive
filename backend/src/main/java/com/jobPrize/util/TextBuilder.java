@@ -49,7 +49,7 @@ public class TextBuilder {
 	    } else {
 	        for (Education edu : member.getEducations()) {
 	            sb.append(String.format(
-	                "- %s %s / GPA: %.1f / 재학기간: %s ~ %s\n",
+	                "- %s %s / GPA: %s / 재학기간: %s ~ %s\n",
 	                edu.getSchoolName(),
 	                edu.getMajor(),
 	                edu.getGpa(),

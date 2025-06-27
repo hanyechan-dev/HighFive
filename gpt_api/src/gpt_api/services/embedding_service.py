@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 import easyocr
 import json
+import time
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("prompt_api_key"))
@@ -35,10 +36,15 @@ def generate_vector_job_posting_result(metadata: str , images : List[UploadFile]
     return json.dumps(embedding_vector)
 
 def generate_vector_member_result(data : str):
+    start = time.time()
+    print(">>>>> OpenAI Embedding 시작")
+    
     response = client.embeddings.create(
         model="text-embedding-3-small", # 쓰고싶은 모델명
         input= data # 임베딩 할 텍스트
     )
+    
+    print(">>>>> OpenAI Embedding 끝:", time.time() - start, "초 걸림")
     
     embedding_vector = response.data[0].embedding
     
