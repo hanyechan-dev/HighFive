@@ -4,31 +4,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearToken } from "../auth/slices/AuthSlice";
 import AuthUtil from "../../common/utils/AuthUtil";
 import { CircleUserIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthProvider } from "../auth/contexts/AuthProvider";
+import type { RootState } from "../../common/store/store";
+import { closeAuthModal, openAuthModal } from "../../common/slices/AuthModalSlice";
 
+interface HeaderProps{
+    isLogin : boolean | null
+}
 
+const Header = ({isLogin}:HeaderProps) => {
 
-const Header = () => {
-    const accessToken = useSelector((state: any) => state.auth.accessToken);
-    const isLogin = AuthUtil.isLogin(accessToken);
+    const navigate = useNavigate();
+    const showAuthModal = useSelector((state: RootState) => state.authModal.showAuthModal);
     const dispatch = useDispatch();
-    const [showAuthModal, setShowAuthModal] = useState(false);
 
     const onClickLogin = () => {
-        setShowAuthModal(true);
+        dispatch(openAuthModal())
     };
 
     const onClickLogout = () => {
         dispatch(clearToken());
-        setShowAuthModal(false);
+        dispatch(closeAuthModal());
+        navigate("/", { replace: true });
     };
 
     return (
         <>
             <div className="w-full">
                 <div className="w-[1920px] h-[100px] flex justify-between items-center mx-auto">
+                    <Link to={"/"}>
                     <img src="/jobPrize.png" alt="jobPrize" className="ml-[234px] h-[50px]" />
+                    </Link>
                     <div className="mr-[234px] font-bold font-roboto cursor-pointer">
                         {!isLogin && <div className="hover:text-theme" onClick={onClickLogin}>로그인</div>}
                         {isLogin &&
@@ -44,7 +51,7 @@ const Header = () => {
 
             {showAuthModal &&
                 <AuthProvider>
-                    <AuthModal onClose={() => setShowAuthModal(false)} />
+                    <AuthModal onClose={() => dispatch(closeAuthModal())} />
                 </AuthProvider>}
         </>
     )

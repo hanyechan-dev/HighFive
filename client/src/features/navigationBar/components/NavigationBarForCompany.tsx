@@ -15,11 +15,11 @@ const NavigationBarForCompany = () => {
     return (
         <>
             <NavigationBarItem title={"인재풀"} to={"/member-pool"} dropDown={companyMemberPoolDropDown} />
-            <NavigationBarItem title={"채용 공고 관리"} to={"/job-postings/management"} />
-            <NavigationBarItem title={"지원자"} to={"/job-postings/applications"} dropDown={companyApplicationDropDown} />
-            <NavigationBarItem title={"일정 관리"} to={"/schedule"} />
-            <NavigationBarItem title={"구독"} to={"/subscription"} />
-            <NavigationBarItem title={"커뮤니티"} to={"/community"} />
+            <NavigationBarItem title={"채용 공고 관리"} to={"/job-postings/management"}  />
+            <NavigationBarItem title={"지원자"} to={"/job-postings/applications"} dropDown={companyApplicationDropDown}  />
+            <NavigationBarItem title={"일정 관리"} to={"/schedule"}  />
+            <NavigationBarItem title={"구독"} to={"/subscription"}  />
+            <NavigationBarItem title={"커뮤니티"} to={"/community"}  />
         </>
     )
 }

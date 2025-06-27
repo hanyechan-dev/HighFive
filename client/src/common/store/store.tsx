@@ -8,12 +8,14 @@ import jobPostingFilterSlice from '../../features/jobPostingForMember/slices/Job
 import memberPoolFilterSlice from  '../../features/memberPool/slices/MemberPoolSlice';
 
 import WebSocketSlice from '../../chat/WebSocketSlice';
+import AuthModalSlice from '../slices/AuthModalSlice';
 
 const rootReducer = combineReducers({
   auth: AuthSlice,
   jobPostingFilter: jobPostingFilterSlice,
   memberPoolFilter: memberPoolFilterSlice,
-  websocket: WebSocketSlice
+  websocket: WebSocketSlice,
+  authModal: AuthModalSlice
 });
 
 const persistConfig = {

@@ -11,65 +11,85 @@ import MyPageForMemberPage from "../myPageForMember/pages/MyPageForMemberPage"
 import SubscriptionPlansForMemberPage from "../subscriptionForMember/pages/SubscriptionPlansForMemberPage";
 import PostPage from "../post/pages/PostPage";
 import SubscriptionManagementForMemberPage from "../subscriptionForMember/pages/SubscriptionManagementForMemberPage";
+import MainPage from "../../common/pages/MainPage";
+import LoginProtectedRouter from "./LoginProtectedRouter";
+import SubscriptionProtectedRouter from "./SubscriptionProtectedRouter";
 
 interface MemberRouterProps {
+    isLogin: boolean | null
     userType: string
+    isSubscribe: boolean | null
 }
 
-const MemberRouter = ({ userType }: MemberRouterProps) => {
+const MemberRouter = ({ isLogin, userType, isSubscribe }: MemberRouterProps) => {
     return (
         <Routes>
-            <Route element={<Layout userType={userType} />}>
-                <Route path="/" element={<Navigate to="/job-postings" replace />} />
-                <Route
-                    path="/job-postings"
-                    element={<JobPostingForMemberPageProvider>
-                        <JobPostingForMemberPage />
-                    </JobPostingForMemberPageProvider>
-                    }
-                />
-                <Route
-                    path="/feedbacks"
-                    element={
+            <Route element={<Layout userType={userType} isLogin={isLogin} />}>
 
-                        <RequestPageProvider>
-                            <FeedbackRequestPage />
-                        </RequestPageProvider>
-                    }
-                />
-                <Route
-                    path="/edits"
-                    element={
+                <Route element={<LoginProtectedRouter isLogin={isLogin} />}>
 
-                        <RequestPageProvider>
-                            <EditRequestPage />
-                        </RequestPageProvider>
-                    }
-                />
-                <Route
-                    path="/subscription/plans"
-                    element={<SubscriptionPlansForMemberPage />}
-                />
+                    <Route element={<SubscriptionProtectedRouter isSubscribe={isSubscribe} />}>
 
-                <Route
-                    path="/subscription"
-                    element={<SubscriptionManagementForMemberPage />}
-                />
+                        <Route
+                            path="/job-postings"
+                            element={
+                                <JobPostingForMemberPageProvider>
+                                    <JobPostingForMemberPage />
+                                </JobPostingForMemberPageProvider>
+                            }
+                        />
 
-                <Route
-                    path="/my"
-                    element={
-                        <MyPageForMemberPageProvider>
-                            <MyPageForMemberPage />
-                        </MyPageForMemberPageProvider>
-                    }
-                />
+                        <Route
+                            path="/feedbacks"
+                            element={
+                                <RequestPageProvider>
+                                    <FeedbackRequestPage />
+                                </RequestPageProvider>
+                            }
+                        />
+
+                        <Route
+                            path="/edits"
+                            element={
+                                <RequestPageProvider>
+                                    <EditRequestPage />
+                                </RequestPageProvider>
+                            }
+                        />
+
+                        <Route
+                            path="/subscription"
+                            element={<SubscriptionManagementForMemberPage />
+                            }
+                        />
+
+                    </Route>
+
+                    <Route
+                        path="/subscription/plans"
+                        element={<SubscriptionPlansForMemberPage />}
+                    />
+
+                    <Route
+                        path="/my"
+                        element={
+                            <MyPageForMemberPageProvider>
+                                <MyPageForMemberPage />
+                            </MyPageForMemberPageProvider>
+                        }
+                    />
+
+                </Route>
+
+                <Route path="/" element={<MainPage />} />
+
                 <Route
                     path="/community"
-                    element={ <PostPage />}
+                    element={<PostPage />}
                 />
             </Route>
-        </Routes>
+
+        </Routes >
     );
 };
 

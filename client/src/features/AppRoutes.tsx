@@ -2,26 +2,26 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../common/store/store";
 import AuthUtil from "../common/utils/AuthUtil";
 import AdminRouter from "./routers/AdminRouter";
-import CommonRouter from "./routers/CommonRouter";
 import CompanyRouter from "./routers/CompanyRouter";
 import MemberRouter from "./routers/MemberRouter";
 
 
 const AppRouter = () => {
     const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const isLogin = !!accessToken;
     const userType = AuthUtil.getUserTypeFromToken(accessToken);
     const isSubscribe = AuthUtil.isSubscribeFromToken(accessToken);
     
 
     switch (userType) {
         case "일반회원":
-            return <MemberRouter userType={userType} />;
+            return <MemberRouter userType={userType} isSubscribe={isSubscribe} isLogin={isLogin} />;
         case "기업회원":
-            return <CompanyRouter userType={userType} hasSubscription={isSubscribe} />;
+            return <CompanyRouter userType={userType} isSubscribe={isSubscribe} isLogin={isLogin} />;
         case "관리자":
-            return <AdminRouter userType={userType} />;
+            return <AdminRouter userType={userType} isLogin={isLogin} />;
         default:
-            return <CommonRouter userType={"일반회원"} />;
+            return <MemberRouter userType={"일반회원"} isSubscribe={isSubscribe} isLogin={isLogin} />;
 
     }
 };

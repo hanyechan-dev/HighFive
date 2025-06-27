@@ -5,15 +5,16 @@ import Footer from "../footer/Footer";
 
 
 interface LayoutProps {
+    isLogin : boolean | null
     userType: string;
 }
 
-const Layout = ({userType}:LayoutProps) => {
+const Layout = ({userType,isLogin}:LayoutProps) => {
 
 
     return (
         <>
-            <Header />
+            <Header isLogin={isLogin} />
             <NavigationBar userType={userType} />
             <div className="mt-6">
                 <Outlet />
