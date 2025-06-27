@@ -84,7 +84,7 @@ public class PaymentRepositoryImpl implements PaymentRepositoryCustom{
 	            )
 	            .from(payment)
 	            .where(
-	                    payment.user.type.eq(userType)
+	                    payment.user.userType.eq(userType)
 	                            .and(dateTemplate.between(
 	                                    java.sql.Date.valueOf(startDate),
 	                                    java.sql.Date.valueOf(endDate)

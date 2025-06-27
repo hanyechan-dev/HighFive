@@ -36,7 +36,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	        .select(user.createdDate, user.count())
 	        .from(user)
 	        .where(
-	            user.type.eq(userType)
+	            user.userType.eq(userType)
 	            .and(user.createdDate.between(startDate, endDate))
 	        )
 	        .groupBy(user.createdDate)
@@ -47,7 +47,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	        .select(user.deletedDate, user.count())
 	        .from(user)
 	        .where(
-	            user.type.eq(userType)
+	            user.userType.eq(userType)
 	            .and(user.deletedDate.isNotNull())
 	            .and(user.deletedDate.between(startDate, endDate))
 	        )
@@ -96,7 +96,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	        .select(user.createdDate, user.count())
 	        .from(user)
 	        .where(
-	            user.type.eq(userType)
+	            user.userType.eq(userType)
 	            .and(user.createdDate.between(startDate, now))
 	        )
 	        .groupBy(user.createdDate)
@@ -106,7 +106,7 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	        .select(user.deletedDate, user.count())
 	        .from(user)
 	        .where(
-	            user.type.eq(userType)
+	            user.userType.eq(userType)
 	            .and(user.deletedDate.isNotNull())
 	            .and(user.deletedDate.between(startDate, now))
 	        )
@@ -165,13 +165,13 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 		SubsCountDto result = queryFactory
 				.select(
 						Projections.constructor(SubsCountDto.class,
-								user.type,
+								user.userType,
 								user.subscribed.when(true).then(1L).otherwise(0L).sum(),
 								user.subscribed.when(false).then(1L).otherwise(0L).sum()
 								)
 						)
 				.from(user)
-				.where(user.type.eq(userType))
+				.where(user.userType.eq(userType))
 				.fetchOne();
 		
 		return result;
@@ -185,12 +185,12 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 		UserCountDto result = queryFactory
 				.select(
 						Projections.constructor(UserCountDto.class,
-								user.type,
+								user.userType,
 								user.count()
 								)
 						)
 				.from(user)
-				.where(user.type.eq(userType))
+				.where(user.userType.eq(userType))
 				.fetchOne();
 		
 		return result;

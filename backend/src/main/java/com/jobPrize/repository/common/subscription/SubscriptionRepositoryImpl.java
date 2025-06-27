@@ -58,7 +58,7 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom 
 				.from(subscription)
 				.leftJoin(subscription.user)
 				.where(
-						subscription.user.type.eq(userType)
+						subscription.user.userType.eq(userType)
 						.and(subscription.user.subscribed.eq(true))
 						)
 				.fetchOne();
