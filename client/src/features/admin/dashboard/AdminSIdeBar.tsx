@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 
 import { Users, BarChart2, MessageSquare, Settings, Home } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../../common/components/ui/button";
 import { cn } from "../../../lib/utils";
 
 interface NavItem {

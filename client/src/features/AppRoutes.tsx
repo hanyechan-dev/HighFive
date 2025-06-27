@@ -1,29 +1,46 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../common/store/store";
 import AuthUtil from "../common/utils/AuthUtil";
 import AdminRouter from "./routers/AdminRouter";
 import CompanyRouter from "./routers/CompanyRouter";
 import MemberRouter from "./routers/MemberRouter";
+import { closeAuthModal } from "../common/slices/AuthModalSlice";
+import { AuthProvider } from "./auth/contexts/AuthProvider";
+import AuthModal from "./auth/modals/AuthModal";
 
 
 const AppRouter = () => {
+
+    const showAuthModal = useSelector((state: RootState) => state.authModal.showAuthModal);
+    const dispatch = useDispatch();
     const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     const isLogin = !!accessToken;
     const userType = AuthUtil.getUserTypeFromToken(accessToken);
     const isSubscribe = AuthUtil.isSubscribeFromToken(accessToken);
-    
 
-    switch (userType) {
-        case "일반회원":
-            return <MemberRouter userType={userType} isSubscribe={isSubscribe} isLogin={isLogin} />;
-        case "기업회원":
-            return <CompanyRouter userType={userType} isSubscribe={isSubscribe} isLogin={isLogin} />;
-        case "관리자":
-            return <AdminRouter userType={userType} isLogin={isLogin} />;
-        default:
-            return <MemberRouter userType={"일반회원"} isSubscribe={isSubscribe} isLogin={isLogin} />;
 
-    }
+    return (
+        <>
+            {showAuthModal && (
+                <AuthProvider>
+                    <AuthModal onClose={() => dispatch(closeAuthModal())} />
+                </AuthProvider>
+            )}
+
+            {userType === "일반회원" && (
+                <MemberRouter userType={userType} isSubscribe={isSubscribe} isLogin={isLogin} />
+            )}
+            {userType === "기업회원" && (
+                <CompanyRouter userType={userType} isSubscribe={isSubscribe} isLogin={isLogin} />
+            )}
+            {userType === "관리자" && (
+                <AdminRouter userType={userType} isLogin={isLogin} />
+            )}
+            {!userType && (
+                <MemberRouter userType={"일반회원"} isSubscribe={isSubscribe} isLogin={isLogin} />
+            )}
+        </>
+    );
 };
 
 export default AppRouter;

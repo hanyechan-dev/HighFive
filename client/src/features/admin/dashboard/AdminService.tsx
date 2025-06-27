@@ -13,14 +13,14 @@ import {
   Cell,
   Sector,
 } from "recharts";
-import { Card, CardContent } from "../../../components/ui/card";
+import { Card, CardContent } from "../../../common/components/ui/card";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../../../components/ui/tabs";
-import { Button } from "../../../components/ui/button";
+} from "../../../common/components/ui/tabs";
+import { Button } from "../../../common/components/ui/button";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";

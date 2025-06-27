@@ -13,7 +13,6 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "types": ["node"],
-    "esModuleInterop": true,
 
     /* Bundler mode */
     "moduleResolution": "node",

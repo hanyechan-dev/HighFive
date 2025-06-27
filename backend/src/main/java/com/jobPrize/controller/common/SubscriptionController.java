@@ -2,6 +2,7 @@ package com.jobPrize.controller.common;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/subscriptions")
 @RequiredArgsConstructor
 public class SubscriptionController {
+	
 	private final SubscriptionService subscriptionService;
 
 	// 구독자 생성
@@ -37,7 +39,7 @@ public class SubscriptionController {
 		return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
 	}
 
-	@GetMapping
+	@GetMapping("/me")
 	public ResponseEntity<SubscriptionResponseDto> getMySubscription() {
 
 		Long id = SecurityUtil.getId();
@@ -56,7 +58,6 @@ public class SubscriptionController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(subscriptionResponseDto);
 	}
-    private final SubscriptionService subscriptionService;
     
     // 구독자 조회
     @GetMapping
@@ -69,14 +70,5 @@ public class SubscriptionController {
     	} else { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList()); }
     }
     
-    // 구독자 생성
-    @PostMapping
-    public ResponseEntity<Void> createSubscription(@RequestBody PaymentRequestDto paymentRequestDto){
-    	Long id = SecurityUtil.getId();
-    	UserType userType = SecurityUtil.getUserType();
-    	
-        subscriptionService.createSubscription(id, userType, paymentRequestDto);
-        return ResponseEntity.ok().build();
-    }
 
 }

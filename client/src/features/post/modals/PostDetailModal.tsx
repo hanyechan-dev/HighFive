@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { createComment, readPostDetail, updatePost } from "../apis/PostApi";
 import type { CommentCreateDto, PostUpdateDto } from "../props/PostProps";
 import CommentList from "../components/PostCommentList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import AuthUtil from "../../../common/utils/AuthUtil";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import Input from "../../../common/components/input/Input";
+import { startNewChat } from "../../chat/ChatControlSlice";
 
 interface PostDetailModalProps {
     postId: number;
@@ -27,6 +28,8 @@ interface CommentResponseDto {
     createdDate: string;
 }
 function PostDetailModal({ postId, onClose }: PostDetailModalProps) {
+
+    const dispatch = useDispatch();
 
     const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     const currentUserId = AuthUtil.getIdFromToken(accessToken);
@@ -92,10 +95,9 @@ function PostDetailModal({ postId, onClose }: PostDetailModalProps) {
 
     // 추후 채팅 트리거? 모달띄우기로 변환
     const handleCommentAuthorClick = function (authorId: number, nicknameOrName: string): void {
-        console.log("작성자 ID: ", authorId);
-        console.log("작성자 이름: ", nicknameOrName);
-
+        dispatch(startNewChat({ id: authorId, name: nicknameOrName }))
     };
+
 
     return (
         <CommonModal size="l" onClose={onClose}>

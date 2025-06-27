@@ -26,21 +26,15 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@stomp/stompjs": "^7.1.1",
     "axios": "^1.9.0",
-<<<<<<< HEAD
-    "dayjs": "^1.11.13",
-    "jwt-decode": "^4.0.0",
-    "lucide-react": "^0.518.0",
-    "react": "^18.2.0",
-    "react-daum-postcode": "^3.2.0",
-=======
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.516.0",
     "react": "^18.2.0",
+    "react-daum-postcode": "^3.2.0",
     "react-day-picker": "latest",
->>>>>>> origin/SOCKET_ADMIN
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.5.2",
     "react-redux": "^9.1.2",

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 // 페이지 컴포넌트들
 import SubscriptionManagementPage from "../subscription/pages/SubscriptionManagementPage";
@@ -16,6 +16,7 @@ import Layout from "../layout/Layout";
 import PostPage from "../post/pages/PostPage";
 import LoginProtectedRouter from "./LoginProtectedRouter";
 import SubscriptionProtectedRouter from "./SubscriptionProtectedRouter";
+import MainPage from "../../common/pages/MainPage";
 
 interface CompanyRouterProps {
     isLogin: boolean | null
@@ -30,8 +31,6 @@ const CompanyRouter = ({ isLogin, userType, isSubscribe }: CompanyRouterProps) =
             <Route element={<Layout userType={userType} isLogin={isLogin} />}>
 
                 <Route element={<LoginProtectedRouter isLogin={isLogin} />}>
-
-                    <Route path="/" element={<Navigate to="/member-pool" replace />} />
 
                     <Route element={<SubscriptionProtectedRouter isSubscribe={isSubscribe} />}>
 
@@ -62,6 +61,8 @@ const CompanyRouter = ({ isLogin, userType, isSubscribe }: CompanyRouterProps) =
                     <Route path="/my" element={<MyPage />} />
 
                 </Route>
+
+                <Route path="/" element={<MainPage />} />
 
             </Route>
         </Routes>

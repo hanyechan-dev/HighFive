@@ -1,8 +1,11 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "../layout/Layout";
-import AdminPage from "../userManagement/pages/AdminPage";
 import UserManagementPage from "../userManagement/pages/UserManagementPage";
 import PostPage from "../post/pages/PostPage";
+import AdminMainPage from "../admin/AdminMainPage";
+import AdminService from "../admin/dashboard/AdminService";
+import AdminPrompt from "../admin/dashboard/AdminPrompt";
+import LoginProtectedRouter from "./LoginProtectedRouter";
 
 interface AdminRouterProps {
     isLogin: boolean | null
@@ -14,22 +17,23 @@ const AdminRouter = ({ userType, isLogin }: AdminRouterProps) => {
         <Routes>
             <Route element={<Layout userType={userType} isLogin={isLogin} />}>
 
-                <Route path="/" element={<Navigate to="/admin" replace />} />
+                <Route element={<LoginProtectedRouter isLogin={isLogin} />}>
 
-                <Route
-                    path="/admin"
-                    element={<AdminPage />}
-                />
+                    <Route path="/" element={<Navigate to="/admin" replace />} />
 
-                <Route
-                    path="/admin/users"
-                    element={<UserManagementPage />}
-                />
+                    <Route path="/admin" element={<AdminMainPage />} />
 
-                <Route
-                    path="/community"
-                    element={<PostPage />}
-                />
+                    <Route path="/dashboard/members" element={<UserManagementPage />} />
+
+                    {/* <Route path="/dashboard/consulting" element={<UserManagementPage />} /> */}
+
+                    <Route path="/dashboard/service" element={<AdminService />} />
+
+                    <Route path="/dashboard/prompt" element={<AdminPrompt />} />
+
+                </Route>
+
+                <Route path="/community" element={<PostPage />} />
 
             </Route>
         </Routes>

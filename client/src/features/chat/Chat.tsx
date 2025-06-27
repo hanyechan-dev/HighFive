@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import type { IMessage } from "@stomp/stompjs";
-import { type RootState } from "../common/store/store";
+import { type RootState } from "../../common/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { MessageCircle, X, Send, User } from "lucide-react";
-import AuthUtil from "../common/utils/AuthUtil";
+import AuthUtil from "../../common/utils/AuthUtil";
 import {
   getStompClient,
   publishMessage,
@@ -12,11 +12,11 @@ import {
   unregisterMessageCallbacks,
 } from "./stompClient";
 import { clearNewChatTarget } from "./ChatControlSlice";
-import { Button } from "../components/ui/button";
-import { ScrollArea } from "../components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-import { Input } from "../components/ui/input";
+import { Button } from "../../common/components/ui/button";
+import { ScrollArea } from "../../common/components/ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "../../common/components/ui/avatar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../common/components/ui/dialog";
+import { Input } from "../../common/components/ui/input";
 
 interface ChatRoom {
   chatRoomId: number;

@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 
 import { Trash } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs"
-import { Card, CardContent } from "../../../components/ui/card"
-import { Label } from "../../../components/ui/label"
-import { Input } from "../../../components/ui/input"
-import { Button } from "../../../components/ui/button"
-import { Textarea } from "../../../components/ui/textarea"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../common/components/ui/tabs"
+import { Card, CardContent } from "../../../common/components/ui/card"
+import { Label } from "../../../common/components/ui/label"
+import { Input } from "../../../common/components/ui/input"
+import { Button } from "../../../common/components/ui/button"
+import { Textarea } from "../../../common/components/ui/textarea"
 
 // 임시 데이터
 const initialPrompts = {

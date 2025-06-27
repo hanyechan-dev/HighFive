@@ -1,12 +1,9 @@
-import { useState } from "react";
-import AuthModal from "../auth/modals/AuthModal";
-import { useDispatch, useSelector } from "react-redux";
+
+
+import { useDispatch } from "react-redux";
 import { clearToken } from "../auth/slices/AuthSlice";
-import AuthUtil from "../../common/utils/AuthUtil";
 import { CircleUserIcon } from "lucide-react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { AuthProvider } from "../auth/contexts/AuthProvider";
-import type { RootState } from "../../common/store/store";
+import { Link, useNavigate } from "react-router-dom";
 import { closeAuthModal, openAuthModal } from "../../common/slices/AuthModalSlice";
 
 interface HeaderProps{
@@ -16,7 +13,6 @@ interface HeaderProps{
 const Header = ({isLogin}:HeaderProps) => {
 
     const navigate = useNavigate();
-    const showAuthModal = useSelector((state: RootState) => state.authModal.showAuthModal);
     const dispatch = useDispatch();
 
     const onClickLogin = () => {
@@ -48,11 +44,6 @@ const Header = ({isLogin}:HeaderProps) => {
                     </div>
                 </div>
             </div>
-
-            {showAuthModal &&
-                <AuthProvider>
-                    <AuthModal onClose={() => dispatch(closeAuthModal())} />
-                </AuthProvider>}
         </>
     )
 }

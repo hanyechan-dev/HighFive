@@ -1,6 +1,5 @@
 import CommonPage from "../common/pages/CommonPage"
-import Chat from "./Chat";
-import TempMember from "./TempMember";
+import TempMember from "./chat/TempMember";
 
 const TempPage = () => {
     return(
