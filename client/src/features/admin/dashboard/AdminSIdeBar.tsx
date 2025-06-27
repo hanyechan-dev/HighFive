@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
   },
   {
     title: "회원 관리",
-    href: "/dashboard/members",
+    href: "/dashboard/member",
     icon: Users,
   },
   {

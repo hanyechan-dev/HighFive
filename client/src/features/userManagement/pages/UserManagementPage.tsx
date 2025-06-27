@@ -156,7 +156,7 @@ const UserManagementPage = () => {
                                         }
                                     }} itemNumber={3} />
                             </div>
-                            <div className="mb-[-24px]">
+                            <div className="mb-[-24px] mr-[50px]">
                                 <Button color={"action"} size={"s"} disabled={false} text={"회원 삭제"} type={"button"} onClick={handleDelete} />
                             </div>
                         </div>

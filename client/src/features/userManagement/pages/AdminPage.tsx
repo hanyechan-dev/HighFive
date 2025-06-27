@@ -14,16 +14,16 @@ function AdminPage() {
 
             <div className="grid grid-cols-2 gap-6 mb-8">
                 
-                <div onClick={() => navigate("/admin/users")}>
+                <div onClick={() => navigate("/dashboard/member")}>
                     <AdminCard icon={<PeopleIcon />} label={"회원관리"} />
                 </div>
-                 <div>
+                 <div onClick={() => navigate("/dashboard/consulting")}>
                     <AdminCard icon={<ConsultingIcon />} label={"컨설팅"} />
                 </div>
-                <div>
+                <div onClick={() => navigate("/dashboard/service")}>
                     <AdminCard icon={<BarChartIcon />} label={"서비스 통계"} />
                 </div>
-                <div>
+                <div onClick={() => navigate("/dashboard/prompt")}>
                     <AdminCard icon={<SettingsIcon />} label={"프롬프트 설정"} />
                 </div>
             </div>
