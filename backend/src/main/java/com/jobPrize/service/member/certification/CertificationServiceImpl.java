@@ -16,6 +16,8 @@ import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.certification.CertificationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +31,10 @@ public class CertificationServiceImpl implements CertificationService {
     private final MemberRepository memberRepository;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+	
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "자격증";
 
@@ -48,6 +54,12 @@ public class CertificationServiceImpl implements CertificationService {
 		Certification certification = Certification.of(member, certificationCreateDto);
 
 		certificationRepository.save(certification);
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 
 		return CertificationResponseDto.from(certification);
 	}
@@ -81,6 +93,14 @@ public class CertificationServiceImpl implements CertificationService {
 		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
         
 		certification.updateCertification(certificationUpdateDto);
+		
+		Member member = certification.getMember();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 
 		return CertificationResponseDto.from(certification);
 	}
@@ -97,8 +117,18 @@ public class CertificationServiceImpl implements CertificationService {
 			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 
         assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+        
+		Member member = certification.getMember();
 
         certificationRepository.delete(certification);
+        
+        certificationRepository.flush();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 		
 	}
 	

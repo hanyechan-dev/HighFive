@@ -67,7 +67,7 @@ const CompanyDetail = ({ id, onClose }: CompanyDetailProps) => {
     return (
         <CommonModal size="m" onClose={onClose}>
             <ModalTitle title={"회원 상세 정보"} />
-            <div className="ml-6 space-y-3 font-roboto">
+            <div className="ml-6 mb-6 space-y-3 font-roboto">
                 <div className="mb-3 font-semibold">산업 : {companydata.industry}</div>
                 <div className="mb-3 font-semibold">기업명 : {companydata.companyName}</div>
                 <div className="mb-3 font-semibold">대표명 : {companydata.representativeName}</div>

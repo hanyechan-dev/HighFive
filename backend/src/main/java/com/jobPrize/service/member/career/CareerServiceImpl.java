@@ -17,6 +17,8 @@ import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.career.CareerRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +32,10 @@ public class CareerServiceImpl implements CareerService {
 	private final MemberRepository memberRepository;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+	
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "경력";
 
@@ -55,6 +61,13 @@ public class CareerServiceImpl implements CareerService {
 		Career career = Career.of(member, careerCreateDto);
 		
 		careerRepository.save(career);
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
+		
 		
 		return CareerResponseDto.from(career);
 		
@@ -93,6 +106,14 @@ public class CareerServiceImpl implements CareerService {
 		
 		career.updateCareer(careerUpdateDto);
 		
+		Member member = career.getMember();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
+		
 		return CareerResponseDto.from(career);
 	}
 
@@ -109,7 +130,17 @@ public class CareerServiceImpl implements CareerService {
 
 		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
 		
+		Member member = career.getMember();
+		
 		careerRepository.delete(career);
+		
+		careerRepository.flush();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 	}
 		
 }

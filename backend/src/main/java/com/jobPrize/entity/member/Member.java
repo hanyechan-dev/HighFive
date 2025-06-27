@@ -44,6 +44,9 @@ public class Member {
 	@Column(nullable = false)
 	private String nickname;
 	
+	@Column(name = "member-vector")
+	private String memberVector;
+	
 	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Education> educations = new ArrayList<>();
 	
@@ -79,6 +82,10 @@ public class Member {
 
     public void updateNickname(String nickname) {
     	this.nickname=nickname;
+    }
+    
+    public void updateVector(String vector) {
+    	this.memberVector=vector;
     }
 
     public static Member from(User user, String nickname) {

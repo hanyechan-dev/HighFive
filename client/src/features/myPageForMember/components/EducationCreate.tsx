@@ -5,6 +5,8 @@ import Input from "../../../common/components/input/Input";
 import type { EducationCreateDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
 import { validateEducation } from "../../../common/utils/ValidationUtil";
+import Select from "../../../common/components/input/Select";
+import { educationLevelEnum, regionEnum } from "../../../common/enum/Enum";
 
 interface EducationCreateProps {
     setIsAddEducationMode: (isAddEducationMode: boolean) => void
@@ -72,11 +74,11 @@ const EducationCreate = ({ setIsAddEducationMode }: EducationCreateProps) => {
                 <Input label={"전공"} placeholder={""} size={"bibm"} disabled={!isChangeButtonClicked} type={"text"} value={major} setValue={setEducationField("major")} />
             </div>
             <div className="flex">
-                <Input label={"학위"} placeholder={""} size={"bibm"} disabled={!isChangeButtonClicked} type={"text"} value={educationLevel} setValue={setEducationField("educationLevel")} />
+                <Select label={"학위"} options={educationLevelEnum} size={"bibm"} disabled={!isChangeButtonClicked} value={educationLevel} setValue={setEducationField("educationLevel")} />
                 <Input label={"학점"} placeholder={""} size={"bibm"} disabled={!isChangeButtonClicked} type={"text"} value={gpa} setValue={setEducationField("gpa")} />
             </div>
             <div className="flex">
-                <Input label={"소재지"} placeholder={""} size={"bibm"} disabled={!isChangeButtonClicked} type={"text"} value={location} setValue={setEducationField("location")} />
+                <Select label={"소재지"} options={regionEnum} size={"bibm"} disabled={!isChangeButtonClicked} value={location} setValue={setEducationField("location")} />
                 <Input label={"입학일"} placeholder={""} size={"bibs"} disabled={!isChangeButtonClicked} type={"date"} value={enterDate} setValue={setEducationField("enterDate")} />
                 <Input label={"졸업일"} placeholder={""} size={"bibs"} disabled={!isChangeButtonClicked} type={"date"} value={graduateDate || ""} setValue={setEducationField("graduateDate")} />
             </div>

@@ -17,6 +17,8 @@ import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +32,10 @@ public class EducationServiceImpl implements EducationService {
 	private final MemberRepository memberRepository;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+	
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "학력";
 
@@ -53,6 +59,12 @@ public class EducationServiceImpl implements EducationService {
 
         educationRepository.save(education);
         
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
+        
         return EducationResponseDto.from(education);
 		
 	}
@@ -67,6 +79,8 @@ public class EducationServiceImpl implements EducationService {
 		for (Education education : educations) {
 			educationResponseDtos.add(EducationResponseDto.from(education));
 		}
+		
+		
 		return educationResponseDtos;
 	}
 
@@ -91,6 +105,14 @@ public class EducationServiceImpl implements EducationService {
 
 		education.updateEducation(educationUpdateDto);
 		
+		Member member = education.getMember();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
+		
 		return EducationResponseDto.from(education);
 	}
 
@@ -106,8 +128,18 @@ public class EducationServiceImpl implements EducationService {
 			.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 
         assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
+        
+		Member member = education.getMember();
 
         educationRepository.delete(education);
+        
+        educationRepository.flush();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 		
 	}
 	

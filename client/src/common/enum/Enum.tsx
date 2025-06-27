@@ -109,6 +109,7 @@ export const jobTypeEnum = [
     {label: '연구·개발', value: '연구·개발'},
     {label: '미디어·문화·스포츠', value: '미디어·문화·스포츠'},
     {label: '공공·복지', value: '공공·복지'},
+    {label: '생산·제조', value: '생산·제조'},
     {label: '기타', value: '기타'}
 ]
 

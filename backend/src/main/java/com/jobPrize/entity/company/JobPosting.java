@@ -70,6 +70,9 @@ public class JobPosting {
 
 	@Column(name = "salary")
 	private int salary;
+	
+	@Column(name = "job-posting-vector")
+	private String jobPostingVector;
 
 	@Column(name = "created_date", nullable = false)
 	private LocalDate createdDate;
@@ -98,7 +101,7 @@ public class JobPosting {
 		this.requirement = jobPostingUpdateDto.getRequirement();
 	}
 
-	public static JobPosting of(Company company, JobPostingCreateDto jobPostingCreateDto) {
+	public static JobPosting of(Company company, JobPostingCreateDto jobPostingCreateDto, String jobPostingVector) {
 		return JobPosting.builder()
 			.company(company)
 			.title(jobPostingCreateDto.getTitle())
@@ -109,6 +112,7 @@ public class JobPosting {
 			.careerType(jobPostingCreateDto.getCareerType())
 			.educationLevel(EducationLevel.valueOf(jobPostingCreateDto.getEducationLevel()))
 			.salary(jobPostingCreateDto.getSalary())
+			.jobPostingVector(jobPostingVector)
 			.createdDate(LocalDate.now())
 			.expiredDate(LocalDate.now().plusMonths(1))
 			.requirement(jobPostingCreateDto.getRequirement())

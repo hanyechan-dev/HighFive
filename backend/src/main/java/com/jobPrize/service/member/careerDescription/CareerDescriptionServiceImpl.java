@@ -21,6 +21,8 @@ import com.jobPrize.repository.member.careerDescription.CareerDescriptionReposit
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.careerDescriptionContent.CareerDescriptionContentService;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +36,10 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	private final MemberRepository memberRepository;
 
 	private final CareerDescriptionContentService careerDescriptionContentService;
+	
+	private final WebClientUtil webClientUtil;
+	
+	private final TextBuilder textBuilder;
 
 	private final AssertUtil assertUtil;
 
@@ -61,6 +67,12 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 			CareerDescriptionContentResponseDto careerDescriptionContentResponseDto = careerDescriptionContentService.createCareerDescriptionContent(careerDescription, careerDescriptionContentCreateDto);
 			careerDescriptionContentResponseDtos.add(careerDescriptionContentResponseDto);
 		}
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 
 		return CareerDescriptionResponseDto.of(careerDescription, careerDescriptionContentResponseDtos);
 	}
@@ -126,6 +138,14 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 			CareerDescriptionContentResponseDto careerDescriptionContentResponseDto = careerDescriptionContentService.createCareerDescriptionContent(careerDescription, careerDescriptionContentCreateDto);
 			careerDescriptionContentResponseDtos.add(careerDescriptionContentResponseDto);
 		}
+		
+		Member member = careerDescription.getMember();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 
 		return CareerDescriptionResponseDto.of(careerDescription,careerDescriptionContentResponseDtos);
 	}
@@ -142,8 +162,18 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
 		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
+		
+		Member member = careerDescription.getMember();
 
 		careerDescriptionRepository.delete(careerDescription);
+		
+		careerDescriptionRepository.flush();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 		
 	}
 

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobPrize.customException.CustomEntityNotFoundException;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentResponseDto;
-import com.jobPrize.dto.member.coverLetter.CoverLetterContentUpdateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterResponseDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterSummaryDto;
@@ -22,6 +21,8 @@ import com.jobPrize.repository.member.coverLetter.CoverLetterRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.coverLetterContent.CoverLetterContentService;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +38,10 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	private final CoverLetterContentService coverLetterContentService;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+	
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "자기소개서";
 
@@ -61,6 +66,12 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 			CoverLetterContentResponseDto coverLetterContentResponseDto = coverLetterContentService.createCoverLetterContent(coverLetter, coverLetterContentCreateDto);
 			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 		
 		return CoverLetterResponseDto.of(coverLetter, coverLetterContentResponseDtos);
 	}
@@ -127,6 +138,14 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
 		
+		Member member = coverLetter.getMember();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
+		
 		
 		return CoverLetterResponseDto.of(coverLetter, coverLetterContentResponseDtos);
 	}
@@ -143,8 +162,18 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 		
 		assertUtil.assertId(id, memberId, ENTITY_NAME, action);
+		
+		Member member = coverLetter.getMember();
 
 		coverLetterRepository.delete(coverLetter);
+		
+		coverLetterRepository.flush();
+		
+		String data = textBuilder.getMemberStringForEmbedding(member);
+		
+		String vector = webClientUtil.sendEmbeddingRequestMember(data);
+		
+		member.updateVector(vector);
 		
 	}
 

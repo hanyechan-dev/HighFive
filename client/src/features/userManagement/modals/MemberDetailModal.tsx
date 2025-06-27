@@ -50,7 +50,7 @@ const MemberDetail = ({ id, onClose }: MemberDetailProps) => {
   return (
     <CommonModal size="m" onClose={onClose}>
       <ModalTitle title={"회원 상세 정보"} />
-      <div className="ml-6 space-y-3 mb-6 font-roboto">
+      <div className="ml-6 mb-6 space-y-3 font-roboto">
         <div className="mb-3 font-semibold">이메일 : {detail.email}</div>
         <div className="mb-3 font-semibold">이름 : {detail.name}</div>
         <div className="mb-3 font-semibold">닉네임 : {memberdata.nickName}</div>

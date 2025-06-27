@@ -5,6 +5,7 @@ import { setToken } from "../slices/AuthSlice";
 import { useAuthController } from "./useAuthController";
 import type { LogInDto, MemberCreateDto, UserSignUpDto } from "../props/AuthProps";
 import axios from "axios";
+import { closeAuthModal } from "../../../common/slices/AuthModalSlice";
 
 interface KakaoAuthSuccess {
     access_token: string;
@@ -72,6 +73,7 @@ export const useAuthApi = () => {
                     if (res.status === 200 && res.data.accessToken) {
                         const { accessToken, refreshToken } = res.data;
                         dispatch(setToken({ accessToken, refreshToken }));
+                        dispatch(closeAuthModal())
                     }
                 }
                 catch (err: unknown) {
@@ -82,6 +84,7 @@ export const useAuthApi = () => {
                             setKakaoEmail(email);
                             setIsKakao(true);
                             setShowModalType("signUp");
+                            
 
                         }
                     }

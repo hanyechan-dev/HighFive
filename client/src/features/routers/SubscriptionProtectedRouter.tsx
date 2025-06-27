@@ -10,7 +10,11 @@ const SubscriptionProtectedRouter = ({isSubscribe }: SubscriptionProtectedRouter
     if (!isSubscribe) {
         const result = window.confirm("구독이 필요한 서비스입니다. 구독페이지로 이동하시겠습니까?");
         if (result) {
-            navigate("/subscription/plans");
+            setTimeout(() => {
+                navigate("/subscription/plans");
+            }, 0); // 타이밍 보장
+            
+            
         }
         else {
             return null;

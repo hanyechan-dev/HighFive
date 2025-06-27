@@ -146,11 +146,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		Subscription subscription = subscriptionRepository.findLatestByUserId(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
-		Long ownerId = subscriptionRepository.findUserIdBySubscriptionId(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
-
-		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
-
 		return SubscriptionResponseDto.builder().id(subscription.getUser().getId())
 				.name(subscription.getUser().getName()).userType(subscription.getUser().getUserType().name())
 				.startDate(subscription.getStartDate()).endDate(subscription.getEndDate())

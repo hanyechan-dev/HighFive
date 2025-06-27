@@ -26,6 +26,8 @@ import com.jobPrize.repository.company.company.CompanyRepository;
 import com.jobPrize.repository.company.jobPosting.JobPostingRepository;
 import com.jobPrize.service.company.jobPostingImage.JobPostingImageService;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +42,10 @@ public class JobPostingServiceImpl implements JobPostingService{
 	private final CompanyRepository companyRepository;
 	
 	private final JobPostingImageService jobPostingImageService;
+	
+	private final WebClientUtil webClientUtil;
+	
+	private final TextBuilder textBuilder;
 
 	private final AssertUtil assertUtil;
 
@@ -55,12 +61,18 @@ public class JobPostingServiceImpl implements JobPostingService{
 		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("기업"));
 		
-		JobPosting jobPosting = JobPosting.of(company,jobPostingCreateDto);
+		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingImageCreateListDto.getJobPostingImageCreateDtos();
+		List<MultipartFile> multipartFiles = new ArrayList<>();
+		
+		String metadata = textBuilder.getJobPostingStringForEmbedding(jobPostingCreateDto);
+		
+		String vector = webClientUtil.sendEmbeddingRequestJobPosting(metadata, multipartFiles);
+		
+		JobPosting jobPosting = JobPosting.of(company,jobPostingCreateDto, vector);
 		
 		jobPostingRepository.save(jobPosting);
 		
-		List<JobPostingImageCreateDto> jobPostingImageCreateDtos = jobPostingImageCreateListDto.getJobPostingImageCreateDtos();
-		List<MultipartFile> multipartFiles = new ArrayList<>();
+		
 		for(JobPostingImageCreateDto jobPostingImageCreateDto : jobPostingImageCreateDtos) {
 			MultipartFile multipartFile= jobPostingImageCreateDto.getImage();
 			multipartFiles.add(multipartFile);
