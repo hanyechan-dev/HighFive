@@ -37,7 +37,7 @@ public class CareerDescriptionContent {
 	@Column(name="ITEM", nullable = false)
 	private String item;
 	
-	@Column(name="CONTENT", nullable = false)
+	@Column(name="CONTENT", nullable = false, length = 2000)
 	private String content;
 
 	public void updateContent(CareerDescriptionContentUpdateDto careerDescriptionContentUpdateDto) {

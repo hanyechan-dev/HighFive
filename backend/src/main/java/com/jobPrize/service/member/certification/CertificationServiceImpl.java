@@ -1,5 +1,6 @@
 package com.jobPrize.service.member.certification;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,10 @@ import com.jobPrize.dto.member.certification.CertificationUpdateDto;
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.UserType;
+import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.certification.CertificationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
-import com.jobPrize.util.TextBuilder;
-import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,12 +29,10 @@ public class CertificationServiceImpl implements CertificationService {
     private final CertificationRepository certificationRepository;
 
     private final MemberRepository memberRepository;
+    
+    private final SimilarityRepository similarityRepository;
 
 	private final AssertUtil assertUtil;
-	
-	private final WebClientUtil webClientUtil;
-	
-	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "자격증";
 
@@ -55,11 +53,9 @@ public class CertificationServiceImpl implements CertificationService {
 
 		certificationRepository.save(certification);
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		similarityRepository.deleteByMember(member);
 
 		return CertificationResponseDto.from(certification);
 	}
@@ -96,12 +92,10 @@ public class CertificationServiceImpl implements CertificationService {
 		
 		Member member = certification.getMember();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
-		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		member.updateTime(LocalDateTime.now());
 
+		similarityRepository.deleteByMember(member);
+		
 		return CertificationResponseDto.from(certification);
 	}
 
@@ -124,11 +118,9 @@ public class CertificationServiceImpl implements CertificationService {
         
         certificationRepository.flush();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
-		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+        member.updateTime(LocalDateTime.now());
+        
+        similarityRepository.deleteByMember(member);
 		
 	}
 	

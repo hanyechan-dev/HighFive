@@ -3,6 +3,8 @@ package com.jobPrize.util;
 import org.springframework.stereotype.Component;
 
 import com.jobPrize.dto.company.jobPosting.JobPostingCreateDto;
+import com.jobPrize.dto.company.jobPosting.JobPostingUpdateDto;
+import com.jobPrize.entity.company.JobPosting;
 import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.CareerDescriptionContent;
@@ -33,6 +35,52 @@ public class TextBuilder {
         if (dto.getContent() != null && !dto.getContent().isBlank()) {
             sb.append("\n[추가 내용]\n");
             sb.append(dto.getContent());
+        }
+
+        return sb.toString();
+    }
+	
+	public String getJobPostingStringForEmbedding(JobPostingUpdateDto dto) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("[채용공고 정보]\n");
+        sb.append(String.format("- 공고명: %s\n", dto.getTitle()));
+        sb.append(String.format("- 모집 부문: %s\n", dto.getJob()));
+        sb.append(String.format("- 근무지: %s\n", dto.getWorkLocation()));
+        sb.append(String.format("- 근무 시간: %s\n", dto.getWorkingHours()));
+        sb.append(String.format("- 경력 조건: %s\n", dto.getCareerType()));
+        sb.append(String.format("- 요구 학력: %s\n", dto.getEducationLevel()));
+        sb.append(String.format("- 급여: %d\n 만원", dto.getSalary()));
+
+        sb.append("\n[자격 요건]\n");
+        sb.append(dto.getRequirement()).append("\n");
+
+        if (dto.getContent() != null && !dto.getContent().isBlank()) {
+            sb.append("\n[추가 내용]\n");
+            sb.append(dto.getContent());
+        }
+
+        return sb.toString();
+    }
+	
+	public String getJobPostingStringForEmbedding(JobPosting jobPosting) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("[채용공고 정보]\n");
+        sb.append(String.format("- 공고명: %s\n", jobPosting.getTitle()));
+        sb.append(String.format("- 모집 부문: %s\n", jobPosting.getJob()));
+        sb.append(String.format("- 근무지: %s\n", jobPosting.getWorkLocation()));
+        sb.append(String.format("- 근무 시간: %s\n", jobPosting.getWorkingHours()));
+        sb.append(String.format("- 경력 조건: %s\n", jobPosting.getCareerType()));
+        sb.append(String.format("- 요구 학력: %s\n", jobPosting.getEducationLevel()));
+        sb.append(String.format("- 급여: %d\n 만원", jobPosting.getSalary()));
+
+        sb.append("\n[자격 요건]\n");
+        sb.append(jobPosting.getRequirement()).append("\n");
+
+        if (jobPosting.getContent() != null && !jobPosting.getContent().isBlank()) {
+            sb.append("\n[추가 내용]\n");
+            sb.append(jobPosting.getContent());
         }
 
         return sb.toString();

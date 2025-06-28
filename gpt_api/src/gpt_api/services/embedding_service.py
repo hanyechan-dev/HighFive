@@ -25,11 +25,16 @@ def generate_vector_job_posting_result(metadata: str , images : List[UploadFile]
         
     if len(embedding_text) > 3000:
         embedding_text = embedding_text[:3000]
+
+    start = time.time()
+    print(">>>>> OpenAI Embedding 시작")
     
     response = client.embeddings.create(
         model="text-embedding-3-small", # 쓰고싶은 모델명
         input= embedding_text # 임베딩 할 텍스트
     )
+    
+    print(">>>>> OpenAI Embedding 끝:", time.time() - start, "초 걸림")
     
     embedding_vector = response.data[0].embedding
 

@@ -201,6 +201,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Scheduled(cron = "0 0 0 * * *")
+	@Transactional
 	public void hardDeleteUsers() {
 		List<User> users = userRepository.findAllForDelete();
 

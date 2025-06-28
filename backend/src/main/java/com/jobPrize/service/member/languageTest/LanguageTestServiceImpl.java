@@ -1,5 +1,6 @@
 package com.jobPrize.service.member.languageTest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,10 @@ import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
 import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.UserType;
+import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.languageTest.LanguageTestRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
-import com.jobPrize.util.TextBuilder;
-import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,12 +30,10 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 	private final LanguageTestRepository languageTestRepository;
 
 	private final MemberRepository memberRepository;
+	
+	private final SimilarityRepository similarityRepository;
 
 	private final AssertUtil assertUtil;
-	
-	private final WebClientUtil webClientUtil;
-	
-	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "어학시험";
 
@@ -54,11 +52,9 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 		
 		languageTestRepository.save(languageTest);
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		similarityRepository.deleteByMember(member);
 		
 		return LanguageTestResponseDto.from(languageTest);
 	}
@@ -95,11 +91,9 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 		
 		Member member = languageTest.getMember();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		similarityRepository.deleteByMember(member);
 		
 		return LanguageTestResponseDto.from(languageTest);
 	}
@@ -123,11 +117,9 @@ public class LanguageTestServiceImpl implements LanguageTestService {
 		
 		languageTestRepository.flush();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		similarityRepository.deleteByMember(member);
 		
 	}
 

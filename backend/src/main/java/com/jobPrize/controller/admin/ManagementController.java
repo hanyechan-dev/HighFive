@@ -22,6 +22,9 @@ import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.admin.userManagement.UserManagementService;
 import com.jobPrize.service.common.user.UserService;
+import com.jobPrize.service.company.jobPosting.JobPostingService;
+import com.jobPrize.service.memToCom.similarity.SimilarityService;
+import com.jobPrize.service.member.member.MemberService;
 import com.jobPrize.util.SecurityUtil;
 
 import jakarta.validation.Valid;
@@ -35,6 +38,12 @@ public class ManagementController {
 	private final UserManagementService userManagementService;
 	
 	private final UserService userService;
+	
+	private final MemberService memberService;
+	
+	private final JobPostingService jobPostingService;
+	
+	private final SimilarityService similarityService;
 	
 	@GetMapping("/members")
 	public ResponseEntity<Page<MemberManagementSummaryDto>> readMemberPage(Pageable pageable) {
@@ -109,6 +118,24 @@ public class ManagementController {
 		}
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	@PostMapping("/member-vector")
+	public ResponseEntity<Void> calcMemberVector(){
+		memberService.calcVector();
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@PostMapping("/job-posting-vector")
+	public ResponseEntity<Void> calcJobPostingVector(){
+		jobPostingService.calcVector();
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@PostMapping("/similarity")
+	public ResponseEntity<Void> calcSimilarity(){
+		similarityService.calcSimilarities();
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
 

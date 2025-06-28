@@ -3,7 +3,7 @@ import { api } from "../../../common/Axios";
 export const createRequestApi = (
     targetJob: string,
     targetCompanyName: string,
-    type: string,
+    consultingType: string,
     coverLetterId: number,
     careerDescriptionId: number
 ) => {
@@ -11,7 +11,7 @@ export const createRequestApi = (
         {
             targetJob,
             targetCompanyName,
-            type,
+            consultingType,
             coverLetterId,
             careerDescriptionId
 

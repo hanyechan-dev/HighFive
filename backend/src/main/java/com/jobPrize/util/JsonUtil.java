@@ -142,27 +142,31 @@ public class JsonUtil {
 		String entityName = "경력기술서";
 		String action = "선택";
 		// careerDescription 소유자 체크 + contents 포함 → JSON
-		CareerDescription careerDescription = careerDescriptionRepository
-				.findWithCareerDescriptionContentsByCareerDescriptionId(careerDescriptionId)
-				.orElseThrow(() -> new CustomEntityNotFoundException(entityName));
+		Map<String, Object> careerDescriptionMap = new HashMap<>();
 		
-		Long ownerId = careerDescriptionRepository.findMemberIdByCareerDescriptionId(careerDescriptionId)
-				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
+		if (careerDescriptionId != null && careerDescriptionId != -1L) {
+			CareerDescription careerDescription = careerDescriptionRepository
+					.findWithCareerDescriptionContentsByCareerDescriptionId(careerDescriptionId)
+					.orElseThrow(() -> new CustomEntityNotFoundException(entityName));
+			
+			Long ownerId = careerDescriptionRepository.findMemberIdByCareerDescriptionId(careerDescriptionId)
+					.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
 
-		assertUtil.assertId(id, ownerId, entityName, action);
-		
-		List<CareerDescriptionContent> careerDescriptionContents = careerDescription.getCareerDescriptionContents();
-		List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();
-		
-		for(CareerDescriptionContent careerDescriptionContent : careerDescriptionContents) {
-			careerDescriptionContentResponseDtos.add(CareerDescriptionContentResponseDto.from(careerDescriptionContent));
+			assertUtil.assertId(id, ownerId, entityName, action);
+			
+			List<CareerDescriptionContent> careerDescriptionContents = careerDescription.getCareerDescriptionContents();
+			List<CareerDescriptionContentResponseDto> careerDescriptionContentResponseDtos = new ArrayList<>();
+			
+			for(CareerDescriptionContent careerDescriptionContent : careerDescriptionContents) {
+				careerDescriptionContentResponseDtos.add(CareerDescriptionContentResponseDto.from(careerDescriptionContent));
+			}
+			
+			
+			CareerDescriptionResponseDto careerDescriptionResponseDto = CareerDescriptionResponseDto.of(careerDescription, careerDescriptionContentResponseDtos);
+			
+			careerDescriptionMap.put("careerDescriptionResponseDto", careerDescriptionResponseDto);
 		}
 		
-		
-		CareerDescriptionResponseDto careerDescriptionResponseDto = CareerDescriptionResponseDto.of(careerDescription, careerDescriptionContentResponseDtos);
-
-		Map<String, Object> careerDescriptionMap = new HashMap<>();
-		careerDescriptionMap.put("careerDescriptionResponseDto", careerDescriptionResponseDto);
 		String careerDescriptionJson = null;
 		
 		

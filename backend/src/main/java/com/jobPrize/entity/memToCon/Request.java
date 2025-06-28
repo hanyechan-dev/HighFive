@@ -91,7 +91,7 @@ public class Request {
 	}
 	
 	public void updateRequestStatus (RequestStatus requestStatus) {
-		this.requestStatus =requestStatus;
+		this.requestStatus = requestStatus;
 	}
 
 }

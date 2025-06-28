@@ -1,5 +1,6 @@
 package com.jobPrize.entity.member;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +9,13 @@ import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.entity.memToCon.Request;
+import com.jobPrize.enumerate.EmbeddingStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -44,8 +48,15 @@ public class Member {
 	@Column(nullable = false)
 	private String nickname;
 	
+	@Column(name="update_time")
+	private LocalDateTime updateTime;
+	
 	@Column(name = "member-vector", columnDefinition = "MEDIUMTEXT")
 	private String memberVector;
+	
+	@Column(name = "embedding_status")
+	@Enumerated(EnumType.STRING)
+	private EmbeddingStatus embeddingStatus = EmbeddingStatus.PENDING;
 	
 	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Education> educations = new ArrayList<>();
@@ -86,6 +97,14 @@ public class Member {
     
     public void updateVector(String vector) {
     	this.memberVector=vector;
+    }
+    
+    public void updateTime(LocalDateTime updateTime) {
+    	this.updateTime=updateTime;
+    }
+    
+    public void updateEmbeddingStatus(EmbeddingStatus embeddingStatus) {
+    	this.embeddingStatus = embeddingStatus;
     }
 
     public static Member from(User user, String nickname) {

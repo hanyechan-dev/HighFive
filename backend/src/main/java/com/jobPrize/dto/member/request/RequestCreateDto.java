@@ -19,7 +19,8 @@ public class RequestCreateDto {
     @Size(max = 20, message = "희망 기업은 20자 이하로 입력해야합니다.")
     private String targetCompanyName;
     
-    private String ConsultingType;
+    @NotNull(message = "컨설팅타입은 필수로 입력해야합니다.")
+    private String consultingType;
     
     @NotNull(message = "자기소개서는 필수로 선택해야합니다.")
     private Long coverLetterId;

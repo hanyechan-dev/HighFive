@@ -3,10 +3,10 @@ import type { RootState } from "../common/store/store";
 import AuthUtil from "../common/utils/AuthUtil";
 import AdminRouter from "./routers/AdminRouter";
 import CompanyRouter from "./routers/CompanyRouter";
-import MemberRouter from "./routers/MemberRouter";
 import { closeAuthModal } from "../common/slices/AuthModalSlice";
 import { AuthProvider } from "./auth/contexts/AuthProvider";
 import AuthModal from "./auth/modals/AuthModal";
+import MemberRouter from "./routers/memberRouter";
 
 
 const AppRouter = () => {

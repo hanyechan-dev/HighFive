@@ -117,6 +117,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	// 구독 만료 시, 구독 상태 자동 업데이트
 	@Override
 	@Scheduled(cron = "0 0 0 * * *") // 매일마다 실행
+	@Transactional
 	public void updateStatus() {
 		LocalDate now = LocalDate.now();
 

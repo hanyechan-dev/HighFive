@@ -1,5 +1,6 @@
 package com.jobPrize.service.member.education;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +15,10 @@ import com.jobPrize.dto.member.education.EducationUpdateDto;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.UserType;
+import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
-import com.jobPrize.util.TextBuilder;
-import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,12 +30,10 @@ public class EducationServiceImpl implements EducationService {
 	private final EducationRepository educationRepository;
 	
 	private final MemberRepository memberRepository;
+	
+	private final SimilarityRepository similarityRepository;
 
 	private final AssertUtil assertUtil;
-	
-	private final WebClientUtil webClientUtil;
-	
-	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "학력";
 
@@ -59,11 +57,9 @@ public class EducationServiceImpl implements EducationService {
 
         educationRepository.save(education);
         
-		String data = textBuilder.getMemberStringForEmbedding(member);
-		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+        member.updateTime(LocalDateTime.now());
+        
+        similarityRepository.deleteByMember(member);
         
         return EducationResponseDto.from(education);
 		
@@ -107,11 +103,9 @@ public class EducationServiceImpl implements EducationService {
 		
 		Member member = education.getMember();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		similarityRepository.deleteByMember(member);
 		
 		return EducationResponseDto.from(education);
 	}
@@ -135,11 +129,9 @@ public class EducationServiceImpl implements EducationService {
         
         educationRepository.flush();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
-		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+        member.updateTime(LocalDateTime.now());
+        
+        similarityRepository.deleteByMember(member);
 		
 	}
 	

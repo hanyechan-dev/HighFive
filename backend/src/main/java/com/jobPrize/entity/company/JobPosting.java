@@ -9,6 +9,7 @@ import com.jobPrize.dto.company.jobPosting.JobPostingUpdateDto;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.Similarity;
 import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.EmbeddingStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -73,6 +74,10 @@ public class JobPosting {
 	
 	@Column(name = "job-posting-vector", columnDefinition = "MEDIUMTEXT")
 	private String jobPostingVector;
+	
+	@Column(name = "embedding_status")
+	@Enumerated(EnumType.STRING)
+	private EmbeddingStatus embeddingStatus = EmbeddingStatus.PENDING;
 
 	@Column(name = "created_date", nullable = false)
 	private LocalDate createdDate;
@@ -101,7 +106,15 @@ public class JobPosting {
 		this.requirement = jobPostingUpdateDto.getRequirement();
 	}
 
-	public static JobPosting of(Company company, JobPostingCreateDto jobPostingCreateDto, String jobPostingVector) {
+    public void updateEmbeddingStatus(EmbeddingStatus embeddingStatus) {
+    	this.embeddingStatus = embeddingStatus;
+    }
+    
+    public void updateVector(String vector) {
+    	this.jobPostingVector=vector;
+    }
+	
+	public static JobPosting of(Company company, JobPostingCreateDto jobPostingCreateDto) {
 		return JobPosting.builder()
 			.company(company)
 			.title(jobPostingCreateDto.getTitle())
@@ -112,7 +125,6 @@ public class JobPosting {
 			.careerType(jobPostingCreateDto.getCareerType())
 			.educationLevel(EducationLevel.valueOf(jobPostingCreateDto.getEducationLevel()))
 			.salary(jobPostingCreateDto.getSalary())
-			.jobPostingVector(jobPostingVector)
 			.createdDate(LocalDate.now())
 			.expiredDate(LocalDate.now().plusMonths(1))
 			.requirement(jobPostingCreateDto.getRequirement())

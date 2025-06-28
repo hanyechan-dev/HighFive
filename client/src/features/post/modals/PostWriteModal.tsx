@@ -5,6 +5,7 @@ import CommonModal from "../../../common/modals/CommonModal";
 import Button from "../../../common/components/button/Button";
 import { createPost } from "../apis/PostApi";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
+import Input from "../../../common/components/input/Input";
 
 interface PostWriteProps {
     onClose: () => void;
@@ -40,18 +41,18 @@ function PostWrite({ onClose }: PostWriteProps) {
     };
 
     return (
-        <CommonModal size="m" onClose={onClose}>
+        <CommonModal size="l" onClose={onClose}>
             <ModalTitle title={"게시글 작성"} />
-            <TextArea
-                size="m"
+            <Input
+                size="l"
                 label="제목"
                 placeholder="제목을 입력하세요"
                 disabled={false}
                 value={title}
-                setValue={setTitle}
-            />
+                setValue={setTitle} type={"text"}            />
+
             <TextArea
-                size="m"
+                size="l"
                 label="내용"
                 placeholder="내용을 입력하세요"
                 disabled={false}

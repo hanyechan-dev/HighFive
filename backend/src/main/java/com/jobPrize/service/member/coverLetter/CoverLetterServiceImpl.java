@@ -1,5 +1,6 @@
 package com.jobPrize.service.member.coverLetter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +18,12 @@ import com.jobPrize.entity.member.CoverLetter;
 import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.UserType;
+import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.coverLetter.CoverLetterRepository;
+import com.jobPrize.repository.member.coverLetterContent.CoverLetterContentRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.coverLetterContent.CoverLetterContentService;
 import com.jobPrize.util.AssertUtil;
-import com.jobPrize.util.TextBuilder;
-import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,14 +35,14 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	private final CoverLetterRepository coverLetterRepository;
 
 	private final MemberRepository memberRepository;
+	
+	private final CoverLetterContentRepository coverLetterContentRepository;
+	
+	private final SimilarityRepository similarityRepository;
 
 	private final CoverLetterContentService coverLetterContentService;
 
 	private final AssertUtil assertUtil;
-	
-	private final WebClientUtil webClientUtil;
-	
-	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "자기소개서";
 
@@ -67,11 +68,9 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		similarityRepository.deleteByMember(member);
 		
 		return CoverLetterResponseDto.of(coverLetter, coverLetterContentResponseDtos);
 	}
@@ -129,7 +128,7 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		
 		coverLetter.updateCoverLetter(coverLetterUpdateDto);
 		
-		coverLetter.getCoverLetterContents().clear();
+		coverLetterContentRepository.deleteByCoverLetter(coverLetter);
 		
 		List<CoverLetterContentCreateDto> coverLetterContentCreateDtos = coverLetterUpdateDto.getContents();
 		List<CoverLetterContentResponseDto> coverLetterContentResponseDtos = new ArrayList<>();
@@ -140,12 +139,9 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		
 		Member member = coverLetter.getMember();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
-		
+		similarityRepository.deleteByMember(member);
 		
 		return CoverLetterResponseDto.of(coverLetter, coverLetterContentResponseDtos);
 	}
@@ -169,11 +165,9 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		
 		coverLetterRepository.flush();
 		
-		String data = textBuilder.getMemberStringForEmbedding(member);
+		member.updateTime(LocalDateTime.now());
 		
-		String vector = webClientUtil.sendEmbeddingRequestMember(data);
-		
-		member.updateVector(vector);
+		similarityRepository.deleteByMember(member);
 		
 	}
 

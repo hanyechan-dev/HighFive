@@ -22,5 +22,7 @@ public interface JobPostingService {
 	void updateJobPosting(Long id, UserType userType, ApprovalStatus approvalStatus, boolean isSubscribed,JobPostingUpdateDto jobPostingUpdateDto, JobPostingImageCreateListDto jobPostingImageCreateListDto);
 	
 	void deleteJobPosting(Long id, Long jobPostingId);
+	
+	public void calcVector();
 
 }
