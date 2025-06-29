@@ -6,9 +6,9 @@ import ModalTitle from "../../../common/components/title/ModalTitle";
 import CommonModal from "../../../common/modals/CommonModal";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import type { JobPostingUpdateRequest, JobPostingDetail, JobPostingSummary } from "../props/JobPostingProps";
-import { JobPostingDetailApi } from "../apis/JobPostingApi";
+import { JobPostingDetailApi, JobPostingUpdateApi } from "../apis/JobPostingApi";
 import Select from "../../../common/components/input/Select";
-import { educationLevelEnum, careerTypeEnum } from "../../../common/enum/Enum";
+import { educationLevelEnum, careerTypeEnum, jobTypeEnum } from "../../../common/enum/Enum";
 
 
 interface JobPostingUpdateModalProps {
@@ -94,6 +94,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
         setSaving(true);
         setError(null);
         try {
+            await JobPostingUpdateApi(formData, images);
             const updatedSummary: JobPostingSummary = {
                 id: formData.id,
                 title: formData.title,
@@ -129,7 +130,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
                 <Input label="근무지" placeholder="근무지를 입력하세요" size="m" disabled={false} type="text" value={formData.workLocation} setValue={v => setFormData(f => ({ ...f, workLocation: v }))} />
             </div>
             <div className="flex gap-1 mb-4">
-                <Input label="모집 부문" placeholder="모집 부문을 입력하세요" size="m" disabled={false} type="text" value={formData.job} setValue={v => setFormData(f => ({ ...f, job: v }))} />
+                <Select label="모집 부문" options={jobTypeEnum} size="m" disabled={false} value={formData.job || ""} setValue={v => setFormData(f => ({ ...f, job: v }))} />
                 <Select label="경력" options={careerTypeEnum} size="m" disabled={false} value={formData.careerType || ""} setValue={v => setFormData(f => ({ ...f, careerType: v }))} />
             </div>
             <div className="flex gap-1 mb-4">

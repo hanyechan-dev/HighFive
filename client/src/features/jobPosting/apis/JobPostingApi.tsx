@@ -24,12 +24,12 @@ export const JobPostingDetailApi = (id: number) => {
 export const JobPostingCreateApi = (data: JobPostingCreateRequest, images?: File[]) => {
   const formData = new FormData();
   
-  // 기본 데이터 추가
+  // JobPostingCreateDto 데이터 추가
   Object.entries(data).forEach(([key, value]) => {
     formData.append(key, value.toString());
   });
   
-  // 이미지 파일들 추가
+  // JobPostingImageCreateListDto 데이터 추가
   if (images && images.length > 0) {
     images.forEach((image, index) => {
       formData.append(`jobPostingImageCreateListDto.jobPostingImageCreateDtos[${index}].image`, image);
@@ -43,12 +43,12 @@ export const JobPostingCreateApi = (data: JobPostingCreateRequest, images?: File
 export const JobPostingUpdateApi = (data: JobPostingUpdateRequest, images?: File[]) => {
   const formData = new FormData();
   
-  // 기본 데이터 추가
+  // JobPostingUpdateDto 데이터 추가
   Object.entries(data).forEach(([key, value]) => {
     formData.append(key, value.toString());
   });
   
-  // 이미지 파일들 추가
+  // JobPostingImageCreateListDto 데이터 추가
   if (images && images.length > 0) {
     images.forEach((image, index) => {
       formData.append(`jobPostingImageCreateListDto.jobPostingImageCreateDtos[${index}].image`, image);
