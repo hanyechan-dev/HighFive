@@ -4,7 +4,6 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import type { CertificationResponseDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
-import { validateCertification } from "../../../common/utils/ValidationUtil";
 
 interface CertificationInfoForMyPageProps {
     certificationResponseDto: CertificationResponseDto;
@@ -44,11 +43,7 @@ const CertificationInfoForMyPage = ({ certificationResponseDto }: CertificationI
         setIsChangeButtonClicked(true);
     }
     const onClickSaveButton = () => {
-        const validationMessage = validateCertification(certification);
-        if (validationMessage) {
-            alert(validationMessage);
-            return;
-        }
+
         updateCertification(certification);
         setIsChangeButtonClicked(false);
     }

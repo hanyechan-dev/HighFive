@@ -4,7 +4,6 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import type { EducationCreateDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
-import { validateEducation } from "../../../common/utils/ValidationUtil";
 import Select from "../../../common/components/input/Select";
 import { educationLevelEnum, regionEnum } from "../../../common/enum/Enum";
 
@@ -56,11 +55,6 @@ const EducationCreate = ({ setIsAddEducationMode }: EducationCreateProps) => {
     }
     const onClickSaveButton = () => {
 
-        const validationMessage = validateEducation(education);
-        if (validationMessage) {
-            alert(validationMessage);
-            return;
-        }
 
         createEducation(education);
         setIsChangeButtonClicked(false);

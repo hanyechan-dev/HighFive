@@ -4,7 +4,6 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import type { LanguageTestResponseDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
-import { validateLanguageTest } from "../../../common/utils/ValidationUtil";
 
 interface LanguageTestInfoForMyPageProps {
     languageTestResponseDto: LanguageTestResponseDto;
@@ -45,11 +44,7 @@ const LanguageTestInfoForMyPage = ({ languageTestResponseDto }: LanguageTestInfo
         setIsChangeButtonClicked(true);
     }
     const onClickSaveButton = () => {
-        const validationMessage = validateLanguageTest(languageTest);
-        if (validationMessage) {
-            alert(validationMessage);
-            return;
-        }
+
         updateLanguageTest(languageTest);
         setIsChangeButtonClicked(false);
     }

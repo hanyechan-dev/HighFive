@@ -4,7 +4,6 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import type { CareerResponseDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
-import { validateCareer } from "../../../common/utils/ValidationUtil";
 
 interface CareerInfoForMyPageProps {
     careerResponseDto: CareerResponseDto;
@@ -44,12 +43,6 @@ const CareerInfoForMyPage = ({ careerResponseDto }: CareerInfoForMyPageProps) =>
         setIsChangeButtonClicked(true);
     }
     const onClickSaveButton = () => {
-
-        const validationMessage = validateCareer(career);
-        if (validationMessage) {
-            alert(validationMessage);
-            return;
-        }
         updateCareer(career);
         setIsChangeButtonClicked(false);
     }

@@ -4,7 +4,6 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import type { CareerCreateDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
-import { validateCareer } from "../../../common/utils/ValidationUtil";
 import Select from "../../../common/components/input/Select";
 import { jobTypeEnum } from "../../../common/enum/Enum";
 
@@ -51,11 +50,6 @@ const CareerCreate = ({setIsAddCareerMode }: CareerCreateProps) => {
         setIsChangeButtonClicked(true);
     }
     const onClickSaveButton = () => {
-        const validationMessage = validateCareer(career);
-        if (validationMessage) {
-            alert(validationMessage);
-            return;
-        }
         createCareer(career);
         setIsChangeButtonClicked(false);
         setIsAddCareerMode(false);

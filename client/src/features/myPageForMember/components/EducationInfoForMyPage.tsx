@@ -4,7 +4,6 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import type { EducationResponseDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
-import { validateEducation } from "../../../common/utils/ValidationUtil";
 
 interface EducationInfoForMyPageProps {
     educationResponseDto: EducationResponseDto;
@@ -46,11 +45,7 @@ const EducationInfoForMyPage = ({ educationResponseDto }: EducationInfoForMyPage
         setIsChangeButtonClicked(true);
     }
     const onClickSaveButton = () => {
-        const validationMessage = validateEducation(education);
-        if (validationMessage) {
-            alert(validationMessage);
-            return;
-        }
+
 
         updateEducation(education);
         setIsChangeButtonClicked(false);

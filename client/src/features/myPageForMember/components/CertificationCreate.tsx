@@ -4,7 +4,6 @@ import Button from "../../../common/components/button/Button";
 import Input from "../../../common/components/input/Input";
 import type { CertificationCreateDto } from "../props/myPageForMemberProps";
 import { useDocumentTabApi } from "../customHooks/DocumentTab/useDocumentTabApi";
-import { validateCertification } from "../../../common/utils/ValidationUtil";
 
 interface CertificationCreateProps {
     setIsAddCertificationMode: (isAddCertificationMode: boolean) => void
@@ -49,11 +48,7 @@ const CertificationCreate = ({setIsAddCertificationMode }: CertificationCreatePr
         setIsChangeButtonClicked(true);
     }
     const onClickSaveButton = () => {
-        const validationMessage = validateCertification(certification);
-        if (validationMessage) {
-            alert(validationMessage);
-            return;
-        }
+
         createCertification(certification);
         setIsChangeButtonClicked(false);
         setIsAddCertificationMode(false);
