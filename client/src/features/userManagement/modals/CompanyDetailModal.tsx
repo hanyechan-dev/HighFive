@@ -47,7 +47,7 @@ const CompanyDetail = ({ id, onClose }: CompanyDetailProps) => {
                     businessNumber: data.businessNumber,
                     companyAddress: data.companyAddress,
                     companyPhone: data.companyPhone,
-                    companyType: data.type,
+                    companyType: data.companyType,
                     employeeCount: data.employeeCount,
                     introduction: data.introduction
                 };

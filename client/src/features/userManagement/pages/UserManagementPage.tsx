@@ -98,8 +98,10 @@ const UserManagementPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (pageMode !== "회원 조회") return;
+
             try {
                 let res;
+
                 if (userType === "일반회원") {
                     res = await memberPageClick(clickedPage - 1, elementsPerPage);
                 } else if (userType === "기업회원") {
@@ -107,16 +109,19 @@ const UserManagementPage = () => {
                 } else {
                     res = await consultantPageClick(clickedPage - 1, elementsPerPage);
                 }
-                if (res) {
-                    setMembers(res.data.content);
-                    setTotalElements(res.data.totalElements);
 
-                    console.log("응답:", res);
+                if (res) {
+                    let filtered = res.data.content;
+
+
+                    setMembers(filtered);
+                    setTotalElements(res.data.totalElements);
                 }
             } catch (err) {
                 console.error(err);
             }
         };
+
         fetchData();
     }, [pageMode, userType, clickedPage]);
 

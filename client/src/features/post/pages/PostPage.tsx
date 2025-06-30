@@ -4,11 +4,12 @@ import PostWrite from "../modals/PostWriteModal";
 import PostDetailModal from "../modals/PostDetailModal";
 import CommonPage from "../../../common/pages/CommonPage";
 import Pagination from "../../../common/components/pagination/Pagination";
-import { readPostPage } from "../apis/PostApi";
+import { readPostDetail, readPostPage } from "../apis/PostApi";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import PostList from "../components/PostList";
 import EmptyState from "../../../common/components/emptyState/EmptyState";
 import PageTitle from "../../../common/components/title/PageTitle";
+import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 
 interface PostSummaryDto {
     id: number;
@@ -95,6 +96,23 @@ function PostPage() {
     };
 
 
+   function handleUpdatePost(postId: number): void {
+    readPostDetail(postId)
+        .then(res => {
+            const { title, content } = res.data;
+
+            // 기존 리스트에서 해당 게시글만 교체
+            setPosts(prev =>
+                prev.map(post =>
+                    post.id === postId ? { ...post, title, content } : post
+                )
+            );
+        })
+        .catch(err => {
+            printErrorInfo(err);
+        });
+}
+
     return (
         <>
             <CommonPage>
@@ -150,6 +168,7 @@ function PostPage() {
                     nicknameOrName={selectedAuthorName}
                     onClose={closeDetailModal}
                     onUpdateCommentCount={handleUpdateCommentCount}
+                    onUpdatePost={handleUpdatePost}
                 />
             )
             }

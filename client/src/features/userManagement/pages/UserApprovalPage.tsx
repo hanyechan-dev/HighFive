@@ -67,7 +67,7 @@ const UserApprovalPage = () => {
                         checkedText={approvalType}
                         setCheckedText={(value) => setApprovalType(value as "기업회원" | "컨설턴트회원")} itemNumber={2}                    />
                 </div>
-                <div className="mb-[-24px]">
+                <div className="mb-[-24px] mr-[50px]">
                     <Button color={"theme"} size={"s"} disabled={false} text={"가입 승인"} type={"button"} onClick={handleApprove} />
                     <Button color={"action"} size={"s"} disabled={false} text={"거절"} type={"button"} onClick={handleReject} />
                 </div>
