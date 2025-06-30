@@ -19,6 +19,7 @@ interface PostDetailModalProps {
     nicknameOrName: string;
     onClose: () => void;
     onUpdateCommentCount?: (postId: number) => void;
+    onUpdatePost? : (postId:number) => void;
 }
 
 
@@ -28,7 +29,7 @@ interface CommentResponseDto {
     content: string;
     createdDate: string;
 }
-function PostDetailModal({ postId, onClose, onUpdateCommentCount}: PostDetailModalProps) {
+function PostDetailModal({ postId, onClose, onUpdateCommentCount, onUpdatePost}: PostDetailModalProps) {
 
     const dispatch = useDispatch();
 
@@ -91,6 +92,10 @@ function PostDetailModal({ postId, onClose, onUpdateCommentCount}: PostDetailMod
                 content: content
             };
             await updatePost(dto);
+            
+            if(onUpdatePost) {
+                onUpdatePost(postId)
+            }
         } catch (err) {
             printErrorInfo(err);
         }

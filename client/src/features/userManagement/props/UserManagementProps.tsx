@@ -42,18 +42,27 @@ export interface UserManagementSummaryDto {
     createdDate: string
 }
 
+export interface UserItem {
+  userManagementSummaryDto: UserManagementSummaryDto;
+  approvalState: "APPROVED" | "WAITING" | "REJECTED";
+}
+
+
 export interface CompanyManagementSummaryDto {
-    companyName: string
-    userManagementSummaryDto : UserManagementSummaryDto
+  companyName: string;
+  userManagementSummaryDto: UserManagementSummaryDto;
+  approvalState: "APPROVED" | "WAITING" | "REJECTED";
 }
 
-export interface  MemberManagementSummaryDto{
-    nickName: string
-    userManagementSummaryDto : UserManagementSummaryDto
+export interface ConsultantManagementSummaryDto {
+  userManagementSummaryDto: UserManagementSummaryDto;
+  approvalState: "APPROVED" | "WAITING" | "REJECTED";
 }
 
-export interface ConsultantManagementSummaryDto{
-    userManagementSummaryDto : UserManagementSummaryDto
+export interface MemberManagementSummaryDto {
+  nickName: string;
+  userManagementSummaryDto: UserManagementSummaryDto;
+  approvalState: "APPROVED" | "WAITING" | "REJECTED";
 }
 
 
