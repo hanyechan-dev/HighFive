@@ -42,20 +42,27 @@ public class EditPromptController {
 		
 		EditPromptSettingResponseDto editPromptSettingResponseDto = EditPromptSettingResponseDto.builder()
 				.list(list)
-				.applied(applied)
+				.applied(applied != null ? applied : null)
 				.build();
 		
 		return ResponseEntity.status(HttpStatus.OK).body(editPromptSettingResponseDto);
 	}
 	
+	@PostMapping("/datail")
+	public ResponseEntity<EditPromptResponseDto> readEditPropmt(@RequestBody @Valid IdDto editPromptId){
+		UserType userType = SecurityUtil.getUserType();
+		EditPromptResponseDto editPromptResponseDto = editPromptService.readEditPrompt(userType, editPromptId.getId());
+		return ResponseEntity.status(HttpStatus.OK).body(editPromptResponseDto);
+	}
+	
 	@PostMapping	
-	public ResponseEntity<Void> createEditPrompt(@RequestBody @Valid EditPromptCreateDto dto) {
+	public ResponseEntity<EditPromptResponseDto> createEditPrompt(@RequestBody @Valid EditPromptCreateDto dto) {
 		
 		UserType userType = SecurityUtil.getUserType();
 		
-		editPromptService.createEditPrompt(userType, dto);
+		EditPromptResponseDto editPromptResponseDto = editPromptService.createEditPrompt(userType, dto);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(editPromptResponseDto);
 	}
 
 	@PutMapping	

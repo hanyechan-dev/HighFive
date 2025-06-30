@@ -28,66 +28,70 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/feedback-prompts")
 @RequiredArgsConstructor
 public class FeedbackPromptController {
-	
+
 	private final FeedbackPromptService feedbackPromptService;
-	
+
 	@GetMapping
-public ResponseEntity<FeedbackPromptSettingResponseDto> readFeedbackPromptSetting(){
-		
+	public ResponseEntity<FeedbackPromptSettingResponseDto> readFeedbackPromptSetting() {
+
 		UserType userType = SecurityUtil.getUserType();
-		
+
 		FeedbackPromptResponseDto applied = feedbackPromptService.readAppliedFeedbackPrompt(userType);
-		
-		List<FeedbackPromptSummaryDto> list =feedbackPromptService.readAllList(userType);
-		
+
+		List<FeedbackPromptSummaryDto> list = feedbackPromptService.readAllList(userType);
+
 		FeedbackPromptSettingResponseDto feedbackPromptSettingResponseDto = FeedbackPromptSettingResponseDto.builder()
-				.list(list)
-				.applied(applied)
-				.build();
-		
+				.list(list).applied(applied != null ? applied : null).build();
+
 		return ResponseEntity.status(HttpStatus.OK).body(feedbackPromptSettingResponseDto);
 	}
 
-	
-	@PostMapping	
-	public ResponseEntity<Void> createFeedbackPrompt(@RequestBody @Valid FeedbackPromptCreateDto dto) {
-		
+	@PostMapping("/datail")
+	public ResponseEntity<FeedbackPromptResponseDto> readFeedbackPropmt(@RequestBody @Valid IdDto feedbackPromptId) {
 		UserType userType = SecurityUtil.getUserType();
-		
-		feedbackPromptService.createFeedbackPrompt(userType, dto);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.readFeedbackPrompt(userType,
+				feedbackPromptId.getId());
+		return ResponseEntity.status(HttpStatus.OK).body(feedbackPromptResponseDto);
 	}
-	
-	@PutMapping		
-	public ResponseEntity<Void> updateFeedbackPrompt (@RequestBody @Valid FeedbackPromptUpdateDto dto) {
-		
+
+	@PostMapping
+	public ResponseEntity<FeedbackPromptResponseDto> createFeedbackPrompt(
+			@RequestBody @Valid FeedbackPromptCreateDto dto) {
+
 		UserType userType = SecurityUtil.getUserType();
-		
-		feedbackPromptService.updateFeedbackPrompt(userType,dto);
-		
+
+		FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.createFeedbackPrompt(userType, dto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(feedbackPromptResponseDto);
+	}
+
+	@PutMapping
+	public ResponseEntity<Void> updateFeedbackPrompt(@RequestBody @Valid FeedbackPromptUpdateDto dto) {
+
+		UserType userType = SecurityUtil.getUserType();
+
+		feedbackPromptService.updateFeedbackPrompt(userType, dto);
+
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
-	
 
-	
 	@PutMapping("/application")
 	public ResponseEntity<Void> applyFeedbackPrompt(@RequestBody @Valid IdDto feedbackPromptId) {
-		
+
 		UserType userType = SecurityUtil.getUserType();
-		
+
 		feedbackPromptService.applyFeedbackPrompt(userType, feedbackPromptId.getId());
-		
+
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-			
+
 	}
-	
+
 	@PostMapping("/deletion")
 	public ResponseEntity<Void> deleteFeedbackPrompt(@RequestBody @Valid IdDto feedbackPromptId) {
-		
+
 		UserType userType = SecurityUtil.getUserType();
-		
+
 		feedbackPromptService.deleteFeedbackPrompt(userType, feedbackPromptId.getId());
-		
+
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

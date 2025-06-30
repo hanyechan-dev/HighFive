@@ -10,7 +10,7 @@ import com.jobPrize.enumerate.UserType;
 
 public interface EditPromptService {
 	
-	void createEditPrompt(UserType userType, EditPromptCreateDto dto);
+	EditPromptResponseDto createEditPrompt(UserType userType, EditPromptCreateDto dto);
 	
 	void updateEditPrompt(UserType userType, EditPromptUpdateDto dto);
 	

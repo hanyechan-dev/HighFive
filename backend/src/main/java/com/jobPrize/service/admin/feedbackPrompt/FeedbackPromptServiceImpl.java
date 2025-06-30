@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobPrize.customException.CustomEntityNotFoundException;
+import com.jobPrize.dto.admin.editPrompt.EditPromptResponseDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptCreateDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptResponseDto;
 import com.jobPrize.dto.admin.feedbackPrompt.FeedbackPromptSummaryDto;
@@ -32,7 +33,7 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 	private final static UserType ALLOWED_USER_TYPE = UserType.관리자;
 
 	@Override
-	public void createFeedbackPrompt(UserType userType, FeedbackPromptCreateDto dto) {
+	public FeedbackPromptResponseDto createFeedbackPrompt(UserType userType, FeedbackPromptCreateDto dto) {
 		
 		String action = "작성";
 		
@@ -41,6 +42,8 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 		FeedbackPrompt prompt = FeedbackPrompt.createFrom(dto);
 	
 		feedbackPromptRepository.save(prompt);
+		
+		return FeedbackPromptResponseDto.from(prompt);
 	}
 
 	@Override
@@ -110,10 +113,9 @@ public class FeedbackPromptServiceImpl implements FeedbackPromptService {
 		
 		assertUtil.assertUserType(userType, ALLOWED_USER_TYPE, ENTITY_NAME, action);
 		
-		FeedbackPrompt feedbackPrompt = feedbackPromptRepository.findAppliedPrompt()
-				 .orElseThrow(() -> new CustomEntityNotFoundException("적용된 " + ENTITY_NAME));
-
-		 return FeedbackPromptResponseDto.from(feedbackPrompt);
+		return feedbackPromptRepository.findAppliedPrompt()
+	            .map(FeedbackPromptResponseDto::from)
+	            .orElse(null);
 
 	}
 

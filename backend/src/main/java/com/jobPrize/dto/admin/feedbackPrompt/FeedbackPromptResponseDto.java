@@ -12,7 +12,6 @@ public class FeedbackPromptResponseDto {
 	private Long id;
 	private String title;
 	private String content;
-	private boolean isApplied;
 	
 	public static FeedbackPromptResponseDto from(FeedbackPrompt feedbackPrompt) {
 		return FeedbackPromptResponseDto
@@ -20,7 +19,6 @@ public class FeedbackPromptResponseDto {
 				.id(feedbackPrompt.getId())
 				.title(feedbackPrompt.getTitle())
 				.content(feedbackPrompt.getContent())
-				.isApplied(feedbackPrompt.isApplied())
 				.build();
 	}
 

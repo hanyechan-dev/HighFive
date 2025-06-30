@@ -10,7 +10,7 @@ import com.jobPrize.enumerate.UserType;
 
 public interface FeedbackPromptService {
 
-	void createFeedbackPrompt(UserType userType, FeedbackPromptCreateDto dto);
+	FeedbackPromptResponseDto createFeedbackPrompt(UserType userType, FeedbackPromptCreateDto dto);
 
 	void updateFeedbackPrompt(UserType userType, FeedbackPromptUpdateDto dto );
 

@@ -11,7 +11,6 @@ public class EditPromptResponseDto {
 	private Long id;
 	private String title;
 	private String content;
-	private boolean isApplied;
 	
 	public static EditPromptResponseDto from(EditPrompt editPrompt) {
 		return EditPromptResponseDto
@@ -19,7 +18,6 @@ public class EditPromptResponseDto {
 				.id(editPrompt.getId())
 				.title(editPrompt.getTitle())
 				.content(editPrompt.getContent())
-				.isApplied(editPrompt.isApplied())
 				.build();
 						
 	}
