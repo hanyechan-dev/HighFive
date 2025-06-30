@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface ChatState {
   // 새로 채팅을 시작할 대상 유저 정보를 담을 상태
-  newChatTarget: { id: number; name: string } | null;
+  newChatTarget: { id: number; name: string; avatar: string ; step: 1 | 2 } | null;
 }
 
 const initialState: ChatState = {
@@ -14,7 +14,12 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     // 채팅 시작을 요청하는 액션
-    startNewChat: (state, action: PayloadAction<{ id: number; name: string }>) => {
+    startNewChat: (state, action: PayloadAction<{
+      id: number;
+      name: string;
+      avatar: string;
+      step: 1 | 2
+    }>) => {
       state.newChatTarget = action.payload;
     },
     // 채팅방이 만들어진 후, 상태를 초기화하는 액션
