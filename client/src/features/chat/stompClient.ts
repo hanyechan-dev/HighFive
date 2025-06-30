@@ -7,16 +7,19 @@ let isConnected = false;
 let subscriptions: { [key: string]: StompSubscription } = {};
 
 // 콜백 등록부
-let onMessageCallback: ((message: IMessage) => void) | null = null;
+let onMessageCallbacks: ((message: IMessage) => void)[] | null = null;
 
-// 메시지 수신 시 콜백 등록 (Chat.tsx에서 사용)
+// 메시지 콜백 등록
 export const registerMessageCallback = (callback: (message: IMessage) => void) => {
-    onMessageCallback = callback;
+    if(onMessageCallbacks != null){
+        onMessageCallbacks.push(callback);
+        return onMessageCallbacks.length - 1; // 추후 언마운트를 위해 콜백 인덱스 반환
+    } else { console.log("onMessageCallbacks이 null입니다.")}
 };
 
-// 메시지 수신 콜백 해제 (Chat.tsx에서 사용)
+// 특정 콜백 해제
 export const unregisterMessageCallbacks = () => {
-    onMessageCallback = null;
+    onMessageCallbacks = null;
 };
 
 export const getStompClient = (): Client | null => {
@@ -108,8 +111,12 @@ export const subscribeToTopic = (roomId: number) => {
         console.log(`Subscribing to ${topic}`);
         const subscription = stompClient.subscribe(topic, (message: IMessage) => {
             // 등록된 메시지 처리 콜백이 있다면 실행
-            if (onMessageCallback) {
-                onMessageCallback(message);
+            if (onMessageCallbacks) {
+                onMessageCallbacks.forEach((callback) => {
+                    if(message){
+                        callback(message);
+                    }
+                })
             }
         });
         // 구독 객체(StompSubscription)를 저장하여 관리

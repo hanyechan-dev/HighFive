@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import type { IMessage } from "@stomp/stompjs";
 import { type RootState } from "../../common/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { MessageCircle, X, Send, User } from "lucide-react";
+import { MessageCircle, X, Send, User, MessageCircleWarning } from "lucide-react";
 import AuthUtil from "../../common/utils/AuthUtil";
 import {
   getStompClient,
@@ -17,6 +17,8 @@ import { ScrollArea } from "../../common/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../../common/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../common/components/ui/dialog";
 import { Input } from "../../common/components/ui/input";
+import { addUnreadChat, removeUnreadChat, selectUnreadChatRooms } from "../notification/NotificationSlice";
+import { toast } from "sonner";
 
 interface ChatRoom {
   chatRoomId: number;
@@ -40,6 +42,7 @@ interface ChatMessage {
 // SockJS와 Stomp를 이용해서 웹 소켓 서버로 연결하고 메시지를 주고 받는 기능 구현
 const Chat = () => {
   const token = useSelector((state: RootState) => state.auth.accessToken); // 토큰 획득
+  const unreadChatRooms = useSelector(selectUnreadChatRooms);
   const chatTarget = useSelector(
     (state: RootState) => state.chat.newChatTarget
   ); // 채팅 상대 정보 획득(id, name)
@@ -128,6 +131,22 @@ const Chat = () => {
         setChatHistory((prevHistory) => [...prevHistory, receivedMessage]);
       } else {
         console.log("TEST: 읽지 않은 메시지가 있습니다.");
+        dispatch(addUnreadChat(receivedMessage.chatRoomId)); // 읽지 않은 채팅방 추가
+
+        toast.message(`새로운 메시지: ${receivedMessage.name}`, {
+          description: receivedMessage.content,
+          action: {
+            label: "보러가기",
+            onClick: () => {
+              // Toast 클릭 시 해당 채팅방으로 바로 이동
+              handleChatSelect({
+                chatRoomId: receivedMessage.chatRoomId,
+                name: receivedMessage.name,
+                receiverId: receivedMessage.senderId
+              })
+            },
+          },
+        });
       }
     },
     [chatRoomId]
@@ -140,8 +159,8 @@ const Chat = () => {
 
   // Chat 컴포넌트 언마운트 시 콜백 함수 해제
   useEffect(() => {
-    return() => {
-        unregisterMessageCallbacks();
+    return () => {
+      unregisterMessageCallbacks();
     }
   }, [])
 
@@ -210,6 +229,7 @@ const Chat = () => {
     setTargetId(chatRoom.receiverId);
     setShowChatList(false);
     setSelectedChat(true);
+    dispatch(removeUnreadChat(chatRoom.chatRoomId));
   };
 
   // 메시지 수발신 또는 다른 사용자로 로그인 시, 채팅방 리스트 자동 렌더링
@@ -270,13 +290,19 @@ const Chat = () => {
     <div className="fixed bottom-6 right-6 z-50">
       {/* 채팅 아이콘 */}
       {token && ( // 로그인 상태일 때만 채팅 아이콘 활성화
-        <Button
-          onClick={handleChatIconClick}
-          className="rounded-full w-14 h-14 bg-[#EE57CD] hover:bg-[#EE57CD]/90 shadow-lg"
-          size="icon"
-        >
-          <MessageCircle className="h-6 w-6 text-white" />
-        </Button>
+        <div className="relative">
+          <Button
+            onClick={handleChatIconClick}
+            className="rounded-full w-14 h-14 bg-[#EE57CD] hover:bg-[#EE57CD]/90 shadow-lg"
+            size="icon"
+          >
+            <MessageCircle className="w-6 h-6 text-white" />
+          </Button>
+          {/* 채팅 아이콘 배지 (읽지 않은 메시지가 있을 때) */}
+          {unreadChatRooms.length > 0 && (
+            <span className="absolute top-0 right-0 block h-3 w-3 transform -translate-y-1/2 translate-x-1/2 rounded-full bg-red-500 ring-2 ring-white" />
+          )}
+        </div>
       )}
 
       {/* 채팅 리스트 */}
@@ -306,7 +332,7 @@ const Chat = () => {
                   <Avatar className="h-10 w-10 mr-3">
                     <AvatarImage
                       src={
-                        /*mockUsers[chatRoom.chatRoomId].avatar || */ "/placeholder.svg"
+                        "/placeholder.svg"
                       }
                       alt={chatRoom.name}
                     />
@@ -314,10 +340,14 @@ const Chat = () => {
                       <User className="h-5 w-5" />
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 flex justify-between items-center">
                     <p className="font-medium text-gray-900 truncate">
                       {chatRoom.name}
                     </p>
+                    {/* 채팅방 별 배지 (읽지 않은 메시지가 있을 때) */}
+                    {unreadChatRooms.includes(chatRoom.chatRoomId) && (
+                      <MessageCircleWarning className="h-4 w-4 text-yellow-500 ml-2" /> // 느낌표 아이콘
+                    )}
                   </div>
                 </div>
               ))}
@@ -344,20 +374,20 @@ const Chat = () => {
           {/* 메시지 영역 */}
           <ScrollArea className="h-80 w-full pr-4">
             <div className="space-y-3">
-                            {chatHistory.map((message) => (
-                                <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
-                                    <div
-                                        className={`max-w-xs px-4 py-2 rounded-lg ${message.senderId === senderId
-                                            ? "bg-[#EE57CD] text-white"
-                                            : "bg-white border border-[#EE57CD] text-[#EE57CD]"
-                                            }`}
-                                    >
-                                        <p className="text-sm">{message.content}</p>
-                                    </div>
-                                    <div ref={scrollViewportRef}></div>
-                                </div>
-                            ))}
-                        </div>
+              {chatHistory.map((message) => (
+                <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-xs px-4 py-2 rounded-lg ${message.senderId === senderId
+                      ? "bg-[#EE57CD] text-white"
+                      : "bg-white border border-[#EE57CD] text-[#EE57CD]"
+                      }`}
+                  >
+                    <p className="text-sm">{message.content}</p>
+                  </div>
+                  <div ref={scrollViewportRef}></div>
+                </div>
+              ))}
+            </div>
           </ScrollArea>
 
           {/* 메시지 입력 영역 */}
