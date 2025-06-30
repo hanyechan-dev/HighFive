@@ -24,7 +24,7 @@ public class EducationCreateDto {
 	private String major;
 	
 	@Pattern(
-		    regexp = "^$|^\\s*$|^(?:[0-3](?:\\.\\d{1,2})?|4(?:\\.([0-4]|5{0,1}))?)$",
+		    regexp = "^$|^\\s*$|^(?:[0-3](?:\\.\\d{1,2})?|4(?:\\.(?:[0-4]\\d?|50?))?)$",
 		    message = "학점은 0.0 이상 4.5 이하로 입력해야합니다."
 		)
 	private String gpa;

@@ -49,9 +49,9 @@ public class EducationServiceImpl implements EducationService {
 		Member member = memberRepository.findByIdAndDeletedDateIsNull(id)
 			.orElseThrow(() -> new CustomEntityNotFoundException("회원"));
 
-        if(educationCreateDto.getEnterDate().isAfter(educationCreateDto.getGraduateDate())) {
-            throw new CustomIllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
-        }
+		if (educationCreateDto.getGraduateDate() != null && educationCreateDto.getEnterDate() != null && educationCreateDto.getEnterDate().isAfter(educationCreateDto.getGraduateDate())) {
+			throw new CustomIllegalArgumentException("졸업일은 입학일보다 빠를 수 없습니다.");
+		}
 
         Education education = Education.of(member,educationCreateDto);
 
