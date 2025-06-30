@@ -6,7 +6,7 @@ import CompanyRouter from "./routers/CompanyRouter";
 import { closeAuthModal } from "../common/slices/AuthModalSlice";
 import { AuthProvider } from "./auth/contexts/AuthProvider";
 import AuthModal from "./auth/modals/AuthModal";
-import MemberRouter from "./routers/MemberRouter";
+import MemberRouter from "./routers/memberRouter";
 
 
 const AppRouter = () => {
