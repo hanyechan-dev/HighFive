@@ -30,7 +30,7 @@ const Select = ({
 
 
     return (
-        <span>
+        <div>
             <label className={labelSetting}>{label}</label>
             <br />
             <select className={`${sizeClass[size]} ${defaultSetting}`}
@@ -44,7 +44,7 @@ const Select = ({
                     </option>
                 ))}
             </select>
-        </span>
+        </div>
     );
 }
 

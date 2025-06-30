@@ -55,7 +55,7 @@ const EducationCreate = ({ setIsAddEducationMode }: EducationCreateProps) => {
     }
     const onClickSaveButton = () => {
 
-
+        console.log(education);
         createEducation(education);
         setIsChangeButtonClicked(false);
         setIsAddEducationMode(false);
