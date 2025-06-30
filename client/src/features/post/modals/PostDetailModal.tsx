@@ -17,6 +17,7 @@ interface PostDetailModalProps {
     authorId: number;
     nicknameOrName: string;
     onClose: () => void;
+    onUpdateCommentCount?: (postId: number) => void;
 }
 
 
@@ -26,7 +27,7 @@ interface CommentResponseDto {
     content: string;
     createdDate: string;
 }
-function PostDetailModal({ postId, onClose }: PostDetailModalProps) {
+function PostDetailModal({ postId, onClose, onUpdateCommentCount}: PostDetailModalProps) {
 
     const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     const currentUserId = AuthUtil.getIdFromToken(accessToken);
@@ -60,19 +61,24 @@ function PostDetailModal({ postId, onClose }: PostDetailModalProps) {
     }, [postId]);
 
 
-    const handleCommentWrite = async () => {
-        try {
-            const dto: CommentCreateDto = {
-                postId,
-                content: comment,
-            };
-            await createComment(dto);
-            setComment("");
-            await fetchPostDetail();
-        } catch (err) {
-            printErrorInfo(err);
+   const handleCommentWrite = async () => {
+    try {
+        const dto: CommentCreateDto = {
+            postId,
+            content: comment,
+        };
+        await createComment(dto);       
+        setComment("");                
+        await fetchPostDetail();           
+
+        if (onUpdateCommentCount) {        
+            onUpdateCommentCount(postId);
         }
-    };
+    } catch (err) {
+        printErrorInfo(err);
+    }
+};
+
 
     const handlePostUpdate = async () => {
         try {

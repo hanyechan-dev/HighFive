@@ -83,6 +83,17 @@ function PostPage() {
     }, [clickedPage]);
 
 
+    const handleUpdateCommentCount = (postId: number) => {
+        setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+                post.id === postId
+                    ? { ...post, commentCount: post.commentCount + 1 }
+                    : post
+            )
+        );
+    };
+
+
     return (
         <>
             <CommonPage>
@@ -136,6 +147,7 @@ function PostPage() {
                     authorId={selectedAuthorId}
                     nicknameOrName={selectedAuthorName}
                     onClose={closeDetailModal}
+                    onUpdateCommentCount={handleUpdateCommentCount}
                 />
             )
             }
