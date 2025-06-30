@@ -49,7 +49,7 @@ public class Company {
 	@JoinColumn(name="USER_ID", nullable = false)
 	private User user;
 	
-	@JoinColumn(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
+	@Column(name = "industry", nullable = false) //DB와 반대구조 업종클래스에서도 관계설정
 	private String industry;
 
 	@Column(name = "company_name", nullable = false)

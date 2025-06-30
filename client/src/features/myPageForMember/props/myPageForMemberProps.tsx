@@ -250,6 +250,7 @@ export interface ProposalSummaryForMemberDto {
 
 export interface ProposalResponseDto {
 	id: number;
+	companyId : number
 	proposalTitle: string;
 	companyName: string;
 	proposalContent: string;

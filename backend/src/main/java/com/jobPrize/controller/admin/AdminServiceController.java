@@ -23,7 +23,7 @@ import com.jobPrize.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/admin/service")
+@RequestMapping("/api/admin/service")
 @RequiredArgsConstructor
 public class AdminServiceController {
     private final AdminService adminService;

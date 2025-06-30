@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/cover-letters")
+@RequestMapping("/api/cover-letters")
 @RequiredArgsConstructor
 public class CoverLetterController {
 	

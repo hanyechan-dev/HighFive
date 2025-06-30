@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/language-tests")
+@RequestMapping("/api/language-tests")
 @RequiredArgsConstructor
 public class LanguageTestController {
 	

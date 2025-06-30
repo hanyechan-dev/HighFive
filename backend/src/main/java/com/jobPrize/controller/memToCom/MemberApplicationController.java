@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("members/applications")
+@RequestMapping("/api/members/applications")
 @RequiredArgsConstructor
 public class MemberApplicationController {
 

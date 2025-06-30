@@ -17,6 +17,8 @@ import { ScrollArea } from "../../common/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../../common/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../common/components/ui/dialog";
 import { Input } from "../../common/components/ui/input";
+import { printErrorInfo } from "../../common/utils/ErrorUtil";
+import { api } from "../../common/Axios";
 
 interface ChatRoom {
   chatRoomId: number;
@@ -71,22 +73,27 @@ const Chat = () => {
   const createChatRoom = async () => {
     if (senderId != null && targetId != null) {
       try {
-        const response = await fetch("http://localhost:8090/chats", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            id: targetId,
-          }),
-        });
-        const roomId = await response.json(); // JSON -> Javascript 객체로 변환
+        const response = await api(true).post("/chats", {
+          id: targetId
+        })
+
+        // const response = await fetch("http://localhost:8090/api/chats", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        //   body: JSON.stringify({
+        //     id: targetId,
+        //   }),
+        // });
+        const roomId = response.data; // JSON -> Javascript 객체로 변환
 
         setChatRoomId(roomId);
         subscribeToTopic(roomId); // 채팅방 구독
         return roomId;
       } catch (error) {
+        printErrorInfo(error);
         console.log("chatRoomId를 가져오지 못했습니다: ", error);
       }
     } else {
@@ -140,30 +147,36 @@ const Chat = () => {
 
   // Chat 컴포넌트 언마운트 시 콜백 함수 해제
   useEffect(() => {
-    return() => {
-        unregisterMessageCallbacks();
+    return () => {
+      unregisterMessageCallbacks();
     }
   }, [])
 
   // 채팅방 리스트 불러오기
   const getChatRoomList = useCallback(async () => {
     try {
-      if (token) {
-        const response = await fetch("http://localhost:8090/chats", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const tempChatRoomList: ChatRoom[] = await response.json();
-        setChatRoomList(tempChatRoomList);
-      } else {
-        console.log(
-          "Token값이 null로 추정됩니다. Token 값은 다음과 같습니다: ",
-          token
-        );
-      }
-    } catch (error) {
+      const response = await api(true).get("/chats");
+
+      // if (token) {
+      //   const response = await fetch("http://localhost:8090/api/chats", {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
+      // const tempChatRoomList: ChatRoom[] = await response.json();
+      const tempChatRoomList: ChatRoom[] = response.data
+      setChatRoomList(tempChatRoomList);
+    }
+    //   } else {
+    //     console.log(
+    //       "Token값이 null로 추정됩니다. Token 값은 다음과 같습니다: ",
+    //       token
+    //     );
+    //   }
+    // } 
+    catch (error) {
+      printErrorInfo(error);
       console.log("채팅방 리스트 불러오기 실패: ", error);
     }
   }, [token]);
@@ -172,15 +185,18 @@ const Chat = () => {
   const getHistory = async (id: number) => {
     // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
     try {
-      const response = await fetch(`http://localhost:8090/chats/detail`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ id }),
-      });
-      const chatContents: ChatMessage[] = await response.json();
+      const response = await api(true).post("/chats/detail",{id})
+      // const response = await fetch(`http://localhost:8090/api/chats/detail`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      //   body: JSON.stringify({ id }),
+      // });
+      // const chatContents: ChatMessage[] = await response.json();
+
+      const chatContents: ChatMessage[] = response.data
 
       if (chatContents) {
         setChatHistory(() => [...chatContents]); // 대화 내용 업데이트
@@ -188,6 +204,7 @@ const Chat = () => {
         console.log("chatContents값 확인: " + chatContents);
       }
     } catch (error) {
+      printErrorInfo(error);
       console.error("채팅 내역 불러오기 실패: ", error);
     }
   };
@@ -344,20 +361,20 @@ const Chat = () => {
           {/* 메시지 영역 */}
           <ScrollArea className="h-80 w-full pr-4">
             <div className="space-y-3">
-                            {chatHistory.map((message) => (
-                                <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
-                                    <div
-                                        className={`max-w-xs px-4 py-2 rounded-lg ${message.senderId === senderId
-                                            ? "bg-[#EE57CD] text-white"
-                                            : "bg-white border border-[#EE57CD] text-[#EE57CD]"
-                                            }`}
-                                    >
-                                        <p className="text-sm">{message.content}</p>
-                                    </div>
-                                    <div ref={scrollViewportRef}></div>
-                                </div>
-                            ))}
-                        </div>
+              {chatHistory.map((message) => (
+                <div key={message.contentId} className={`flex ${message.senderId === senderId ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-xs px-4 py-2 rounded-lg ${message.senderId === senderId
+                      ? "bg-[#EE57CD] text-white"
+                      : "bg-white border border-[#EE57CD] text-[#EE57CD]"
+                      }`}
+                  >
+                    <p className="text-sm">{message.content}</p>
+                  </div>
+                  <div ref={scrollViewportRef}></div>
+                </div>
+              ))}
+            </div>
           </ScrollArea>
 
           {/* 메시지 입력 영역 */}

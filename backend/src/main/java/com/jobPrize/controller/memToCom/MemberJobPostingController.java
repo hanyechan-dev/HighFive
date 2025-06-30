@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("members/job-postings")
+@RequestMapping("/api/members/job-postings")
 @RequiredArgsConstructor
 public class MemberJobPostingController {
 

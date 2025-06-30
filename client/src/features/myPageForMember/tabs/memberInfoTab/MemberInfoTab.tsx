@@ -7,8 +7,15 @@ import ModalTitle from "../../../../common/components/title/ModalTitle";
 import { useMemberInfoTabController } from "../../customHooks/MemberInfoTab/useMemberInfoTabController";
 import MemberInfoUpdateModal from "../../modals/MemberInfoUpdateModal";
 import { useMemberInfoTabApi } from "../../customHooks/MemberInfoTab/useMemberInfoTabApi";
+import { clearToken } from "../../../auth/slices/AuthSlice";
+import { closeAuthModal } from "../../../../common/slices/AuthModalSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const MemberInfoTab = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const {
         showModal,
@@ -25,7 +32,15 @@ const MemberInfoTab = () => {
     if (!memberMyPageResponseDto) return null;
 
     const onClickDeactivateAccountButton = () => {
-        deactivateAccount();
+        const result = window.confirm("회원탈퇴를 진행하시겠습니까?")
+        if (result) {
+            alert("회원탈퇴가 완료되었습니다.")
+            deactivateAccount();
+            dispatch(clearToken());
+            dispatch(closeAuthModal());
+            navigate("/", { replace: true });
+        }
+
     }
 
     return (

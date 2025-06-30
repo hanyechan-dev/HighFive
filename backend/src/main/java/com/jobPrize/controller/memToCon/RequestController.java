@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RestController
-@RequestMapping("/requests")
+@RequestMapping("/api/requests")
 @RequiredArgsConstructor
 public class RequestController {
 

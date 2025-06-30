@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RestController
-@RequestMapping("/educations")
+@RequestMapping("/api/educations")
 @RequiredArgsConstructor
 public class EducationController {
 	

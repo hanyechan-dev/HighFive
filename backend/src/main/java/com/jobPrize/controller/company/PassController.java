@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("passes")
+@RequestMapping("/api/passes")
 @RequiredArgsConstructor
 public class PassController {
 

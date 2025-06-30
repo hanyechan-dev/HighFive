@@ -13,4 +13,20 @@ export default defineConfig({
   define: {
     global: 'window',
   },
+  server: {
+    host: true,
+    allowedHosts: true,
+    proxy: {
+      // /api로 시작하는 요청을 http://localhost:8080으로 프록시
+      '/api': {
+        target: 'http://localhost:8090',
+        changeOrigin: true,
+      },
+      '/ws': {
+        target: 'http://localhost:8090',
+        changeOrigin: true,
+        ws: true
+      }
+    }
+  }
 });

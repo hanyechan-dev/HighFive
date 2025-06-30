@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/feedback-prompts")
+@RequestMapping("/api/feedback-prompts")
 @RequiredArgsConstructor
 public class FeedbackPromptController {
 

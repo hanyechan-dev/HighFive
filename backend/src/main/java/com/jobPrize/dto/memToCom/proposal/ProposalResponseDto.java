@@ -3,7 +3,6 @@ package com.jobPrize.dto.memToCom.proposal;
 import java.time.LocalDate;
 
 import com.jobPrize.entity.memToCom.Proposal;
-import com.jobPrize.enumerate.ProposalStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +12,8 @@ import lombok.Getter;
 public class ProposalResponseDto {
 
 	private Long id;
+	
+	private Long companyId;
 	
 	private String proposalTitle;
 	
@@ -34,6 +35,7 @@ public class ProposalResponseDto {
 			.id(proposal.getId())
 			.proposalTitle(proposal.getProposalTitle())
 			.companyName(proposal.getCompany().getCompanyName())
+			.companyId(proposal.getCompany().getId())
 			.proposalContent(proposal.getProposalContent())
 			.proposalJob(proposal.getProposalJob())
 			.proposalSalary(proposal.getProposalSalary())

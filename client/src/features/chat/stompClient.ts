@@ -42,7 +42,7 @@ export const connectWebSocket = (token: string) => {
     }
     // 웹소켓 인스턴스 생성
     const client = new Client({
-        webSocketFactory: () => new SockJS('http://localhost:8090/ws'),
+        webSocketFactory: () => new SockJS('/ws'),
 
         // 연결 시 전송할 헤더 (인증 토큰 등)
         connectHeaders: {

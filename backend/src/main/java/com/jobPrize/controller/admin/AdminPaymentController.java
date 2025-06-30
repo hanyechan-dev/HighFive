@@ -8,10 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobPrize.dto.admin.service.PaymentCountDto;
 import com.jobPrize.dto.common.payment.PaymentResponseDto;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.service.common.payment.PaymentService;
@@ -21,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RestController
-@RequestMapping("/admin/payments")
+@RequestMapping("/api/admin/payments")
 @RequiredArgsConstructor
 public class AdminPaymentController {
 

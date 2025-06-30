@@ -15,7 +15,7 @@ import com.jobPrize.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
 @RequiredArgsConstructor
 public class NotificationController {
 	

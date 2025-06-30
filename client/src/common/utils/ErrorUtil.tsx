@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const printErrorInfo = (err: unknown) => {
-
+    console.error(err);
     if (axios.isAxiosError(err)) {
         const message = err.response?.data?.message || err.message;
         console.error("[Axios(통신) 오류] : ", message);

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.id.IdDto;
 import com.jobPrize.dto.company.jobPosting.JobPostingSummaryDto;
-import com.jobPrize.dto.memToCom.application.ApplicationResponseDto;
 import com.jobPrize.dto.memToCom.application.ApplicationResponseForCompanyDto;
 import com.jobPrize.dto.memToCom.application.ApplicationSummaryForCompanyDto;
 import com.jobPrize.enumerate.ApprovalStatus;
@@ -27,7 +26,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("appliers")
+@RequestMapping("/api/appliers")
 @RequiredArgsConstructor
 public class CompanyApplicationController {
 	

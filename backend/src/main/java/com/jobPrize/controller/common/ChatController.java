@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.chat.ChatRequestDto;
 import com.jobPrize.dto.common.chat.ChatResponseDto;
-import com.jobPrize.dto.common.chat.InviteTargetDto;
 import com.jobPrize.dto.common.id.IdDto;
-import com.jobPrize.entity.common.ChatContent;
 import com.jobPrize.service.common.chat.ChatService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -25,7 +23,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/chats")
+@RequestMapping("/api/chats")
 @RequiredArgsConstructor
 public class ChatController {
 	private final ChatService chatService;

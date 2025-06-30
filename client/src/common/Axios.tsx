@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from './store/store';
 
 
-const baseURL = 'http://192.168.0.121:8090';
+const baseURL = '/api';
 
 
 export function api(withAuth: boolean) {

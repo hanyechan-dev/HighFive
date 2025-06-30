@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../common/components/button/Button";
 import InfoBox from "../../../common/components/infoBox/InfoBox";
 import Input from "../../../common/components/input/Input";
@@ -5,6 +6,9 @@ import TextArea from "../../../common/components/input/TextArea";
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import CommonModal from "../../../common/modals/CommonModal";
 import type { ProposalResponseDto } from "../props/myPageForMemberProps";
+import type { RootState } from "../../../common/store/store";
+import AuthUtil from "../../../common/utils/AuthUtil";
+import { startNewChat } from "../../chat/ChatControlSlice";
 
 interface ProposalModalProps {
     proposalResponseDto: ProposalResponseDto;
@@ -16,6 +20,22 @@ interface ProposalModalProps {
 const ProposalModal = ({ proposalResponseDto, onClose, onClickAccept, onClickReject }: ProposalModalProps) => {
 
     const isWait = proposalResponseDto.proposalStatus == "대기"
+    const dispatch = useDispatch();
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const currentUserId = AuthUtil.getIdFromToken(accessToken);
+
+    const onClickChat = () => {
+        if (proposalResponseDto.companyId != currentUserId) {
+            dispatch(startNewChat({
+                id: proposalResponseDto.companyId,
+                name: proposalResponseDto.companyName,
+                avatar: "/placeholder.svg?height=40&width=40",
+                step: 1
+            }))
+        } else { return; }
+    }
+
+
 
 
     return (
@@ -33,6 +53,7 @@ const ProposalModal = ({ proposalResponseDto, onClose, onClickAccept, onClickRej
             </div>
             {isWait && (
                 <div className="flex justify-end mr-6">
+                    <Button color={"white"} size={"s"} disabled={false} text={"채팅"} type={"button"} onClick={onClickChat} />
                     <Button color={"white"} size={"s"} disabled={false} text={"거절"} type={"button"} onClick={onClickReject} />
                     <Button color={"theme"} size={"s"} disabled={false} text={"수락"} type={"button"} onClick={onClickAccept} />
                 </div>

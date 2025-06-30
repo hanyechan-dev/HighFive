@@ -102,8 +102,14 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 				.leftJoin(chatRoom.user1).fetchJoin()
 				.leftJoin(chatRoom.user2).fetchJoin()
 				.where(
-					chatRoom.user1.id.eq(id)
-					.and(chatRoom.user2.id.eq(targetId))
+					(
+							chatRoom.user1.id.eq(id)
+							.and(chatRoom.user2.id.eq(targetId))
+					)
+					.or(
+							chatRoom.user1.id.eq(targetId)
+							.and(chatRoom.user2.id.eq(id))
+					)
 					)
 				.fetchOne();
 		

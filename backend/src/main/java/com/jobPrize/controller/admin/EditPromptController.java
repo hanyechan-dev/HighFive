@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/edit-prompts")
+@RequestMapping("/api/edit-prompts")
 @RequiredArgsConstructor
 public class EditPromptController {
 

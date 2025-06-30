@@ -23,7 +23,7 @@ import com.jobPrize.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/subscriptions")
+@RequestMapping("/api/subscriptions")
 @RequiredArgsConstructor
 public class SubscriptionController {
 	
