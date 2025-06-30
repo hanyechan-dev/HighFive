@@ -20,7 +20,6 @@ interface PostDetailModalProps {
     onClose: () => void;
 }
 
-
 interface CommentResponseDto {
     authorId: number;
     nicknameOrName: string;
@@ -33,7 +32,6 @@ function PostDetailModal({ postId, onClose }: PostDetailModalProps) {
 
     const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     const currentUserId = AuthUtil.getIdFromToken(accessToken);
-
 
 
 
@@ -92,12 +90,17 @@ function PostDetailModal({ postId, onClose }: PostDetailModalProps) {
 
     const isAuthor = currentUserId !== null && currentUserId === authorId;
 
-
-    // 추후 채팅 트리거? 모달띄우기로 변환
-    const handleCommentAuthorClick = function (authorId: number, nicknameOrName: string): void {
-        dispatch(startNewChat({ id: authorId, name: nicknameOrName }))
+    // 댓글창에서 사용자명 클릭 시 채팅 버튼 모달 출력
+    const handleCommentAuthorClick = (commentAuthorId: number, nicknameOrName: string): void => {
+        if(commentAuthorId != currentUserId){
+            dispatch(startNewChat({
+                id: commentAuthorId,
+                name: nicknameOrName,
+                avatar: "/placeholder.svg?height=40&width=40",
+                step: 1
+            }))
+        } else { return; }
     };
-
 
     return (
         <CommonModal size="l" onClose={onClose}>
@@ -111,7 +114,7 @@ function PostDetailModal({ postId, onClose }: PostDetailModalProps) {
                 </div>
 
                 <div className="flex justify-end mb-10 mr-6">
-                    <Button color={"theme"} text={"댓글작성"} size={"s"} disabled={false} type="button" onClick={handleCommentWrite} />
+                    <Button color={"theme"} text={"댓글 작성"} size={"s"} disabled={false} type="button" onClick={handleCommentWrite} />
                 </div>
 
                 <div className="mb-6">

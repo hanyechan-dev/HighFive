@@ -182,17 +182,17 @@ public class ServiceRepositoryImpl implements ServiceRepositoryCustom {
 	public UserCountDto countUsersByUserType(UserType userType) {
 		QUser user = QUser.user;
 
-		UserCountDto result = queryFactory
-				.select(
-						Projections.constructor(UserCountDto.class,
-								user.userType,
-								user.count()
-								)
-						)
+		Long result = queryFactory
+				.select( user.count() )
 				.from(user)
 				.where(user.userType.eq(userType))
 				.fetchOne();
 		
-		return result;
+		UserCountDto dto = UserCountDto.builder()
+				.userType(userType)
+				.value((result != null) ? result : 0L)
+				.build();
+		
+		return dto;
 	}
 }

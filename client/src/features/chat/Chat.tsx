@@ -98,7 +98,7 @@ const Chat = () => {
 
   // "전송" 버튼 클릭 시, 메시지 전송
   const handleSendMessage = () => {
-    if (content.trim() && selectedChat && stompClient && token) {
+    if (content.trim() && stompClient && token) {
       publishMessage(
         "/app/chat/send",
         {
@@ -243,7 +243,7 @@ const Chat = () => {
 
   // "채팅하기" 버튼 클릭 시, targetId 상태 변경 (비동기 이슈로 인한 코드 분리)
   useEffect(() => {
-    if (chatTarget) {
+    if (chatTarget && chatTarget.step == 2) {
       setTargetId(chatTarget.id);
       setTargetIdState(true);
     }
