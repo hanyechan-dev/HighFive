@@ -41,7 +41,7 @@ export const JobPostingUnderCardForMemberApi = () => {
 };
 
 export const JobPostingDetailApi = (id: number) => {
-    return api(false).post('/members/job-postings/detail', {
+    return api(true).post('/members/job-postings/detail', {
         id
     }
     );

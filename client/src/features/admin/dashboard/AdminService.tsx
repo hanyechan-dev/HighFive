@@ -21,10 +21,11 @@ import {
   TabsTrigger,
 } from "../../../common/components/ui/tabs";
 import { Button } from "../../../common/components/ui/button";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import { BeatLoader } from "react-spinners";
+import { printErrorInfo } from "../../../common/utils/ErrorUtil";
+import { api } from "../../../common/Axios";
 
 interface SubsCount {
   userType: string;
@@ -176,32 +177,36 @@ export default function StatisticsPage() {
     // 회원 유형별 이용자 비율
     const fetchUserCount = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8090/admin/service/count-users",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log(response.data);
+        // const response = await axios.get(
+        //   "http://localhost:8090/admin/service/count-users",
+        //   {
+        //     headers: { Authorization: `Bearer ${token}` },
+        //   }
+        // );
+        // console.log(response.data);
+        const response = await api(true).get(`/admin/service/count-users`);
         setUserTypeData(response.data);
       } catch (error) {
-        console.log("각 UserType의 총 회원 불러오기 실패: ", error);
+        printErrorInfo(error)
+        // console.log("각 UserType의 총 회원 불러오기 실패: ", error);
       }
     };
 
     // 회원 유형별 구독 현황
     const fetchSubsCount = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8090/admin/service/count-subs",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log(response.data);
+        // const response = await axios.get(
+        //   "http://localhost:8090/admin/service/count-subs",
+        //   {
+        //     headers: { Authorization: `Bearer ${token}` },
+        //   }
+        // );
+        // console.log(response.data);
+        const response = await api(true).get(`/admin/service/count-subs`);
         setSubscriptionData(response.data);
       } catch (error) {
-        console.log("UserType별 구독자 현황 불러오기 실패: ", error);
+        printErrorInfo(error)
+        // console.log("UserType별 구독자 현황 불러오기 실패: ", error);
       } finally {
         setSubsStateIsLoading(false);
       }
@@ -216,32 +221,39 @@ export default function StatisticsPage() {
       try {
         // 단위기간이 일(day) 단위일 시
         if (period == 7 || period == 30) {
+          // const [userData, companyData] = await Promise.all([
+          //   axios.get(
+          //     `http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=일반회원`,
+          //     { headers: { Authorization: `Bearer ${token}` } }
+          //   ),
+          //   axios.get(
+          //     `http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=기업회원`,
+          //     { headers: { Authorization: `Bearer ${token}` } }
+          //   ),
+          // ]);
+          // console.log(userData.data);
+          // console.log(companyData.data);
           const [userData, companyData] = await Promise.all([
-            axios.get(
-              `http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=일반회원`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            ),
-            axios.get(
-              `http://localhost:8090/admin/service/reg-and-cancel/day?days=${period}&userType=기업회원`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            ),
-          ]);
-          console.log(userData.data);
-          console.log(companyData.data);
+            api(true).get(`/admin/service/reg-and-cancel/day?days=${period}&userType=일반회원`),
+            api(true).get(`/admin/service/reg-and-cancel/day?days=${period}&userType=기업회원`),
+          ])
 
           setUserDayState(userData.data);
           setCompanyDayState(companyData.data);
         } else {
           // 단위기간이 월(month) 단위일 시
           const [userData, companyData] = await Promise.all([
-            axios.get(
-              `http://localhost:8090/admin/service/reg-and-cancel/month?months=${period}&userType=일반회원`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            ),
-            axios.get(
-              `http://localhost:8090/admin/service/reg-and-cancel/month?months=${period}&userType=기업회원`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            ),
+            // axios.get(
+            //   `http://localhost:8090/admin/service/reg-and-cancel/month?months=${period}&userType=일반회원`,
+            //   { headers: { Authorization: `Bearer ${token}` } }
+            // ),
+            // axios.get(
+            //   `http://localhost:8090/admin/service/reg-and-cancel/month?months=${period}&userType=기업회원`,
+            //   { headers: { Authorization: `Bearer ${token}` } }
+            // ),
+            api(true).get(`/admin/service/reg-and-cancel/month?months=${period}&userType=일반회원`),
+            api(true).get(`/admin/service/reg-and-cancel/month?months=${period}&userType=기업회원`),
+
           ]);
           console.log(userData.data);
           console.log(companyData.data);
@@ -254,7 +266,8 @@ export default function StatisticsPage() {
         setCompanyDayState([]);
         setUserStateIsLoading(false);
         setCompanyStateIsLoading(false);
-        console.log("일반회원 가입 및 탈퇴 통계 데이터 불러오기 실패: ", error);
+        printErrorInfo(error)
+        // console.log("일반회원 가입 및 탈퇴 통계 데이터 불러오기 실패: ", error);
       }
     };
     fetchSignUpAndWithdrawal(periodType);
@@ -427,25 +440,28 @@ export default function StatisticsPage() {
     const fetchSales = async (period: number) => {
       try {
         const [userData, companyData] = await Promise.all([
-          axios.get(
-            `http://localhost:8090/admin/service/count-payment?period=${period}&userType=일반회원`,
-            { headers: { Authorization: `Bearer ${token}` } }
-          ),
-          axios.get(
-            `http://localhost:8090/admin/service/count-payment?period=${period}&userType=기업회원`,
-            { headers: { Authorization: `Bearer ${token}` } }
-          ),
+          // axios.get(
+          //   `http://localhost:8090/admin/service/count-payment?period=${period}&userType=일반회원`,
+          //   { headers: { Authorization: `Bearer ${token}` } }
+          // ),
+          // axios.get(
+          //   `http://localhost:8090/admin/service/count-payment?period=${period}&userType=기업회원`,
+          //   { headers: { Authorization: `Bearer ${token}` } }
+          // ),
+          api(true).get(`/admin/service/count-payment?period=${period}&userType=일반회원`),
+          api(true).get(`/admin/service/count-payment?period=${period}&userType=기업회원`),
         ]);
-        console.log(userData.data);
-        console.log(companyData.data);
+        // console.log(userData.data);
+        // console.log(companyData.data);
 
         setUserSalesState(userData.data);
         setCompanySalesState(companyData.data);
       } catch (error) {
-        console.log(
-          "일반회원, 기업회원 매출 통계 데이터 불러오기 실패: ",
-          error
-        );
+        printErrorInfo(error);
+        // console.log(
+        //   "일반회원, 기업회원 매출 통계 데이터 불러오기 실패: ",
+        //   error
+        // );
       }
     };
     fetchSales(periodType);
@@ -607,14 +623,15 @@ export default function StatisticsPage() {
   useEffect(() => {
     const fetchConsulting = async (period: number) => {
       try {
-        const consultings = await axios.get(
-          `http://localhost:8090/admin/service/count-consulting?period=${period}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log(consultings.data);
+        // const consultings = await axios.get(
+        //   `http://localhost:8090/admin/service/count-consulting?period=${period}`,
+        //   {
+        //     headers: { Authorization: `Bearer ${token}` },
+        //   }
+        // );
+        // console.log(consultings.data);
 
+        const consultings = await api(true).get(`/admin/service/count-consulting?period=${period}`)
         setConsultingState(consultings.data);
       } catch (error) {
         console.log("컨설팅 통계 데이터 불러오기 실패: ", error);

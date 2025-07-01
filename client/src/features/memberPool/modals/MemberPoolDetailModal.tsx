@@ -10,6 +10,10 @@ import type { MemberPoolDetail } from "../props/MemberPoolProps";
 import { MemberPoolDetailApi } from "../apis/MemberPoolApi";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import { TabButton } from "../../../common/components/button/TabButton";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../common/store/store";
+import AuthUtil from "../../../common/utils/AuthUtil";
+import { startNewChat } from "../../chat/ChatControlSlice";
 
 
 const TABS = ["학력 사항", "경력 사항", "자격증", "어학"];
@@ -26,12 +30,15 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isProposalOpen, setProposalOpen] = useState(false);
+    const dispatch = useDispatch();
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const currentUserId = AuthUtil.getIdFromToken(accessToken);
 
-    const onCloseProposalCreateModal = ()=>{
+    const onCloseProposalCreateModal = () => {
         setProposalOpen(false);
     }
 
-    
+
     const fetchDetail = useCallback(() => {
         if (memberId == null) return;
         setLoading(true);
@@ -47,12 +54,23 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
             .finally(() => setLoading(false));
     }, [memberId]);
 
-    
+
     useEffect(() => {
         if (isOpen && memberId) {
             fetchDetail();
         }
     }, [memberId]);
+
+    const onClickChat = () => {
+        if (memberId != currentUserId && detail!=null) {
+            dispatch(startNewChat({
+                id: memberId,
+                name: detail.name,
+                avatar: "/placeholder.svg?height=40&width=40",
+                step: 1
+            }))
+        } else { return; }
+    }
 
     if (!isOpen) return null;
 
@@ -194,7 +212,7 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
                         </div>
                         {/* 하단 버튼 */}
                         <div className="flex justify-end mr-6">
-                            <Button color="white" size="s" disabled={false} text="채팅하기" type="button" onClick={() => {/* 채팅 */ }} />
+                            <Button color="white" size="s" disabled={false} text="채팅하기" type="button" onClick={onClickChat} />
                             <Button
                                 color="theme"
                                 size="s"

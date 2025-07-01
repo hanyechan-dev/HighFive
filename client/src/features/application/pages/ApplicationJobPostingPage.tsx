@@ -58,7 +58,7 @@ const ApplicationJobPostingPage = () => {
   }, [clickedPage]);
 
   const handleShowApplicants = (jobPostingId: number) => {
-    navigate(`/job-posting/${jobPostingId}/applications`);
+    navigate(`/job-postings/${jobPostingId}/applications`);
   };
 
   return (

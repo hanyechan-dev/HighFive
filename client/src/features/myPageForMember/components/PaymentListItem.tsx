@@ -14,8 +14,8 @@ const PaymentListItem = ({ paymentResponseDto }: PaymentListItemProps) => {
         <div className={defaultSetting}>
             <div>{paymentResponseDto.paymentAmount.toLocaleString()}원</div>
             <div>{paymentResponseDto.content}</div>
-            <div>{dayjs(paymentResponseDto.createdTime).format('YYYY-MM-DD')}</div>
             <div>{paymentResponseDto.method}</div>
+            <div>{dayjs(paymentResponseDto.createdTime).format('YYYY-MM-DD')}</div>
         </div>
 
     )

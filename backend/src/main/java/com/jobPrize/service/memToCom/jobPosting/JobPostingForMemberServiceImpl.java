@@ -37,7 +37,7 @@ public class JobPostingForMemberServiceImpl implements JobPostingForMemberServic
 		List<Similarity> similarities = similarityRepository.findFirst4WithJobPostingByMemberId(id);
 		List<JobPostingMainCardDto> jobPostingMainCardDtos = new ArrayList<>();
 		for(Similarity similarity : similarities) {
-			String imageUrl = "/images/" + similarity.getJobPosting().getCompany().getLogoImageName();
+			String imageUrl = "/images/companyLogo/" + similarity.getJobPosting().getCompany().getLogoImageName();
 			JobPostingMainCardDto jobPostingMainCardDto = JobPostingMainCardDto.of(similarity, imageUrl);
 			jobPostingMainCardDtos.add(jobPostingMainCardDto);
 		}
@@ -77,7 +77,7 @@ public class JobPostingForMemberServiceImpl implements JobPostingForMemberServic
 		List<String> jobPostingImageUrls = new ArrayList<>();
 		
 		for(JobPostingImage jobPostingImage:jobPostingImages) {
-			String jobPostingImageUrl = "/images/" + jobPostingImage.getImageName();
+			String jobPostingImageUrl = "/images/jobposting/" + jobPostingImage.getImageName();
 			jobPostingImageUrls.add(jobPostingImageUrl);
 		}
 		

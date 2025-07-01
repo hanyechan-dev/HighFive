@@ -15,7 +15,8 @@ export const useProposalTapApi = () => {
         try {
 
             const response = await readMyProposalsApi(page, size);
-            const proposalSummaryForMemberDtos: ProposalSummaryForMemberDto[] = response.data;
+            console.log(response)
+            const proposalSummaryForMemberDtos: ProposalSummaryForMemberDto[] = response.data.content;
             setProposalSummaryForMemberDtos(proposalSummaryForMemberDtos);
             setTotalElements(response.data.totalElements);
         } catch (err) {

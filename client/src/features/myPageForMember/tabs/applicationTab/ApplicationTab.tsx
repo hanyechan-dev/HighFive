@@ -25,7 +25,8 @@ const ApplicationTab = () => {
 
     const {
         readApplications,
-        readApplication } = useApplicationTabApi();
+        readApplication 
+    } = useApplicationTabApi();
 
     const {
         clickedPage,

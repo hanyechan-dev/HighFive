@@ -55,7 +55,7 @@ public class SecurityConfig {
 				})
 			.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 안쓸거라 세션 안쓴다고 명시함
 			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/api/auth/**", "/api/users", "/api/users/kakao", "/ws/**").permitAll() 
+					.requestMatchers("/api/auth/**", "/api/users", "/api/users/kakao", "/ws/**", "/images/**").permitAll() 
 					.requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
 					.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 					 //안에 들어있는 URL로 들어온 요청에 대해선 인증검사안함(프로젝트시	수정필요) 

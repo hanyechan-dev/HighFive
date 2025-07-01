@@ -46,7 +46,6 @@ public class JobPostingUpdateDto {
 	private String content;
 
 	@NotBlank(message = "자격 요건을 입력해주세요.")
-	@Size(min = 50, message = "자격 요건은 최소 50자 이상 입력해야 합니다.")
+	@Size(max = 100, message = "자격 요건은 최대 100자 이상 입력해야 합니다.")
 	private String requirement;
-
 }

@@ -4,9 +4,14 @@ import BarChartIcon from "../../../common/icons/BarChartIcon";
 import ConsultingIcon from "../../../common/icons/ConsultingIcon";
 import PeopleIcon from "../../../common/icons/PeopleIcon";
 import SettingsIcon from "../../../common/icons/SettingIcon";
+import { api } from "../../../common/Axios";
 
 function AdminPage() {
     const navigate = useNavigate();
+
+    const onClickGetSimilarity =()=>{
+        api(true).post("/admin/similarity");
+    }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-white pb-[40px]">
@@ -28,7 +33,7 @@ function AdminPage() {
                 </div>
             </div>
 
-            <button className="px-6 py-2 rounded-lg cursor-pointer w-[730px] text-center">
+            <button className="px-6 py-2 rounded-lg cursor-pointer w-[730px] text-center" onClick={onClickGetSimilarity}>
             </button>
         </div>
     );

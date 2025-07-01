@@ -116,7 +116,7 @@ export const updateCareerDescriptionApi = (careerDescriptionUpdateDto: CareerDes
 }
 
 export const deleteCareerDescriptionApi = (id: number) => {
-    return api(true).post('/career-descriptions/delete', {
+    return api(true).post('/career-descriptions/deletion', {
         id
     });
 }
@@ -140,7 +140,7 @@ export const updateCoverLetterApi = (coverLetterUpdateDto: CoverLetterUpdateDto)
 }
 
 export const deleteCoverLetterApi = (id: number) => {
-    return api(true).post('/cover-letters/delete', {
+    return api(true).post('/cover-letters/deletion', {
         id
     });
 }

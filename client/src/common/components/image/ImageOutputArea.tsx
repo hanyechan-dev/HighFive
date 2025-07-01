@@ -16,7 +16,7 @@ const ImageOutputArea = ({
     return (
         <div className={`min-h-[100px] ${sizeClass[size]} border border-gray-300 rounded-lg ml-[24px] mb-[24px] overflow-hidden`} >
             <img
-                src={imageUrl}
+                src={`http://192.168.0.121:8090${imageUrl}`}
                 className="block w-full h-auto object-fill" 
             />
         </div>

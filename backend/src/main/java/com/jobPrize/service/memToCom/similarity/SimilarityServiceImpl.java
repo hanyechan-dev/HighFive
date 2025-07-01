@@ -55,8 +55,14 @@ public class SimilarityServiceImpl implements SimilarityService {
 	}
 	
 	private double[] parseVector(String vectorStr) {
+		
+		String cleaned = vectorStr.trim();
+		
+	    if (cleaned.startsWith("\"") && cleaned.endsWith("\"")) {
+	        cleaned = cleaned.substring(1, cleaned.length() - 1);
+	    }
 	    // 1. 대괄호 제거
-	    String trimmed = vectorStr.substring(1, vectorStr.length() - 1);
+	    String trimmed = cleaned.substring(1, cleaned.length() - 1);
 
 	    // 2. 쉼표로 분리
 	    String[] tokens = trimmed.split(",");

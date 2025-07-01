@@ -72,7 +72,7 @@ public class CoverLetterController {
 		return ResponseEntity.status(HttpStatus.OK).body(coverLetterResponseDto);
 	}
 	
-	@PostMapping("/delete")
+	@PostMapping("/deletion")
 	public ResponseEntity<Void> deleteMyCoverLetter(@RequestBody @Valid IdDto idDto) {
 		
 		Long id = SecurityUtil.getId();

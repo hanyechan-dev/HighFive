@@ -57,7 +57,7 @@ const PassJobPostingPage = () => {
   }, [clickedPage]);
 
   const handleShowPasses = (jobPostingId: number) => {
-    navigate(`/job-posting/${jobPostingId}/passes`);
+    navigate(`/job-postings/${jobPostingId}/passes`);
   };
 
   if (isLoading) {

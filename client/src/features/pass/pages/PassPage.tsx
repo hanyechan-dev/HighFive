@@ -53,6 +53,8 @@ const PassPage = () => {
         }
       } catch (err) {
         printErrorInfo(err);
+        setPasses([]);
+        setTotalElements(0)
       } finally {
         setIsLoading(false);
       }
@@ -100,9 +102,9 @@ const PassPage = () => {
           <>
             <PassListHeader />
             {passes.map((app) => (
-              <PassSummaryRow 
-                key={app.id} 
-                application={app} 
+              <PassSummaryRow
+                key={app.id}
+                application={app}
                 onClick={() => handleApplicationClick(app.id)}
               />
             ))}
@@ -123,7 +125,7 @@ const PassPage = () => {
           />
         </div>
       </div>
-      
+
       {selectedApplicationId && (
         <PassDetailModal
           isOpen={isDetailModalOpen}

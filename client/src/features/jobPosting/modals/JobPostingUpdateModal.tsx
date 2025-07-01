@@ -57,6 +57,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
                     content: data.content,
                     requirement: data.requirement
                 });
+                console.log(data.imageUrls)
                 setImagePreviews(data.imageUrls || []);
                 setImages([]);
             })
@@ -140,7 +141,7 @@ export default function JobPostingUpdateModal({ isOpen, onClose, jobPostingId, o
                 <div className="w-[952px] flex gap-4 items-center border border-gray-200 rounded-lg p-4 ml-[24px]">
                     {imagePreviews.map((url, idx) => (
                         <div key={idx} className="relative w-[180px] h-[120px] border rounded-lg overflow-hidden flex items-center justify-center bg-gray-100">
-                            <img src={url} alt="preview" className="object-contain w-full h-full" />
+                            <img src={`http://192.168.0.121:8090${url}`} alt="preview" className="object-contain w-full h-full" />
                             <button type="button" className="absolute top-1 right-1 bg-white rounded-full px-2 py-1 text-xs shadow" onClick={() => handleImageDelete(idx)}>삭제</button>
                         </div>
                     ))}

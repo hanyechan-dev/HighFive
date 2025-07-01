@@ -4,26 +4,33 @@ import ModalTitle from "../../../common/components/title/ModalTitle"
 import { ExternalBox, InternalBox } from "../../../common/components/box/Box";
 import TextArea from "../../../common/components/input/TextArea";
 import Button from "../../../common/components/button/Button";
-import type { CoverLetterResponseDto } from "../props/myPageForMemberProps";
+import type { CoverLetterResponseDto, CoverLetterSummaryDto } from "../props/myPageForMemberProps";
 
 interface CoverLetterDetailModalProps {
     coverLetterResponseDto: CoverLetterResponseDto;
     setShowModalType : ( modalType : string ) => void
     setShowModal : (showModal : boolean) => void
     onClickDelete : (id : number) => void
+    coverLetterSummaryDtos : CoverLetterSummaryDto[]
+    setCoverLetterSummaryDtos : (coverLetterSummaryDtos: CoverLetterSummaryDto[]) => void
 }
 
 const CoverLetterDetailModal = ({
     coverLetterResponseDto,
     setShowModalType,
     setShowModal,
-    onClickDelete
+    onClickDelete,
+    coverLetterSummaryDtos,
+    setCoverLetterSummaryDtos
 }: CoverLetterDetailModalProps) => {
 
     const { title, contents } = coverLetterResponseDto
 
     const onClickDeleteButton =() =>{
         onClickDelete(coverLetterResponseDto.id)
+        setCoverLetterSummaryDtos(
+            coverLetterSummaryDtos.filter(dto => dto.id !== coverLetterResponseDto.id)
+        );
         setShowModal(false);
     }
 

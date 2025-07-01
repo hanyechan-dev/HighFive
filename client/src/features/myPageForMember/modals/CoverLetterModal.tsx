@@ -11,7 +11,10 @@ const CoverLetterModal = () => {
         coverLetterResponseDto,
         setShowModal,
         showModalType,
-        setShowModalType
+        setShowModalType,
+        setClickedCoverLetterId,
+        setCoverLetterSummaryDtos,
+        coverLetterSummaryDtos
     } = useDocumentTabController();
 
     const { createCoverLetter, deleteCoverLetter, updateCoverLetter } = useDocumentTabApi();
@@ -19,6 +22,7 @@ const CoverLetterModal = () => {
     const onClose = () => {
         setShowModal(false);
         setShowModalType("detail");
+        setClickedCoverLetterId(-1);
     }
     return (
         <CommonModal size={"l"} onClose={onClose}>
@@ -27,7 +31,9 @@ const CoverLetterModal = () => {
                 coverLetterResponseDto={coverLetterResponseDto}
                 setShowModalType={setShowModalType}
                 onClickDelete={deleteCoverLetter}
-                setShowModal={setShowModal} />}
+                setShowModal={setShowModal} 
+                coverLetterSummaryDtos={coverLetterSummaryDtos} 
+                setCoverLetterSummaryDtos={setCoverLetterSummaryDtos} />}
 
 
             {showModalType === "update" &&

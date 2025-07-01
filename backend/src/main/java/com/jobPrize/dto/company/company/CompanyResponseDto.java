@@ -34,7 +34,7 @@ public class CompanyResponseDto {
 	
 	private String imageUrl;
 
-	public static CompanyResponseDto from(Company company) {
+	public static CompanyResponseDto of(Company company, String imageUrl) {
 		return CompanyResponseDto.builder()
 			.companyName(company.getCompanyName())
 			.industry(company.getIndustry())
@@ -46,6 +46,7 @@ public class CompanyResponseDto {
 			.companyType(company.getCompanyType().name())
 			.employeeCount(company.getEmployeeCount())
 			.establishedDate(company.getEstablishedDate())
+			.imageUrl(imageUrl)
 			.build();
 	}
 }

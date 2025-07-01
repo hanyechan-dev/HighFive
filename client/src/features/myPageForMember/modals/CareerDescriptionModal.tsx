@@ -11,7 +11,10 @@ const CareerDescriptionModal = () => {
         careerDescriptionResponseDto,
         setShowModal,
         showModalType,
-        setShowModalType
+        setShowModalType,
+        setClickedCareerDescriptionId,
+        setCareerDescriptionSummaryDtos,
+        careerDescriptionSummaryDtos
     } = useDocumentTabController();
 
     const { createCareerDescription, deleteCareerDescription, updateCareerDescription } = useDocumentTabApi();
@@ -19,6 +22,7 @@ const CareerDescriptionModal = () => {
     const onClose = () => {
         setShowModal(false);
         setShowModalType("detail");
+        setClickedCareerDescriptionId(-1);
     }
     return (
         <CommonModal size={"l"} onClose={onClose}>
@@ -27,7 +31,9 @@ const CareerDescriptionModal = () => {
                 careerDescriptionResponseDto={careerDescriptionResponseDto}
                 setShowModalType={setShowModalType}
                 onClickDelete={deleteCareerDescription}
-                setShowModal={setShowModal} />}
+                setShowModal={setShowModal}
+                careerDescriptionSummaryDtos={careerDescriptionSummaryDtos} 
+                setCareerDescriptionSummaryDtos={setCareerDescriptionSummaryDtos}/>}
 
 
             {showModalType === "update" &&

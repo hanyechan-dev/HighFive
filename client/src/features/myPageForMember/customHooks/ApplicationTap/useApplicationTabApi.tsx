@@ -15,7 +15,7 @@ export const useApplicationTabApi = () => {
         try {
 
             const response = await readMyProposalsApi(page, size);
-            const applicationSummaryForMemberDtos: ApplicationSummaryForMemberDto[] = response.data;
+            const applicationSummaryForMemberDtos: ApplicationSummaryForMemberDto[] = response.data.content;
             setApplicationSummaryForMemberDtos(applicationSummaryForMemberDtos);
             setTotalElements(response.data.totalElements);
         } catch (err) {

@@ -29,7 +29,7 @@ const JobPostingMainCard = ({
         educationLevel,
         similarityScore,
         createdDate,
-        imageUrl 
+        imageUrl
     } = jobPostingMainCardDto
 
 
@@ -44,13 +44,13 @@ const JobPostingMainCard = ({
                 <div className="absolute inset-0">
                     {/* 흐릿한 배경용 로고 */}
                     <img
-                        src={imageUrl}
+                        src={`http://192.168.0.121:8090${imageUrl}`}
                         className="w-full h-full object-contain blur-2xl scale-125 opacity-100"
                     />
 
                     {/* 선명한 실제 로고 */}
                     <img
-                        src={imageUrl}
+                        src={`http://192.168.0.121:8090${imageUrl}`}
                         className="absolute inset-0 w-full h-full object-contain p-4 opacity-100"
                     />
                 </div>
@@ -63,7 +63,7 @@ const JobPostingMainCard = ({
                 className="border-x border-gray-300 absolute bottom-50 left-0 w-[345px] h-[60px] px-4 py-1 text-center text-theme text-base font-roboto
                  opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 bg-theme bg-opacity-10"
             >
-                
+
 
                 <div className="flex justify-start items-center mt-1">
                     <BuildingIcon className="mr-2" />
@@ -103,9 +103,11 @@ const JobPostingMainCard = ({
                             <span>{createdDate}</span>
                         </div>
 
-                        <div className="flex items-center space-x-2">
-                            <Badge icon={<CareerTypeIcon />} text={careerType} />
-                            <Badge icon={<GraduationCapIcon />} text={educationLevel} />
+                        <div className="flex items-center justify-between">
+                            <div className="space-y-2">
+                                <Badge icon={<CareerTypeIcon />} text={careerType} />
+                                <Badge icon={<GraduationCapIcon />} text={educationLevel} />
+                            </div>
                             <SimilarityCircle similarityScore={similarityScore} />
                         </div>
 

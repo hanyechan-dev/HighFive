@@ -122,7 +122,7 @@ public class JobPostingServiceImpl implements JobPostingService {
 		List<String> jobPostingImageUrls = new ArrayList<>();
 
 		for (JobPostingImage jobPostingImage : jobPostingImages) {
-			String jobPostingImageUrl = "/images/" + jobPostingImage.getImageName();
+			String jobPostingImageUrl = "/images/jobposting/" + jobPostingImage.getImageName();
 			jobPostingImageUrls.add(jobPostingImageUrl);
 		}
 		return JobPostingResponseDto.of(jobPosting, jobPostingImageUrls);

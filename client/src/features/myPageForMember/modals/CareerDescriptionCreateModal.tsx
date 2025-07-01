@@ -96,7 +96,7 @@ const CareerDescriptionDetailModal = ({
     };
 
     const onClickSaveButton = () => {
-        const dtoToSubmit: CareerDescriptionCreateDto = {
+        const dtoToSubmit : CareerDescriptionCreateDto = {
             title: createDto.title,
             contents: createDto.contents.map(({ item, content }) => ({
                 item,
