@@ -9,19 +9,21 @@ import memberPoolFilterSlice from '../../features/memberPool/slices/MemberPoolSl
 
 import AuthModalSlice from '../slices/AuthModalSlice';
 import ChatControlSlice from '../../features/chat/ChatControlSlice';
+import NotificationSlice from '../../features/notification/NotificationSlice';
 
 const rootReducer = combineReducers({
     auth: AuthSlice,
     jobPostingFilter: jobPostingFilterSlice,
     memberPoolFilter: memberPoolFilterSlice,
     chat: ChatControlSlice,
-    authModal: AuthModalSlice
+    authModal: AuthModalSlice,
+    notification: NotificationSlice
 });
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['auth', 'jobPostingFilter', 'memberPoolFilter', 'chat'],
+    whitelist: ['auth', 'jobPostingFilter', 'memberPoolFilter'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
