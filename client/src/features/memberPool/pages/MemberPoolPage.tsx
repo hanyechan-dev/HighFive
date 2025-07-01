@@ -21,6 +21,7 @@ const MemberPoolPage = () => {
   const filter = useSelector((state: RootState) => state.memberPoolFilter.filter);
 
   const [members, setMembers] = useState<MemberPoolSummary[]>([]);
+  const [recommendedMembers, setRecommendedMembers] = useState<MemberPoolSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [totalElements, setTotalElements] = useState(0);
@@ -48,19 +49,25 @@ const MemberPoolPage = () => {
     const fetchMembers = async () => {
       setIsLoading(true);
       try {
-        const res = await MemberPoolPageApi(filter, clickedPage);
+        // 추천 인재 (항상 상위 4개)
+        const recommendedRes = await MemberPoolPageApi(filter, 0);
+        if (recommendedRes && recommendedRes.data) {
+          setRecommendedMembers(recommendedRes.data.content.slice(0, 4));
+        }
+
+        // 페이지별 인재 리스트 (첫 페이지는 14개, 나머지는 10개)
+        const res = await MemberPoolPageApi(filter, clickedPage, clickedPage === 0 ? 14 : 10);
         if (res && res.data) {
-          setMembers(res.data.content); // Page 객체의 content 배열 사용
-          setTotalElements(res.data.totalElements); // 실제 전체 요소 수 사용
+          setMembers(res.data.content);
+          setTotalElements(res.data.totalElements);
         } else {
-          // API 응답이 없으면 mock 데이터 사용
           setMembers([]);
           setTotalElements(0);
         }
       } catch (err) {
         printErrorInfo(err);
-        // 에러 시에도 mock 데이터 사용
         setMembers([]);
+        setRecommendedMembers([]);
         setTotalElements(0);
       } finally {
         setIsLoading(false);
@@ -112,7 +119,7 @@ const MemberPoolPage = () => {
                 <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
               </div>
               <div className="grid grid-cols-4 gap-4">
-                {members.map((member) => (
+                {recommendedMembers.map((member) => (
                   <MemberPoolCard onClick={handleMemberClick} key={member.id} member={member} />
                 ))}
               </div>
@@ -138,13 +145,18 @@ const MemberPoolPage = () => {
               <MemberPoolListHeader />
               {/* 리스트 */}
               <div>
-                {members.map((member) => (
-                  <MemberPoolSummaryRow
-                    key={member.id}
-                    member={member}
-                    onClick={handleMemberClick}
-                  />
-                ))}
+                {members
+                  .filter(
+                    (member) =>
+                      !recommendedMembers.some((recommended) => recommended.id === member.id),
+                  )
+                  .map((member) => (
+                    <MemberPoolSummaryRow
+                      key={member.id}
+                      member={member}
+                      onClick={handleMemberClick}
+                    />
+                  ))}
               </div>
             </div>
             {/* 페이지네이션 */}

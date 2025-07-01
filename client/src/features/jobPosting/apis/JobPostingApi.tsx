@@ -1,6 +1,11 @@
-import { apiForm } from "../../../common/Axios";
-import { api } from "../../../common/Axios";
-import type { JobPostingCreateRequest, JobPostingUpdateRequest, JobPostingSummary, JobPostingDetail } from "../props/JobPostingProps";
+import { apiForm } from '../../../common/Axios';
+import { api } from '../../../common/Axios';
+import type {
+  JobPostingCreateRequest,
+  JobPostingUpdateRequest,
+  JobPostingSummary,
+  JobPostingDetail,
+} from '../props/JobPostingProps';
 
 interface JobPostingListResponse {
   content: JobPostingSummary[];
@@ -11,7 +16,7 @@ interface JobPostingListResponse {
 // 채용공고 목록 조회 (페이지네이션)
 export const JobPostingListApi = (page: number, size: number) => {
   return api(true).get<JobPostingListResponse>('/companies/jobPostings', {
-    params: { page, size }
+    params: { page, size },
   });
 };
 
@@ -60,4 +65,4 @@ export const JobPostingUpdateApi = (data: JobPostingUpdateRequest, images?: File
 // 채용공고 삭제
 export const JobPostingDeleteApi = (id: number) => {
   return api(true).post<void>('/companies/jobPostings/deletion', { id });
-}; 
+};

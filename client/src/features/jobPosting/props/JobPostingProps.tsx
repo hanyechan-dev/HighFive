@@ -1,5 +1,5 @@
 // 채용공고 관리 페이지에서 사용할 타입들 (백엔드 DTO 기반)
-import type { JobPostingSummary } from "../../../common/props/JobPostingTypes";
+import type { JobPostingSummary } from '../../../common/props/JobPostingTypes';
 
 export interface JobPostingDetail {
   id: number;
@@ -41,5 +41,4 @@ export interface JobPostingUpdateRequest {
   requirement: string;
 }
 
-
-export type { JobPostingSummary }; 
+export type { JobPostingSummary };
