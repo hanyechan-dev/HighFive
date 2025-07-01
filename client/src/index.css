@@ -66,3 +66,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 위에서 추가한 my-custom-toast 클래스를 사용합니다 */
+.my-custom-toast [data-button] {
+  background-color: var(--button-background) !important;
+  color: var(--button-text) !important;
+}
+
+.my-custom-toast [data-button]:hover {
+  background-color: var(--button-hover-background) !important;
+}
