@@ -5,6 +5,7 @@ import type { RootState } from "./common/store/store";
 import { useSelector } from "react-redux";
 import { connectWebSocket } from "./features/chat/stompClient";
 import ChatButtonModal from "./features/chat/ChatButtonModal";
+import { Toaster } from "sonner";
 
 function App() {
     const token = useSelector((state: RootState) => (state.auth.accessToken));
@@ -37,6 +38,7 @@ function App() {
             <AppRouter />
             <Chat />
             <ChatButtonModal />
+            <Toaster />
         </>
     )
 }

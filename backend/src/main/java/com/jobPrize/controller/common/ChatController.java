@@ -2,6 +2,7 @@ package com.jobPrize.controller.common;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jobPrize.dto.common.chat.ChatRequestDto;
 import com.jobPrize.dto.common.chat.ChatResponseDto;
-import com.jobPrize.dto.common.chat.InviteTargetDto;
 import com.jobPrize.dto.common.id.IdDto;
-import com.jobPrize.entity.common.ChatContent;
 import com.jobPrize.service.common.chat.ChatService;
 import com.jobPrize.util.SecurityUtil;
 
@@ -55,7 +54,15 @@ public class ChatController {
 	@PostMapping
 	public ResponseEntity<Long> createChatRoom(@RequestBody @Valid IdDto idDto) {	// IdDto는 UserId
 		Long id = SecurityUtil.getId();
-		Long chatRoomId = chatService.createChatRoom(id, idDto.getId());
+		Long targetId = idDto.getId();
+		Long chatRoomId = chatService.createChatRoom(id, targetId);
+		
+	    Map<String, Object> payload = Map.of(
+	            "targetId", targetId,
+	            "chatRoomId", chatRoomId
+	    );
+		simpMessagingTemplate.convertAndSend("/topic/notifications", payload);
+		
 		return ResponseEntity.status(HttpStatus.OK).body(chatRoomId);
 	}
 	

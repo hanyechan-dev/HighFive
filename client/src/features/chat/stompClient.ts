@@ -7,19 +7,19 @@ let isConnected = false;
 let subscriptions: { [key: string]: StompSubscription } = {};
 
 // 콜백 등록부
-let onMessageCallbacks: ((message: IMessage) => void)[] | null = null;
+let onMessageCallbacks: ((message: IMessage) => void)[] = [];
 
 // 메시지 콜백 등록
 export const registerMessageCallback = (callback: (message: IMessage) => void) => {
-    if(onMessageCallbacks != null){
-        onMessageCallbacks.push(callback);
-        return onMessageCallbacks.length - 1; // 추후 언마운트를 위해 콜백 인덱스 반환
-    } else { console.log("onMessageCallbacks이 null입니다.")}
+    onMessageCallbacks.push(callback);
+    return onMessageCallbacks.length - 1; // 추후 언마운트를 위해 콜백 인덱스 반환
 };
 
 // 특정 콜백 해제
-export const unregisterMessageCallbacks = () => {
-    onMessageCallbacks = null;
+export const unregisterMessageCallback = (index: number) => {
+    if (index > -1 && index < onMessageCallbacks.length) {
+        onMessageCallbacks[index] = () => { }; // 빈 함수로 교체하여 인덱스 밀리는 에러 방지
+    }
 };
 
 export const getStompClient = (): Client | null => {
@@ -65,21 +65,6 @@ export const connectWebSocket = (token: string) => {
             isConnected = true;
             stompClient = client; // 연결 성공 시에만 전역 변수에 할당
             console.log('WebSocket Connected!', frame);
-
-            // 개인 Queue 구독
-            client.subscribe(`/user/queue/chat`, ({ body }) => {
-                try {
-                    const data = JSON.parse(body);
-                    const chatRoomId = data.chatRoomId;
-
-                    if (chatRoomId) {
-                        console.log(`${chatRoomId}번 채팅방 구독 시작.`);
-                        subscribeToTopic(chatRoomId);
-                    }
-                } catch (error) {
-                    console.error(`개인 Queue 구독 콜백을 통한 채팅방 구독 실패: `, error);
-                }
-            });
         },
 
         // 연결에 실패한 경우
@@ -104,26 +89,38 @@ export const connectWebSocket = (token: string) => {
 };
 
 // 채팅방 구독 기능 (메시지 수신 시 콜백 함수 실행)
-export const subscribeToTopic = (roomId: number) => {
+export const subscribeToTopic = async (roomId: number) => {
     const topic = `/topic/${roomId}`;
-    // 이미 해당 토픽을 구독중이라면 중복 실행 방지
-    if (stompClient?.active && !subscriptions[topic]) {
-        console.log(`Subscribing to ${topic}`);
-        const subscription = stompClient.subscribe(topic, (message: IMessage) => {
-            // 등록된 메시지 처리 콜백이 있다면 실행
-            if (onMessageCallbacks) {
-                onMessageCallbacks.forEach((callback) => {
-                    if(message){
-                        callback(message);
-                    }
-                })
-            }
-        });
-        // 구독 객체(StompSubscription)를 저장하여 관리
-        subscriptions[topic] = subscription;
-        return subscription;
+
+    let maxTries = 25; // 최대 5초 대기 (25 * 200ms)
+    while (!stompClient?.active && maxTries > 0) {
+        console.log(`[구독 대기] 토픽 ${roomId}: 웹소켓 연결을 기다립니다... (남은 시도: ${maxTries})`);
+        // 0.2초 대기
+        await new Promise(resolve => setTimeout(resolve, 200));
+        stompClient = getStompClient(); // 최신 클라이언트 상태 다시 가져오기
+        maxTries--;
+    }
+
+    // 연결이 되었거나, 대기 시간이 초과된 후 최종적으로 구독 시도
+    if (stompClient?.active) {
+        // 이미 해당 토픽을 구독중이라면 중복 실행 방지
+        if (!subscriptions[topic]) {
+            console.log(`[구독 성공] 토픽 ${roomId}: 구독을 시작합니다.`);
+            const subscription = stompClient.subscribe(topic, (message: IMessage) => {
+                if (onMessageCallbacks) {
+                    onMessageCallbacks.forEach((callback) => {
+                        if (message) {
+                            callback(message);
+                        }
+                    });
+                }
+            });
+            subscriptions[topic] = subscription;
+            return subscription;
+        }
     } else {
-        console.log(`이미 ${topic}을 구독 중이거나, 클라이언트가 활성화되지 않았습니다.`);
+        // 결국 연결에 실패한 경우
+        console.error(`[구독 실패] 토픽 ${roomId}: 웹소켓 연결에 실패하여 구독할 수 없습니다.`);
     }
     return null;
 };
@@ -141,7 +138,7 @@ export const unsubscribeFromTopic = (roomId: number) => {
 // 메시지 발행(전송) 기능
 export const publishMessage = (
     destination: string,
-    headers: {[key : string] : any},
+    headers: { [key: string]: any },
     body: object
 ) => {
     if (stompClient?.active) {
