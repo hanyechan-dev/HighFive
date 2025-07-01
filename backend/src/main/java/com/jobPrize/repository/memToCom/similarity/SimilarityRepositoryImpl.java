@@ -197,8 +197,10 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 		QMember member = QMember.member;
 		BooleanBuilder builder = new BooleanBuilder();
 
-	    if (condition.isHasCareer()) {
-	    	builder.and(member.careers.any().isNotNull());	    }
+		if (condition.isHasCareer()) {
+		    builder.and(member.careers.size().gt(0));
+		}
+
 	    if (condition.getEducationLevel() != null && !condition.getEducationLevel().isBlank()) {
 	        builder.and(member.educations.any().educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
 	    }
