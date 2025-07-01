@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class JobPostingCreateDto {
 	
 	@NotBlank(message = "공고명을 입력해주세요.")
@@ -41,7 +43,7 @@ public class JobPostingCreateDto {
 	private String content;
 
 	@NotBlank(message = "자격 요건을 입력해주세요.")
-	@Size(min = 50, message = "자격 요건은 최소 50자 이상 입력해야 합니다.")
+	@Size(max = 100, message = "자격 요건은 최대 100자 이상 입력해야 합니다.")
 	private String requirement;
 
 

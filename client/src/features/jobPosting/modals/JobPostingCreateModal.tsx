@@ -64,10 +64,6 @@ export default function JobPostingCreateModal({
 
     const handleSave = async () => {
         // 유효성 검사
-        if (!formData.title || !formData.workingHours || !formData.workLocation || !formData.job || !formData.careerType || !formData.educationLevel || !formData.salary || !formData.content || !formData.requirement) {
-            alert("모든 필수 항목을 입력해주세요.");
-            return;
-        }
         setSaving(true);
         setError(null);
         try {
@@ -113,7 +109,7 @@ export default function JobPostingCreateModal({
             </div>
             <div className="flex gap-1 mb-4">
                 <Select label="학력" options={educationLevelEnum} size="m" disabled={false} value={formData.educationLevel || ""} setValue={v => setFormData(f => ({ ...f, educationLevel: v }))} />
-                <Input label="급여" placeholder="급여를 입력하세요" size="m" disabled={false} type="text" value={formData.salary ? formData.salary.toString() : ""} setValue={v => setFormData(f => ({ ...f, salary: parseInt(v) || 0 }))} />
+                <Input label="급여" placeholder="급여를 입력하세요 (만원)" size="m" disabled={false} type="text" value={formData.salary ? formData.salary.toString() : ""} setValue={v => setFormData(f => ({ ...f, salary: parseInt(v) || 0 }))} />
             </div>
             <TextArea label="내용" placeholder="공고 내용을 입력하세요" disabled={false} value={formData.content} setValue={v => setFormData(f => ({ ...f, content: v }))} size="l" />
             <TextArea label="자격 요건" placeholder="자격 요건을 입력하세요" disabled={false} value={formData.requirement} setValue={v => setFormData(f => ({ ...f, requirement: v }))} size="l" />

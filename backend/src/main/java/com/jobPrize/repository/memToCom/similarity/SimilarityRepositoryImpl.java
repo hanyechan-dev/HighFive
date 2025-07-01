@@ -199,7 +199,7 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 
 	    if (condition.isHasCareer()) {
 	    	builder.and(member.careers.any().isNotNull());	    }
-	    if (condition.getEducationLevel() != null) {
+	    if (condition.getEducationLevel() != null && !condition.getEducationLevel().isBlank()) {
 	        builder.and(member.educations.any().educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
 	    }
 	    if (condition.getAddress() != null && !condition.getAddress().isBlank()) {

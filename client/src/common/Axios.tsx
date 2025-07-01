@@ -28,9 +28,7 @@ export function api(withAuth: boolean) {
 
 export function apiForm(withAuth: boolean) { 
   
-    const headers: Record<string, string> = {
-    'Content-Type': 'multipart/form-data',
-  };
+    const headers: Record<string, string> = {};
   
   if (withAuth) {
     const accessToken = store.getState().auth.accessToken;

@@ -23,38 +23,37 @@ export const JobPostingDetailApi = (id: number) => {
 // 채용공고 생성 (FormData 사용 - 이미지 업로드 포함)
 export const JobPostingCreateApi = (data: JobPostingCreateRequest, images?: File[]) => {
   const formData = new FormData();
-  
+
   // JobPostingCreateDto 데이터 추가
   Object.entries(data).forEach(([key, value]) => {
     formData.append(key, value.toString());
   });
-  
+
   // JobPostingImageCreateListDto 데이터 추가
   if (images && images.length > 0) {
     images.forEach((image, index) => {
-      formData.append(`jobPostingImageCreateListDto.jobPostingImageCreateDtos[${index}].image`, image);
+      formData.append(`jobPostingImageCreateDtos[${index}].image`, image);
     });
   }
-  
   return apiForm(true).post('/companies/jobPostings', formData);
 };
 
 // 채용공고 수정 (FormData 사용 - 이미지 업로드 포함)
 export const JobPostingUpdateApi = (data: JobPostingUpdateRequest, images?: File[]) => {
   const formData = new FormData();
-  
+
   // JobPostingUpdateDto 데이터 추가
   Object.entries(data).forEach(([key, value]) => {
     formData.append(key, value.toString());
   });
-  
+
   // JobPostingImageCreateListDto 데이터 추가
   if (images && images.length > 0) {
     images.forEach((image, index) => {
-      formData.append(`jobPostingImageCreateListDto.jobPostingImageCreateDtos[${index}].image`, image);
+      formData.append(`jobPostingImageCreateDtos[${index}].image`, image);
     });
   }
-  
+
   return apiForm(true).put('/companies/jobPostings', formData);
 };
 
