@@ -11,4 +11,4 @@ app.include_router(embedding_router.router)
 
 
 def main():
-    uvicorn.run("gpt_api.main:app", host="0.0.0.0", port=9000, reload=True)
+    uvicorn.run("gpt_api.main:app", host="127.0.0.1", port=9000, reload=True)
