@@ -34,6 +34,17 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
     const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     const currentUserId = AuthUtil.getIdFromToken(accessToken);
 
+    const onClickChat = () => {
+        if (memberId != currentUserId && detail!=null) {
+            dispatch(startNewChat({
+                id: memberId,
+                name: detail.name,
+                avatar: "/placeholder.svg?height=40&width=40",
+                step: 1
+            }))
+        } else { return; }
+    }
+
     const onCloseProposalCreateModal = () => {
         setProposalOpen(false);
     }
@@ -61,16 +72,7 @@ export default function MemberPoolDetailModal({ isOpen, onClose, memberId }: Mem
         }
     }, [memberId]);
 
-    const onClickChat = () => {
-        if (memberId != currentUserId && detail!=null) {
-            dispatch(startNewChat({
-                id: memberId,
-                name: detail.name,
-                avatar: "/placeholder.svg?height=40&width=40",
-                step: 1
-            }))
-        } else { return; }
-    }
+    
 
     if (!isOpen) return null;
 

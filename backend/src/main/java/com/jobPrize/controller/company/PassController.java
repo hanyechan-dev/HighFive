@@ -44,7 +44,7 @@ public class PassController {
 	}
 
 	@PostMapping("/applications")
-	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readPassedApplications(@Valid IdDto IdDto,
+	public ResponseEntity<Page<ApplicationSummaryForCompanyDto>> readPassedApplications(@RequestBody @Valid IdDto IdDto,
 			Pageable pageable) {
 
 		Long id = SecurityUtil.getId();

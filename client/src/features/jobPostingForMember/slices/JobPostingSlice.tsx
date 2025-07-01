@@ -29,8 +29,17 @@ const jobPostingFilterSlice = createSlice({
     setJobPostingFilter(state, action: PayloadAction<JobPostingFilter>) {
       state.filter = action.payload;
     },
+    clearJobPostingFilter(state) {
+      state.filter = {
+        careerType: '',
+        educationLevel: '',
+        workLocation: '',
+        job: '',
+        salary: '0',
+      };
+    },
   },
 });
 
-export const { setJobPostingFilter } = jobPostingFilterSlice.actions;
+export const { setJobPostingFilter, clearJobPostingFilter } = jobPostingFilterSlice.actions;
 export default jobPostingFilterSlice.reducer;

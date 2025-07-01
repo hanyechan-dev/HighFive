@@ -14,6 +14,7 @@ export type ApplicationSummaryForCompany = {
 
 export type ApplicationDetail = {
   id: number;
+  userId:number;
   name: string;
   email: string;
   genderType: string;

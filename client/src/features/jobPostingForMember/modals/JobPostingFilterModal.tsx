@@ -6,7 +6,7 @@ import Select from "../../../common/components/input/Select";
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import { careerTypeEnum, educationLevelEnum, regionEnum, salaryEnum } from "../../../common/enum/Enum";
 import CommonModal from "../../../common/modals/CommonModal";
-import { setJobPostingFilter } from "../slices/JobPostingSlice";
+import { setJobPostingFilter, clearJobPostingFilter } from "../slices/JobPostingSlice";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
 
 
@@ -18,11 +18,11 @@ const JobPostingFilterModal = () => {
     const [job, setJob] = useState('');
     const [salary, setSalary] = useState(salaryEnum[0].value);
 
-    const{
+    const {
         setShowJobPostingFilterModal
-    }=useJobPostingForMemberController();
+    } = useJobPostingForMemberController();
 
-    const onClose = () =>{
+    const onClose = () => {
         setShowJobPostingFilterModal(false)
     }
 
@@ -36,6 +36,11 @@ const JobPostingFilterModal = () => {
             console.error('필터 적용 실패', err);
         }
     };
+
+    const unapplyFilter = () => {
+        dispatch(clearJobPostingFilter());
+        onClose()
+    }
 
     return (
 
@@ -52,7 +57,12 @@ const JobPostingFilterModal = () => {
 
             <Select label={'연봉'} options={salaryEnum} size={'s'} disabled={false} value={salary} setValue={setSalary} />
 
-            <Button color={"theme"} size={"m"} disabled={false} text={"필터 적용"} onClick={() => applyFilter(careerType, educationLevel, workLocation, job, salary)} type={"button"} />
+            <div className="flex justify-end mr-6">
+                <Button color={"white"} size={"s"} disabled={false} text={"필터 해제"} onClick={unapplyFilter} type={"button"} />
+                <Button color={"theme"} size={"s"} disabled={false} text={"필터 적용"} onClick={() => applyFilter(careerType, educationLevel, workLocation, job, salary)} type={"button"} />
+            </div>
+
+
 
         </CommonModal>
 

@@ -295,7 +295,7 @@ const JobPostingForMemberPage = () => {
                         key={jobPostingForMemberSummaryDto.id}
                         jobPostingSummaryForMemberDto={jobPostingForMemberSummaryDto}
                         onClick={onClickJobPostingDetailModal} />
-                ) : <EmptyState title={"등록된 공고가 없습니다."} text={"회원가입 및 로그인을 해주세요"} />
+                ) : <EmptyState title={"등록된 공고가 없습니다."} text={""} />
                 }
 
 

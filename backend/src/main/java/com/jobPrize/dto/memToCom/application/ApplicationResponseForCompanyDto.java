@@ -13,6 +13,8 @@ import lombok.Getter;
 public class ApplicationResponseForCompanyDto {
 
 	private Long id;
+	
+	private Long userId;
 
 	private String name;
 
@@ -42,6 +44,7 @@ public class ApplicationResponseForCompanyDto {
 
 		return ApplicationResponseForCompanyDto.builder()
 				.id(application.getId())
+				.userId(user.getId())
 				.name(user.getName())
 				.email(user.getEmail())
 				.genderType(user.getGenderType().name())

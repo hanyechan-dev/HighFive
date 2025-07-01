@@ -51,25 +51,10 @@ const MemberPoolPage = () => {
         // 모든 페이지에서 10개씩 요청
         const res = await MemberPoolPageApi(filter, clickedPage, 10);
         const content = res?.data?.content || [];
-<<<<<<< HEAD
-
-        if (clickedPage === 0) {
-          // 안전한 배열 처리
-          setRecommendedMembers(
-            content.length > 0 ? content.slice(0, Math.min(4, content.length)) : [],
-          );
-          setMembers(content.length > 4 ? content.slice(4) : []);
-        } else {
-          setRecommendedMembers([]);
-          setMembers(content);
-        }
-
-=======
 
         // 모든 페이지에서 리스트만 표시
         setMembers(content);
 
->>>>>>> origin/COMPANY
         setTotalElements(res?.data?.totalElements || 0);
       } catch (err) {
         printErrorInfo(err);
@@ -112,10 +97,26 @@ const MemberPoolPage = () => {
         </div>
 
         {members.length === 0 ? (
-          <EmptyState
-            title="검색된 인재가 없습니다"
-            text="다른 조건으로 검색하거나 필터를 조정해보세요"
-          />
+          <>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <h2 className="text-xl font-semibold">인재 목록</h2>
+                <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
+              </div>
+              <Button
+                color="theme"
+                size="s"
+                disabled={false}
+                text="필터"
+                type="button"
+                onClick={() => setIsFilterModalOpen(true)}
+              />
+            </div>
+            <EmptyState
+              title="검색된 인재가 없습니다"
+              text="다른 조건으로 검색하거나 필터를 조정해보세요"
+            />
+          </>
         ) : (
           <>
             {/* 인재 리스트 섹션 */}
