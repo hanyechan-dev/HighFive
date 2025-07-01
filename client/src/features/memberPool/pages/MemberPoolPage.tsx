@@ -49,21 +49,19 @@ const MemberPoolPage = () => {
     const fetchMembers = async () => {
       setIsLoading(true);
       try {
-        // 추천 인재 (항상 상위 4개)
-        const recommendedRes = await MemberPoolPageApi(filter, 0);
-        if (recommendedRes && recommendedRes.data) {
-          setRecommendedMembers(recommendedRes.data.content.slice(0, 4));
+        // 모든 페이지에서 동일한 크기(10개)로 요청
+        const res = await MemberPoolPageApi(filter, clickedPage, 10);
+        const content = res?.data?.content || [];
+
+        if (clickedPage === 0) {
+          setRecommendedMembers(content.slice(0, 4));
+          setMembers(content.slice(4));
+        } else {
+          setRecommendedMembers([]);
+          setMembers(content);
         }
 
-        // 페이지별 인재 리스트 (첫 페이지는 14개, 나머지는 10개)
-        const res = await MemberPoolPageApi(filter, clickedPage, clickedPage === 0 ? 14 : 10);
-        if (res && res.data) {
-          setMembers(res.data.content);
-          setTotalElements(res.data.totalElements);
-        } else {
-          setMembers([]);
-          setTotalElements(0);
-        }
+        setTotalElements(res?.data?.totalElements || 0);
       } catch (err) {
         printErrorInfo(err);
         setMembers([]);
