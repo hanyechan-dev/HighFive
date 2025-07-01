@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import PassListHeader from "../components/PassListHeader";
-import PassSummaryRow from "../components/PassSummaryRow";
-import type { ApplicationSummaryForCompany } from "../props/PassProps";
-import { PassListApi } from "../apis/PassApi";
-import CommonPage from "../../../common/pages/CommonPage";
-import Pagination from "../../../common/components/pagination/Pagination";
-import { usePagination } from "../../../common/customHooks/usePagination";
-import EmptyState from "../../../common/components/emptyState/EmptyState";
-import Button from "../../../common/components/button/Button";
-import PassDetailModal from "../modals/PassDetailModal";
-import LoadingSpinner from "../../../common/components/loading/LoadingSpinner";
-import { printErrorInfo } from "../../../common/utils/ErrorUtil";
-import PageTitle from "../../../common/components/title/PageTitle";
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import PassListHeader from '../components/PassListHeader';
+import PassSummaryRow from '../components/PassSummaryRow';
+import type { ApplicationSummaryForCompany } from '../props/PassProps';
+import { PassListApi } from '../apis/PassApi';
+import CommonPage from '../../../common/pages/CommonPage';
+import Pagination from '../../../common/components/pagination/Pagination';
+import { usePagination } from '../../../common/customHooks/usePagination';
+import EmptyState from '../../../common/components/emptyState/EmptyState';
+import Button from '../../../common/components/button/Button';
+import PassDetailModal from '../modals/PassDetailModal';
+import LoadingSpinner from '../../../common/components/loading/LoadingSpinner';
+import { printErrorInfo } from '../../../common/utils/ErrorUtil';
+import PageTitle from '../../../common/components/title/PageTitle';
 
 const PassPage = () => {
   const { jobPostingId } = useParams<{ jobPostingId: string }>();
@@ -53,8 +53,14 @@ const PassPage = () => {
         }
       } catch (err) {
         printErrorInfo(err);
+<<<<<<< HEAD
         setPasses([]);
         setTotalElements(0)
+=======
+
+        setPasses([]);
+        setTotalElements(0);
+>>>>>>> origin/COMPANY
       } finally {
         setIsLoading(false);
       }
@@ -72,16 +78,13 @@ const PassPage = () => {
     setSelectedApplicationId(null);
   };
 
-  console.log("렌더링 상태:", { isLoading, applicationsLength: passes.length });
+  console.log('렌더링 상태:', { isLoading, applicationsLength: passes.length });
 
   return (
     <CommonPage>
       <div className="w-[1452px] mx-auto font-roboto">
         <div className="flex items-center justify-between mb-8">
-          <PageTitle
-            title="합격자 리스트"
-            description="해당 채용공고의 합격자 목록입니다"
-          />
+          <PageTitle title="합격자 리스트" description="해당 채용공고의 합격자 목록입니다" />
           <Button
             color="theme"
             size="m"
@@ -94,10 +97,7 @@ const PassPage = () => {
         {isLoading ? (
           <LoadingSpinner message="합격자 내역을 불러오는 중..." />
         ) : passes.length === 0 ? (
-          <EmptyState
-            title="합격자 내역이 없습니다."
-            text="아직 합격한 지원자가 없습니다."
-          />
+          <EmptyState title="합격자 내역이 없습니다." text="아직 합격한 지원자가 없습니다." />
         ) : (
           <>
             <PassListHeader />
@@ -137,4 +137,4 @@ const PassPage = () => {
   );
 };
 
-export default PassPage; 
+export default PassPage;

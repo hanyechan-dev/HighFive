@@ -9,6 +9,7 @@ import JobPostingListHeader from '../components/JobPostingListHeader';
 import JobPostingSummaryRow from '../components/JobPostingSummaryRow';
 import Button from '../../../common/components/button/Button';
 import Pagination from '../../../common/components/pagination/Pagination';
+import JobPostingDetailModal from '../modals/JobPostingDetailModal';
 import JobPostingUpdateModal from '../modals/JobPostingUpdateModal';
 import JobPostingCreateModal from '../modals/JobPostingCreateModal';
 import LoadingSpinner from '../../../common/components/loading/LoadingSpinner';
@@ -19,6 +20,7 @@ const JobPostingPage = () => {
   const [totalElements, setTotalElements] = useState(0);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,9 +64,9 @@ const JobPostingPage = () => {
     fetchJobPostings();
   }, [fetchJobPostings]);
 
-  const handleEdit = (id: number) => {
+  const handleDetail = (id: number) => {
     setSelectedId(id);
-    setIsEditModalOpen(true);
+    setIsDetailModalOpen(true);
   };
 
   const handleDelete = async (id: number) => {
@@ -84,11 +86,17 @@ const JobPostingPage = () => {
   };
 
   const handleModalSuccess = () => {
-    setIsEditModalOpen(false);
     setIsCreateModalOpen(false);
+    setIsEditModalOpen(false);
 
     // 모달이 닫힐 때 데이터를 다시 불러옴
     fetchJobPostings();
+  };
+
+  const handleEditFromDetail = (id: number) => {
+    setSelectedId(id);
+    setIsDetailModalOpen(false);
+    setIsEditModalOpen(true);
   };
 
   return (
@@ -122,7 +130,7 @@ const JobPostingPage = () => {
                 <JobPostingSummaryRow
                   key={job.id}
                   job={job}
-                  onEdit={handleEdit}
+                  onDetail={handleDetail}
                   onDelete={handleDelete}
                 />
               ))
@@ -145,6 +153,15 @@ const JobPostingPage = () => {
         </div>
 
         {/* 모달들 */}
+        {selectedId && (
+          <JobPostingDetailModal
+            isOpen={isDetailModalOpen}
+            onClose={() => setIsDetailModalOpen(false)}
+            jobPostingId={selectedId}
+            onEdit={handleEditFromDetail}
+          />
+        )}
+
         {selectedId && (
           <JobPostingUpdateModal
             isOpen={isEditModalOpen}
