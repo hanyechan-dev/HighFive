@@ -1,6 +1,6 @@
 import { printErrorInfo } from "../../../../common/utils/ErrorUtil";
-import { readMyProposalApi, readMyProposalsApi } from "../../apis/MyPageForMemberApi";
-import type { ApplicationResponseDto, ApplicationSummaryForMemberDto } from "../../props/myPageForMemberProps";
+import { createApplicationApi, readMyApplicationsApi, readMyProposalApi} from "../../apis/MyPageForMemberApi";
+import type { ApplicationCreateDto, ApplicationResponseDto, ApplicationSummaryForMemberDto } from "../../props/myPageForMemberProps";
 import { useApplicationTabController } from "./useApplicationTabController";
 
 
@@ -14,7 +14,8 @@ export const useApplicationTabApi = () => {
     const readApplications = async (page: number, size: number) => {
         try {
 
-            const response = await readMyProposalsApi(page, size);
+            const response = await readMyApplicationsApi(page, size);
+            console.log(response);
             const applicationSummaryForMemberDtos: ApplicationSummaryForMemberDto[] = response.data.content;
             setApplicationSummaryForMemberDtos(applicationSummaryForMemberDtos);
             setTotalElements(response.data.totalElements);
@@ -33,7 +34,16 @@ export const useApplicationTabApi = () => {
         }
     }
 
+    const createApplication = async (applicationCreateDto : ApplicationCreateDto) =>{
+        try {
+            await createApplicationApi(applicationCreateDto)
+        } catch (err) {
+            printErrorInfo(err);
+        }
+    }
+
     return {
+        createApplication,
         readApplications,
         readApplication,
     }

@@ -14,7 +14,7 @@ const CareerDescriptionSelectForApplicationModal = () => {
         careerDescriptionSummaryDtos,
         clickedCareerDescriptionId,
         setClickedCareerDescriptionId,
-        careerDescriptionResponseDtos,
+        careerDescriptionResponseDto,
     } = useJobPostingForMemberController();
 
 
@@ -39,14 +39,7 @@ const CareerDescriptionSelectForApplicationModal = () => {
                             isClicked={clickedCareerDescriptionId === careerDescriptionSummaryDto.id}
                             setIsClicked={setClickedCareerDescriptionId}
                         />
-                        {clickedCareerDescriptionId === careerDescriptionSummaryDto.id && (
-                            <CareerDescriptionOutput
-                                careerDescriptionResponseDto={careerDescriptionResponseDtos.find(
-                                    careerDescriptionResponseDto =>
-                                        careerDescriptionResponseDto.id === careerDescriptionSummaryDto.id
-                                )!}
-                            />
-                        )}
+                        {clickedCareerDescriptionId !== -1 &&  <CareerDescriptionOutput careerDescriptionResponseDto={careerDescriptionResponseDto} />}
                     </div>
                 ))}
             </ExternalBox>

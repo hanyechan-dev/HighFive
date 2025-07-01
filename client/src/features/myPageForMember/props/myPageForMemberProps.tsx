@@ -286,6 +286,12 @@ export interface ApplicationResponseDto {
 	careerDescriptionJson: string;
 }
 
+export interface ApplicationCreateDto {
+	jobPostingId : number
+	coverLetterId : number
+	careerDescriptionId : number
+}
+
 export interface PaymentResponseDto {
 	paymentId: number;	// 주문 번호
 	id: number;	// 사용자 ID

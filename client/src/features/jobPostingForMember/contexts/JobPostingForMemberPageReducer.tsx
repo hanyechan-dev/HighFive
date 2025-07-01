@@ -34,10 +34,20 @@ export const initialState: JobPostingForMemberPageState = {
     },
     clickedCareerDescriptionId: -1,
     careerDescriptionSummaryDtos: [],
-    careerDescriptionResponseDtos: [],
+    careerDescriptionResponseDto: {
+        id : 0,
+	    title : "",
+	    createdDate:"",
+	    contents : []
+    },
     clickedCoverLetterId: -1,
     coverLetterSummaryDtos: [],
-    coverLetterResponseDtos: []
+    coverLetterResponseDto: {
+        id : 0,
+	    title : "",
+	    createdDate:"",
+	    contents : []
+    }
 }
 
 
@@ -67,14 +77,14 @@ export const reducer = (state: JobPostingForMemberPageState, action: JobPostingF
             return { ...state, clickedCareerDescriptionId: action.payload };
         case "SET_CAREER_DESCRIPTION_SUMMARY_DTOS":
             return { ...state, careerDescriptionSummaryDtos: action.payload };
-        case "SET_CAREER_DESCRIPTION_RESPONSE_DTOS":
-            return { ...state, careerDescriptionResponseDtos: action.payload };
+        case "SET_CAREER_DESCRIPTION_RESPONSE_DTO":
+            return { ...state, careerDescriptionResponseDto: action.payload };
         case "SET_CLICKED_COVER_LETTER_ID":
             return { ...state, clickedCoverLetterId: action.payload };
         case "SET_COVER_LETTER_SUMMARY_DTOS":
             return { ...state, coverLetterSummaryDtos: action.payload };
-        case "SET_COVER_LETTER_RESPONSE_DTOS":
-            return { ...state, coverLetterResponseDtos: action.payload };
+        case "SET_COVER_LETTER_RESPONSE_DTO":
+            return { ...state, coverLetterResponseDto: action.payload };
         default:
             return state;
     }

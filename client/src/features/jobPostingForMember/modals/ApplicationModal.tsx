@@ -8,27 +8,37 @@ import CoverLetterSelectForApplicationModal from "./CoverLetterSelectForApplicat
 
 
 
-const ApplicationModal = () =>{
+const ApplicationModal = () => {
+
+
+
+
 
     const {
         showModalNumber,
         setShowApplicationModal,
+        setShowModalNumber,
+        setClickedCareerDescriptionId,
+        setClickedCoverLetterId,
     } = useJobPostingForMemberController();
 
-    const onClose = () =>{
+    const onClose = () => {
         setShowApplicationModal(false);
+        setShowModalNumber(-1)
+        setClickedCareerDescriptionId(-1)
+        setClickedCoverLetterId(-1)
     }
 
-    if (showModalNumber < 0 || showModalNumber >= 3) return null;
 
-    return(
+
+    return (
         <CommonModal size="l" onClose={onClose}>
             {showModalNumber === 0 &&
-                    (<ResumeOutputForApplicationModal  />)}
-                {showModalNumber === 1 &&
-                    (<CareerDescriptionSelectForApplicationModal />)}
-                {showModalNumber === 2 &&
-                    (<CoverLetterSelectForApplicationModal />)}
+                (<ResumeOutputForApplicationModal />)}
+            {showModalNumber === 1 &&
+                (<CareerDescriptionSelectForApplicationModal />)}
+            {showModalNumber === 2 &&
+                (<CoverLetterSelectForApplicationModal />)}
         </CommonModal>
     )
 

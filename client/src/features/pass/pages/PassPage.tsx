@@ -53,14 +53,9 @@ const PassPage = () => {
         }
       } catch (err) {
         printErrorInfo(err);
-<<<<<<< HEAD
-        setPasses([]);
-        setTotalElements(0)
-=======
 
         setPasses([]);
         setTotalElements(0);
->>>>>>> origin/COMPANY
       } finally {
         setIsLoading(false);
       }

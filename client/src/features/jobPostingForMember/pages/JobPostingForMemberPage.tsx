@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CommonPage from "../../../common/pages/CommonPage";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
-import { CreateApplicationApi, JobPostingDetailApi, JobPostingListForMemberApi, JobPostingMainCardForMemberApi, JobPostingUnderCardForMemberApi } from "../apis/JobPostingForMemberApi";
+import { CreateApplicationApi, JobPostingDetailApi, JobPostingListForMemberApi, JobPostingMainCardForMemberApi, JobPostingUnderCardForMemberApi, ReadMyCareerDescriptionApi, ReadMyCoverLetterApi } from "../apis/JobPostingForMemberApi";
 import JobPostingMainCard from "../components/JobPostingMainCard";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
 
@@ -54,6 +54,12 @@ const JobPostingForMemberPage = () => {
         setCareerDescriptionSummaryDtos,
         clickedCoverLetterId,
         setCoverLetterSummaryDtos,
+        setCoverLetterResponseDto,
+        setCareerDescriptionResponseDto,
+        setShowApplicationModal,
+        setShowModalNumber,
+        setClickedCareerDescriptionId,
+        setClickedCoverLetterId
     } = useJobPostingForMemberController();
 
     const {
@@ -177,15 +183,56 @@ const JobPostingForMemberPage = () => {
                             careerDescriptionId: clickedCareerDescriptionId
                         }
                     )
+
                 } catch (err) {
                     printErrorInfo(err);
                 }
             }
             post();
+            setShowApplicationModal(false)
+            setShowModalNumber(-1)
+            setClickedCareerDescriptionId(-1)
+            setClickedCoverLetterId(-1)
         }
 
 
     }, [showModalNumber]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            try {
+                const coverLetterResponseDto = (await ReadMyCoverLetterApi(clickedCoverLetterId)).data;
+                setCoverLetterResponseDto(coverLetterResponseDto);
+            } catch (err) {
+                printErrorInfo(err);
+            }
+        }
+
+
+        if (clickedCoverLetterId != -1) {
+            fetchData();
+        }
+
+    }, [clickedCoverLetterId])
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            try {
+                const careerDescriptionResponseDto = (await ReadMyCareerDescriptionApi(clickedCareerDescriptionId)).data;
+                setCareerDescriptionResponseDto(careerDescriptionResponseDto);
+            } catch (err) {
+                printErrorInfo(err);
+            }
+        }
+
+
+        if (clickedCareerDescriptionId != -1) {
+            fetchData();
+        }
+
+    }, [clickedCareerDescriptionId])
 
 
 

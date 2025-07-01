@@ -155,7 +155,7 @@ const UserApprovalList = ({ userType, onSelect, onDetailClick: handleDetail, lis
                     <div className="px-12">연락처</div>
                     <div className="px-10">주소</div>
                     <div className="px-11">신청일</div>
-                    <div className="px-4"> </div>
+                    <div className="pl-[75px]">상세</div>
                 </div>
 
                 {userType === "기업회원" &&

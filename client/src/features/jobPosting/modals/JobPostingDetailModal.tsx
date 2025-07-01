@@ -184,7 +184,7 @@ export default function JobPostingDetailModal({
                 key={idx}
                 className="w-[180px] h-[120px] border rounded-lg overflow-hidden flex items-center justify-center bg-gray-100"
               >
-                <img src={url} alt="preview" className="object-contain w-full h-full" />
+                <img src={`http://192.168.0.121:8090${url}`} alt="preview" className="object-contain w-full h-full" />
               </div>
             ))
           ) : (

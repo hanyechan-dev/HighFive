@@ -48,7 +48,15 @@ export const JobPostingDetailApi = (id: number) => {
 };
 
 export const CreateApplicationApi = (applicationCreateDto: ApplicationCreateDto) => {
-    return api(true).post('members/applications', applicationCreateDto
+    return api(true).post('/members/applications', applicationCreateDto
     );
+}
+
+export const ReadMyCoverLetterApi = (id : number) =>{
+    return api(true).post('/cover-letters/detail', {id});
+}
+
+export const ReadMyCareerDescriptionApi = (id : number) =>{
+    return api(true).post('/career-descriptions/detail', {id});
 }
 

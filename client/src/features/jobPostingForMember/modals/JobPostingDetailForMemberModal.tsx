@@ -10,6 +10,7 @@ import CompanyTypeIcon from "../../../common/icons/CompanyTypeIcon";
 import GraduationCapIcon from "../../../common/icons/GraduationCapIcon";
 import CommonModal from "../../../common/modals/CommonModal";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
+import ApplicationModal from "./ApplicationModal";
 
 
 
@@ -19,7 +20,9 @@ const JobPostingDetailForMemberModal = () => {
     const {
         jobPostingForMemberResponseDto,
         setShowJobPostingForMemberDetailModal,
+        showApplicationModal,
         setShowApplicationModal,
+        setShowModalNumber,
     } = useJobPostingForMemberController();
 
 
@@ -41,6 +44,7 @@ const JobPostingDetailForMemberModal = () => {
     } = jobPostingForMemberResponseDto
 
     const onClickApply = () => {
+        setShowModalNumber(0);
         setShowApplicationModal(true);
         setShowJobPostingForMemberDetailModal(false)
     }
@@ -48,60 +52,64 @@ const JobPostingDetailForMemberModal = () => {
 
 
 
-    const convertedSalary = `${salary / 10000}만원`;
+    const convertedSalary = `${salary}만원`;
 
 
     return (
-        <CommonModal size={"l"} onClose={()=>{setShowJobPostingForMemberDetailModal(false)}}>
-            <ModalTitle title={"채용공고 상세"} />
-            <div className="flex justify-start ml-6 gap-[672px] ">
-                <InfoBox label={"기업명"} value={companyName} />
+        <>
+            <CommonModal size={"l"} onClose={() => { setShowJobPostingForMemberDetailModal(false) }}>
+                <ModalTitle title={"채용공고 상세"} />
+                <div className="flex justify-between ml-6">
+                    <InfoBox label={"기업명"} value={companyName} />
+
+                    <div className="flex">
+                        <InfoBox label={"등록 일자"} value={createdDate} />
+                        <InfoBox label={"만료 일자"} value={expiredDate} />
+                    </div>
+                </div>
+
+                <Input label={"공고명"} placeholder={""} size={"l"} disabled={true} type={"text"} value={title} setValue={() => { }} />
 
                 <div className="flex">
-                    <InfoBox label={"등록 일자"} value={createdDate} />
-                    <InfoBox label={"만료 일자"} value={expiredDate} />
+                    <Input label={"근무 시간"} placeholder={""} size={"m"} disabled={true} type={"text"} value={workingHours} setValue={() => { }} />
+                    <Input label={"근무지"} placeholder={""} size={"m"} disabled={true} type={"text"} value={workLocation} setValue={() => { }} />
                 </div>
-            </div>
 
-            <Input label={"공고명"} placeholder={""} size={"l"} disabled={true} type={"text"} value={title} setValue={() => { }} />
-
-            <div className="flex">
-                <Input label={"근무 시간"} placeholder={""} size={"m"} disabled={true} type={"text"} value={workingHours} setValue={() => { }} />
-                <Input label={"근무지"} placeholder={""} size={"m"} disabled={true} type={"text"} value={workLocation} setValue={() => { }} />
-            </div>
-
-            <div className="flex">
-                <Input label={"모집 부문"} placeholder={""} size={"m"} disabled={true} type={"text"} value={job} setValue={() => { }} />
-                <Input label={"급여"} placeholder={""} size={"m"} disabled={true} type={"text"} value={convertedSalary} setValue={() => { }} />
-            </div>
-
-            <div className="flex justify-end mr-6 mb-6 gap-6">
-                <Badge icon={<CareerTypeIcon />} text={careerType} />
-                <Badge icon={<GraduationCapIcon />} text={educationLevel} />
-                <Badge icon={<CompanyTypeIcon />} text={companyType} />
-            </div>
-
-            <div className="flex justify-center">
-                <div className="w-[952px] border mb-6">
-
+                <div className="flex">
+                    <Input label={"모집 부문"} placeholder={""} size={"m"} disabled={true} type={"text"} value={job} setValue={() => { }} />
+                    <Input label={"급여"} placeholder={""} size={"m"} disabled={true} type={"text"} value={convertedSalary} setValue={() => { }} />
                 </div>
-            </div>
+
+                <div className="flex justify-end mr-6 mb-6 gap-6">
+                    <Badge icon={<CareerTypeIcon />} text={careerType} />
+                    <Badge icon={<GraduationCapIcon />} text={educationLevel} />
+                    <Badge icon={<CompanyTypeIcon />} text={companyType} />
+                </div>
+
+                <div className="flex justify-center">
+                    <div className="w-[952px] border mb-6">
+
+                    </div>
+                </div>
 
 
-            <TextArea label={"공고 내용"} placeholder={""} disabled={true} value={content} setValue={() => { }} size={"l"} />
+                <TextArea label={"공고 내용"} placeholder={""} disabled={true} value={content} setValue={() => { }} size={"l"} />
 
-            <TextArea label={"자격 요건"} placeholder={""} disabled={true} value={requirement} setValue={() => { }} size={"l"} />
+                <TextArea label={"자격 요건"} placeholder={""} disabled={true} value={requirement} setValue={() => { }} size={"l"} />
 
-            {imageUrls.map((imageUrl, index) => (
-                <ImageOutputArea key={index} size={"l"} imageUrl={imageUrl} />
-            ))}
+                {imageUrls.map((imageUrl, index) => (
+                    <ImageOutputArea key={index} size={"l"} imageUrl={imageUrl} />
+                ))}
 
 
-            <div className="flex justify-end pr-6">
-                <Button color={"theme"} size={"s"} disabled={false} text={"지원하기"} type={"button"} onClick={onClickApply} />
-            </div>
+                <div className="flex justify-end pr-6">
+                    <Button color={"theme"} size={"s"} disabled={false} text={"지원하기"} type={"button"} onClick={onClickApply} />
+                </div>
 
-        </CommonModal>
+            </CommonModal>
+
+            {showApplicationModal && <ApplicationModal />}
+        </>
     );
 
 }

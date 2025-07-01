@@ -157,23 +157,23 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 	
 	
 	private BooleanBuilder getBuilderFromJobPostingFilterCondition(JobPostingFilterCondition condition) {
-	    QJobPosting jobPosting = QJobPosting.jobPosting;
+		QSimilarity similarity = QSimilarity.similarity;
 	    BooleanBuilder builder = new BooleanBuilder();
 
 	    if (condition.getCareerType() != null ) {
-	        builder.and(jobPosting.careerType.like("%" + condition.getCareerType().toString() + "%"));
+	        builder.and(similarity.jobPosting.careerType.like("%" + condition.getCareerType().toString() + "%"));
 	    }
 	    if (condition.getEducationLevel() != null && !condition.getEducationLevel().isBlank()) {
-	        builder.and(jobPosting.educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
+	        builder.and(similarity.jobPosting.educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
 	    }
 	    if (condition.getJob() != null) {
-	        builder.and(jobPosting.job.like("%" + condition.getJob().toString() + "%"));
+	        builder.and(similarity.jobPosting.job.like("%" + condition.getJob().toString() + "%"));
 	    }
 	    if (condition.getWorkLocation() != null) {
-	        builder.and(jobPosting.workLocation.like("%" + condition.getWorkLocation().toString() + "%"));
+	        builder.and(similarity.jobPosting.workLocation.like("%" + condition.getWorkLocation().toString() + "%"));
 	    }
 	    if (condition.getSalary() != 0) {
-	        builder.and(jobPosting.salary.goe(condition.getSalary()));
+	        builder.and(similarity.jobPosting.salary.goe(condition.getSalary()));
 	    }
 
 	    return builder;
@@ -193,20 +193,19 @@ public class SimilarityRepositoryImpl implements SimilarityRepositoryCustom {
 
 
 	private BooleanBuilder getBuilderFromMemberFilterCondition(MemberFilterCondition condition) {
-		
-		QMember member = QMember.member;
+		QSimilarity similarity = QSimilarity.similarity;
 		BooleanBuilder builder = new BooleanBuilder();
 
 	    if (condition.isHasCareer()) {
-	    	builder.and(member.careers.any().isNotNull());	    }
+	    	builder.and(similarity.member.careers.any().isNotNull());	    }
 	    if (condition.getEducationLevel() != null && !condition.getEducationLevel().isBlank()) {
-	        builder.and(member.educations.any().educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
+	        builder.and(similarity.member.educations.any().educationLevel.eq(EducationLevel.valueOf(condition.getEducationLevel())));
 	    }
 	    if (condition.getAddress() != null && !condition.getAddress().isBlank()) {
-	        builder.and(member.user.address.like("%" + condition.getAddress() + "%"));
+	        builder.and(similarity.member.user.address.like("%" + condition.getAddress() + "%"));
 	    }
 	    if (condition.getJob() != null && !condition.getJob().isBlank()) {
-	        builder.and(member.careers.any().job.like("%" + condition.getJob() + "%"));
+	        builder.and(similarity.member.careers.any().job.like("%" + condition.getJob() + "%"));
 	    }
 	    
 	    return builder;

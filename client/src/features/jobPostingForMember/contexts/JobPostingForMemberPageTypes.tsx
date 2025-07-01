@@ -16,10 +16,10 @@ export interface JobPostingForMemberPageState {
     resume: Resume
     clickedCareerDescriptionId: number;
     careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[];
-    careerDescriptionResponseDtos: CareerDescriptionResponseDto[];
+    careerDescriptionResponseDto: CareerDescriptionResponseDto;
     clickedCoverLetterId: number;
     coverLetterSummaryDtos: CoverLetterSummaryDto[];
-    coverLetterResponseDtos: CoverLetterResponseDto[];
+    coverLetterResponseDto: CoverLetterResponseDto;
 }
 
 
@@ -36,7 +36,7 @@ export type JobPostingForMemberPageAction =
     | { type: "SET_RESUME"; payload: Resume }
     | { type: "SET_CLICKED_CAREER_DESCRIPTION_ID"; payload: number }
     | { type: "SET_CAREER_DESCRIPTION_SUMMARY_DTOS"; payload: CareerDescriptionSummaryDto[] }
-    | { type: "SET_CAREER_DESCRIPTION_RESPONSE_DTOS"; payload: CareerDescriptionResponseDto[] }
+    | { type: "SET_CAREER_DESCRIPTION_RESPONSE_DTO"; payload: CareerDescriptionResponseDto }
     | { type: "SET_CLICKED_COVER_LETTER_ID"; payload: number }
     | { type: "SET_COVER_LETTER_SUMMARY_DTOS"; payload: CoverLetterSummaryDto[] }
-    | { type: "SET_COVER_LETTER_RESPONSE_DTOS"; payload: CoverLetterResponseDto[] };
+    | { type: "SET_COVER_LETTER_RESPONSE_DTO"; payload: CoverLetterResponseDto };

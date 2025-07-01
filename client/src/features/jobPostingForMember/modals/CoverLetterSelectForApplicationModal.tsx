@@ -10,11 +10,12 @@ import { useJobPostingForMemberController } from "../customHooks/useJobPostingFo
 const CoverLetterSelectForApplicationModal = () => {
 
     const {
+        showModalNumber,
         setShowModalNumber,
         coverLetterSummaryDtos,
         clickedCoverLetterId,
         setClickedCoverLetterId,
-        coverLetterResponseDtos,
+        coverLetterResponseDto,
     } = useJobPostingForMemberController();
 
 
@@ -39,21 +40,14 @@ const CoverLetterSelectForApplicationModal = () => {
                             isClicked={clickedCoverLetterId === coverLetterSummaryDto.id}
                             setIsClicked={setClickedCoverLetterId}
                         />
-                        {clickedCoverLetterId === coverLetterSummaryDto.id && (
-                            <CoverLetterOutput
-                                coverLetterResponseDto={coverLetterResponseDtos.find(
-                                    coverLetterResponseDto =>
-                                        coverLetterResponseDto.id === coverLetterResponseDto.id
-                                )!}
-                            />
-                        )}
+                        {clickedCoverLetterId !== -1 &&  <CoverLetterOutput coverLetterResponseDto={coverLetterResponseDto} />}
                     </div>
                 ))}
             </ExternalBox>
 
             <div className="flex justify-end mr-6">
                 <Button color={"white"} size={"s"} disabled={false} text={"이전"} type={"button"} onClick={onClickPrev} />
-                <Button color={"theme"} size={"m"} disabled={false} text={"지원하기"} type={"button"} onClick={onClickNext} />
+                <Button color={"theme"} size={"m"} disabled={showModalNumber === 3} text={"지원하기"} type={"button"} onClick={onClickNext} />
             </div>
         </>
     );

@@ -107,11 +107,11 @@ export const useJobPostingForMemberController = () => {
             payload: careerDescriptionSummaryDtos
         });
     }
-    const careerDescriptionResponseDtos = state.careerDescriptionResponseDtos;
-    const setCareerDescriptionResponseDtos = (careerDescriptionResponseDtos: CareerDescriptionResponseDto[]) => {
+    const careerDescriptionResponseDto = state.careerDescriptionResponseDto;
+    const setCareerDescriptionResponseDto = (careerDescriptionResponseDto: CareerDescriptionResponseDto) => {
         dispatch({
-            type: "SET_CAREER_DESCRIPTION_RESPONSE_DTOS",
-            payload: careerDescriptionResponseDtos
+            type: "SET_CAREER_DESCRIPTION_RESPONSE_DTO",
+            payload: careerDescriptionResponseDto
         });
     }
     const clickedCoverLetterId = state.clickedCoverLetterId;
@@ -128,11 +128,11 @@ export const useJobPostingForMemberController = () => {
             payload: coverLetterSummaryDtos
         });
     }
-    const coverLetterResponseDtos = state.coverLetterResponseDtos;
-    const setCoverLetterResponseDtos = (coverLetterResponseDtos: CoverLetterResponseDto[]) => {
+    const coverLetterResponseDto = state.coverLetterResponseDto;
+    const setCoverLetterResponseDto = (coverLetterResponseDto: CoverLetterResponseDto) => {
         dispatch({
-            type: "SET_COVER_LETTER_RESPONSE_DTOS",
-            payload: coverLetterResponseDtos
+            type: "SET_COVER_LETTER_RESPONSE_DTO",
+            payload: coverLetterResponseDto
         });
     }
     
@@ -161,14 +161,14 @@ export const useJobPostingForMemberController = () => {
         setClickedCareerDescriptionId,
         careerDescriptionSummaryDtos,
         setCareerDescriptionSummaryDtos,
-        careerDescriptionResponseDtos,
-        setCareerDescriptionResponseDtos,
+        careerDescriptionResponseDto,
+        setCareerDescriptionResponseDto,
         clickedCoverLetterId,
         setClickedCoverLetterId,
         coverLetterSummaryDtos,
         setCoverLetterSummaryDtos,
-        coverLetterResponseDtos,
-        setCoverLetterResponseDtos,
+        coverLetterResponseDto,
+        setCoverLetterResponseDto,
     };
     
 }

@@ -1,5 +1,5 @@
 import { api } from "../../../common/Axios";
-import type { CareerCreateDto, CareerDescriptionCreateDto, CareerDescriptionUpdateDto, CareerUpdateDto, CertificationCreateDto, CertificationUpdateDto, CoverLetterCreateDto, CoverLetterUpdateDto, EducationCreateDto, EducationUpdateDto, LanguageTestCreateDto, LanguageTestUpdateDto, MemberUpdateDto, MyPageUpdateDto, PasswordUpdateDto, ProposalUpdateDto } from "../props/myPageForMemberProps";
+import type { ApplicationCreateDto, CareerCreateDto, CareerDescriptionCreateDto, CareerDescriptionUpdateDto, CareerUpdateDto, CertificationCreateDto, CertificationUpdateDto, CoverLetterCreateDto, CoverLetterUpdateDto, EducationCreateDto, EducationUpdateDto, LanguageTestCreateDto, LanguageTestUpdateDto, MemberUpdateDto, MyPageUpdateDto, PasswordUpdateDto, ProposalUpdateDto } from "../props/myPageForMemberProps";
 
 export const readMyPageApi = () => {
     return api(true).get('/members');
@@ -180,6 +180,12 @@ export const readMyApplicationApi = (id: number) => {
         id,
     });
 }
+
+export const createApplicationApi = (applicationCreateDto : ApplicationCreateDto) => {
+    return api(true).post('/members/applications', applicationCreateDto);
+}
+
+
 
 export const readMyPaymentsApi = (page: number, size: number) => {
     return api(true).get("/payments", {
