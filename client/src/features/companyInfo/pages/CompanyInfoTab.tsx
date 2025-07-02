@@ -3,13 +3,14 @@ import type { ChangeEvent } from 'react';
 import Input from '../../../common/components/input/Input';
 import TextArea from '../../../common/components/input/TextArea';
 import Button from '../../../common/components/button/Button';
-import ImageOutputArea from '../../../common/components/image/ImageOutputArea';
 import Select from '../../../common/components/input/Select';
 import { PageBox } from '../../../common/components/box/Box';
 import ModalTitle from '../../../common/components/title/ModalTitle';
 import { companyTypeEnum } from '../../../common/enum/Enum';
 import { getCompanyInfoApi, updateCompanyInfoApi } from '../apis/CompanyApi';
 import { printErrorInfo } from '../../../common/utils/ErrorUtil';
+import ImagePreviewArea from '../../../common/components/image/ImagePreviewArea';
+import ImageOutputArea from '../../../common/components/image/ImageOutputArea';
 
 const CompanyInfoTab = () => {
     const [companyName, setCompanyName] = useState('');
@@ -23,12 +24,17 @@ const CompanyInfoTab = () => {
     const [introduction, setIntroduction] = useState('');
     const [companyType, setCompanyType] = useState('');
     const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+    const [logoUrl, setLogoUrl] = useState<string>("");
     const [logoFile, setLogoFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
+    const [isPreview, setIsPreview] = useState(false);
 
     useEffect(() => {
         getCompanyInfoApi().then(res => {
             const data = res.data.companyResponseDto;
+            console.log("---------------")
+            console.log(data)
+            console.log("---------------")
             setCompanyName(data.companyName ?? '');
             setBusinessNumber(data.businessNumber ?? '');
             setRepresentativeName(data.representativeName ?? '');
@@ -39,7 +45,7 @@ const CompanyInfoTab = () => {
             setPhone(data.companyPhone ?? '');
             setIntroduction(data.introduction ?? '');
             setCompanyType(data.companyType ?? '');
-            if (data.imageUrl) setLogoPreviewUrl(data.imageUrl);
+            setLogoUrl(data.imageUrl);
         })
             .catch(err => {
                 printErrorInfo(err);
@@ -48,6 +54,7 @@ const CompanyInfoTab = () => {
     }, []);
 
     const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setIsPreview(true)
         const file = e.target.files?.[0] || null;
         setLogoFile(file);
         setLogoPreviewUrl(file ? URL.createObjectURL(file) : null);
@@ -106,12 +113,15 @@ const CompanyInfoTab = () => {
             <TextArea size="pbl" label="기업 소개" placeholder="기업 소개를 입력하세요" disabled={false} value={introduction} setValue={setIntroduction} />
             <div className="mb-6">
                 <label className="font-roboto text-base mb-2 inline-block ml-[24px]">기업 로고</label>
-                <input type="file" accept="image/*" onChange={handleLogoChange} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ml-[24px]" />
-                {logoPreviewUrl && (
+                <input type="file" accept="image/*" onChange={handleLogoChange} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ml-[24px] mb-6" />
+                
+                {isPreview && logoPreviewUrl ? (
                     <div className="mt-4 ml-[24px]">
-                        <ImageOutputArea size="m" imageUrl={logoPreviewUrl} />
+                        <ImagePreviewArea size="m" imageUrl={logoPreviewUrl} />
                     </div>
-                )}
+                ):(<div className="mt-4 ml-[24px]">
+                        <ImageOutputArea size="m" imageUrl={logoUrl} />
+                    </div>)}
             </div>
             <div className="flex justify-end mr-6">
                 <Button color="theme" size="m" disabled={loading} text={loading ? '저장 중...' : '저장'} type="button" onClick={handleSave} />

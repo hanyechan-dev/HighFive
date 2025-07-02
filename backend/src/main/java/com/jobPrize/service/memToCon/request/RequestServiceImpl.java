@@ -197,12 +197,14 @@ public class RequestServiceImpl implements RequestService {
 		List<Map<String, String>> promptList;
 		
 		if(ConsultingType.첨삭.equals(consultingType)) {
+			System.out.println("첨삭 요청 들어옴");
 			EditPromptResponseDto editPromptResponseDto = editPromptService.readAppliedEditPrompt(UserType.관리자);
 			String guidePrompt = editPromptResponseDto.getContent();
 			promptList = promptBuilder.getEditPrompt(requestResponseDto, guidePrompt);
 		}
 		
 		else{
+			System.out.println("피드백 요청 들어옴");
 			FeedbackPromptResponseDto feedbackPromptResponseDto = feedbackPromptService.readAppliedFeedbackPrompt(UserType.관리자);
 			String guidePrompt = feedbackPromptResponseDto.getContent();
 			promptList = promptBuilder.getFeedbackPrompt(requestResponseDto, guidePrompt);

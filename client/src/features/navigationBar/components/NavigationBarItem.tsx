@@ -10,7 +10,7 @@ const NavigationBarItem = ({ title, to, dropDown }: NavigationBarItem) => {
 
     if (dropDown) {
         return (
-            <div className="relative group ml-[50px] cursor-pointer">
+            <div className="relative group mx-[25px] cursor-pointer">
                 <div className="hover:text-theme">{title}</div>
                 <div className="absolute top-full left-0 z-10 hidden group-hover:block bg-white border rounded-lg shadow-lg min-w-[150px]">
                     {dropDown.map((item, index) => (
@@ -28,7 +28,7 @@ const NavigationBarItem = ({ title, to, dropDown }: NavigationBarItem) => {
     } else {
         return (
             <Link to={to}>
-                <div className="ml-[50px] hover:text-theme cursor-pointer">
+                <div className="mx-[25px] hover:text-theme cursor-pointer">
                     {title}
                 </div>
             </Link>

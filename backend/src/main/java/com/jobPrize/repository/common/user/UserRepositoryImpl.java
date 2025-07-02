@@ -134,8 +134,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return Optional.ofNullable( 
 				queryFactory.select(user.count())
 				.from(user)
+				.join(user.company)
 				.where(user.approvalStatus.eq(ApprovalStatus.WAITING))
 				.where(user.userType.eq(userType))
+				.where(user.deletedDate.isNull())
 				.fetchOne()
 				).orElse(0L);
 	}

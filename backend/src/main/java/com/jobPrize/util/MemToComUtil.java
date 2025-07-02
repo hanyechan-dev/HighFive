@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.jobPrize.entity.memToCom.Application;
 import com.jobPrize.entity.memToCom.Proposal;
 import com.jobPrize.entity.memToCom.Similarity;
+import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.EducationLevel;
@@ -26,13 +27,15 @@ public class MemToComUtil {
     public EducationLevel latestEducationLevel(Object obj) {
         Member member = extractMember(obj);
         List<Education> educations = member.getEducations();
-        if (educations.isEmpty()) throw new IllegalStateException("교육 정보 없음");
+        if (educations.isEmpty()) return EducationLevel.NONE;
         return educations.get(educations.size() - 1).getEducationLevel();
     }
     
     public String job(Object obj) {
     	 Member member = extractMember(obj);
-    	 int latestCareerNumber = member.getCareers().size();
+    	 List<Career> careers =  member.getCareers();
+    	 int latestCareerNumber = careers.size();
+    	 if (careers.isEmpty()) return "";
     	 return member.getCareers().get(latestCareerNumber-1).getJob();
     	 
     }

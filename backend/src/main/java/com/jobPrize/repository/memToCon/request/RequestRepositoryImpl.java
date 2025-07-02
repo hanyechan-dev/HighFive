@@ -39,7 +39,7 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 			    .fetch();
 		
 		
-		return new PageImpl<Request>(results,pageable, countRequestsByMemberId(id));
+		return new PageImpl<Request>(results,pageable, countRequestsByMemberId(id, type));
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 		return Optional.ofNullable(result);
 	}
 	
-	private long countRequestsByMemberId(Long id) {
+	private long countRequestsByMemberId(Long id, ConsultingType type) {
 		QRequest request = QRequest.request;
 
 	    return Optional.ofNullable(
@@ -101,6 +101,7 @@ public class RequestRepositoryImpl implements RequestRepositoryCustom{
 	        .select(request.count())
 	        .from(request)
 	        .where(request.member.id.eq(id))
+	        .where(request.consultingType.eq(type))
 	        .fetchOne())
 	    	.orElse(0L);
 	}

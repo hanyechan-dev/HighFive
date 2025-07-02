@@ -16,6 +16,10 @@ import LoadingSpinner from "../../../common/components/loading/LoadingSpinner";
 import { parseResumeFromJsonStrings } from "../../../common/utils/ResumeParseUtil";
 import { TabButton } from "../../../common/components/button/TabButton";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../common/store/store";
+import AuthUtil from "../../../common/utils/AuthUtil";
+import { startNewChat } from "../../chat/ChatControlSlice";
 
 interface ApplicationDetailModalProps {
     isOpen: boolean;
@@ -33,6 +37,20 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
     const [error, setError] = useState<string | null>(null);
     const [activeMainTab, setActiveMainTab] = useState(MAIN_TABS[0]);
     const [activeSubTab, setActiveSubTab] = useState(RESUME_TABS[0]);
+    const dispatch = useDispatch();
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const currentUserId = AuthUtil.getIdFromToken(accessToken);
+
+    const onClickChat = () => {
+        if (application?.userId != currentUserId && application!=null) {
+            dispatch(startNewChat({
+                id: application.userId,
+                name: application.name,
+                avatar: "/placeholder.svg?height=40&width=40",
+                step: 1
+            }))
+        } else { return; }
+    }
 
     const fetchApplicationDetail = useCallback(() => {
         if (!applicationId) return;
@@ -225,8 +243,8 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
                         { label: "지원일", value: application.createdDate },
                         {
                             label: "합격 여부", value: <Badge
-                                label={application.isPassed ? '합격' : '검토중'}
-                                color={application.isPassed ? 'approved' : 'waiting'}
+                                label={application.passed ? '합격' : '검토중'}
+                                color={application.passed ? 'approved' : 'waiting'}
                             />
                         }
                     ]} />
@@ -263,12 +281,12 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
                         {renderTabContent()}
                     </div>
                     <div className="flex justify-end mr-6 mt-10">
-                        <Button color="white" size="s" disabled={false} text="채팅하기" type="button" onClick={() => {/* 채팅 */ }} />
+                        <Button color="white" size="s" disabled={false} text="채팅하기" type="button" onClick={onClickChat} />
                         <Button
                             color="theme"
                             size="s"
-                            disabled={application.isPassed}
-                            text={application.isPassed ? "합격 완료" : "합격"}
+                            disabled={application.passed}
+                            text={application.passed ? "합격 완료" : "합격"}
                             type="button"
                             onClick={handlePass}
                         />

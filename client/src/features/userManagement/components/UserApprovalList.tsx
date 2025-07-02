@@ -5,6 +5,7 @@ import type { CompanyManagementSummaryDto, ConsultantManagementSummaryDto } from
 import { usePagination } from "../../../common/customHooks/usePagination";
 import { companysWatingSummaryList, consultantsWatingSummaryList } from "../apis/UserManagementApi";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 
 interface approvalListItemProps {
     userType: "기업회원" | "컨설턴트회원";
@@ -125,9 +126,12 @@ const UserApprovalList = ({ userType, onSelect, onDetailClick: handleDetail, lis
         const fetchData = async () => {
             try {
                 if (userType === "기업회원") {
+
                     const res = await companysWatingSummaryList(clickedPage - 1, elementsPerPage);
+
                     setCompanyList(res.data.content);
                     setTotalElements(res.data.totalElements);
+
                 } else if (userType === "컨설턴트회원") {
                     const res = await consultantsWatingSummaryList(clickedPage - 1, elementsPerPage);
                     console.log("컨설턴트 승인 리스트 응답:", res.data);
@@ -140,6 +144,7 @@ const UserApprovalList = ({ userType, onSelect, onDetailClick: handleDetail, lis
         };
 
         fetchData();
+
     }, [userType, clickedPage, listReset]);
 
 
@@ -158,27 +163,37 @@ const UserApprovalList = ({ userType, onSelect, onDetailClick: handleDetail, lis
                     <div className="pl-[75px]">상세</div>
                 </div>
 
-                {userType === "기업회원" &&
-                    companyList.map(company => (
-                        <ListItem
-                            key={company.userManagementSummaryDto.id}
-                            userType="기업회원"
-                            companyManagementSummaryDto={company}
-                            onSelect={onSelect}
-                            onDetailClick={handleDetail}
-                        />
-                    ))}
+                {userType === "기업회원" && (
+                    companyList.length > 0 ? (
+                        companyList.map(company => (
+                            <ListItem
+                                key={company.userManagementSummaryDto.id}
+                                userType="기업회원"
+                                companyManagementSummaryDto={company}
+                                onSelect={onSelect}
+                                onDetailClick={handleDetail}
+                            />
+                        ))
+                    ) : (
+                        <EmptyState title={"조회된 기업회원이 없습니다."} text={""} />
+                    )
+                )}
 
-                {userType === "컨설턴트회원" &&
-                    consultantList.map(consultant => (
-                        <ListItem
-                            key={consultant.userManagementSummaryDto.id}
-                            userType="컨설턴트회원"
-                            consultantManagementSummaryDto={consultant}
-                            onSelect={onSelect}
-                            onDetailClick={handleDetail}
-                        />
-                    ))}
+                {userType === "컨설턴트회원" && (
+                    consultantList.length > 0 ? (
+                        consultantList.map(consultant => (
+                            <ListItem
+                                key={consultant.userManagementSummaryDto.id}
+                                userType="컨설턴트회원"
+                                consultantManagementSummaryDto={consultant}
+                                onSelect={onSelect}
+                                onDetailClick={handleDetail}
+                            />
+                        ))
+                    ) : (
+                        <EmptyState title={"조회된 컨설턴트회원이 없습니다."} text={""} />
+                    )
+                )}
             </div>
 
             <div className="flex justify-center">

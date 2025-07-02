@@ -88,6 +88,7 @@ const JobPostingForMemberPage = () => {
             try {
                 const resMain = await JobPostingMainCardForMemberApi();
                 const jobPostingMainCardDtos = resMain.data as JobPostingMainCardDto[];
+                console.log(jobPostingMainCardDtos)
                 setJobPostingMainCardDtos(jobPostingMainCardDtos);
 
                 const resUnder = await JobPostingUnderCardForMemberApi();

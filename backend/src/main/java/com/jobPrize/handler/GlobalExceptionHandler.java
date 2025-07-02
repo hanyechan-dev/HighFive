@@ -18,6 +18,9 @@ import com.jobPrize.customException.CustomOwnerMismatchException;
 import com.jobPrize.customException.CustomSubscriptionDeniedException;
 import com.jobPrize.dto.common.error.ErrorResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(CustomEmailDuplicateException.class)
@@ -94,6 +97,7 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
+    	log.error("[예외발생]", ex); // 전체 스택트레이스 로그로 출력
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(new ErrorResponse("INTERNAL_ERROR",ex.getClass().getName()+ ex.getMessage()));
     }

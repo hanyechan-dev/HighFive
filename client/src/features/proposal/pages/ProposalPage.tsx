@@ -40,6 +40,7 @@ const ProposalPage = () => {
       setIsLoading(true);
       try {
         const res = await ProposalListApi(clickedPage - 1, 10);
+        console.log(res)
         if (res && res.data.content) {
           setProposals(res.data.content);
           setTotalElements(res.data.totalElements);

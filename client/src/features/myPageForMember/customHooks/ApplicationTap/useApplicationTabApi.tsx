@@ -1,5 +1,5 @@
 import { printErrorInfo } from "../../../../common/utils/ErrorUtil";
-import { createApplicationApi, readMyApplicationsApi, readMyProposalApi} from "../../apis/MyPageForMemberApi";
+import { createApplicationApi, readMyApplicationApi, readMyApplicationsApi, readMyProposalApi} from "../../apis/MyPageForMemberApi";
 import type { ApplicationCreateDto, ApplicationResponseDto, ApplicationSummaryForMemberDto } from "../../props/myPageForMemberProps";
 import { useApplicationTabController } from "./useApplicationTabController";
 
@@ -27,7 +27,7 @@ export const useApplicationTabApi = () => {
 
     const readApplication = async (id: number) => {
         try {
-            const applicationResponseDto: ApplicationResponseDto = (await readMyProposalApi(id)).data;
+            const applicationResponseDto: ApplicationResponseDto = (await readMyApplicationApi(id)).data;
             setApplicationResponseDto(applicationResponseDto);
         } catch (err) {
             printErrorInfo(err);

@@ -73,7 +73,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Company company = companyRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("기업"));
 		
-		String companyImageUrl = "/images/jobposting/" + company.getLogoImageName();
+		String companyImageUrl = "/images/companyLogo/" + company.getLogoImageName();
 		return CompanyResponseDto.of(company, companyImageUrl);
 	}
 

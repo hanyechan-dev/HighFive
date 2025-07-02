@@ -14,11 +14,11 @@ interface ProposalSummaryRowProps {
 const ProposalSummaryRow = ({ proposal, onClick }: ProposalSummaryRowProps) => {
   const getStatusText = (status: string): string => {
     switch (status) {
-      case 'APPROVED':
-        return '승인';
-      case 'REJECTED':
+      case '수락':
+        return '수락';
+      case '거절':
         return '거절';
-      case 'WAITING':
+      case '대기':
         return '대기';
       default:
         return '대기';

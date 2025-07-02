@@ -5,8 +5,8 @@ import Button from "../../../common/components/button/Button.tsx";
 import TextArea from "../../../common/components/input/TextArea.tsx";
 import RadioButton from "../../../common/components/button/RadioButton.tsx";
 import { companyTypeEnum } from "../../../common/enum/Enum.tsx";
-import ImageOutputArea from "../../../common/components/image/ImageOutputArea.tsx";
 import DaumPostcode from 'react-daum-postcode';
+import ImagePreviewArea from "../../../common/components/image/imagePreviewArea.tsx";
 
 interface AddressData {
     roadAddress: string;
@@ -203,7 +203,7 @@ const CompanyInfoInputModal = ({ companyInfoInput, onClose }: CompanyInfoInputMo
                     className="font-roboto block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mb-6 ml-[24px]"
                 />
                 {logoPreviewUrl && (
-                    <ImageOutputArea size={"m"} imageUrl={logoPreviewUrl} />
+                    <ImagePreviewArea size={"m"} imageUrl={logoPreviewUrl} />
                 )}
             </div>
             <Button

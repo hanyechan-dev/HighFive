@@ -42,7 +42,7 @@ public class AiConsultingContent {
     @Column(nullable = false)
     private String item;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
     
     

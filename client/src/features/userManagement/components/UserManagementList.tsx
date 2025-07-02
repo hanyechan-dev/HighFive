@@ -1,4 +1,5 @@
 import Button from "../../../common/components/button/Button";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import type { CompanyManagementSummaryDto, ConsultantManagementSummaryDto, MemberManagementSummaryDto } from "../props/UserManagementProps";
 
 
@@ -124,11 +125,11 @@ const UserList = ({ userType, memberList, onDetailClick, onSelect, selectedIds, 
     if (userType === '일반회원') {
         output = '닉네임';
     }
-    else if(userType === '기업회원'){
+    else if (userType === '기업회원') {
         output = '기업명';
     }
-    else{
-        output =''
+    else {
+        output = ''
     }
 
     return (
@@ -144,41 +145,48 @@ const UserList = ({ userType, memberList, onDetailClick, onSelect, selectedIds, 
                 <div className="px-10">상세</div>
             </div>
 
-            {memberList.map(user => {
-                if (userType === "일반회원") {
-                    return (
-                        <ListItem
-                            key={user.userManagementSummaryDto?.id}
-                            userType="일반회원"
-                            memberManagementSummaryDto={user as MemberManagementSummaryDto}
-                            onDetailClick={onDetailClick}
-                            onSelect={onSelect}
-                            selectedIds={selectedIds}/>
-                    );
-                } else if (userType === "기업회원") {
-                    return (
-                        <ListItem
-                            key={user.userManagementSummaryDto?.id}
-                            userType="기업회원"
-                            companyManagementSummaryDto={user as CompanyManagementSummaryDto}
-                            onDetailClick={onDetailClick}
-                            onSelect={onSelect}
-                            selectedIds={selectedIds}/>
-                    );
-                } else if (userType === "컨설턴트회원") {
-                    return (
-                        <ListItem
-                            key={user.userManagementSummaryDto?.id}
-                            userType="컨설턴트회원"
-                            consultantManagementSummaryDto={user as ConsultantManagementSummaryDto}
-                            onDetailClick={onDetailClick}
-                            onSelect={onSelect}
-                            selectedIds={selectedIds}/>
-                    );
-                } else {
-                    return null;
-                }
-            })}
+            {memberList.length > 0 ? (
+                memberList.map(user => {
+                    if (userType === "일반회원") {
+                        return (
+                            <ListItem
+                                key={user.userManagementSummaryDto?.id}
+                                userType="일반회원"
+                                memberManagementSummaryDto={user as MemberManagementSummaryDto}
+                                onDetailClick={onDetailClick}
+                                onSelect={onSelect}
+                                selectedIds={selectedIds}
+                            />
+                        );
+                    } else if (userType === "기업회원") {
+                        return (
+                            <ListItem
+                                key={user.userManagementSummaryDto?.id}
+                                userType="기업회원"
+                                companyManagementSummaryDto={user as CompanyManagementSummaryDto}
+                                onDetailClick={onDetailClick}
+                                onSelect={onSelect}
+                                selectedIds={selectedIds}
+                            />
+                        );
+                    } else if (userType === "컨설턴트회원") {
+                        return (
+                            <ListItem
+                                key={user.userManagementSummaryDto?.id}
+                                userType="컨설턴트회원"
+                                consultantManagementSummaryDto={user as ConsultantManagementSummaryDto}
+                                onDetailClick={onDetailClick}
+                                onSelect={onSelect}
+                                selectedIds={selectedIds}
+                            />
+                        );
+                    } else {
+                        return null;
+                    }
+                })
+            ) : (
+                <EmptyState title={`조회된 ${userType}이 없습니다.`} text="" />
+            )}
         </div>
     );
 };

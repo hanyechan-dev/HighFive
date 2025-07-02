@@ -5,5 +5,6 @@ public enum EducationLevel {
     전문학사,
     학사,
     석사,
-    박사
+    박사,
+    NONE
 }

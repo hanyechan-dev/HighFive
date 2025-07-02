@@ -15,6 +15,7 @@ import EducationInfo from "../components/EducationInfo";
 import LanguageTest from "../components/LanguageTestInfo";
 import { parseStringToJson } from "../../../common/utils/JsonParseUtil";
 import { useRequestController } from "../customHooks/useRequestController";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 
 
 
@@ -82,40 +83,48 @@ const RequestDetailModal = ({ onClick }: RequestDetailModalProps) => {
                 <ExternalBox>
                     <RadioButton name={""} textList={resumeTypeEnum} checkedText={checkedResume} setCheckedText={setCheckedResume} size="internalResume" />
                     {checkedResume === "학력사항" &&
-                            educationResponseDtos.length > 0 && educationResponseDtos.map((educationResponseDto) => (
-                                <EducationInfo educationResponseDto={educationResponseDto} key={educationResponseDto.id} />
-                            ))}
+                        educationResponseDtos.length > 0 && educationResponseDtos.map((educationResponseDto) => (
+                            <EducationInfo educationResponseDto={educationResponseDto} key={educationResponseDto.id} />
+                        ))}
                     {checkedResume === "경력사항" &&
-                            careerResponseDtos.length > 0 && careerResponseDtos.map((careerResponseDto) => (
-                                <CareerInfo careerResponseDto={careerResponseDto} key={careerResponseDto.id} />
-                            ))}
+                        careerResponseDtos.length > 0 && careerResponseDtos.map((careerResponseDto) => (
+                            <CareerInfo careerResponseDto={careerResponseDto} key={careerResponseDto.id} />
+                        ))}
                     {checkedResume === "자격증" &&
-                            certificationResponseDtos.length > 0 && certificationResponseDtos.map((certificationResponseDto) => (
-                                <CertificationInfo certificationResponseDto={certificationResponseDto} key={certificationResponseDto.id} />
-                            ))}
+                        certificationResponseDtos.length > 0 && certificationResponseDtos.map((certificationResponseDto) => (
+                            <CertificationInfo certificationResponseDto={certificationResponseDto} key={certificationResponseDto.id} />
+                        ))}
                     {checkedResume === "어학" &&
-                            languageTestResponseDtos.length > 0 && languageTestResponseDtos.map((languageTestResponseDto) => (
-                                <LanguageTest languageTestResponseDto={languageTestResponseDto} key={languageTestResponseDto.id} />
-                            ))}
+                        languageTestResponseDtos.length > 0 && languageTestResponseDtos.map((languageTestResponseDto) => (
+                            <LanguageTest languageTestResponseDto={languageTestResponseDto} key={languageTestResponseDto.id} />
+                        ))}
                 </ExternalBox>}
 
-            {checkedDocument === "경력기술서" &&
-                <>
-                    <CareerDescriptionInfo careerDescriptionResponseDto={careerDescriptionResponseDto} />
-                    <AiConsulting aiConsultingContentResponseDtos={aiConsultingContentForCareerDescriptionResponseDtos} consultingType={consultingType} />
-                </>
-            }
-            {checkedDocument === "자기소개서" &&
+            {checkedDocument === "경력기술서" && (
+                careerDescriptionResponseDto ? (
+                    <>
+                        <CareerDescriptionInfo careerDescriptionResponseDto={careerDescriptionResponseDto} />
+                        <AiConsulting
+                            aiConsultingContentResponseDtos={aiConsultingContentForCareerDescriptionResponseDtos}
+                            consultingType={consultingType}
+                        />
+                    </>
+                ) : (
+                    <EmptyState title={"해당 컨설팅은 경력기술서를 포함하지 않았습니다."} text={""} />
+                )
+            )}
+
+
+            {checkedDocument === "자기소개서" && (
+                coverLetterResponseDto?(
                 <>
                     <CoverLetterInfo coverLetterResponseDto={coverLetterResponseDto} />
                     <AiConsulting aiConsultingContentResponseDtos={aiConsultingContentForCoverLetterResponseDtos} consultingType={consultingType} />
                 </>
-            }
-
-            <div className="flex justify-end mr-6">
-
-                <Button color="theme" size="m" text="컨설턴트 컨설팅 요청" onClick={onClick} disabled={requestStatus !== "AI"} type={"button"} />
-            </div>
+                ) : (
+                    <EmptyState title={"해당 컨설팅은 자기소개서를 포함하지 않았습니다."} text={""} />
+                )
+            )}
         </CommonModal>
     );
 };

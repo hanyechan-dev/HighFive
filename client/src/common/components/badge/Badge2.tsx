@@ -55,11 +55,11 @@ export const getCareerBadgeColor = (hasCareer: boolean): BadgeColor => {
 
 export const getProposalStatusBadgeColor = (status: string): BadgeColor => {
   switch (status) {
-    case 'APPROVED':
+    case '수락':
       return 'approved';
-    case 'REJECTED':
+    case '거잘':
       return 'rejected';
-    case 'WAITING':
+    case '대기':
       return 'waiting';
     default:
       return 'default';

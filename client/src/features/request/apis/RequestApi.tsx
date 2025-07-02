@@ -1,4 +1,4 @@
-import { api } from "../../../common/Axios";
+import { api, apiLong } from "../../../common/Axios";
 
 export const createRequestApi = (
     targetJob: string,
@@ -7,7 +7,7 @@ export const createRequestApi = (
     coverLetterId: number,
     careerDescriptionId: number
 ) => {
-    return api(true).post('/requests',
+    return apiLong(true).post('/requests',
         {
             targetJob,
             targetCompanyName,

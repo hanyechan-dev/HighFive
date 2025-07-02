@@ -93,6 +93,7 @@ const FeedbackRequestPage = () => {
             try {
                 const res = await readRequestsApi(clickedPage - 1, elementsPerPage, consultingType);
                 const totalElements = res.data.totalElements as number
+                console.log(totalElements)
                 setTotalElements(totalElements);
                 const requestSummaryDtos = res.data.content as RequestSummaryDto[];
                 setRequestSummaryDtos(requestSummaryDtos);

@@ -89,7 +89,6 @@ const LogoAnimationStyle = () => (
 
 const MainPage = () => {
   const [testimonialIdx, setTestimonialIdx] = useState(0);
-  const [showAuthModal, setShowAuthModal] = useState(false);
 
   // 슬라이더 효과 (자동 전환)
   useEffect(() => {
@@ -99,14 +98,12 @@ const MainPage = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const onClickAuth = () => {
-    setShowAuthModal(true);
-  };
+
 
   return (
     <div className="min-h-screen bg-white font-roboto antialiased">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-6 text-center bg-gradient-to-b from-slate-50 to-white">
+      <section className="relative pt-32 pb-6 px-6 text-center bg-gradient-to-b from-slate-50 to-white">
         <LogoAnimationStyle />
         <div className="max-w-4xl mx-auto">
           {/* 텍스트 로고 애니메이션 */}
@@ -152,17 +149,12 @@ const MainPage = () => {
             <br />
             이력서 첨삭부터 맞춤형 채용 공고까지, 취업과 채용의 모든 과정을 지원합니다.
           </p>
-          <button
-            className="bg-theme text-white font-semibold py-4 px-12 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-pink-600"
-            onClick={onClickAuth}
-          >
-            서비스 이용하기
-          </button>
+
         </div>
       </section>
 
       {/* 주요 서비스 */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 bg-gray-100">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-4 text-slate-900">주요 서비스</h2>
           <p className="text-center text-slate-600 mb-16 text-lg">
@@ -204,7 +196,7 @@ const MainPage = () => {
       </section>
 
       {/* 이용자 후기 */}
-      <section className="py-24 px-6 bg-slate-50">
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-4 text-slate-900">이용자 후기</h2>
           <p className="text-center text-slate-600 mb-16 text-lg">
@@ -259,12 +251,7 @@ const MainPage = () => {
       </section>
 
 
-      {/* 인증 모달 */}
-      {showAuthModal && (
-        <AuthProvider>
-          <AuthModal onClose={() => setShowAuthModal(false)} />
-        </AuthProvider>
-      )}
+      
     </div>
   );
 };

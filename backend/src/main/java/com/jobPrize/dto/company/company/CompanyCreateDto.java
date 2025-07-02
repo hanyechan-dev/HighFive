@@ -56,5 +56,6 @@ public class CompanyCreateDto {
 	@PastForString(pattern = "yyyy-MM-dd", message = "설립일은 오늘 이전이어야 합니다.")
 	private String establishedDate;
 	
+	@NotNull(message = "기업 로고는 필수로 입력해야합니다.")
 	private MultipartFile logoImageFile;
 }

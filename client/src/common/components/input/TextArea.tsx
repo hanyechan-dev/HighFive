@@ -34,6 +34,11 @@ const TextArea = ({
 }: TextAreaProps) => {
 
 
+    console.log("RAW VALUE:", value);
+    console.log("JSON STRINGIFIED:", JSON.stringify(value));
+
+
+
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {

@@ -92,7 +92,9 @@ const EditRequestPage = () => {
         const fetchData = async () => {
             try {
                 const res = await readRequestsApi(clickedPage - 1, elementsPerPage, consultingType);
+                console.log(res)
                 const totalElements = res.data.totalElements as number
+                console.log(totalElements)
                 setTotalElements(totalElements);
                 const requestSummaryDtos = res.data.content as RequestSummaryDto[];
                 setRequestSummaryDtos(requestSummaryDtos);
@@ -119,6 +121,7 @@ const EditRequestPage = () => {
             try {
                 const res = await readRequestApi(id);
                 const requestDetailDto = res.data as RequestDetailDto;
+
                 setRequestDetailDto(requestDetailDto);
             } catch (err) {
                 printErrorInfo(err)

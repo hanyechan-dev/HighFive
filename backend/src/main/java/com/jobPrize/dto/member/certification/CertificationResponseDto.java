@@ -2,15 +2,19 @@ package com.jobPrize.dto.member.certification;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jobPrize.entity.member.Certification;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
+@AllArgsConstructor
 public class CertificationResponseDto {
 	
 	private Long id;

@@ -14,6 +14,7 @@ export type ApplicationSummaryForCompany = {
 
 export type ApplicationDetail = {
   id: number;
+  userId : number
   name: string;
   email: string;
   genderType: string;
@@ -21,7 +22,7 @@ export type ApplicationDetail = {
   job: string;
   phone: string;
   createdDate: string;
-  isPassed: boolean;
+  passed: boolean;
   resumeJson: string;
   coverLetterJson: string;
   careerDescriptionJson: string;

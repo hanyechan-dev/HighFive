@@ -11,6 +11,8 @@ interface AiConsultingProps {
 
 const AiConsulting = ({aiConsultingContentResponseDtos, consultingType} : AiConsultingProps) => {
 
+
+
     return (
         <>
             <ModalTitle title={consultingType === "첨삭" ? 'AI 첨삭' : 'AI 피드백'} />

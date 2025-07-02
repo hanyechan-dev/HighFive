@@ -198,19 +198,6 @@ const Chat = () => {
     };
   }, [receiveMessage]);
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  // Chat 컴포넌트 언마운트 시 콜백 함수 해제
-  useEffect(() => {
-    return () => {
-      unregisterMessageCallbacks();
-    }
-  }, [])
-
-=======
->>>>>>> origin/NOTIFICATION_02
->>>>>>> origin/main
   // 채팅방 리스트 불러오기
   const getChatRoomList = useCallback(async () => {
     try {

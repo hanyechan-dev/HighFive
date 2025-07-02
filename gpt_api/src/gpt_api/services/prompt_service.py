@@ -1,22 +1,47 @@
 from gpt_api.schemas.prompt_schema import PromptRequestSchema, AiConsultingCreateSchema, AiConsultingContentCreateSchema
-from openai import OpenAI
+from openai import AsyncOpenAI
 import os
 from dotenv import load_dotenv
 import json
+import time
+from datetime import datetime
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("prompt_api_key"))
+client = AsyncOpenAI(api_key=os.getenv("prompt_api_key"))
 
-def generate_edit_result(request: PromptRequestSchema) -> AiConsultingCreateSchema:
-    response = client.chat.completions.create(
-        model="gpt-4o", # 쓰고싶은 모델명
-        messages=[item.model_dump() for item in request.prompt_list], # 각 리스트를 순회하며 객체화/ 그후 리스트로 묶음
-        temperature=0.7, # 0.0~2.0의 값 높을수록 창의적 낮을수록 보수적
-        n=1 # 기대하는 응답의 개수
+async def generate_edit_result(request: PromptRequestSchema) -> AiConsultingCreateSchema:
+    start = time.time()
+    start_time = datetime.now()
+    print(">>>>> OpenAI 시작 <<<<<", start_time.strftime("%Y-%m-%d %H:%M:%S"))
+
+    response = await client.chat.completions.create(
+        model="gpt-4o",
+        messages=[item.model_dump() for item in request.prompt_list],
+        temperature=0.7,
+        n=1
     )
-    
+
+    end_time = datetime.now()
+    print(">>>>> OpenAI 끝 <<<<<", end_time)
+    print("총 소요시간:", time.time() - start, "초")
+
     json_response = response.choices[0].message.content
-    parsed = json.loads(json_response)
+
+    print("-------첨삭 응답 원문-------")
+    print(json_response)
+    print("-------첨삭 응답 원문-------")
+
+    clean_json = json_response.strip()
+
+    if clean_json.startswith("```json"):
+        clean_json = clean_json.replace("```json", "", 1).replace("```", "").strip()
+    elif clean_json.startswith("```"):
+        clean_json = clean_json.replace("```", "", 1).replace("```", "").strip()
+
+    if not clean_json.startswith("{"):
+        raise ValueError(f"Unexpected format: {repr(clean_json)}")
+
+    parsed = json.loads(clean_json)
 
     items = [
         AiConsultingContentCreateSchema(**edit)
@@ -27,17 +52,40 @@ def generate_edit_result(request: PromptRequestSchema) -> AiConsultingCreateSche
         consultingType="첨삭",
         aiConsultingContentCreateDtos=items
     )
-    
-    
-def generate_feedback_result(request: PromptRequestSchema) -> AiConsultingCreateSchema:
-    response = client.chat.completions.create(
-        model="gpt-4o", # 쓰고싶은 모델명
-        messages=[item.model_dump() for item in request.prompt_list], # 각 리스트를 순회하며 객체화/ 그후 리스트로 묶음
-        temperature=0.7, # 0.0~2.0의 값 높을수록 창의적 낮을수록 보수적
-        n=1 # 기대하는 응답의 개수
+
+async def generate_feedback_result(request: PromptRequestSchema) -> AiConsultingCreateSchema:
+    start = time.time()
+    start_time = datetime.now()
+    print(">>>>> OpenAI 시작 <<<<<", start_time.strftime("%Y-%m-%d %H:%M:%S"))
+
+    response = await client.chat.completions.create(
+        model="gpt-4o",
+        messages=[item.model_dump() for item in request.prompt_list],
+        temperature=0.7,
+        n=1
     )
+
+    end_time = datetime.now()
+    print(">>>>> OpenAI 끝 <<<<<", end_time)
+    print("총 소요시간:", time.time() - start, "초")
+
     json_response = response.choices[0].message.content
-    parsed = json.loads(json_response)
+
+    print("-------피드백 응답 원문-------")
+    print(json_response)
+    print("-------피드백 응답 원문-------")
+
+    clean_json = json_response.strip()
+
+    if clean_json.startswith("```json"):
+        clean_json = clean_json.replace("```json", "", 1).replace("```", "").strip()
+    elif clean_json.startswith("```"):
+        clean_json = clean_json.replace("```", "", 1).replace("```", "").strip()
+
+    if not clean_json.startswith("{"):
+        raise ValueError(f"Unexpected format: {repr(clean_json)}")
+
+    parsed = json.loads(clean_json)
 
     items = [
         AiConsultingContentCreateSchema(**edit)

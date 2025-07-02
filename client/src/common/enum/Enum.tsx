@@ -65,9 +65,9 @@ export const companyTypeEnum = [
 ];
 
 export const approvalStatusEnum = [
-  {label: '대기', value: 'WAITING'},
-  {label: '승인', value: 'APPROVED'},
-  {label: '거부', value: 'REJECTED'}
+  {label: '대기', value: '대기'},
+  {label: '수락', value: '수락'},
+  {label: '거절', value: '거절'}
 ];
 
 export const consultingTypeEnum = [

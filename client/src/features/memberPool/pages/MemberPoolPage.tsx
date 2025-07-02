@@ -49,8 +49,9 @@ const MemberPoolPage = () => {
       setIsLoading(true);
       try {
         // 모든 페이지에서 10개씩 요청
-        const res = await MemberPoolPageApi(filter, clickedPage, 10);
+        const res = await MemberPoolPageApi(filter, clickedPage - 1, 10);
         const content = res?.data?.content || [];
+        console.log(res)
 
         // 모든 페이지에서 리스트만 표시
         setMembers(content);
@@ -95,46 +96,33 @@ const MemberPoolPage = () => {
         <div className="flex items-center justify-between mb-8">
           <PageTitle title="인재풀페이지" description="AI 기반으로 추천된 인재들을 확인해보세요" />
         </div>
+        <div className='flex justify-between mx-6'>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <h2 className="text-xl font-semibold">인재 목록</h2>
+              <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
+            </div>
+          </div>
+          <Button
+            color="theme"
+            size="s"
+            disabled={false}
+            text="필터"
+            type="button"
+            onClick={() => setIsFilterModalOpen(true)}
+          />
+        </div>
 
         {members.length === 0 ? (
-          <>
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <h2 className="text-xl font-semibold">인재 목록</h2>
-                <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
-              </div>
-              <Button
-                color="theme"
-                size="s"
-                disabled={false}
-                text="필터"
-                type="button"
-                onClick={() => setIsFilterModalOpen(true)}
-              />
-            </div>
-            <EmptyState
-              title="검색된 인재가 없습니다"
-              text="다른 조건으로 검색하거나 필터를 조정해보세요"
-            />
-          </>
+          <EmptyState
+            title="검색된 인재가 없습니다"
+            text="다른 조건으로 검색하거나 필터를 조정해보세요"
+          />
         ) : (
           <>
             {/* 인재 리스트 섹션 */}
             <div>
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-semibold">인재 목록</h2>
-                  <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent"></div>
-                </div>
-                <Button
-                  color="theme"
-                  size="s"
-                  disabled={false}
-                  text="필터"
-                  type="button"
-                  onClick={() => setIsFilterModalOpen(true)}
-                />
-              </div>
+
               {/* 헤더 */}
               <MemberPoolListHeader />
               {/* 리스트 */}

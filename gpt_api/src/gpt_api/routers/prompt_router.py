@@ -7,9 +7,9 @@ from gpt_api.services.prompt_service import generate_edit_result, generate_feedb
 router = APIRouter(tags=["GPT"])
 
 @router.post("/edits", response_model=AiConsultingCreateSchema)
-def generate_edits(request: PromptRequestSchema):
-   return generate_edit_result(request)
+async def generate_edits(request: PromptRequestSchema):
+    return await generate_edit_result(request)
 
 @router.post("/feedbacks", response_model=AiConsultingCreateSchema)
-def generate_feedbacks(request: PromptRequestSchema):
-   return generate_feedback_result(request)
+async def generate_feedbacks(request: PromptRequestSchema):
+    return await generate_feedback_result(request)

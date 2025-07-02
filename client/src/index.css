@@ -76,3 +76,8 @@
 .my-custom-toast [data-button]:hover {
   background-color: var(--button-hover-background) !important;
 }
+
+[data-sonner-toaster] {
+  left: auto !important;
+  right: 90px !important;
+}
