@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import json
 import time
 from datetime import datetime
+import re
 
 load_dotenv()
 client = AsyncOpenAI(api_key=os.getenv("prompt_api_key"))
@@ -27,16 +28,16 @@ async def generate_edit_result(request: PromptRequestSchema) -> AiConsultingCrea
 
     json_response = response.choices[0].message.content
 
-    print("-------첨삭 응답 원문-------")
-    print(json_response)
-    print("-------첨삭 응답 원문-------")
-
     clean_json = json_response.strip()
 
-    if clean_json.startswith("```json"):
-        clean_json = clean_json.replace("```json", "", 1).replace("```", "").strip()
-    elif clean_json.startswith("```"):
-        clean_json = clean_json.replace("```", "", 1).replace("```", "").strip()
+
+
+    if clean_json.startswith("```"):
+        clean_json = re.sub(r"^```json", "", clean_json.strip(), flags=re.IGNORECASE)
+        clean_json = re.sub(r"^```", "", clean_json.strip()) 
+        clean_json = re.sub(r"```$", "", clean_json.strip())
+
+    clean_json = clean_json.strip()
 
     if not clean_json.startswith("{"):
         raise ValueError(f"Unexpected format: {repr(clean_json)}")
@@ -71,16 +72,14 @@ async def generate_feedback_result(request: PromptRequestSchema) -> AiConsulting
 
     json_response = response.choices[0].message.content
 
-    print("-------피드백 응답 원문-------")
-    print(json_response)
-    print("-------피드백 응답 원문-------")
-
     clean_json = json_response.strip()
 
-    if clean_json.startswith("```json"):
-        clean_json = clean_json.replace("```json", "", 1).replace("```", "").strip()
-    elif clean_json.startswith("```"):
-        clean_json = clean_json.replace("```", "", 1).replace("```", "").strip()
+    if clean_json.startswith("```"):
+        clean_json = re.sub(r"^```json", "", clean_json.strip(), flags=re.IGNORECASE)
+        clean_json = re.sub(r"^```", "", clean_json.strip()) 
+        clean_json = re.sub(r"```$", "", clean_json.strip())
+
+    clean_json = clean_json.strip()
 
     if not clean_json.startswith("{"):
         raise ValueError(f"Unexpected format: {repr(clean_json)}")

@@ -56,8 +56,7 @@ public class UserServiceImpl implements UserService {
 		if (isExistEmail) {
 			throw new CustomEmailDuplicateException();
 		}
-		
-		System.out.println("에러 직후");
+
 
 		String encodedPassword = passwordEncoder.encode(userSignUpDto.getPassword());
 
