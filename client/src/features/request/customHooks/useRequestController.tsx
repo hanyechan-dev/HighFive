@@ -39,6 +39,13 @@ export const useRequestController = () => {
             }
 
         });
+    const isResumeLoading = state.isResumeLoading;
+    const setIsResumeLoading = (isResumeLoading: boolean) => {
+        dispatch({
+            type: "SET_IS_RESUME_LOADING",
+            payload: isResumeLoading
+        });
+    }
     
     const careerDescriptionSummaryDtos = state.careerDescriptionSummaryDtos;
     const setCareerDescriptionSummaryDtos = (careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[]) => {
@@ -47,11 +54,28 @@ export const useRequestController = () => {
             payload: careerDescriptionSummaryDtos
         });
     }
+
+    const isCareerDescriptionSummaryDtosLoading = state.isCareerDescriptionSummaryDtosLoading;
+    const setIsCareerDescriptionSummaryDtosLoading = (isCareerDescriptionSummaryDtosLoading: boolean) => {
+        dispatch({
+            type: "SET_IS_CAREER_DESCRIPTION_SUMMARY_DTOS_LOADING",
+            payload: isCareerDescriptionSummaryDtosLoading
+        });
+    }
+
     const coverLetterSummaryDtos = state.coverLetterSummaryDtos;
     const setCoverLetterSummaryDtos = (coverLetterSummaryDtos: CoverLetterSummaryDto[]) => {
         dispatch({
             type: "SET_COVER_LETTER_SUMMARY_DTOS",
             payload: coverLetterSummaryDtos
+        });
+    }
+
+    const isCoverLetterSummaryDtosLoading = state.isCoverLetterSummaryDtosLoading;
+    const setIsCoverLetterSummaryDtosLoading = (isCoverLetterSummaryDtosLoading: boolean) => {
+        dispatch({
+            type: "SET_IS_COVER_LETTER_SUMMARY_DTOS_LOADING",
+            payload: isCoverLetterSummaryDtosLoading
         });
     }
     const clickedCareerDescriptionId = state.clickedCareerDescriptionId;
@@ -84,6 +108,14 @@ export const useRequestController = () => {
         });
     }
 
+    const isRequestSummaryDtosLoading = state.isRequestSummaryDtosLoading;
+    const setIsRequestSummaryDtosLoading = (isRequestSummaryDtosLoading: boolean) => {
+        dispatch({
+            type: "SET_IS_REQUEST_SUMMARY_DTOS_LOADING",
+            payload: isRequestSummaryDtosLoading
+        });
+    }
+
     const showRequestModal = state.showRequestModal;
     const setShowRequestModal = (showRequestModal: boolean) => {
         dispatch({
@@ -105,6 +137,14 @@ export const useRequestController = () => {
             payload: requestDetailDto
         });
     }
+
+    const isRequestDetailDtoLoading = state.isRequestDetailDtoLoading;
+    const setIsRequestDetailDtoLoading = (isRequestDetailDtoLoading: boolean) => {
+        dispatch({
+            type: "SET_IS_REQUEST_DETAIL_DTO_LOADING",
+            payload: isRequestDetailDtoLoading
+        });
+    }
     const completedRequestDetailDto = state.completedRequestDetailDto;
     const setCompletedRequestDetailDto = (completedRequestDetailDto: CompletedRequestDetailDto) => {
         dispatch({
@@ -124,15 +164,20 @@ export const useRequestController = () => {
         targetJob,
         targetCompanyName,
         resume,
+        isResumeLoading,
         careerDescriptionSummaryDtos,
+        isCareerDescriptionSummaryDtosLoading,
         coverLetterSummaryDtos,
+        isCoverLetterSummaryDtosLoading,
         clickedCareerDescriptionId,
         clickedCoverLetterId,
         showModalNumber,
         requestSummaryDtos,
+        isRequestSummaryDtosLoading,
         showRequestModal,
         showRequestDetailModal,
         requestDetailDto,
+        isRequestDetailDtoLoading,
         completedRequestDetailDto,
         isCompleted,
         setTargetJob,
@@ -141,12 +186,17 @@ export const useRequestController = () => {
         setClickedCoverLetterId,
         setShowModalNumber,
         setResume,
+        setIsResumeLoading,
         setCareerDescriptionSummaryDtos,
+        setIsCareerDescriptionSummaryDtosLoading,
         setCoverLetterSummaryDtos,
+        setIsCoverLetterSummaryDtosLoading,
         setRequestSummaryDtos,
+        setIsRequestSummaryDtosLoading,
         setShowRequestModal,
         setShowRequestDetailModal,
         setRequestDetailDto,
+        setIsRequestDetailDtoLoading,
         setCompletedRequestDetailDto,
         setIsCompleted
     }

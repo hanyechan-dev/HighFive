@@ -27,9 +27,11 @@ export interface RequestPageState {
 
 export type RequestPageAction =
     | { type: "SET_REQUEST_SUMMARY_DTOS"; payload: RequestSummaryDto[] }
+    | { type: "SET_IS_REQUEST_SUMMARY_DTOS_LOADING"; payload: boolean }
     | { type: "SET_SHOW_REQUEST_MODAL"; payload: boolean }
     | { type: "SET_SHOW_REQUEST_DETAIL_MODAL"; payload: boolean }
     | { type: "SET_REQUEST_DETAIL_DTO"; payload: RequestDetailDto }
+    | { type: "SET_IS_REQUEST_DETAIL_DTO_LOADING"; payload: boolean }
     | { type: "SET_COMPLETED_REQUEST_DETAIL_DTO"; payload: CompletedRequestDetailDto }
     | { type: "SET_IS_COMPLETED"; payload: boolean }
     | { type: "SET_TARGET_JOB"; payload: string }
@@ -38,5 +40,8 @@ export type RequestPageAction =
     | { type: "SET_CLICKED_CAREER_DESCRIPTION_ID"; payload: number }
     | { type: "SET_CLICKED_COVER_LETTER_ID"; payload: number }
     | { type: "SET_RESUME"; payload: Resume }
+    | { type: "SET_IS_RESUME_LOADING"; payload: boolean }
     | { type: "SET_CAREER_DESCRIPTION_SUMMARY_DTOS"; payload: CareerDescriptionSummaryDto[] }
-    | { type: "SET_COVER_LETTER_SUMMARY_DTOS"; payload: CoverLetterSummaryDto[] };
+    | { type: "SET_IS_CAREER_DESCRIPTION_SUMMARY_DTOS_LOADING"; payload: boolean }
+    | { type: "SET_COVER_LETTER_SUMMARY_DTOS"; payload: CoverLetterSummaryDto[] }
+    | { type: "SET_IS_COVER_LETTER_SUMMARY_DTOS_LOADING"; payload: boolean };

@@ -2,6 +2,7 @@ import type { RequestPageAction, RequestPageState } from "./RequestPageTypes";
 
 export const initialState: RequestPageState = {
     requestSummaryDtos: [],
+    isRequestSummaryDtosLoading : true,
     showRequestModal: false,
     showRequestDetailModal: false,
     requestDetailDto: {
@@ -21,6 +22,7 @@ export const initialState: RequestPageState = {
             aiConsultingContentResponseDtos: []
         }
     },
+    isRequestDetailDtoLoading : true,
 
     completedRequestDetailDto: {
         requestResponseDto: {
@@ -58,14 +60,19 @@ export const initialState: RequestPageState = {
         certificationResponseDtos: [],
         languageTestResponseDtos: []
     },
+    isResumeLoading : true,
     careerDescriptionSummaryDtos: [],
-    coverLetterSummaryDtos: []
+    isCareerDescriptionSummaryDtosLoading : true,
+    coverLetterSummaryDtos: [],
+    isCoverLetterSummaryDtosLoading : true
 };
 
 export const reducer = (state: RequestPageState, action: RequestPageAction): RequestPageState => {
     switch (action.type) {
         case "SET_REQUEST_SUMMARY_DTOS":
             return { ...state, requestSummaryDtos: action.payload };
+        case "SET_IS_REQUEST_SUMMARY_DTOS_LOADING":
+            return { ...state, isRequestSummaryDtosLoading: action.payload };
         case "SET_SHOW_REQUEST_MODAL":
             return { ...state, showRequestModal: action.payload };
         case "SET_SHOW_REQUEST_DETAIL_MODAL":
@@ -88,10 +95,16 @@ export const reducer = (state: RequestPageState, action: RequestPageAction): Req
             return { ...state, clickedCoverLetterId: action.payload };
         case "SET_RESUME":
             return { ...state, resume: action.payload };
+        case "SET_IS_RESUME_LOADING":
+            return { ...state, isResumeLoading: action.payload };
         case "SET_CAREER_DESCRIPTION_SUMMARY_DTOS":
             return { ...state, careerDescriptionSummaryDtos: action.payload };
+        case "SET_IS_CAREER_DESCRIPTION_SUMMARY_DTOS_LOADING":
+            return { ...state, isCareerDescriptionSummaryDtosLoading: action.payload };
         case "SET_COVER_LETTER_SUMMARY_DTOS":
             return { ...state, coverLetterSummaryDtos: action.payload };
+        case "SET_IS_COVER_LETTER_SUMMARY_DTOS_LOADING":
+            return { ...state, isCoverLetterSummaryDtosLoading: action.payload };
         default:
             return state;
     }
