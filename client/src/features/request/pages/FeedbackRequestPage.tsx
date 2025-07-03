@@ -32,6 +32,7 @@ const pagesPerBlock = 10;
 const FeedbackRequestPage = () => {
 
     const [totalElements, setTotalElements] = useState(0);
+    const [isRequestDetailDtoLoading ,setIsRequestDetailDtoLoading] = useState(true)
 
 
     // 페이지 내 전역 상태 선언부
@@ -46,7 +47,6 @@ const FeedbackRequestPage = () => {
         setIsRequestSummaryDtosLoading,
         showRequestModal,
         showRequestDetailModal,
-        requestDetailDto,
         setTargetJob,
         setTargetCompanyName,
         setClickedCareerDescriptionId,
@@ -62,7 +62,7 @@ const FeedbackRequestPage = () => {
         setShowRequestModal,
         setShowRequestDetailModal,
         setRequestDetailDto,
-        setIsRequestDetailDtoLoading,
+        requestDetailDto
     } = useRequestController();
 
 
@@ -121,25 +121,24 @@ const FeedbackRequestPage = () => {
 
 
     const onClickRequestDetailModal = (id: number) => {
+        setShowRequestDetailModal(true);
+        setIsRequestDetailDtoLoading(true);
 
         const fetchData = async () => {
-            setIsRequestDetailDtoLoading(true);
             try {
                 const res = await readRequestApi(id);
                 const requestDetailDto = res.data as RequestDetailDto;
-
                 setRequestDetailDto(requestDetailDto);
+                
             } catch (err) {
-                printErrorInfo(err)
-            }
-            finally {
+                printErrorInfo(err);
+            } finally {
                 setIsRequestDetailDtoLoading(false);
             }
         };
 
         fetchData();
-        setShowRequestDetailModal(true);
-    }
+    };
 
     useEffect(() => {
 
@@ -204,20 +203,25 @@ const FeedbackRequestPage = () => {
         } else if (showModalNumber === 4) {
 
             const post = async () => {
+                setShowRequestDetailModal(true);
                 setIsRequestDetailDtoLoading(true);
                 try {
-                    setShowRequestDetailModal(true);
-                    const res = await createRequestApi(targetJob, targetCompanyName, consultingType, clickedCoverLetterId, clickedCareerDescriptionId);
+                    const res = await createRequestApi(
+                        targetJob,
+                        targetCompanyName,
+                        consultingType,
+                        clickedCoverLetterId,
+                        clickedCareerDescriptionId
+                    );
                     const requestDetailDto = res.data as RequestDetailDto;
                     setRequestDetailDto(requestDetailDto);
-                }
-                catch (err) {
+                    
+                } catch (err) {
                     printErrorInfo(err);
-                }
-                finally {
+                } finally {
                     setIsRequestDetailDtoLoading(false);
                 }
-            }
+            };
             post();
             setTargetJob('');
             setTargetCompanyName('');
@@ -269,8 +273,11 @@ const FeedbackRequestPage = () => {
 
             {showRequestModal && <RequestModal consultingType={consultingType} />}
 
-            {showRequestDetailModal && requestDetailDto && (
-                <RequestDetailModal />
+            {showRequestDetailModal && (
+                <RequestDetailModal
+                    isRequestDetailDtoLoading={isRequestDetailDtoLoading}
+                    requestDetailDto={requestDetailDto}
+                    setShowRequestDetailModal={setShowRequestDetailModal} />
             )}
 
         </>

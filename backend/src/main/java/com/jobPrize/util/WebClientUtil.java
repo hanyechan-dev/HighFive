@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.jobPrize.dto.member.aiConsulting.AiConsultingContentCreateDto;
 import com.jobPrize.dto.member.aiConsulting.AiConsultingCreateDto;
 import com.jobPrize.enumerate.ConsultingType;
 
@@ -34,12 +33,7 @@ public class WebClientUtil {
 		try {
 			 AiConsultingCreateDto aiConsultingCreateDto =webClient.post().uri(path).bodyValue(body).retrieve().bodyToMono(AiConsultingCreateDto.class)
 					.block();
-			 
-			 List<AiConsultingContentCreateDto> aiConsultingContentCreateDtos=aiConsultingCreateDto.getAiConsultingContentCreateDtos();
-			 
-			 for(AiConsultingContentCreateDto aiConsultingContentCreateDto : aiConsultingContentCreateDtos) {
-				 System.out.println(aiConsultingContentCreateDto.getContent());
-			 }
+			
 			 
 			 return aiConsultingCreateDto;
 		} catch (Exception e) {
