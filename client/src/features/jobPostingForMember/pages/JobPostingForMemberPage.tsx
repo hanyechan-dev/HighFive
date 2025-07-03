@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import { usePagination } from "../../../common/customHooks/usePagination";
 import PageTitle from "../../../common/components/title/PageTitle";
+import LoadingSpinner from "../../../common/components/loading/LoadingSpinner";
 
 
 
@@ -32,6 +33,13 @@ const JobPostingForMemberPage = () => {
 
     const [totalElements, setTotalElements] = useState(0);
     const filter = useSelector((state: RootState) => state.jobPostingFilter.filter);
+    const [isPageLoding, setIsPageLoading] = useState(true);
+    const [isShowModalNumber0Loading, setIsShowModalNumber0Loading] = useState(true);
+    const [isShowModalNumber1Loading, setIsShowModalNumber1Loading] = useState(true);
+    const [isShowModalNumber2Loading, setIsShowModalNumber2Loading] = useState(true);
+    const [isCLLoading, setIsCLLoading] = useState(true);
+    const [isCDLoading, setIsCDLoading] = useState(true);
+    const [isJobPostingModalLoading, setIsJobPostingModalLoading] = useState(true);
 
     const {
         jobPostingMainCardDtos,
@@ -85,7 +93,9 @@ const JobPostingForMemberPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsPageLoading(true)
             try {
+
                 const resMain = await JobPostingMainCardForMemberApi();
                 const jobPostingMainCardDtos = resMain.data as JobPostingMainCardDto[];
                 console.log(jobPostingMainCardDtos)
@@ -100,6 +110,9 @@ const JobPostingForMemberPage = () => {
             catch (err) {
                 printErrorInfo(err)
             }
+            finally {
+                setIsPageLoading(false)
+            }
         }
 
         fetchData();
@@ -109,6 +122,7 @@ const JobPostingForMemberPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsPageLoading(true)
             try {
                 const res = await JobPostingListForMemberApi(clickedPage - 1, elementsPerPage);
                 const totalElements = res.data.totalElements as number
@@ -119,6 +133,9 @@ const JobPostingForMemberPage = () => {
             }
             catch (err) {
                 printErrorInfo(err)
+            }
+            finally {
+                setIsPageLoading(false)
             }
         }
 
@@ -131,7 +148,7 @@ const JobPostingForMemberPage = () => {
 
         if (showModalNumber == 0) {
             const fetchData = async () => {
-
+                setIsShowModalNumber0Loading(true)
                 try {
                     const educationResponseDtos = (await readEducationsApi()).data as EducationResponseDto[];
                     const careerResponseDtos = (await readCareersApi()).data as CareerResponseDto[];
@@ -141,18 +158,24 @@ const JobPostingForMemberPage = () => {
                 } catch (err) {
                     printErrorInfo(err);
                 }
+                finally {
+                    setIsShowModalNumber0Loading(false)
+                }
             }
             fetchData();
 
         }
         else if (showModalNumber == 1) {
             const fetchData = async () => {
-
+                setIsShowModalNumber1Loading(true)
                 try {
                     const careerDescriptionSummaryDtos = (await readCareerDescriptionsApi()).data;
                     setCareerDescriptionSummaryDtos(careerDescriptionSummaryDtos);
                 } catch (err) {
                     printErrorInfo(err);
+                }
+                finally {
+                    setIsShowModalNumber1Loading(false)
                 }
             }
 
@@ -161,12 +184,15 @@ const JobPostingForMemberPage = () => {
         }
         else if (showModalNumber == 2) {
             const fetchData = async () => {
-
+                setIsShowModalNumber2Loading(true)
                 try {
                     const coverLetterSummaryDtos = (await readCoverLettersApi()).data;
                     setCoverLetterSummaryDtos(coverLetterSummaryDtos);
                 } catch (err) {
                     printErrorInfo(err);
+                }
+                finally {
+                    setIsShowModalNumber2Loading(false)
                 }
             }
 
@@ -175,7 +201,6 @@ const JobPostingForMemberPage = () => {
         }
         else if (showModalNumber == 3) {
             const post = async () => {
-
                 try {
                     await CreateApplicationApi(
                         {
@@ -201,12 +226,15 @@ const JobPostingForMemberPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-
+            setIsCLLoading(true)
             try {
                 const coverLetterResponseDto = (await ReadMyCoverLetterApi(clickedCoverLetterId)).data;
                 setCoverLetterResponseDto(coverLetterResponseDto);
             } catch (err) {
                 printErrorInfo(err);
+            }
+            finally {
+                setIsCLLoading(false)
             }
         }
 
@@ -219,12 +247,15 @@ const JobPostingForMemberPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-
+            setIsCDLoading(true)
             try {
                 const careerDescriptionResponseDto = (await ReadMyCareerDescriptionApi(clickedCareerDescriptionId)).data;
                 setCareerDescriptionResponseDto(careerDescriptionResponseDto);
             } catch (err) {
                 printErrorInfo(err);
+            }
+            finally {
+                setIsCDLoading(false)
             }
         }
 
@@ -239,7 +270,7 @@ const JobPostingForMemberPage = () => {
 
     const onClickJobPostingDetailModal = (id: number) => {
         const fetchData = async () => {
-
+            setIsJobPostingModalLoading(true)
             try {
                 const res = await JobPostingDetailApi(id);
                 const jobPostingForMemberResponseDto = res.data as JobPostingForMemberResponseDto;
@@ -247,6 +278,9 @@ const JobPostingForMemberPage = () => {
             }
             catch (err) {
                 printErrorInfo(err)
+            }
+            finally {
+                setIsJobPostingModalLoading(false)
             }
         }
 
@@ -264,63 +298,76 @@ const JobPostingForMemberPage = () => {
                 <PageTitle
                     title="채용 공고"
                     description="회원님에게 알맞는 채용 공고를 확인하세요." />
-                <div className="flex mt-2">
-                    {jobPostingMainCardDtos.map(jobPostingMainCardDto => (
-                        <div key={jobPostingMainCardDto.id}>
-                            <JobPostingMainCard
-                                jobPostingMainCardDto={jobPostingMainCardDto}
-                                onClick={onClickJobPostingDetailModal} />
+
+                {isPageLoding ? (<LoadingSpinner message="채용 공고를 불러오는 중..." size="lg" color="theme" />) : (
+                    <>
+                        <div className="flex mt-2">
+
+
+                            {jobPostingMainCardDtos.map(jobPostingMainCardDto => (
+                                <div key={jobPostingMainCardDto.id}>
+                                    <JobPostingMainCard
+                                        jobPostingMainCardDto={jobPostingMainCardDto}
+                                        onClick={onClickJobPostingDetailModal} />
+                                </div>
+
+                            ))}
                         </div>
 
-                    ))}
-                </div>
-
-                <div className="flex mt-2">
-                    {jobPostingUnderCardDtos.map(jobPostingUnderCardDto => (
-                        <div key={jobPostingUnderCardDto.id}>
-                            <JobPostingUnderCard
-                                jobPostingUnderCardDto={jobPostingUnderCardDto}
-                                onClick={onClickJobPostingDetailModal} />
+                        <div className="grid grid-cols-4 gap-4 mt-2">
+                            {jobPostingUnderCardDtos.map((jobPostingUnderCardDto) => (
+                                <div key={jobPostingUnderCardDto.id}>
+                                    <JobPostingUnderCard
+                                        jobPostingUnderCardDto={jobPostingUnderCardDto}
+                                        onClick={onClickJobPostingDetailModal}
+                                    />
+                                </div>
+                            ))}
                         </div>
 
-                    ))}
-                </div>
+                        <div className="flex justify-end mb-[-24px] mr-6">
+                            <Button color={"theme"} size={"m"} disabled={false} text={"채용공고 필터"} type={"button"} onClick={onClickJobPostingFilterModal} />
+                        </div>
 
-                <div className="flex justify-end mb-[-24px] mr-6">
-                    <Button color={"theme"} size={"m"} disabled={false} text={"채용공고 필터"} type={"button"} onClick={onClickJobPostingFilterModal} />
-                </div>
-
-                <JobPostingListTop />
-                {jobPostingForMemberSummaryDtos.length > 0 ? jobPostingForMemberSummaryDtos.map(jobPostingForMemberSummaryDto =>
-                    <JobPostingListItem
-                        key={jobPostingForMemberSummaryDto.id}
-                        jobPostingSummaryForMemberDto={jobPostingForMemberSummaryDto}
-                        onClick={onClickJobPostingDetailModal} />
-                ) : <EmptyState title={"등록된 공고가 없습니다."} text={""} />
-                }
+                        <JobPostingListTop />
+                        {jobPostingForMemberSummaryDtos.length > 0 ? jobPostingForMemberSummaryDtos.map(jobPostingForMemberSummaryDto =>
+                            <JobPostingListItem
+                                key={jobPostingForMemberSummaryDto.id}
+                                jobPostingSummaryForMemberDto={jobPostingForMemberSummaryDto}
+                                onClick={onClickJobPostingDetailModal} />
+                        ) : <EmptyState title={"등록된 공고가 없습니다."} text={""} />
+                        }
 
 
-                <div className="flex justify-center">
-                    <Pagination
-                        currentPageBlockIndex={pageBlockIndex}
-                        lastPageBlockIndex={lastPageBlockIndex}
-                        pagesPerBlock={pagesPerBlock}
-                        lastPage={lastPage}
-                        clickedPage={clickedPage}
-                        onClickFirst={onClickFirst}
-                        onClickPrev={onClickPrev}
-                        onClickNext={onClickNext}
-                        onClickLast={onClickLast}
-                        onClickPage={setClickedPage}
-                    />
-                </div>
+                        <div className="flex justify-center">
+                            <Pagination
+                                currentPageBlockIndex={pageBlockIndex}
+                                lastPageBlockIndex={lastPageBlockIndex}
+                                pagesPerBlock={pagesPerBlock}
+                                lastPage={lastPage}
+                                clickedPage={clickedPage}
+                                onClickFirst={onClickFirst}
+                                onClickPrev={onClickPrev}
+                                onClickNext={onClickNext}
+                                onClickLast={onClickLast}
+                                onClickPage={setClickedPage}
+                            />
+                        </div>
+                    </>
+                )}
 
 
             </CommonPage>
 
             {showJobPostingFilterModal && <JobPostingFilterModal />}
-            {showJobPostingForMemberDetailModal && <JobPostingDetailForMemberModal />}
-            {showApplicationModal && <ApplicationModal />}
+            {showJobPostingForMemberDetailModal && <JobPostingDetailForMemberModal
+                isJobPostingModalLoading={isJobPostingModalLoading} />}
+            {showApplicationModal && <ApplicationModal
+                isShowModalNumber0Loading={isShowModalNumber0Loading}
+                isShowModalNumber1Loading={isShowModalNumber1Loading}
+                isShowModalNumber2Loading={isShowModalNumber2Loading}
+                isCLLoading={isCLLoading}
+                isCDLoading={isCDLoading} />}
 
 
         </>

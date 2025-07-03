@@ -92,9 +92,7 @@ const EditRequestPage = () => {
         const fetchData = async () => {
             try {
                 const res = await readRequestsApi(clickedPage - 1, elementsPerPage, consultingType);
-                console.log(res)
                 const totalElements = res.data.totalElements as number
-                console.log(totalElements)
                 setTotalElements(totalElements);
                 const requestSummaryDtos = res.data.content as RequestSummaryDto[];
                 setRequestSummaryDtos(requestSummaryDtos);
@@ -213,8 +211,10 @@ const EditRequestPage = () => {
 
             const post = async () => {
                 try {
-                    await createRequestApi(targetJob, targetCompanyName, consultingType, clickedCoverLetterId, clickedCareerDescriptionId);
-
+                    setShowRequestDetailModal(true);
+                    const res = await createRequestApi(targetJob, targetCompanyName, consultingType, clickedCoverLetterId, clickedCareerDescriptionId);
+                    const requestDetailDto = res.data as RequestDetailDto;
+                    setRequestDetailDto(requestDetailDto);
                 }
                 catch (err) {
                     printErrorInfo(err);

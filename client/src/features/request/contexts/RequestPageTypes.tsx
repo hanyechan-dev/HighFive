@@ -4,9 +4,11 @@ import type { CompletedRequestDetailDto, RequestDetailDto, RequestSummaryDto, Re
 
 export interface RequestPageState {
     requestSummaryDtos: RequestSummaryDto[];
+    isRequestSummaryDtosLoading : boolean;
     showRequestModal: boolean;
     showRequestDetailModal: boolean;
     requestDetailDto: RequestDetailDto;
+    isRequestDetailDtoLoading : boolean;
     completedRequestDetailDto: CompletedRequestDetailDto;
     isCompleted: boolean;
     targetJob: string;
@@ -14,9 +16,12 @@ export interface RequestPageState {
     showModalNumber: number;
     clickedCareerDescriptionId: number;
     clickedCoverLetterId: number;
-    resume: Resume
+    resume: Resume;
+    isResumeLoading : boolean
     careerDescriptionSummaryDtos: CareerDescriptionSummaryDto[];
+    isCareerDescriptionSummaryDtosLoading : boolean;
     coverLetterSummaryDtos: CoverLetterSummaryDto[];
+    isCoverLetterSummaryDtosLoading : boolean;
 }
 
 

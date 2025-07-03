@@ -10,9 +10,14 @@ import CareerInfo from "../../request/components/CareerInfo";
 import CertificationInfo from "../../request/components/CertificationInfo";
 import LanguageTest from "../../request/components/LanguageTestInfo";
 import { useJobPostingForMemberController } from "../customHooks/useJobPostingForMemberController";
+import LoadingSpinner from "../../../common/components/loading/LoadingSpinner";
+
+interface ResumeOutputForApplicationModal {
+    isShowModalNumber0Loading: boolean
+}
 
 
-const ResumeOutputForApplicationModal = () => {
+const ResumeOutputForApplicationModal = ({ isShowModalNumber0Loading }: ResumeOutputForApplicationModal) => {
 
     const {
         setShowModalNumber,
@@ -44,42 +49,45 @@ const ResumeOutputForApplicationModal = () => {
                     size="externalResume"
                 />
             </div>
+            {isShowModalNumber0Loading ? (<LoadingSpinner message="이력서를 불러오는 중..." size="lg" color="theme" />) : (
+                <>
+                    <div className="flex">
+                        {clickedResume == "학력사항" && (
+                            <ExternalBox>
+                                {resume.educationResponseDtos.length > 0 && resume.educationResponseDtos.map((educationResponseDto) => (
+                                    <EducationInfo educationResponseDto={educationResponseDto} key={educationResponseDto.id} />
+                                ))}
+                            </ExternalBox>
+                        )}
+                        {clickedResume == "경력사항" && (
+                            <ExternalBox>
+                                {resume.careerResponseDtos.length > 0 && resume.careerResponseDtos.map((careerResponseDto) => (
+                                    <CareerInfo careerResponseDto={careerResponseDto} key={careerResponseDto.id} />
+                                ))}
+                            </ExternalBox>
+                        )}
+                        {clickedResume == "자격증" && (
+                            <ExternalBox>
+                                {resume.certificationResponseDtos.length > 0 && resume.certificationResponseDtos.map((certificationResponseDto) => (
+                                    <CertificationInfo certificationResponseDto={certificationResponseDto} key={certificationResponseDto.id} />
+                                ))}
+                            </ExternalBox>
+                        )}
+                        {clickedResume == "어학" && (
+                            <ExternalBox>
+                                {resume.languageTestResponseDtos.length > 0 && resume.languageTestResponseDtos.map((languageTestResponseDto) => (
+                                    <LanguageTest languageTestResponseDto={languageTestResponseDto} key={languageTestResponseDto.id} />
+                                ))}
+                            </ExternalBox>
+                        )}
+                    </div>
 
-            <div className="flex">
-                {clickedResume == "학력사항" && (
-                    <ExternalBox>
-                        {resume.educationResponseDtos.length > 0 && resume.educationResponseDtos.map((educationResponseDto) => (
-                            <EducationInfo educationResponseDto={educationResponseDto} key={educationResponseDto.id} />
-                        ))}
-                    </ExternalBox>
-                )}
-                {clickedResume == "경력사항" && (
-                    <ExternalBox>
-                        {resume.careerResponseDtos.length > 0 && resume.careerResponseDtos.map((careerResponseDto) => (
-                            <CareerInfo careerResponseDto={careerResponseDto} key={careerResponseDto.id} />
-                        ))}
-                    </ExternalBox>
-                )}
-                {clickedResume == "자격증" && (
-                    <ExternalBox>
-                        {resume.certificationResponseDtos.length > 0 && resume.certificationResponseDtos.map((certificationResponseDto) => (
-                            <CertificationInfo certificationResponseDto={certificationResponseDto} key={certificationResponseDto.id} />
-                        ))}
-                    </ExternalBox>
-                )}
-                {clickedResume == "어학" && (
-                    <ExternalBox>
-                        {resume.languageTestResponseDtos.length > 0 && resume.languageTestResponseDtos.map((languageTestResponseDto) => (
-                            <LanguageTest languageTestResponseDto={languageTestResponseDto} key={languageTestResponseDto.id} />
-                        ))}
-                    </ExternalBox>
-                )}
-            </div>
 
-
-            <div className="flex justify-end mr-6">
-                <Button color={"theme"} size={"m"} disabled={false} text={"확인 및 다음"} type={"button"} onClick={onClickNext} />
-            </div>
+                    <div className="flex justify-end mr-6">
+                        <Button color={"theme"} size={"m"} disabled={false} text={"확인 및 다음"} type={"button"} onClick={onClickNext} />
+                    </div>
+                </>
+            )}
         </>
 
     );

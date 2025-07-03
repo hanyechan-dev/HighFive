@@ -41,21 +41,11 @@ const JobPostingMainCard = ({
             {/* 헤더 */}
             <div className="relative h-[270px] overflow-hidden rounded-t-lg border border-b-0 border-gray-300">
                 {/* 로고 */}
-                <div className="absolute inset-0">
-                    {/* 흐릿한 배경용 로고 */}
-                    <img
-                        src={`http://192.168.0.121:8090${imageUrl}`}
-                        className="w-full h-full object-contain blur-2xl scale-125 opacity-100"
-                    />
-
                     {/* 선명한 실제 로고 */}
                     <img
                         src={`http://192.168.0.121:8090${imageUrl}`}
                         className="absolute inset-0 w-full h-full object-contain p-4 opacity-100"
                     />
-                </div>
-
-
 
             </div>
             {/* 끼워지는 정보 */}

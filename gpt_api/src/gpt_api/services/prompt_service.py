@@ -6,6 +6,7 @@ import json
 import time
 from datetime import datetime
 import re
+from json_repair import repair_json
 
 load_dotenv()
 client = AsyncOpenAI(api_key=os.getenv("prompt_api_key"))
@@ -42,7 +43,7 @@ async def generate_edit_result(request: PromptRequestSchema) -> AiConsultingCrea
     if not clean_json.startswith("{"):
         raise ValueError(f"Unexpected format: {repr(clean_json)}")
 
-    parsed = json.loads(clean_json)
+    parsed = json.loads(repair_json(clean_json))
 
     items = [
         AiConsultingContentCreateSchema(**edit)
@@ -84,7 +85,7 @@ async def generate_feedback_result(request: PromptRequestSchema) -> AiConsulting
     if not clean_json.startswith("{"):
         raise ValueError(f"Unexpected format: {repr(clean_json)}")
 
-    parsed = json.loads(clean_json)
+    parsed = json.loads(repair_json(clean_json))
 
     items = [
         AiConsultingContentCreateSchema(**edit)

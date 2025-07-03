@@ -5,10 +5,22 @@ import ResumeOutputForApplicationModal from "./ResumeOutputForApplicationModal";
 import CareerDescriptionSelectForApplicationModal from "./CareerDescriptionSelectForApplicationModal";
 import CoverLetterSelectForApplicationModal from "./CoverLetterSelectForApplicationModal";
 
+interface ApplicationModalProps {
+    isShowModalNumber0Loading: boolean
+    isShowModalNumber1Loading: boolean
+    isShowModalNumber2Loading: boolean
+    isCLLoading: boolean
+    isCDLoading: boolean
+}
 
 
-
-const ApplicationModal = () => {
+const ApplicationModal = ({
+    isShowModalNumber0Loading,
+    isShowModalNumber1Loading,
+    isShowModalNumber2Loading,
+    isCLLoading,
+    isCDLoading,
+}: ApplicationModalProps) => {
 
 
 
@@ -34,11 +46,16 @@ const ApplicationModal = () => {
     return (
         <CommonModal size="l" onClose={onClose}>
             {showModalNumber === 0 &&
-                (<ResumeOutputForApplicationModal />)}
+                (<ResumeOutputForApplicationModal
+                    isShowModalNumber0Loading={isShowModalNumber0Loading} />)}
             {showModalNumber === 1 &&
-                (<CareerDescriptionSelectForApplicationModal />)}
+                (<CareerDescriptionSelectForApplicationModal
+                    isShowModalNumber1Loading={isShowModalNumber1Loading}
+                    isCDLoading={isCDLoading} />)}
             {showModalNumber === 2 &&
-                (<CoverLetterSelectForApplicationModal />)}
+                (<CoverLetterSelectForApplicationModal
+                    isShowModalNumber2Loading={isShowModalNumber2Loading}
+                    isCLLoading={isCLLoading}/>)}
         </CommonModal>
     )
 

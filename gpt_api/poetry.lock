@@ -403,6 +403,18 @@ files = [
 ]
 
 [[package]]
+name = "json-repair"
+version = "0.47.6"
+description = "A package to repair broken json strings"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "json_repair-0.47.6-py3-none-any.whl", hash = "sha256:1c9da58fb6240f99b8405f63534e08f8402793f09074dea25800a0b232d4fb19"},
+    {file = "json_repair-0.47.6.tar.gz", hash = "sha256:4af5a14b9291d4d005a11537bae5a6b7912376d7584795f0ac1b23724b999620"},
+]
+
+[[package]]
 name = "lazy-loader"
 version = "0.4"
 description = "Makes it easy to load subpackages and functions on demand."
@@ -1868,4 +1880,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "2592decd81d687471df533a22dde249a4b4fb01b1ea9a998c7b88dc17d3e2937"
+content-hash = "ac180f8a3291afc9907e61c49320eb4e1d45dd3b746d43b87f1e97116b26405d"

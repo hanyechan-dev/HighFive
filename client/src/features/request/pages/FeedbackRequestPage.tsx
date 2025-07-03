@@ -211,7 +211,10 @@ const FeedbackRequestPage = () => {
 
             const post = async () => {
                 try {
-                    await createRequestApi(targetJob, targetCompanyName, consultingType, clickedCoverLetterId, clickedCareerDescriptionId);
+                    setShowRequestDetailModal(true);
+                    const res = await createRequestApi(targetJob, targetCompanyName, consultingType, clickedCoverLetterId, clickedCareerDescriptionId);
+                    const requestDetailDto = res.data as RequestDetailDto;
+                    setRequestDetailDto(requestDetailDto);
 
                 }
                 catch (err) {

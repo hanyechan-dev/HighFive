@@ -10,7 +10,7 @@ import com.jobPrize.dto.member.request.RequestSummaryDto;
 import com.jobPrize.enumerate.UserType;
 
 public interface RequestService {
-	void createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto);
+	Long createRequest(Long id, UserType userType, RequestCreateDto requestCreateDto);
 	Page<RequestSummaryDto> readFeedbackRequestPage(Long id, Pageable pageable);
 	Page<RequestSummaryDto> readEditRequestPage(Long id, Pageable pageable);
 	RequestDetailDto readRequestDetail(Long id, UserType userType, Long requestId);

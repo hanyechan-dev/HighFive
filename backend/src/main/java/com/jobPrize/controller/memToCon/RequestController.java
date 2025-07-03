@@ -52,15 +52,17 @@ public class RequestController {
     }
     
     @PostMapping
-    public ResponseEntity<Void> createRequest(@RequestBody @Valid RequestCreateDto requestCreateDto) {
+    public ResponseEntity<RequestDetailDto> createRequest(@RequestBody @Valid RequestCreateDto requestCreateDto) {
     	
     	Long id = SecurityUtil.getId();
     	
     	UserType userType = SecurityUtil.getUserType();
     	
-    	requestService.createRequest(id, userType, requestCreateDto);
+    	Long requestId = requestService.createRequest(id, userType, requestCreateDto);
     	
-    	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    	RequestDetailDto requestDetailDto = requestService.readRequestDetail(id, userType, requestId);
+    	
+    	return ResponseEntity.status(HttpStatus.CREATED).body(requestDetailDto);
     	
     }
     
