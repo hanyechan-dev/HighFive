@@ -42,7 +42,7 @@ const ChatButtonModal = () => {
     };
 
     return (
-        <div className="w-[200px] bg-white p-5 shadow-md rounded-lg relative">
+        <div className={`w-[200px] border bg-white p-5 shadow-md rounded-lg relative" ${!targetUser ? 'hidden' : ''}`}>
             {/* 모달 */}
             {targetUser && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
