@@ -1,17 +1,17 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../common/store/store";
+import type { RootState } from "../../../common/store/store";
 
-interface NotificationState {
+interface ChatNotificationState {
   // 읽지 않은 메시지가 있는 채팅방 ID 목록
   unreadChatRooms: number[];
 }
 
-const initialState: NotificationState = {
+const initialState: ChatNotificationState = {
   unreadChatRooms: [],
 };
 
-export const notificationSlice = createSlice({
-  name: "notification",
+export const ChatNotificationSlice = createSlice({
+  name: "chatNotification",
   initialState,
   reducers: {
     // 읽지 않은 채팅방 추가
@@ -34,8 +34,8 @@ export const notificationSlice = createSlice({
   },
 });
 
-export const { addUnreadChat, removeUnreadChat, clearAllChatNotifications } = notificationSlice.actions;
+export const { addUnreadChat, removeUnreadChat, clearAllChatNotifications } = ChatNotificationSlice.actions;
 
-export const selectUnreadChatRooms = (state: RootState) => state.notification.unreadChatRooms;
+export const selectUnreadChatRooms = (state: RootState) => state.chatNotification.unreadChatRooms;
 
-export default notificationSlice.reducer;
+export default ChatNotificationSlice.reducer;

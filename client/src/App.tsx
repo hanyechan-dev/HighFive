@@ -10,7 +10,7 @@ import AppRouter from "./features/AppRoutes";
 import Chat from "./features/chat/Chat";
 import type { RootState } from "./common/store/store";
 import { useSelector } from "react-redux";
-import { connectWebSocket } from "./features/chat/stompClient";
+import { connectWebSocket } from "./features/stompClient";
 import ChatButtonModal from "./features/chat/ChatButtonModal";
 import { Toaster } from "sonner";
 

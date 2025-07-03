@@ -9,6 +9,7 @@ import memberPoolFilterSlice from '../../features/memberPool/slices/MemberPoolSl
 
 import AuthModalSlice from '../slices/AuthModalSlice';
 import ChatControlSlice from '../../features/chat/ChatControlSlice';
+import ChatNotificationSlice from '../../features/chat/ChatNotificationSlice';
 import NotificationSlice from '../../features/notification/NotificationSlice';
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     memberPoolFilter: memberPoolFilterSlice,
     chat: ChatControlSlice,
     authModal: AuthModalSlice,
+    chatNotification: ChatNotificationSlice,
     notification: NotificationSlice
 });
 

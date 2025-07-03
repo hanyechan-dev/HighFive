@@ -10,7 +10,7 @@ import {
   registerMessageCallback,
   subscribeToTopic,
   unregisterMessageCallback,
-} from "./stompClient";
+} from "../stompClient";
 import { clearNewChatTarget } from "./ChatControlSlice";
 import { Button } from "../../common/components/ui/button";
 import { ScrollArea } from "../../common/components/ui/scroll-area";
@@ -19,7 +19,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../common/c
 import { Input } from "../../common/components/ui/input";
 import { printErrorInfo } from "../../common/utils/ErrorUtil";
 import { api } from "../../common/Axios";
-import { addUnreadChat, removeUnreadChat, selectUnreadChatRooms } from "../notification/NotificationSlice";
+import { addUnreadChat, removeUnreadChat, selectUnreadChatRooms } from "./ChatNotificationSlice";
 import { toast } from "sonner";
 
 interface ChatRoom {
