@@ -1,8 +1,8 @@
 interface PaginationProps {
     currentPageBlockIndex: number, // 몇번째 페이지 블록인가
-    lastPageBlockIndex : number,
+    lastPageBlockIndex: number,
     pagesPerBlock: number, // 한블록에 몇개의 페이지가 들어가느냐
-    lastPage:number
+    lastPage: number
     clickedPage: number,
     onClickFirst: () => void;
     onClickPrev: () => void,
@@ -57,18 +57,18 @@ const Pagination = ({
                 </div>)}
 
             {/* 페이지 숫자들 */}
-            {pageNumbers.map((page) => (
-                <div
-                    key={page}
-                    className={`${defaultSetting} ${page === clickedPage ? clickedPageSetting : unclickedPageSetting} ${page>lastPage? 'invisible': ' '}`}
-                    onClick={() => onClickPage(page)}
-                >
-                    <div >
+            {pageNumbers
+                .filter((page) => page <= lastPage)
+                .map((page) => (
+                    <div
+                        key={page}
+                        className={`${defaultSetting} ${page === clickedPage ? clickedPageSetting : unclickedPageSetting
+                            }`}
+                        onClick={() => onClickPage(page)}
+                    >
                         {page}
                     </div>
-                    
-                </div>
-            ))}
+                ))}
 
             {/* 다음 버튼 */}
 

@@ -238,10 +238,10 @@ const FeedbackRequestPage = () => {
 
             <CommonPage>
                 <PageTitle
-                    title={`AI + 컨설턴트 ${consultingType}`}
+                    title={`AI ${consultingType}`}
                     description="회원님이 요청하신 피드백을 확인할 수 있습니다." />
                 <div className="flex justify-end mr-6 mb-[-24px]">
-                    <Button color={"theme"} size={"m"} disabled={false} text={`새 ${consultingType} 요청하기`} type={"button"} onClick={onClickRequestModal} />
+                    <Button color={"theme"} size={"m"} disabled={false} text={`+ 새 ${consultingType} 요청하기`} type={"button"} onClick={onClickRequestModal} />
                 </div>
                 {isRequestSummaryDtosLoading ? (<LoadingSpinner message="피드백을 불러오는 중입니다..." />) : (
                     <>

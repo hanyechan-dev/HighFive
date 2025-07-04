@@ -159,11 +159,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		String action = "구독 해지 예약";
 
-		Long ownerId = subscriptionRepository.findUserIdBySubscriptionId(id)
-				.orElseThrow(() -> new CustomEntityNotFoundException("소유자"));
-
-		assertUtil.assertId(id, ownerId, ENTITY_NAME, action);
-
 		Subscription subscription = subscriptionRepository.findLatestByUserId(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException(ENTITY_NAME));
 
