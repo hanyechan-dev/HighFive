@@ -101,7 +101,7 @@ const MainPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-white font-roboto antialiased">
+    <div className="bg-white font-roboto antialiased">
       {/* Hero Section */}
       <section className="relative pt-32 pb-6 px-6 text-center bg-gradient-to-b from-slate-50 to-white">
         <LogoAnimationStyle />
@@ -167,7 +167,8 @@ const MainPage = () => {
               </div>
               <h3 className="text-2xl font-bold mb-4 text-slate-900">AI + 컨설턴트 첨삭</h3>
               <p className="text-slate-600 leading-relaxed">
-                AI가 1차 첨삭을 제공하고, 전문 컨설턴트가 최종 검토하여 취업 성공에 한 걸음 더
+                AI가 1차 첨삭을 제공하고, 전문 컨설턴트가<br />
+                최종 검토하여 취업 성공에 한 걸음 더
                 가까워지세요.
               </p>
             </div>
@@ -177,7 +178,9 @@ const MainPage = () => {
               </div>
               <h3 className="text-2xl font-bold mb-4 text-slate-900">맞춤형 채용 공고</h3>
               <p className="text-slate-600 leading-relaxed">
-                AI가 분석한 맞춤 포지션을 바탕으로 적합한 채용 공고를 추천합니다. 원하는 정보로 쉽고
+                AI가 분석한 맞춤 포지션을 바탕으로 <br />적합한
+                채용 공고를 추천합니다.<br />
+                 원하는 정보로 쉽고
                 빠르게 확인하세요.
               </p>
             </div>
@@ -187,7 +190,7 @@ const MainPage = () => {
               </div>
               <h3 className="text-2xl font-bold mb-4 text-slate-900">인재 검색</h3>
               <p className="text-slate-600 leading-relaxed">
-                기업은 AI와 인사 컨설턴트를 통해 적합한 인재를 빠르게 찾고, 효율적으로 관리할 수
+                기업은 AI와 인사 컨설턴트를 통해 <br />적합한 인재를 빠르게 찾고,<br />효율적으로 관리할 수
                 있습니다.
               </p>
             </div>
@@ -217,9 +220,8 @@ const MainPage = () => {
               {testimonials.map((_, idx) => (
                 <button
                   key={idx}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    idx === testimonialIdx ? 'bg-theme' : 'bg-slate-300 hover:bg-slate-400'
-                  }`}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${idx === testimonialIdx ? 'bg-theme' : 'bg-slate-300 hover:bg-slate-400'
+                    }`}
                   onClick={() => setTestimonialIdx(idx)}
                   aria-label={`후기 ${idx + 1}번 보기`}
                 />
@@ -230,7 +232,7 @@ const MainPage = () => {
       </section>
 
       {/* 통계 섹션 */}
-      <section className="py-24 px-6 bg-white text-center">
+      <section className="py-24 px-6 bg-white text-center max-h-[400px] overflow-y-auto">
         <div className="max-w-4xl mx-auto">
           <h3 className="text-4xl font-bold mb-12 text-slate-900">JobPrize와 함께하는 이유</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -251,7 +253,7 @@ const MainPage = () => {
       </section>
 
 
-      
+
     </div>
   );
 };
