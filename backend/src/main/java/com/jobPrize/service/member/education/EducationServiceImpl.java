@@ -1,6 +1,5 @@
 package com.jobPrize.service.member.education;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +13,14 @@ import com.jobPrize.dto.member.education.EducationResponseDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
 import com.jobPrize.entity.member.Education;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EmbeddingStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.education.EducationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +36,10 @@ public class EducationServiceImpl implements EducationService {
 	private final SimilarityRepository similarityRepository;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "학력";
 
@@ -57,7 +63,9 @@ public class EducationServiceImpl implements EducationService {
 
         educationRepository.save(education);
         
-        member.updateTime(LocalDateTime.now());
+        updateEmbedding(education);
+        
+        member.changeLastUpdateTime();
         
         similarityRepository.deleteByMember(member);
         
@@ -101,9 +109,11 @@ public class EducationServiceImpl implements EducationService {
 
 		education.updateEducation(educationUpdateDto);
 		
+		updateEmbedding(education);
+		
 		Member member = education.getMember();
 		
-		member.updateTime(LocalDateTime.now());
+		member.changeLastUpdateTime();
 		
 		similarityRepository.deleteByMember(member);
 		
@@ -128,11 +138,21 @@ public class EducationServiceImpl implements EducationService {
         educationRepository.delete(education);
         
         educationRepository.flush();
-		
-        member.updateTime(LocalDateTime.now());
         
         similarityRepository.deleteByMember(member);
 		
+	}
+	
+	private void updateEmbedding(Education education) {
+	    try {
+	    	education.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+	        String data = textBuilder.getEducationStringForEmbedding(education);
+	        String vector = webClientUtil.sendEmbeddingRequestMember(data);
+	        education.updateVector(vector);
+	        education.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+	    } catch (Exception e) {
+	    	education.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+	    }
 	}
 	
 	

@@ -1,6 +1,5 @@
 package com.jobPrize.service.member.career;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +13,14 @@ import com.jobPrize.dto.member.career.CareerResponseDto;
 import com.jobPrize.dto.member.career.CareerUpdateDto;
 import com.jobPrize.entity.member.Career;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EmbeddingStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.career.CareerRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +36,10 @@ public class CareerServiceImpl implements CareerService {
 	private final SimilarityRepository similarityRepository;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+
+	private final TextBuilder textBuilder;
 	
 	private final static String ENTITY_NAME = "경력";
 
@@ -60,8 +66,10 @@ public class CareerServiceImpl implements CareerService {
 		
 		careerRepository.save(career);
 		
-		member.updateTime(LocalDateTime.now());
+		updateEmbedding(career);
 		
+		member.changeLastUpdateTime();
+
 		similarityRepository.deleteByMember(member);
 		
 		return CareerResponseDto.from(career);
@@ -101,9 +109,11 @@ public class CareerServiceImpl implements CareerService {
 		
 		career.updateCareer(careerUpdateDto);
 		
+		updateEmbedding(career);
+		
 		Member member = career.getMember();
 		
-		member.updateTime(LocalDateTime.now());
+		member.changeLastUpdateTime();
 		
 		similarityRepository.deleteByMember(member);
 		
@@ -127,9 +137,20 @@ public class CareerServiceImpl implements CareerService {
 		
 		careerRepository.delete(career);
 		
-		member.updateTime(LocalDateTime.now());
-		
 		similarityRepository.deleteByMember(member);
+	}
+	
+	
+	private void updateEmbedding(Career career) {
+	    try {
+	        career.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+	        String data = textBuilder.getCareerStringForEmbedding(career);
+	        String vector = webClientUtil.sendEmbeddingRequestMember(data);
+	        career.updateVector(vector);
+	        career.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+	    } catch (Exception e) {
+	        career.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+	    }
 	}
 		
 }

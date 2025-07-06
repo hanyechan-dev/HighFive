@@ -8,4 +8,5 @@ import com.jobPrize.entity.member.Member;
 public interface MemberRepositoryCustom{
 	Optional<Member> findByIdAndDeletedDateIsNull(Long id);
 	List<Member> findAllByUpdateTimeWithinOneHour();
+	List<Member> findAll();
 }

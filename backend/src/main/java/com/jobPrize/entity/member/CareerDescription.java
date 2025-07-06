@@ -9,11 +9,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionCreateDto;
 import com.jobPrize.dto.member.careerDescription.CareerDescriptionUpdateDto;
+import com.jobPrize.enumerate.EmbeddingStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -55,6 +58,13 @@ public class CareerDescription {
 	@OneToMany(mappedBy = "careerDescription", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<CareerDescriptionContent> careerDescriptionContents = new ArrayList<>();
 	
+	@Column(name = "career_description_vector", columnDefinition = "MEDIUMTEXT")
+	private String careerDescriptionVector;
+	
+	@Column(name = "embedding_status")
+	@Enumerated(EnumType.STRING)
+	private EmbeddingStatus embeddingStatus = EmbeddingStatus.PENDING;
+	
 	public void updateCareerDescription(CareerDescriptionUpdateDto careerDescriptionUpdateDto) {
 		this.title = careerDescriptionUpdateDto.getTitle();
 	}
@@ -63,7 +73,16 @@ public class CareerDescription {
 		return CareerDescription.builder()
 			.member(member)
 			.title(careerDescriptionCreateDto.getTitle())
+			.embeddingStatus(EmbeddingStatus.PENDING)
 			.build();
+	}
+	
+	public void updateVector(String vector) {
+		this.careerDescriptionVector = vector;
+	}
+	
+	public void updateEmbeddingStatus(EmbeddingStatus embeddingStatus) {
+		this.embeddingStatus = embeddingStatus;
 	}
 
 }

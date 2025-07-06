@@ -1,6 +1,5 @@
 package com.jobPrize.service.member.careerDescription;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import com.jobPrize.dto.member.careerDescription.CareerDescriptionUpdateDto;
 import com.jobPrize.entity.member.CareerDescription;
 import com.jobPrize.entity.member.CareerDescriptionContent;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EmbeddingStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.careerDescription.CareerDescriptionRepository;
@@ -24,6 +24,8 @@ import com.jobPrize.repository.member.careerDescriptionContent.CareerDescription
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.careerDescriptionContent.CareerDescriptionContentService;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +45,10 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 	private final CareerDescriptionContentService careerDescriptionContentService;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "경력기술서";
 
@@ -69,7 +75,9 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 			careerDescriptionContentResponseDtos.add(careerDescriptionContentResponseDto);
 		}
 		
-		member.updateTime(LocalDateTime.now());
+		updateEmbedding(careerDescription);
+		
+		member.changeLastUpdateTime();
 		
 		similarityRepository.deleteByMember(member);
 
@@ -138,9 +146,11 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 			careerDescriptionContentResponseDtos.add(careerDescriptionContentResponseDto);
 		}
 		
+		updateEmbedding(careerDescription);
+		
 		Member member = careerDescription.getMember();
 		
-		member.updateTime(LocalDateTime.now());
+		member.changeLastUpdateTime();
 		
 		similarityRepository.deleteByMember(member);
 
@@ -166,10 +176,20 @@ public class CareerDescriptionServiceImpl implements CareerDescriptionService {
 		
 		careerDescriptionRepository.flush();
 		
-		member.updateTime(LocalDateTime.now());
-		
 		similarityRepository.deleteByMember(member);
 		
+	}
+	
+	private void updateEmbedding(CareerDescription careerDescription) {
+	    try {
+	    	careerDescription.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+	        String data = textBuilder.getCareerDescriptionStringForEmbedding(careerDescription);
+	        String vector = webClientUtil.sendEmbeddingRequestMember(data);
+	        careerDescription.updateVector(vector);
+	        careerDescription.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+	    } catch (Exception e) {
+	    	careerDescription.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+	    }
 	}
 
 }
