@@ -188,7 +188,9 @@ public class JobPostingServiceImpl implements JobPostingService {
 	@Scheduled(cron = "0 0 * * * *")
 	@Transactional
 	public void calcVector() {
+
 		List<JobPosting> jobPostings = jobPostingRepository.findAllByEmbeddingStatus(EmbeddingStatus.FAILED);
+
 		
 		for(JobPosting jobPosting :jobPostings) {
 			try {
@@ -209,10 +211,10 @@ public class JobPostingServiceImpl implements JobPostingService {
 		            multipartFiles.add(multipartFile);
 		        }
 				
-				
 				String vector = webClientUtil.sendEmbeddingRequestJobPosting(metadata, multipartFiles);
 				jobPosting.updateVector(vector);
 				jobPosting.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+
 
 			} catch (Exception e) {
 				jobPosting.updateEmbeddingStatus(EmbeddingStatus.FAILED);

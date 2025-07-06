@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.jobPrize.dto.member.education.EducationCreateDto;
 import com.jobPrize.dto.member.education.EducationUpdateDto;
 import com.jobPrize.enumerate.EducationLevel;
+import com.jobPrize.enumerate.EmbeddingStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,6 +61,13 @@ public class Education {
 	
 	@Column(name="GRADUATE_DATE")
 	private LocalDate graduateDate;
+	
+	@Column(name = "education_vector", columnDefinition = "MEDIUMTEXT")
+	private String educationVector;
+	
+	@Column(name = "embedding_status")
+	@Enumerated(EnumType.STRING)
+	private EmbeddingStatus embeddingStatus = EmbeddingStatus.PENDING;
 
 	public void updateEducation(EducationUpdateDto educationUpdateDto) {
 		this.schoolName = educationUpdateDto.getSchoolName();
@@ -81,7 +89,16 @@ public class Education {
 			.location(educationCreateDto.getLocation())
 			.enterDate(educationCreateDto.getEnterDate())
 			.graduateDate(educationCreateDto.getGraduateDate())
+			.embeddingStatus(EmbeddingStatus.PENDING)
 			.build();
+	}
+	
+	public void updateVector(String vector) {
+		this.educationVector = vector;
+	}
+	
+	public void updateEmbeddingStatus(EmbeddingStatus embeddingStatus) {
+		this.embeddingStatus = embeddingStatus;
 	}
 	
 	

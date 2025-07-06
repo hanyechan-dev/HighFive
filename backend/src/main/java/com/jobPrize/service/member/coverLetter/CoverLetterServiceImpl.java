@@ -1,6 +1,5 @@
 package com.jobPrize.service.member.coverLetter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import com.jobPrize.dto.member.coverLetter.CoverLetterUpdateDto;
 import com.jobPrize.entity.member.CoverLetter;
 import com.jobPrize.entity.member.CoverLetterContent;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EmbeddingStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.coverLetter.CoverLetterRepository;
@@ -24,6 +24,8 @@ import com.jobPrize.repository.member.coverLetterContent.CoverLetterContentRepos
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.service.member.coverLetterContent.CoverLetterContentService;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +45,10 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 	private final CoverLetterContentService coverLetterContentService;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "자기소개서";
 
@@ -68,7 +74,9 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
 		
-		member.updateTime(LocalDateTime.now());
+		updateEmbedding(coverLetter);
+		
+		member.changeLastUpdateTime();
 		
 		similarityRepository.deleteByMember(member);
 		
@@ -137,9 +145,11 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 			coverLetterContentResponseDtos.add(coverLetterContentResponseDto);
 		}
 		
+		updateEmbedding(coverLetter);
+		
 		Member member = coverLetter.getMember();
 		
-		member.updateTime(LocalDateTime.now());
+		member.changeLastUpdateTime();
 		
 		similarityRepository.deleteByMember(member);
 		
@@ -165,10 +175,20 @@ public class CoverLetterServiceImpl implements CoverLetterService{
 		
 		coverLetterRepository.flush();
 		
-		member.updateTime(LocalDateTime.now());
-		
 		similarityRepository.deleteByMember(member);
 		
+	}
+	
+	private void updateEmbedding(CoverLetter coverLetter) {
+	    try {
+	    	coverLetter.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+	        String data = textBuilder.getCoverLetterStringForEmbedding(coverLetter);
+	        String vector = webClientUtil.sendEmbeddingRequestMember(data);
+	        coverLetter.updateVector(vector);
+	        coverLetter.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+	    } catch (Exception e) {
+	    	coverLetter.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+	    }
 	}
 
 }

@@ -2,9 +2,12 @@ package com.jobPrize.entity.member;
 
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentCreateDto;
 import com.jobPrize.dto.member.coverLetter.CoverLetterContentUpdateDto;
+import com.jobPrize.enumerate.EmbeddingStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +42,7 @@ public class CoverLetterContent {
 	
 	@Column(name="CONTENT", nullable = false, length = 2000)
 	private String content;
+
 	
 	public void updateContent(CoverLetterContentUpdateDto coverLetterContentUpdateDto) {
 		this.item = coverLetterContentUpdateDto.getItem();
@@ -53,5 +57,7 @@ public class CoverLetterContent {
     			.build();
 
     }
+    
+    
 
 }

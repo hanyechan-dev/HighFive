@@ -1,6 +1,5 @@
 package com.jobPrize.service.member.certification;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +12,14 @@ import com.jobPrize.dto.member.certification.CertificationResponseDto;
 import com.jobPrize.dto.member.certification.CertificationUpdateDto;
 import com.jobPrize.entity.member.Certification;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.enumerate.EmbeddingStatus;
 import com.jobPrize.enumerate.UserType;
 import com.jobPrize.repository.memToCom.similarity.SimilarityRepository;
 import com.jobPrize.repository.member.certification.CertificationRepository;
 import com.jobPrize.repository.member.member.MemberRepository;
 import com.jobPrize.util.AssertUtil;
+import com.jobPrize.util.TextBuilder;
+import com.jobPrize.util.WebClientUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +35,10 @@ public class CertificationServiceImpl implements CertificationService {
     private final SimilarityRepository similarityRepository;
 
 	private final AssertUtil assertUtil;
+	
+	private final WebClientUtil webClientUtil;
+
+	private final TextBuilder textBuilder;
 
 	private final static String ENTITY_NAME = "자격증";
 
@@ -53,7 +59,9 @@ public class CertificationServiceImpl implements CertificationService {
 
 		certificationRepository.save(certification);
 		
-		member.updateTime(LocalDateTime.now());
+		updateEmbedding(certification);
+		
+		member.changeLastUpdateTime();
 		
 		similarityRepository.deleteByMember(member);
 
@@ -90,9 +98,11 @@ public class CertificationServiceImpl implements CertificationService {
         
 		certification.updateCertification(certificationUpdateDto);
 		
+		updateEmbedding(certification);
+		
 		Member member = certification.getMember();
 		
-		member.updateTime(LocalDateTime.now());
+		member.changeLastUpdateTime();
 
 		similarityRepository.deleteByMember(member);
 		
@@ -117,11 +127,21 @@ public class CertificationServiceImpl implements CertificationService {
         certificationRepository.delete(certification);
         
         certificationRepository.flush();
-		
-        member.updateTime(LocalDateTime.now());
         
         similarityRepository.deleteByMember(member);
 		
+	}
+	
+	private void updateEmbedding(Certification certification) {
+	    try {
+	    	certification.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+	        String data = textBuilder.getCertificationStringForEmbedding(certification);
+	        String vector = webClientUtil.sendEmbeddingRequestMember(data);
+	        certification.updateVector(vector);
+	        certification.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+	    } catch (Exception e) {
+	    	certification.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+	    }
 	}
 	
 
