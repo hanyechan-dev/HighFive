@@ -11,6 +11,7 @@ import AuthModalSlice from '../slices/AuthModalSlice';
 import ChatControlSlice from '../../features/chat/ChatControlSlice';
 import ChatNotificationSlice from '../../features/chat/ChatNotificationSlice';
 import NotificationSlice from '../../features/notification/NotificationSlice';
+import NotificationControlSlice from '../../features/notification/NotificationControlSlice';
 
 const rootReducer = combineReducers({
     auth: AuthSlice,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     chat: ChatControlSlice,
     authModal: AuthModalSlice,
     chatNotification: ChatNotificationSlice,
-    notification: NotificationSlice
+    notification: NotificationSlice,
+    notificationControl: NotificationControlSlice
 });
 
 const persistConfig = {

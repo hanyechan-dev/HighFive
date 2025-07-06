@@ -10,6 +10,6 @@ import lombok.Getter;
 public class NotificationDto {
     private Long notificationId;
     private Long id;
-    private String message; // 알림 내용
+    private String message;
     private LocalDateTime createdTime;
 }

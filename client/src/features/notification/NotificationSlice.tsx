@@ -24,17 +24,17 @@ export const NotificationSlice = createSlice({
     // 읽은 알림 제거
     removeUnreadNotification: (state, action: PayloadAction<number>) => {
       state.unreadNotifications = state.unreadNotifications.filter(
-        (roomId) => roomId !== action.payload
+        (notificationId) => notificationId !== action.payload
       );
     },
     // 모든 알림 초기화
-    clearAllNotificationtNotifications: (state) => {
+    clearAllNotifications: (state) => {
       state.unreadNotifications = [];
     }
   },
 });
 
-export const { addUnreadNotification, removeUnreadNotification, clearAllNotificationtNotifications } = NotificationSlice.actions;
+export const { addUnreadNotification, removeUnreadNotification, clearAllNotifications } = NotificationSlice.actions;
 
 export const selectUnreadNotifications = (state: RootState) => state.notification.unreadNotifications;
 
