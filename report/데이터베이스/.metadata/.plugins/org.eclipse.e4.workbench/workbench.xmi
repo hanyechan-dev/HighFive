@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_ksChQDiMEfC-z_vxpN3iSg" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_ksChQTiMEfC-z_vxpN3iSg" bindingContexts="_ksFlfjiMEfC-z_vxpN3iSg">
-  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.tomato.exerd.editor.DiagramEditor&quot; name=&quot;jobPrize.exerd&quot; tooltip=&quot;D:\highFive\jobPrize\report\&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;\jobPrize.exerd&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/D:/highFive/jobPrize/report/&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;/jobPrize.exerd&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.tomato.exerd.editor.DiagramEditor&quot; name=&quot;jobPrize.exerd&quot; tooltip=&quot;D:\HighFive\jobPrize\report\&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;\jobPrize.exerd&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/D:/HighFive/jobPrize/report/&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;/jobPrize.exerd&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
+  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.tomato.exerd.editor.DiagramEditor&quot; name=&quot;jobPrize.exerd&quot; tooltip=&quot;D:\HighFive\jobPrize\report\&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;\jobPrize.exerd&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/D:/HighFive/jobPrize/report/&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;/jobPrize.exerd&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; id=&quot;com.tomato.exerd.editor.DiagramEditor&quot; name=&quot;jobPrize.exerd&quot; tooltip=&quot;D:\highFive\jobPrize\report\&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;\jobPrize.exerd&quot;>&#xD;&#xA;&lt;persistable uri=&quot;file:/D:/highFive/jobPrize/report/&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;/jobPrize.exerd&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
   <children xsi:type="basic:TrimmedWindow" xmi:id="_ksChQTiMEfC-z_vxpN3iSg" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_ksChQjiMEfC-z_vxpN3iSg" x="0" y="0" width="1024" height="768">
@@ -41,10 +41,9 @@
           <tags>persp.newWizSC:com.tomato.exerd.ui.wizards.newEXerdWizardFromDatabase</tags>
           <tags>persp.newWizSC:com.tomato.exerd.term.ui.wizard.NewTermDictionaryWizard</tags>
           <tags>persp.newWizSC:com.tomato.exerd.xscript.ui.wizard.NewXScriptWizard</tags>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_ksChRTiMEfC-z_vxpN3iSg" selectedElement="_ksChRjiMEfC-z_vxpN3iSg" horizontal="true">
+          <children xsi:type="basic:PartSashContainer" xmi:id="_ksChRTiMEfC-z_vxpN3iSg" selectedElement="_ksChSziMEfC-z_vxpN3iSg" horizontal="true">
             <children xsi:type="basic:PartSashContainer" xmi:id="_ksChRjiMEfC-z_vxpN3iSg" containerData="1800" selectedElement="_ksChRziMEfC-z_vxpN3iSg">
               <children xsi:type="basic:PartStack" xmi:id="_ksChRziMEfC-z_vxpN3iSg" elementId="leftFolder" containerData="3000" selectedElement="_ksChSDiMEfC-z_vxpN3iSg">
-                <tags>active</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_ksChSDiMEfC-z_vxpN3iSg" elementId="org.eclipse.ui.views.ResourceNavigator" ref="_ksCizziMEfC-z_vxpN3iSg" closeable="true">
                   <tags>View</tags>
                   <tags>categoryTag:&#xc77c;&#xbc18;</tags>
@@ -140,9 +139,18 @@
       <tags>categoryTag:&#xb3c4;&#xc6c0;&#xb9d0;</tags>
     </sharedElements>
     <sharedElements xsi:type="advanced:Area" xmi:id="_ksCizDiMEfC-z_vxpN3iSg" elementId="org.eclipse.ui.editorss" selectedElement="_ksCizTiMEfC-z_vxpN3iSg">
-      <children xsi:type="basic:PartStack" xmi:id="_ksCizTiMEfC-z_vxpN3iSg" elementId="org.eclipse.e4.primaryDataStack">
+      <children xsi:type="basic:PartStack" xmi:id="_ksCizTiMEfC-z_vxpN3iSg" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_7DpUUFopEfCu-9NMHMcdWQ">
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
+        <tags>active</tags>
+        <children xsi:type="basic:Part" xmi:id="_7DpUUFopEfCu-9NMHMcdWQ" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="jobPrize.exerd(&#xc77d;&#xae30; &#xc804;&#xc6a9;)" iconURI="platform:/plugin/com.tomato.exerd.core/icon/common/erd_editor.gif" closeable="true">
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.tomato.exerd.editor.DiagramEditor&quot; name=&quot;jobPrize.exerd&quot; partName=&quot;jobPrize.exerd(&#xc77d;&#xae30; &#xc804;&#xc6a9;)&quot; title=&quot;jobPrize.exerd(&#xc77d;&#xae30; &#xc804;&#xc6a9;)&quot; tooltip=&quot;D:\HighFive\jobPrize\report\&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;\jobPrize.exerd&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; uri=&quot;file:/D:/HighFive/jobPrize/report/&#xb370;&#xc774;&#xd130;&#xbca0;&#xc774;&#xc2a4;/jobPrize.exerd&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <tags>Editor</tags>
+          <tags>com.tomato.exerd.editor.DiagramEditor</tags>
+          <tags>removeOnHide</tags>
+          <tags>active</tags>
+          <tags>activeOnClose</tags>
+        </children>
       </children>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_ksCizziMEfC-z_vxpN3iSg" elementId="org.eclipse.ui.views.ResourceNavigator" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="&#xb124;&#xbe44;&#xac8c;&#xc774;&#xd130;" iconURI="platform:/plugin/org.eclipse.ui.ide/icons/full/eview16/filenav_nav.png" tooltip="" closeable="true">
@@ -151,8 +159,6 @@
       <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;view LINK_NAVIGATOR_TO_EDITOR=&quot;0&quot; sorter=&quot;1&quot;>&#xD;&#xA;&lt;filters>&#xD;&#xA;&lt;filter element=&quot;*.class&quot; isEnabled=&quot;false&quot;/>&#xD;&#xA;&lt;filter element=&quot;.*&quot; isEnabled=&quot;false&quot;/>&#xD;&#xA;&lt;/filters>&#xD;&#xA;&lt;/view>"/>
       <tags>View</tags>
       <tags>categoryTag:&#xc77c;&#xbc18;</tags>
-      <tags>active</tags>
-      <tags>activeOnClose</tags>
       <menus xmi:id="_ksCi0DiMEfC-z_vxpN3iSg" elementId="org.eclipse.ui.views.ResourceNavigator">
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
@@ -262,7 +268,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_ksCjBDiMEfC-z_vxpN3iSg" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_g7uOwFfwEfCoHL8ss-A7SA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="&#xc778;&#xc1c4;" command="_kssClTiMEfC-z_vxpN3iSg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_23_MMFopEfCu-9NMHMcdWQ" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="&#xc778;&#xc1c4;" command="_kssClTiMEfC-z_vxpN3iSg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_ksCjETiMEfC-z_vxpN3iSg" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -287,7 +293,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_ksCjTziMEfC-z_vxpN3iSg" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_g7wrAFfwEfCoHL8ss-A7SA" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="&#xd3b8;&#xc9d1;&#xae30; &#xc704;&#xce58; &#xace0;&#xc815;" type="Check" command="_kssCODiMEfC-z_vxpN3iSg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_24BoeFopEfCu-9NMHMcdWQ" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="&#xd3b8;&#xc9d1;&#xae30; &#xc704;&#xce58; &#xace0;&#xc815;" type="Check" command="_kssCODiMEfC-z_vxpN3iSg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_ksCjWTiMEfC-z_vxpN3iSg" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
