@@ -51,7 +51,6 @@ public class FileUtil {
 	     File dir = new File(uploadDir);
 	        if (!dir.exists()) {
 	        	boolean created = dir.mkdirs();
-	            System.out.println("디렉토리 생성됨? " + created);
 	        }
 
 	     try {

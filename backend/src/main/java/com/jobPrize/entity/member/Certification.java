@@ -4,9 +4,12 @@ import java.time.LocalDate;
 
 import com.jobPrize.dto.member.certification.CertificationCreateDto;
 import com.jobPrize.dto.member.certification.CertificationUpdateDto;
+import com.jobPrize.enumerate.EmbeddingStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -53,6 +56,13 @@ public class Certification {
 
 	@Column(name = "ACQUISITION_DATE", nullable = false)
 	private LocalDate acquisitionDate;
+	
+	@Column(name = "certification_vector", columnDefinition = "MEDIUMTEXT")
+	private String certificationVector;
+	
+	@Column(name = "embedding_status")
+	@Enumerated(EnumType.STRING)
+	private EmbeddingStatus embeddingStatus = EmbeddingStatus.PENDING;
 
 	public void updateCertification(CertificationUpdateDto certificationUpdateDto) {
 		this.certificationName = certificationUpdateDto.getCertificationName();
@@ -72,7 +82,16 @@ public class Certification {
 			.score(certificationCreateDto.getScore())
 			.certificationNo(certificationCreateDto.getCertificationNo())
 			.acquisitionDate(certificationCreateDto.getAcquisitionDate())
+			.embeddingStatus(EmbeddingStatus.PENDING)
 			.build();
+	}
+	
+	public void updateVector(String vector) {
+		this.certificationVector = vector;
+	}
+	
+	public void updateEmbeddingStatus(EmbeddingStatus embeddingStatus) {
+		this.embeddingStatus = embeddingStatus;
 	}
 
 }

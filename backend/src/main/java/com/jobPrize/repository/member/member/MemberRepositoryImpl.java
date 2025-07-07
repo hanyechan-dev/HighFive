@@ -9,9 +9,14 @@ import java.util.Set;
 
 import com.jobPrize.entity.common.QUser;
 import com.jobPrize.entity.member.Member;
+import com.jobPrize.entity.member.QCareer;
 import com.jobPrize.entity.member.QCareerDescription;
+import com.jobPrize.entity.member.QCertification;
 import com.jobPrize.entity.member.QCoverLetter;
+import com.jobPrize.entity.member.QEducation;
+import com.jobPrize.entity.member.QLanguageTest;
 import com.jobPrize.entity.member.QMember;
+import com.jobPrize.enumerate.EmbeddingStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -43,34 +48,42 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 		LocalDateTime targeTime = LocalDateTime.now().minusHours(1);
 		
 		QMember member = QMember.member;
+		QEducation education = QEducation.education;
+		QCareer career = QCareer.career;
+		QCertification certification = QCertification.certification;
+		QLanguageTest languageTest = QLanguageTest.languageTest;
 		QCareerDescription careerDescription = QCareerDescription.careerDescription;
 		QCoverLetter coverLetter = QCoverLetter.coverLetter;
 		
 		List<Member> resultEdu = queryFactory
 				.selectFrom(member)
-				.leftJoin(member.educations)
-				.where(member.updateTime.after(targeTime))
+				.leftJoin(member.educations, education)
+				.where(member.lastUpdateTime.after(targeTime))
+				.where(education.embeddingStatus.ne(EmbeddingStatus.SUCCESS))
 				.distinct()
 				.fetch();
 		
 		List<Member> resultCar = queryFactory
 				.selectFrom(member)
-				.leftJoin(member.careers)
-				.where(member.updateTime.after(targeTime))
+				.leftJoin(member.careers, career)
+				.where(member.lastUpdateTime.after(targeTime))
+				.where(career.embeddingStatus.ne(EmbeddingStatus.SUCCESS))
 				.distinct()
 				.fetch();
 		
 		List<Member> resultCer = queryFactory
 				.selectFrom(member)
-				.leftJoin(member.certifications)
-				.where(member.updateTime.after(targeTime))
+				.leftJoin(member.certifications, certification)
+				.where(member.lastUpdateTime.after(targeTime))
+				.where(certification.embeddingStatus.ne(EmbeddingStatus.SUCCESS))
 				.distinct()
 				.fetch();
 		
 		List<Member> resultLag = queryFactory
 				.selectFrom(member)
-				.leftJoin(member.languageTests)
-				.where(member.updateTime.after(targeTime))
+				.leftJoin(member.languageTests, languageTest)
+				.where(member.lastUpdateTime.after(targeTime))
+				.where(languageTest.embeddingStatus.ne(EmbeddingStatus.SUCCESS))
 				.distinct()
 				.fetch();
 		
@@ -78,7 +91,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 				.selectFrom(member)
 				.leftJoin(member.careerDescriptions, careerDescription)
 				.leftJoin(careerDescription.careerDescriptionContents)
-				.where(member.updateTime.after(targeTime))
+				.where(member.lastUpdateTime.after(targeTime))
+				.where(careerDescription.embeddingStatus.ne(EmbeddingStatus.SUCCESS))
 				.distinct()
 				.fetch();
 		
@@ -86,7 +100,77 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 				.selectFrom(member)
 				.leftJoin(member.coverLetters, coverLetter)
 				.leftJoin(coverLetter.coverLetterContents)
-				.where(member.updateTime.after(targeTime))
+				.where(member.lastUpdateTime.after(targeTime))
+				.where(coverLetter.embeddingStatus.ne(EmbeddingStatus.SUCCESS))
+				.distinct()
+				.fetch();
+		
+		Set<Member> merged = new LinkedHashSet<>();
+		
+		merged.addAll(resultEdu);
+		merged.addAll(resultCar);
+		merged.addAll(resultCer);
+		merged.addAll(resultLag);
+		merged.addAll(resultCdc);
+		merged.addAll(resultClc);
+		
+		List<Member> results = new ArrayList<>(merged);
+		
+		return results;
+	}
+
+	@Override
+	public List<Member> findAll() {
+		
+		QMember member = QMember.member;
+		QEducation education = QEducation.education;
+		QCareer career = QCareer.career;
+		QCertification certification = QCertification.certification;
+		QLanguageTest languageTest = QLanguageTest.languageTest;
+		QCareerDescription careerDescription = QCareerDescription.careerDescription;
+		QCoverLetter coverLetter = QCoverLetter.coverLetter;
+		
+		List<Member> resultEdu = queryFactory
+				.selectFrom(member)
+				.leftJoin(member.educations, education)
+				.where(education.embeddingStatus.eq(EmbeddingStatus.SUCCESS))
+				.distinct()
+				.fetch();
+		
+		List<Member> resultCar = queryFactory
+				.selectFrom(member)
+				.leftJoin(member.careers, career)
+				.where(career.embeddingStatus.eq(EmbeddingStatus.SUCCESS))
+				.distinct()
+				.fetch();
+		
+		List<Member> resultCer = queryFactory
+				.selectFrom(member)
+				.leftJoin(member.certifications, certification)
+				.where(certification.embeddingStatus.eq(EmbeddingStatus.SUCCESS))
+				.distinct()
+				.fetch();
+		
+		List<Member> resultLag = queryFactory
+				.selectFrom(member)
+				.leftJoin(member.languageTests, languageTest)
+				.where(languageTest.embeddingStatus.eq(EmbeddingStatus.SUCCESS))
+				.distinct()
+				.fetch();
+		
+		List<Member> resultCdc = queryFactory
+				.selectFrom(member)
+				.leftJoin(member.careerDescriptions, careerDescription)
+				.leftJoin(careerDescription.careerDescriptionContents)
+				.where(careerDescription.embeddingStatus.eq(EmbeddingStatus.SUCCESS))
+				.distinct()
+				.fetch();
+		
+		List<Member> resultClc = queryFactory
+				.selectFrom(member)
+				.leftJoin(member.coverLetters, coverLetter)
+				.leftJoin(coverLetter.coverLetterContents)
+				.where(coverLetter.embeddingStatus.eq(EmbeddingStatus.SUCCESS))
 				.distinct()
 				.fetch();
 		

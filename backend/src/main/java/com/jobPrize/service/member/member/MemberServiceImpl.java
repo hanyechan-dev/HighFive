@@ -11,6 +11,12 @@ import com.jobPrize.dto.member.member.MemberCreateDto;
 import com.jobPrize.dto.member.member.MemberResponseDto;
 import com.jobPrize.dto.member.member.MemberUpdateDto;
 import com.jobPrize.entity.common.User;
+import com.jobPrize.entity.member.Career;
+import com.jobPrize.entity.member.CareerDescription;
+import com.jobPrize.entity.member.Certification;
+import com.jobPrize.entity.member.CoverLetter;
+import com.jobPrize.entity.member.Education;
+import com.jobPrize.entity.member.LanguageTest;
 import com.jobPrize.entity.member.Member;
 import com.jobPrize.enumerate.EmbeddingStatus;
 import com.jobPrize.enumerate.UserType;
@@ -85,21 +91,104 @@ public class MemberServiceImpl implements MemberService {
 		List<Member> members = memberRepository.findAllByUpdateTimeWithinOneHour();
 		
 		for(Member member : members) {
-			member.updateEmbeddingStatus(EmbeddingStatus.PENDING);
-		}
-		
-		for(Member member : members) {
-			member.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
-			try {
-				String data = textBuilder.getMemberStringForEmbedding(member);
-				String vector = webClientUtil.sendEmbeddingRequestMember(data);
-				member.updateVector(vector);
-				member.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
-			} catch (Exception e) {
-				member.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+			List<Education> educations = member.getEducations();
+			if(educations != null && !educations.isEmpty()) {
+				for(Education education : educations) {
+					try {
+						education.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+				        String data = textBuilder.getEducationStringForEmbedding(education);
+				        String vector = webClientUtil.sendEmbeddingRequestMember(data);
+				        education.updateVector(vector);
+				        education.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+				    } catch (Exception e) {
+				    	education.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+				    }
+					
+				}
+				
 			}
 			
-			
+			List<Career> careers = member.getCareers();
+			if(careers != null && !careers.isEmpty()) {
+				for(Career career : careers) {
+					try {
+						career.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+				        String data = textBuilder.getCareerStringForEmbedding(career);
+				        String vector = webClientUtil.sendEmbeddingRequestMember(data);
+				        career.updateVector(vector);
+				        career.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+				    } catch (Exception e) {
+				    	career.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+				    }
+					
+				}
+				
+			}
+			List<Certification> certifications = member.getCertifications();
+			if(certifications != null && !certifications.isEmpty()) {
+				for(Certification certification : certifications) {
+					try {
+						certification.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+					    String data = textBuilder.getCertificationStringForEmbedding(certification);
+					    String vector = webClientUtil.sendEmbeddingRequestMember(data);
+					    certification.updateVector(vector);
+					    certification.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+				    } catch (Exception e) {
+						certification.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+				    }
+					
+				}
+				
+			}
+			List<LanguageTest> languageTests = member.getLanguageTests();
+			if(languageTests != null && !languageTests.isEmpty()) {
+				for(LanguageTest languageTest : languageTests) {
+					try {
+						languageTest.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+					    String data = textBuilder.getLanguageTestStringForEmbedding(languageTest);
+					    String vector = webClientUtil.sendEmbeddingRequestMember(data);
+					    languageTest.updateVector(vector);
+					    languageTest.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+				    } catch (Exception e) {
+						languageTest.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+				    }
+					
+				}
+				
+			}
+			List<CareerDescription> careerDescriptions = member.getCareerDescriptions();
+			if(careerDescriptions != null && !careerDescriptions.isEmpty()) {
+				for(CareerDescription careerDescription : careerDescriptions) {
+					try {
+						careerDescription.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+					    String data = textBuilder.getCareerDescriptionStringForEmbedding(careerDescription);
+					    String vector = webClientUtil.sendEmbeddingRequestMember(data);
+					    careerDescription.updateVector(vector);
+					    careerDescription.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+					} catch (Exception e) {
+						careerDescription.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+					}
+					
+				}
+				
+			}
+			List<CoverLetter> coverLetters = member.getCoverLetters();
+			if(coverLetters != null && !coverLetters.isEmpty()) {
+				for(CoverLetter coverLetter : coverLetters) {
+					try {
+						coverLetter.updateEmbeddingStatus(EmbeddingStatus.PROCESSING);
+						String data = textBuilder.getCoverLetterStringForEmbedding(coverLetter);
+						String vector = webClientUtil.sendEmbeddingRequestMember(data);
+						coverLetter.updateVector(vector);
+						coverLetter.updateEmbeddingStatus(EmbeddingStatus.SUCCESS);
+					} catch (Exception e) {
+						coverLetter.updateEmbeddingStatus(EmbeddingStatus.FAILED);
+					}
+					
+				}
+				
+			}			
+
 		}
 		
 	}

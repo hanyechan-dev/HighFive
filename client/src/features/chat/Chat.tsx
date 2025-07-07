@@ -10,7 +10,7 @@ import {
   registerMessageCallback,
   subscribeToTopic,
   unregisterMessageCallback,
-} from "./stompClient";
+} from "../stompClient";
 import { clearNewChatTarget } from "./ChatControlSlice";
 import { Button } from "../../common/components/ui/button";
 import { ScrollArea } from "../../common/components/ui/scroll-area";
@@ -19,7 +19,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../common/c
 import { Input } from "../../common/components/ui/input";
 import { printErrorInfo } from "../../common/utils/ErrorUtil";
 import { api } from "../../common/Axios";
-import { addUnreadChat, removeUnreadChat, selectUnreadChatRooms } from "../notification/NotificationSlice";
+import { addUnreadChat, removeUnreadChat, selectUnreadChatRooms } from "./ChatNotificationSlice";
 import { toast } from "sonner";
 
 interface ChatRoom {
@@ -103,17 +103,6 @@ const Chat = () => {
         const response = await api(true).post("/chats", {
           id: targetId
         })
-
-        // const response = await fetch("http://localhost:8090/api/chats", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        //   body: JSON.stringify({
-        //     id: targetId,
-        //   }),
-        // });
         const roomId = response.data; // JSON -> Javascript 객체로 변환
 
         setChatRoomId(roomId);
@@ -202,25 +191,9 @@ const Chat = () => {
   const getChatRoomList = useCallback(async () => {
     try {
       const response = await api(true).get("/chats");
-
-      // if (token) {
-      //   const response = await fetch("http://localhost:8090/api/chats", {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      // const tempChatRoomList: ChatRoom[] = await response.json();
       const tempChatRoomList: ChatRoom[] = response.data
       setChatRoomList(tempChatRoomList);
     }
-    //   } else {
-    //     console.log(
-    //       "Token값이 null로 추정됩니다. Token 값은 다음과 같습니다: ",
-    //       token
-    //     );
-    //   }
-    // } 
     catch (error) {
       printErrorInfo(error);
       console.log("채팅방 리스트 불러오기 실패: ", error);
@@ -232,16 +205,6 @@ const Chat = () => {
     // IMessage : STOMP 라이브러리에서 지원하는 메시지 인터페이스
     try {
       const response = await api(true).post("/chats/detail",{id})
-      // const response = await fetch(`http://localhost:8090/api/chats/detail`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      //   body: JSON.stringify({ id }),
-      // });
-      // const chatContents: ChatMessage[] = await response.json();
-
       const chatContents: ChatMessage[] = response.data
 
       if (chatContents) {
@@ -351,7 +314,7 @@ const Chat = () => {
 
       {/* 채팅 리스트 */}
       {showChatList && (
-        <div className="absolute bottom-16 right-0 w-80 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
+        <div className="absolute bottom-6 right-20 w-80 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-gray-900">채팅</h3>
@@ -365,7 +328,7 @@ const Chat = () => {
               </Button>
             </div>
           </div>
-          <ScrollArea className="max-h-80">
+          <ScrollArea className="h-80">
             <div className="p-2">
               {chatRoomList.map((chatRoom) => (
                 <div

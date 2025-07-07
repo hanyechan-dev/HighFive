@@ -4,9 +4,12 @@ import java.time.LocalDate;
 
 import com.jobPrize.dto.member.languageTest.LanguageTestCreateDto;
 import com.jobPrize.dto.member.languageTest.LanguageTestUpdateDto;
+import com.jobPrize.enumerate.EmbeddingStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -56,6 +59,13 @@ public class LanguageTest {
 	
 	@Column(name="ACQUISITION_DATE", nullable = false)
 	private LocalDate acquisitionDate;
+	
+	@Column(name = "language_test_vector", columnDefinition = "MEDIUMTEXT")
+	private String languageTestVector;
+	
+	@Column(name = "embedding_status")
+	@Enumerated(EnumType.STRING)
+	private EmbeddingStatus embeddingStatus = EmbeddingStatus.PENDING;
 
 	public void updateLanguageTest(LanguageTestUpdateDto languageTestUpdateDto) {
 		this.languageType = languageTestUpdateDto.getLanguageType();
@@ -77,7 +87,16 @@ public class LanguageTest {
 			.score(languageTestCreateDto.getScore())
 			.certificationNo(languageTestCreateDto.getCertificationNo())
 			.acquisitionDate(languageTestCreateDto.getAcquisitionDate())
+			.embeddingStatus(EmbeddingStatus.PENDING)
 			.build();
+	}
+	
+	public void updateVector(String vector) {
+		this.languageTestVector = vector;
+	}
+	
+	public void updateEmbeddingStatus(EmbeddingStatus embeddingStatus) {
+		this.embeddingStatus = embeddingStatus;
 	}
 	
 	

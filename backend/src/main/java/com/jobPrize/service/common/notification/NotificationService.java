@@ -9,10 +9,7 @@ import com.jobPrize.enumerate.NotificationType;
 public interface NotificationService {
 	
 	// 알림 생성
-	Notification createNotification(Long id, Long receiverId, NotificationType notificationType);
-	
-	// 알림 발송
-	void sendNotification(Long id, Long receiverId, NotificationType notificationType);
+	NotificationDto createNotification(Long id, Long receiverId, NotificationType notificationType);
 	
 	// 알림 조회
 	List<NotificationDto> readNotification(Long id);
