@@ -9,7 +9,9 @@ import memberPoolFilterSlice from '../../features/memberPool/slices/MemberPoolSl
 
 import AuthModalSlice from '../slices/AuthModalSlice';
 import ChatControlSlice from '../../features/chat/ChatControlSlice';
+import ChatNotificationSlice from '../../features/chat/ChatNotificationSlice';
 import NotificationSlice from '../../features/notification/NotificationSlice';
+import NotificationControlSlice from '../../features/notification/NotificationControlSlice';
 
 const rootReducer = combineReducers({
     auth: AuthSlice,
@@ -17,7 +19,9 @@ const rootReducer = combineReducers({
     memberPoolFilter: memberPoolFilterSlice,
     chat: ChatControlSlice,
     authModal: AuthModalSlice,
-    notification: NotificationSlice
+    chatNotification: ChatNotificationSlice,
+    notification: NotificationSlice,
+    notificationControl: NotificationControlSlice
 });
 
 const persistConfig = {

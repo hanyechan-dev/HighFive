@@ -26,7 +26,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final UserRepository userRepository;
 	
 	// 알림 생성
-	public Notification createNotification(Long id, Long receiverId, NotificationType notificationType) {
+	public NotificationDto createNotification(Long id, Long receiverId, NotificationType notificationType) {
 		
 		User sender = userRepository.findByIdAndDeletedDateIsNull(id)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
@@ -34,20 +34,23 @@ public class NotificationServiceImpl implements NotificationService {
 		User receiver = userRepository.findByIdAndDeletedDateIsNull(receiverId)
 				.orElseThrow(() -> new CustomEntityNotFoundException("유저"));
 		
-		Notification notification = Notification.builder()
+		Notification tempNotification = Notification.builder()
 				.NotificationType(notificationType)
 				.message(notificationType.getMessageByType(sender, receiver))
 				.sender(sender)
 				.receiver(receiver)
 				.build();
 		
-		return notificationRepository.save(notification);
-	}
-	
-	// 알림 발송
-	public void sendNotification(Long id, Long receiverId, NotificationType notificationType) {
-		Notification notification = createNotification(id, receiverId, notificationType);
-		// WebSocket 통신 시 추후 구현
+		Notification notification = notificationRepository.save(tempNotification);
+		
+		NotificationDto dto = NotificationDto.builder()
+				.notificationId(notification.getId())
+				.id(receiverId)
+				.message(notification.getMessage())
+				.createdTime(notification.getCreatedTime())
+				.build();
+				
+		return dto;
 	}
 	
 	// 알림 조회
@@ -56,6 +59,7 @@ public class NotificationServiceImpl implements NotificationService {
 		
 		return notification.stream()
 				.map(noti -> NotificationDto.builder()
+						.notificationId(noti.getId())
 						.id(id)
 						.message(noti.getMessage())
 						.createdTime(noti.getCreatedTime())

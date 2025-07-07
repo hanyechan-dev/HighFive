@@ -107,6 +107,8 @@ public class ChatServiceImpl implements ChatService {
 					name = otherUser.getCompany().getCompanyName();
 				} else if (otherUser.getUserType() == UserType.컨설턴트회원) {
 					name = otherUser.getName();
+				} else if (otherUser.getUserType() == UserType.관리자) {
+					name = otherUser.getName();
 				} else {
 					name = otherUser.getMember().getNickname();
 				}
