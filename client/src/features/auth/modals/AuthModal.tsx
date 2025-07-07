@@ -15,7 +15,7 @@ const AuthModal = ({ onClose }: AuthModalProps) => {
 
     const { showModalType, setShowModalType, kakaoEmail, isKakao } = useAuthController();
 
-    const { login, kakaoLogin, nicknameInput, signUp, companyInfoInput } = useAuthApi();
+    const { login, kakaoLogin, nicknameInput, signUp, kakaoSignUp, companyInfoInput } = useAuthApi();
 
     const onCloseModal = () => {
         setShowModalType("logIn");
@@ -30,7 +30,7 @@ const AuthModal = ({ onClose }: AuthModalProps) => {
                     <LoginModal setShowModalType={setShowModalType} login={login} kakaoLogin={kakaoLogin} onClose={onClose} />
                 )}
                 {showModalType === "signUp" && (
-                    <SignUpModal isKakao={isKakao} kakaoEmail={kakaoEmail} setShowModalType={setShowModalType} signUp={signUp} onClose={onCloseModal} />
+                    <SignUpModal isKakao={isKakao} kakaoEmail={kakaoEmail} setShowModalType={setShowModalType} signUp={signUp} onClose={onCloseModal} kakaoSignUp={kakaoSignUp} />
                 )}
                 {showModalType === "nicknameInput" && (
                     <NicknameInputModal nicknameInput={nicknameInput} onClose={onCloseModal} />

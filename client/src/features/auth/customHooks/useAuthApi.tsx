@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
-import { companyInfoInputApi, kakaoLoginApi, loginApi, nicknameInputApi, SignUpApi } from "../apis/AuthApi";
+import { companyInfoInputApi, kakaoLoginApi, kakaoSignUpApi, loginApi, nicknameInputApi, SignUpApi } from "../apis/AuthApi";
 import { setToken } from "../slices/AuthSlice";
 import { useAuthController } from "./useAuthController";
-import type { LogInDto, MemberCreateDto, UserSignUpDto } from "../props/AuthProps";
+import type { KakaoUserSignUpDto, LogInDto, MemberCreateDto, UserSignUpDto } from "../props/AuthProps";
 import axios from "axios";
 import { closeAuthModal } from "../../../common/slices/AuthModalSlice";
 
@@ -133,12 +133,26 @@ export const useAuthApi = () => {
         }
     }
 
+    const kakaoSignUp = async (kakaoSignUpDto: KakaoUserSignUpDto) => {
+        try {
+            const res = await kakaoSignUpApi(kakaoSignUpDto);
+            const { accessToken, refreshToken } = res.data;
+            dispatch(setToken({ accessToken, refreshToken }));
+            return true
+        } catch (err) {
+            printErrorInfo(err);
+            return false
+        }
+ 
+    }
+
 
     return {
         login,
         nicknameInput,
         signUp,
         kakaoLogin,
-        companyInfoInput
+        companyInfoInput,
+        kakaoSignUp
     }
 }

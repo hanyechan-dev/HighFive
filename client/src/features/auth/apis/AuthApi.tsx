@@ -1,5 +1,5 @@
 import { api, apiForm } from "../../../common/Axios";
-import type { KakaoAccessTokenDto, LogInDto, MemberCreateDto, UserSignUpDto } from "../props/AuthProps";
+import type { KakaoAccessTokenDto, KakaoUserSignUpDto, LogInDto, MemberCreateDto, UserSignUpDto } from "../props/AuthProps";
 
 
 export const loginApi = (loginDto : LogInDto) => {
@@ -17,6 +17,10 @@ export const kakaoLoginApi = (kakaoAccessTokenDto : KakaoAccessTokenDto) => {
 export const nicknameInputApi = (nicknameInputDto : MemberCreateDto) => {
   return api(true).post('/members', nicknameInputDto);
 };
+
+export const kakaoSignUpApi = (kakaoSignUpDto: KakaoUserSignUpDto) => {
+  return api(false).post('/users/kakao', kakaoSignUpDto);
+}
   
 
 export const companyInfoInputApi = (
