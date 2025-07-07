@@ -314,7 +314,7 @@ const JobPostingForMemberPage = () => {
                             ))}
                         </div>
 
-                        <div className="grid grid-cols-4 gap-4 mt-2">
+                        <div className="grid grid-cols-4 gap-0 mt-2">
                             {jobPostingUnderCardDtos.map((jobPostingUnderCardDto) => (
                                 <div key={jobPostingUnderCardDto.id}>
                                     <JobPostingUnderCard

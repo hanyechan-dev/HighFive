@@ -11,6 +11,7 @@ import LoadingSpinner from "../../../common/components/loading/LoadingSpinner";
 import EmptyState from "../../../common/components/emptyState/EmptyState";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 
+
 interface ProposalDetailModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -20,6 +21,7 @@ interface ProposalDetailModalProps {
 export default function ProposalDetailModal({ isOpen, onClose, proposalId }: ProposalDetailModalProps) {
     const [proposal, setProposal] = useState<ProposalDetail | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+
 
     useEffect(() => {
         if (isOpen && proposalId) {

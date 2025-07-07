@@ -12,6 +12,7 @@ import time
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("prompt_api_key"))
+reader = easyocr.Reader(['ko', 'en'])
 
 def generate_vector_job_posting_result(metadata: str , images : List[UploadFile]):
     
@@ -56,11 +57,12 @@ def generate_vector_member_result(data : str):
     return json.dumps(embedding_vector)
 
 def get_text_from_image(image : UploadFile):
+    image.file.seek(0)
     image_bytes = image.file.read()
+    image.file.seek(0)
     image_stream = BytesIO(image_bytes)
     pil_image = Image.open(image_stream)
     np_image = np.array(pil_image)
-    reader = easyocr.Reader(['ko', 'en'])
     results = reader.readtext(np_image)
     texts = [text for (_, text, confidence) in results if confidence >= 0.75]
     

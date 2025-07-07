@@ -12,6 +12,7 @@ import AuthUtil from "../../../common/utils/AuthUtil";
 import { printErrorInfo } from "../../../common/utils/ErrorUtil";
 import Input from "../../../common/components/input/Input";
 import { startNewChat } from "../../chat/ChatControlSlice";
+import { sendNotification } from "../../notification/NotificationControlSlice";
 
 interface PostDetailModalProps {
     postId: number;
@@ -71,7 +72,11 @@ function PostDetailModal({ postId, onClose, onUpdateCommentCount, onUpdatePost}:
         };
         await createComment(dto);       
         setComment("");                
-        await fetchPostDetail();           
+        await fetchPostDetail();
+        if(currentUserId != null && authorId != null){
+            dispatch(sendNotification({id : currentUserId, receiverId: authorId, notificationType: "COMMENT"}));
+        }
+        
 
         if (onUpdateCommentCount) {        
             onUpdateCommentCount(postId);

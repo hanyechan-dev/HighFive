@@ -29,7 +29,7 @@ public class EditPrompt {
 	@Column(nullable = false)
 	private String title;		//첨삭 프롬프트 제목
 	
-	@Column(nullable = false)
+	@Column(nullable = false , columnDefinition = "MEDIUMTEXT")
 	private String content;			//첨삭 프롬프트 내용
 	
 	@Column(name = "IS_APPLIED", nullable = false)

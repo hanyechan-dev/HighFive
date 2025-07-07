@@ -6,6 +6,10 @@ import ModalTitle from '../../../common/components/title/ModalTitle';
 import CommonModal from '../../../common/modals/CommonModal';
 import { createProposalApi } from '../apis/MemberPoolApi';
 import { printErrorInfo } from '../../../common/utils/ErrorUtil';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthUtil from '../../../common/utils/AuthUtil';
+import type { RootState } from '../../../common/store/store';
+import { sendNotification } from '../../notification/NotificationControlSlice';
 
 interface ProposalCreateModalProps {
   isOpen: boolean;
@@ -25,6 +29,9 @@ export default function ProposalCreateModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const dispatch = useDispatch();
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const currentUserId = AuthUtil.getIdFromToken(accessToken);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +51,9 @@ export default function ProposalCreateModal({
       setProposalContent('');
       setProposalJob('');
       setProposalSalary('');
+      if (currentUserId != null && memberId != null) {
+        dispatch(sendNotification({ id: currentUserId, receiverId: memberId, notificationType: "PROPOSAL" }));
+      }
       setTimeout(() => {
         setSuccess(false);
         onClose();

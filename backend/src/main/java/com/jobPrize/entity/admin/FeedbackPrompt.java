@@ -29,7 +29,7 @@ public class FeedbackPrompt {
 	@Column(nullable = false)
 	private String title;		//피드백 프롬프트 제목
 	
-	@Column(nullable = false)
+	@Column(nullable = false , columnDefinition = "MEDIUMTEXT")
 	private String content;		//피드백 프롬프트 내용
 	
 	@Column(name = "IS_APPLIED", nullable=false)

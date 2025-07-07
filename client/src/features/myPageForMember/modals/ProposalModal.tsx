@@ -9,6 +9,7 @@ import type { ProposalResponseDto } from "../props/myPageForMemberProps";
 import type { RootState } from "../../../common/store/store";
 import AuthUtil from "../../../common/utils/AuthUtil";
 import { startNewChat } from "../../chat/ChatControlSlice";
+import { sendNotification } from "../../notification/NotificationControlSlice";
 
 interface ProposalModalProps {
     proposalResponseDto: ProposalResponseDto;
@@ -24,6 +25,7 @@ const ProposalModal = ({ proposalResponseDto, onClose, onClickAccept, onClickRej
     const accessToken = useSelector((state: RootState) => state.auth.accessToken);
     const currentUserId = AuthUtil.getIdFromToken(accessToken);
 
+
     const onClickChat = () => {
         if (proposalResponseDto.companyId != currentUserId) {
             dispatch(startNewChat({
@@ -34,6 +36,32 @@ const ProposalModal = ({ proposalResponseDto, onClose, onClickAccept, onClickRej
             }))
         } else { return; }
     }
+
+    const onClickAcceptButton = () => {
+        try {
+            onClickAccept();
+            if (currentUserId != null && proposalResponseDto.companyId != null) {
+                dispatch(sendNotification({ id: currentUserId, receiverId: proposalResponseDto.companyId, notificationType: "ACCEPT" }));
+            }
+        } catch {
+            alert("수락 과정에서 문제가 발생하였습니다.")
+        }
+    }
+
+    const onClickRejectButton = () => {
+        try {
+            onClickReject();
+            if (currentUserId != null && proposalResponseDto.companyId != null) {
+                dispatch(sendNotification({ id: currentUserId, receiverId: proposalResponseDto.companyId, notificationType: "DECLINE" }));
+            }
+        } catch {
+            alert("거절 과정에서 문제가 발생하였습니다.")
+        }
+    }
+
+
+
+
 
 
 
@@ -54,8 +82,8 @@ const ProposalModal = ({ proposalResponseDto, onClose, onClickAccept, onClickRej
             {isWait && (
                 <div className="flex justify-end mr-6">
                     <Button color={"white"} size={"s"} disabled={false} text={"채팅"} type={"button"} onClick={onClickChat} />
-                    <Button color={"white"} size={"s"} disabled={false} text={"거절"} type={"button"} onClick={onClickReject} />
-                    <Button color={"theme"} size={"s"} disabled={false} text={"수락"} type={"button"} onClick={onClickAccept} />
+                    <Button color={"white"} size={"s"} disabled={false} text={"거절"} type={"button"} onClick={onClickRejectButton} />
+                    <Button color={"theme"} size={"s"} disabled={false} text={"수락"} type={"button"} onClick={onClickAcceptButton} />
                 </div>
             )}
 

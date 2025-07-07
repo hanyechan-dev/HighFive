@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../common/store/store";
 import AuthUtil from "../../../common/utils/AuthUtil";
 import { startNewChat } from "../../chat/ChatControlSlice";
+import { sendNotification } from "../../notification/NotificationControlSlice";
 
 interface ApplicationDetailModalProps {
     isOpen: boolean;
@@ -42,7 +43,7 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
     const currentUserId = AuthUtil.getIdFromToken(accessToken);
 
     const onClickChat = () => {
-        if (application?.userId != currentUserId && application!=null) {
+        if (application?.userId != currentUserId && application != null) {
             dispatch(startNewChat({
                 id: application.userId,
                 name: application.name,
@@ -76,6 +77,10 @@ export default function ApplicationDetailModal({ isOpen, onClose, applicationId 
             await passApplicationApi(applicationId);
             alert('합격 처리되었습니다.');
             setApplication(prev => prev ? { ...prev, isPassed: true } : null);
+            if (currentUserId != null && application.userId != null) {
+                dispatch(sendNotification({ id: currentUserId, receiverId: application.userId, notificationType: "PASS" }));
+            }
+
         } catch (err) {
             printErrorInfo(err);
             console.error('합격 처리 실패:', err);
