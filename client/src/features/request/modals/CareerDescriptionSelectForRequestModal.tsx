@@ -1,5 +1,6 @@
 import { ExternalBox } from "../../../common/components/box/Box";
 import Button from "../../../common/components/button/Button";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import BasicInfo from "../components/BasicInfo";
 
@@ -35,13 +36,13 @@ const CareerDescriptionSelectForRequestModal = () => {
             <ModalTitle title="경력기술서 선택" />
             <BasicInfo targetCompanyName={targetCompanyName} targetJob={targetJob} />
             <ExternalBox>
-                {careerDescriptionSummaryDtos.map(careerDescriptionSummaryDto =>
+                {careerDescriptionSummaryDtos.length > 0 ? (careerDescriptionSummaryDtos.map(careerDescriptionSummaryDto =>
                 (<RequestSelect
                     key={careerDescriptionSummaryDto.id}
                     careerOrCoverLetterSummaryDto={careerDescriptionSummaryDto}
                     isClicked={clickedCareerDescriptionId === careerDescriptionSummaryDto.id}
                     setIsClicked={setClickedCareerDescriptionId} />
-                ))}
+                ))) :(<EmptyState title={"작성한 경력기술서가 없습니다."} text={""} />)}
             </ExternalBox>
 
 

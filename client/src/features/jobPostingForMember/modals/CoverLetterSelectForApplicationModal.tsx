@@ -1,5 +1,6 @@
 import { ExternalBox } from "../../../common/components/box/Box";
 import Button from "../../../common/components/button/Button";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 import LoadingSpinner from "../../../common/components/loading/LoadingSpinner";
 import ModalTitle from "../../../common/components/title/ModalTitle";
 import ApplicationSelect from "../components/ApplicationSelect";
@@ -39,7 +40,7 @@ const CoverLetterSelectForApplicationModal = ({ isShowModalNumber2Loading, isCLL
             {isShowModalNumber2Loading ? (<LoadingSpinner message="자기소개서 리스트를 불러오는 중..." size="lg" color="theme" />) : (
                 <>
                     <ExternalBox>
-                        {coverLetterSummaryDtos.map(coverLetterSummaryDto => (
+                        {coverLetterSummaryDtos.length > 0 ? (coverLetterSummaryDtos.map(coverLetterSummaryDto => (
                             <div key={coverLetterSummaryDto.id}>
                                 <ApplicationSelect
                                     careerOrCoverLetterSummaryDto={coverLetterSummaryDto}
@@ -55,8 +56,9 @@ const CoverLetterSelectForApplicationModal = ({ isShowModalNumber2Loading, isCLL
                                         )}
                                     </>
                                 )}
+
                             </div>
-                        ))}
+                        ))):(<EmptyState title={"작성한 자기소개서가 없습니다."} text={""} />)}
                     </ExternalBox>
 
                     <div className="flex justify-end mr-6">

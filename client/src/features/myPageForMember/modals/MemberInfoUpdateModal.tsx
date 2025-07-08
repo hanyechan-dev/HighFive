@@ -7,6 +7,7 @@ import PasswordUpdate from "../components/PasswordUpdate";
 import { useMemberInfoTabController } from "../customHooks/MemberInfoTab/useMemberInfoTabController";
 import { useMemberInfoTabApi } from "../customHooks/MemberInfoTab/useMemberInfoTabApi";
 
+
 const memberInfoUpdateTextList = [
     { label: "기본정보", value: "기본정보" },
     { label: "닉네임", value: "닉네임" },
@@ -16,6 +17,8 @@ const memberInfoUpdateTextList = [
 
 
 const MemberInfoUpdateModal = () => {
+
+
 
 
     const {

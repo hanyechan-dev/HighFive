@@ -6,6 +6,7 @@ import type { consultingTypeEnum } from "../../../common/enum/Enum";
 import BasicInfo from "../components/BasicInfo";
 import RequestSelect from "../components/RequestSelect";
 import { useRequestController } from "../customHooks/useRequestController";
+import EmptyState from "../../../common/components/emptyState/EmptyState";
 
 
 
@@ -54,13 +55,13 @@ const CoverLetterSelectForRequestModal = ({ consultingType
             <ModalTitle title="자기소개서 선택" />
             <BasicInfo targetCompanyName={targetCompanyName} targetJob={targetJob} />
             <ExternalBox>
-                {coverLetterSummaryDtos.map(coverLetterSummaryDto =>
+                {coverLetterSummaryDtos.length > 0 ? (coverLetterSummaryDtos.map(coverLetterSummaryDto =>
                 (<RequestSelect
                     key={coverLetterSummaryDto.id}
                     careerOrCoverLetterSummaryDto={coverLetterSummaryDto}
                     isClicked={clickedCoverLetterId === coverLetterSummaryDto.id}
                     setIsClicked={setClickedCoverLetterId} />
-                ))}
+                ))) :(<EmptyState title={"작성한 자기소개서가 없습니다."} text={""} />)}
             </ExternalBox>
             {showAlert && (<div className="flex justify-end pr-6 pb-6 text-sm font-roboto text-blue-400">자기소개서를 입력해주세요</div>)}
             <div className="flex justify-end mr-6">

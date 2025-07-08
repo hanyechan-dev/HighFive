@@ -182,7 +182,7 @@ const AppNotification = () => {
 
       {/* 알림 리스트 */}
       {showNotificationList && (
-        <div className="absolute bottom-0 right-20 w-100 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
+        <div className="absolute bottom-0 right-20 w-[500px] bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-hidden">
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-gray-900">알림</h3>
